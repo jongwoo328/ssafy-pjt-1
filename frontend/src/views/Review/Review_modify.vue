@@ -90,7 +90,7 @@ textarea{
    box-shadow: 0 0 5px gray;
 }
 /* form {
-   border: 2px solid black; 
+ds   border: 2px solid black; 
 } */
 input{
     box-shadow: 0 0 5px gray;
