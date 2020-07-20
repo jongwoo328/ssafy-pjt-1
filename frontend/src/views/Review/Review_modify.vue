@@ -37,15 +37,16 @@ export default {
   },
   data: function() {
     return {
-      PayInfo: [],
+      no:"",
       title: "",
       content: ""
     };
 },methods: {
     created() {
     axios
-      .get("/api/paylist")
+      .get("/api/review/{no}")
       .then(({ data }) => {
+
         console.dir(data);
         if(data==null){
           alert("권한이 없습니다.");
