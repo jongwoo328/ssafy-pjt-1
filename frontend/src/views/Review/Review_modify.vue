@@ -37,15 +37,16 @@ export default {
   },
   data: function() {
     return {
-      PayInfo: [],
+      no:"",
       title: "",
       content: ""
     };
 },methods: {
     created() {
     axios
-      .get("/api/paylist")
+      .get("/api/review/{no}")
       .then(({ data }) => {
+
         console.dir(data);
         if(data==null){
           alert("권한이 없습니다.");
@@ -89,7 +90,7 @@ textarea{
    box-shadow: 0 0 5px gray;
 }
 /* form {
-   border: 2px solid black; 
+ds   border: 2px solid black; 
 } */
 input{
     box-shadow: 0 0 5px gray;
