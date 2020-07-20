@@ -1,6 +1,6 @@
 <template>
     <li class="nav-item">
-        <a href="" v-text="value" class="font-roboto"></a>
+        <button href="" v-text="value" class="font-roboto"></button>
     </li>
 </template>
 
@@ -24,15 +24,19 @@ export default {
         font-size: 1rem;
         padding-bottom: 10px;
     }
-    .nav-item a:hover {
+    .nav-item button:hover {
         border-bottom: 3px solid rgb(236,128,116);
+    }
+    button {
+        border: 0;
+        background-color: transparent;
     }
     @media (min-width: 768px) {
         .nav-item {
             margin-left: 20px;
             margin-right: 20px;
         }
-        .nav-item a {
+        .nav-item button {
             font-size: 1.5rem;
         }
     }

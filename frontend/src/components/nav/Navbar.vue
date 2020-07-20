@@ -18,9 +18,10 @@ export default {
 
 <style scoped>
   nav {
-    box-shadow: 0 0 5px gray;
+    box-shadow: 0 1px 5px gray;
     padding-top: 0;
     padding-bottom: 0;
+    margin-bottom: 20px;
     height: 70px;
   }
   .navbar-brand {
