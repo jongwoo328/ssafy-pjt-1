@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="user">
+
+    <select id="selectUser" resultType="user">
+        select uid,
+        email,
+        password,
+        create_date
+        from user
+    </select>
+    
+    <select id="selectOneUserByUid" resultType="user">
+        select uid,
+        email,
+        password,
+        create_date
+        from user
+        where uid = #{uid}
+    </select>
+    
+    <select id="login" resultType="user">
+        select uid,
+        email,
+        password,
+        create_date
+        from user
+        where email = #{email} and password = #{password}
+    </select>
+    
+    <select id="findUserByUidAndPassword" resultType="user">
+        select uid,
+        email,
+        password,
+        create_date
+        from user
+        where uid = #{uid} and password = #{password}
+    </select>
+    
+    <select id="selectOneUserByEmail" resultType="user">
+        select uid,
+        email,
+        password,
+        create_date
+        from user
+        where email = #{email}
+    </select>
+    
+    <insert id = "join">
+        insert into user (uid, email, password) values (#{uid}, #{email},#{password})
+    </insert>
+    
+    <update id = "updateUser">
+        update user
+        set email = #{email},
+        password = #{password}
+        where uid = #{uid}
+    </update>
+    
+</mapper>
