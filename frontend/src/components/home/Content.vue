@@ -33,13 +33,14 @@ export default {
         box-shadow: 0 0 5px gray;
         height: 450px;
         border-radius: 7px;
-        padding: 50px 20px 50px 20px;
+        padding: 30px 20px 30px 20px;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
         background-color: #343a40;
     }
     i {
+        margin-left: 13vw;
         display: inline-block;
         height: 64px;
         font-size: 4rem;
@@ -51,18 +52,19 @@ export default {
         display: inline-block;
         height: 64px;
         margin-left: 70px;
-        font-size: 2rem;
+        font-size: 1.5rem;
         vertical-align: top;
         padding: 0;
         color: white;
     }
     .connector {
         font-style: italic;
-        margin-left: 10px;
+        margin-left: 5vw;
         border-bottom: 2px solid white;
     }
     .desc-none {
-        margin: 20px;
+        margin-top: 20px;
+        margin-left: 10vw;
     }
     .fa-dumbbell {
         color: #fa5252;
