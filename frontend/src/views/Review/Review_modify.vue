@@ -21,19 +21,20 @@
         </div>
     </form>
     <div id="btn-group">
-      <button @click="onChangePage">취소</button>
-      <button @click="onCreate">등록</button>
+      <Button @click="onChangePage" buttonText="취소"/>
+      <Button @click="onCreate" buttonText="수정"/>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import Button from "@/components/common/Button.vue"
 // @ is an alias to /src
 export default {
   name: 'Review',
   components: {
-    
+    Button
   },
   data: function() {
     return {
@@ -46,12 +47,10 @@ export default {
     axios
       .get("/api/review/{no}")
       .then(({ data }) => {
-
+        this.no = data.no;
+        this.title = data.title;
+        this.content = data.content;
         console.dir(data);
-        if(data==null){
-          alert("권한이 없습니다.");
-          this.onChangePage();
-        }
       })
       .catch(() => {
         alert("에러가 발생했습니다.");
