@@ -4,43 +4,49 @@
         <div class="modal-wrapper">
             <div class="modal-container">
             <div class="modal-header">
-              <h3>Login</h3>
+              <h3>logo</h3>
               <button type="button" class="close" data-dismiss="modal" @click="modalclose">&times;</button>
             </div>
-            <h1 @click="login">test</h1>
+
             <div class="modal-body">
                 <slot name="body">
-                  <div class="form">
-                    <div class="input-box font-notojp">
-                      <label id="username-label" class="input-label" for="Inputname">Username</label>
-                      <input type="text" id="Inputname" placeholder="Username" v-model="loginData.username">
+                  <div class="login-type"> 
+                    <div>
+                      <input type="radio" id="user" value="USER" v-model="loginData.picked">
+                      <label for="user">USER</label>
                     </div>
-                    <div class="input-box font-notojp">
-                      <label id="password-label" class="input-label" for="Inputpassword">Password</label>
+                    <div>
+                      <input type="radio" id="pro" value="PRO" v-model="loginData.picked">
+                      <label for="pro">PRO</label>
+                    </div>
+                  </div>
+                  <form action="" method="POST">
+                    <div class="input-box">
+                      <label class="input-label" for="Inputemail">Email</label>
+                      <input type="text" id="Inputemail" placeholder="Email" v-model="loginData.email">
+                    </div>
+                    <div class="input-box">
+                      <label class="input-label" for="Inputpassword">Password</label>
                       <input type="password" id="Inputpassword" placeholder="Password" v-model="loginData.password" @keyup.enter="login">
                     </div>
-                    <Button class="font-notojp" buttonText="Login" type="submit" @click.native="login" />
-                  </div>
+                    <Button buttonText="Login" type="submit" @click="login" />
+                  </form>
                 </slot>
             </div>
-            <hr>
-            <div class="modalfooter">
-                <slot name="footer">
-                  <a class="font-kor" data-dismiss="modal" href="#" @click="$emit('lost')">아이디/비밀번호 찾기</a>
-                  <br>        
-                  <a class="font-kor" data-dismiss="modal" href="/">회원가입</a>
-                </slot>
-            </div>
-            </div>
-        </div>
-        </div>
 
+            <div class="modal-footer">
+                <slot name="footer">
+                  <p>good!</p>
+                </slot>
+            </div>
+            </div>
+        </div>
+        </div>
     </transition>
 </template>
 
 <script>
 import Button from '@/components/common/Button.vue'
-import axios from 'axios'
 
 export default {
   name: 'LoginModal',
@@ -50,27 +56,15 @@ export default {
   data() {
     return {
       loginData: {
-        username: null,
+        email: null,
         password: null,
+        picked: 'USER',
       },
     }
   },
   methods: {
     login () {
-      console.log('test')
-
-      axios.post("http://192.168.100.88:8090/account/login", this.loginData)
-      .then(res => {
-        if (res.status === 200) {
-          console.log(res.headers)
-          this.$session.set('jwstoken', res.headers.jwstoken);
-          this.$session.get('jwstoken')
-          // document.session = `jwstoken=${res.headers.jwstoken}`;
-        }
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      console.log(this.loginData)
     },
 
     modalclose () {
@@ -82,30 +76,19 @@ export default {
 
 <style scoped>
     /* model */
-  hr {
-    margin-top: 0;
-  }
-  .form button {
+  form button {
     width: 100%;
   }
-  .modalfooter {
-    display: block;
-    text-align: right;
-    margin: 0 20px;
-  }
   .input-box {
-   margin-bottom: 25px;
+   margin-bottom: 10px;
   }
   .input-box input {
     width: 100%;
     height: 40px;
-    border: 1.5px solid black;
-    padding: 0 5px 0 5px;
     border-radius: 5px;
   }
   .input-label {
-    display: none;
-    margin: 5px 0 5px 0;
+    margin: 0;
   }
   .login-type {
     display: flex;
@@ -131,20 +114,17 @@ export default {
   .modal-container {
     width: 300px;
     margin: 0px auto;
-    padding: 20px 10px;
+    padding: 20px 30px;
     background-color: #fff;
-    border-radius: 6px;
+    border-radius: 2px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
     transition: all .3s ease;
     font-family: Helvetica, Arial, sans-serif;
   }
-  .modal-header {
-    padding-top: 0;
-    padding-bottom: 0;
-  }
+
   .modal-header h3 {
     margin-top: 0;
-    color: rgb(236,128,116);
+    color: #42b983;
   }
 
   .modal-body {
