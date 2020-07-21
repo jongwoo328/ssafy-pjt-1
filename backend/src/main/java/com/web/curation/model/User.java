@@ -28,30 +28,24 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String uid;
+    private String email;
 
     @JsonIgnore
     private String password;
-    private String email;
 
     @Column(insertable = false, updatable = false)
     private LocalDateTime createDate;
   
 	public User() {}
 
-	public User(String uid, String password, String email) {
-		this.uid = uid;
+	public User(String password, String email) {
+	
 		this.password = password;
 		this.email = email;
 	}
 
-	public String getUid() {
-		return uid;
-	}
+	
 
-	public void setUid(String uid) {
-		this.uid = uid;
-	}
 
 	public String getPassword() {
 		return password;
@@ -77,10 +71,7 @@ public class User {
 		this.createDate = createDate;
 	}
 
-	@Override
-	public String toString() {
-		return "User [uid=" + uid + ", password=" + password + ", email=" + email + ", createDate=" + createDate + "]";
-	}
+	
     
     
 }

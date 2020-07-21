@@ -1,30 +1,32 @@
 package com.web.curation.controller.account;
 
-import java.util.Optional;
+import java.security.Key;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
-import com.web.curation.dao.user.UserDao;
-import com.web.curation.model.BasicResponse;
-import com.web.curation.model.user.SignupRequest;
-import com.web.curation.model.User;
-import com.web.curation.service.user.UserService;
-
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.web.curation.model.BasicResponse;
+import com.web.curation.model.User;
+import com.web.curation.model.user.SignupRequest;
+import com.web.curation.service.user.JwtUtil;
+import com.web.curation.service.user.UserService;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @ApiResponses(value = { @ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),
         @ApiResponse(code = 403, message = "Forbidden", response = BasicResponse.class),
@@ -39,28 +41,34 @@ public class AccountController {
     @Autowired
     UserService userService;
 
+	@Autowired
+	JwtUtil jwtutil;
+	
     
     @PostMapping("/account/login")
     @ApiOperation(value = "로그인")
-    public Object login(@RequestBody SignupRequest test) {
+    public void login(@RequestBody SignupRequest test, HttpServletResponse response) {
 
     System.out.println(test.getEmail());
     System.out.println(test.getPassword());
     User user = new User();
     user.setEmail(test.getEmail());
     user.setPassword(test.getPassword());
-    ResponseEntity response = null;
-    User userinfo = userService.login(user);
-    if (userinfo != null) {
-        final BasicResponse result = new BasicResponse();
-        result.status = true;
-        result.data = "success";
-        result.object = userinfo;
-        response = new ResponseEntity<>(result, HttpStatus.OK);
+//    ResponseEntity response = null;
+//    User userinfo = userService.login(user);
+    jwtutil = new JwtUtil();
+    String jws = jwtutil.createToken(user);
+    if (true) {
+//        final BasicResponse result = new BasicResponse();
+//        result.status = true;
+//        result.data = "success";
+//        result.object = userinfo;
+//        response = new ResponseEntity<>(result, HttpStatus.OK);
+    	response.setHeader("jwsToken", jws);
+    	response.setHeader("Access-Control-Expose-Headers", "jwsToken");
     } else {
-        response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//        response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
-    return response;
 }
     
     @PostMapping("/account/signup")
@@ -88,7 +96,7 @@ public class AccountController {
     	String password = request.getPassword();
     	System.out.println(uid);
     	System.out.println(password);
-    	user = new User(uid, password, email);
+//    	user = new User(uid, password, email);
     	System.out.println(user);
     	userService.insert(user);
     	result.status = true;

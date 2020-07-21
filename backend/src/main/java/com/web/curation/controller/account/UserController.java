@@ -55,7 +55,7 @@ public class UserController {
 	@ApiOperation(value = "비밀번호 확인")
 	public Object checkUser(@PathVariable String uid, @RequestParam(required = true) final String password) {
 		User user = new User();
-		user.setUid(uid);
+//		user.setUid(uid);
 		user.setPassword(password);
 		
 		User userinfo = userService.findUserByUidAndPassword(user);
@@ -84,9 +84,9 @@ public class UserController {
     	final BasicResponse result = new BasicResponse();
     	
     	String password = request.getPassword();
-    	User user = new User(uid, password, email);
-    	System.out.println(user);
-    	userService.update(user);
+//    	User user = new User(uid, password, email);
+//    	System.out.println(user);
+//    	userService.update(user);
         result.status = true;
         result.data = "success";
 
