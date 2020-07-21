@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.User;
@@ -37,7 +37,11 @@ import io.swagger.annotations.ApiResponses;
 @CrossOrigin(origins = { "*" })
 @RestController
 public class AccountController {
-
+	
+	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
+	private static final String SUCCESS = "success";
+	private static final String FAIL = "fail";
+	
     @Autowired
     UserService userService;
 
@@ -74,35 +78,34 @@ public class AccountController {
     @PostMapping("/account/signup")
     @ApiOperation(value = "가입하기")
     @Transactional
-    public Object signup(@Valid @RequestBody SignupRequest request) {
+    public ResponseEntity<BasicResponse> signup(@RequestBody User user) {
     	
-    	String email = request.getEmail();
+    	String email = user.getEmail();
     	System.out.println(email);
-    	User user = userService.getUserByEmail(email);
+    	User newUser = userService.getUserByEmail(email);
     	final BasicResponse result = new BasicResponse();
-    	if (user != null) {
+    	if (newUser != null) {
     		result.status = false;
     		result.data = "email";
-    		return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+    		return new ResponseEntity<BasicResponse>(result, HttpStatus.BAD_REQUEST);
     	}
-    	String uid = request.getNickname();
-    	user = userService.getUserByUid(uid);
-    	if (user != null) {
+    	String name = user.getName();
+    	newUser = userService.getUserByUid(name);
+    	if (newUser != null) {
     		result.status = false;
-    		result.data = "nickname";
-    		return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+    		result.data = "name";
+    		return new ResponseEntity<BasicResponse>(result, HttpStatus.BAD_REQUEST);
     	}
     	
-    	String password = request.getPassword();
-    	System.out.println(uid);
-    	System.out.println(password);
-//    	user = new User(uid, password, email);
-    	System.out.println(user);
-    	userService.insert(user);
-    	result.status = true;
-    	result.data = "success";
-    	
-    	return new ResponseEntity<>(result, HttpStatus.OK);
+    	logger.debug("호출");
+    	if(userService.insert(user)) {
+    		result.status = true;
+    		result.data = "success";
+    		return new ResponseEntity<BasicResponse>(result, HttpStatus.OK);    		
+    	}
+    	result.status = false;
+		result.data = "fail";
+    	return new ResponseEntity<BasicResponse>(result, HttpStatus.NOT_FOUND);  
     }
     
 //    @PostMapping("/account/login")

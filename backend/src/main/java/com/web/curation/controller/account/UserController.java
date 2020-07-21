@@ -51,46 +51,46 @@ public class UserController {
         return new ResponseEntity<User>(userService.getUserByUid(uid), HttpStatus.OK);
     }
 	
-	@PostMapping("{uid}")
-	@ApiOperation(value = "비밀번호 확인")
-	public Object checkUser(@PathVariable String uid, @RequestParam(required = true) final String password) {
-		User user = new User();
+//	@PostMapping("{uid}")
+//	@ApiOperation(value = "비밀번호 확인")
+//	public Object checkUser(@PathVariable String uid, @RequestParam(required = true) final String password) {
+//		User user = new User();
 //		user.setUid(uid);
-		user.setPassword(password);
-		
-		User userinfo = userService.findUserByUidAndPassword(user);
-
-        ResponseEntity response = null;
-
-        if (userinfo != null) {
-            final BasicResponse result = new BasicResponse();
-            result.status = true;
-            result.data = "success";
-            result.object = userinfo;
-            response = new ResponseEntity<>(result, HttpStatus.OK);
-        } else {
-            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-        return response;
-    }
-	
-	@PutMapping("{uid}")
-	@ApiOperation(value = "회원정보 변경")
-	@Transactional
-    public Object modifyUser(@Valid @RequestBody SignupRequest request) {
-    	
-    	String email = request.getEmail();
-    	String uid = request.getNickname();
-    	final BasicResponse result = new BasicResponse();
-    	
-    	String password = request.getPassword();
+//		user.setPassword(password);
+//		
+//		User userinfo = userService.findUserByUidAndPassword(user);
+//
+//        ResponseEntity response = null;
+//
+//        if (userinfo != null) {
+//            final BasicResponse result = new BasicResponse();
+//            result.status = true;
+//            result.data = "success";
+//            result.object = userinfo;
+//            response = new ResponseEntity<>(result, HttpStatus.OK);
+//        } else {
+//            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//        }
+//        return response;
+//    }
+//	
+//	@PutMapping("{uid}")
+//	@ApiOperation(value = "회원정보 변경")
+//	@Transactional
+//    public Object modifyUser(@Valid @RequestBody SignupRequest request) {
+//    	
+//    	String email = request.getEmail();
+//    	String uid = request.getNickname();
+//    	final BasicResponse result = new BasicResponse();
+//    	
+//    	String password = request.getPassword();
 //    	User user = new User(uid, password, email);
 //    	System.out.println(user);
 //    	userService.update(user);
-        result.status = true;
-        result.data = "success";
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
+//        result.status = true;
+//        result.data = "success";
+//
+//        return new ResponseEntity<>(result, HttpStatus.OK);
+//    }
 	
 }
