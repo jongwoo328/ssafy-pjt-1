@@ -16,12 +16,11 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
   nav {
+    z-index: 3;
     box-shadow: 0 1px 5px gray;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin-bottom: 20px;
+    padding: 0 !important;
     height: 70px;
   }
   .navbar-brand {

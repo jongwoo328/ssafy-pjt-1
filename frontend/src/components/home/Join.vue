@@ -1,6 +1,7 @@
 <template>
   <div id="join">
       <form action="">
+          
           <input type="text" class="font-kor" :placeholder="placeHolder"><Button buttonText="검색" />
       </form>
       <router-link class="font-kor" to='/accounts/signup' id="button-join">지금 가입하기</router-link>
@@ -62,5 +63,11 @@ export default {
     #button-join:hover {
         text-decoration: none;
         box-shadow: 0 1px 5px gray;
+    }
+    @media (min-width: 768px) {
+        #join {
+            display: none;
+        }
+
     }
 </style>

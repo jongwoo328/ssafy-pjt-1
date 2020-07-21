@@ -1,21 +1,26 @@
 <template>
-  <div id="content">
-    <div class="icon-wrap">
-        <i class="fas fa-dumbbell left-30"></i>
-        <div class="desc font-lobster">Fitness</div>
+<div id="content">
+    <div id="content-mobile">
+            <div class="icon-wrap">
+                <i class="fas fa-dumbbell left-30"></i>
+                <div class="desc font-lobster">Fitness</div>
+            </div>
+            <div class="icon-wrap">
+                <i class="fas fa-drum left-60"></i>
+                <div class="desc font-lobster">Music</div>
+            </div>
+            <div class="icon-wrap">
+                <i class="fas fa-square-root-alt left-30"></i>
+                <div class="desc font-lobster">Study</div>
+            </div>
+            <div class="icon-wrap">
+                <div class="desc desc-none font-lobster">with <span class="font-notojp connector">CONNECTOR</span></div>
+            </div>
     </div>
-    <div>
-        <i class="fas fa-drum left-60"></i>
-        <div class="desc font-lobster">Music</div>
+    <div id="content-desktop">
+        
     </div>
-    <div>
-        <i class="fas fa-square-root-alt left-30"></i>
-        <div class="desc font-lobster">Study</div>
-    </div>
-    <div>
-        <div class="desc desc-none font-lobster">with <span class="font-notojp connector">CONNECTOR</span></div>
-    </div>
-  </div>
+</div>
 </template>
 
 <script>
@@ -28,31 +33,35 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
     #content {
+        margin-top: 30px;
+    }
+    #content-mobile {
         box-shadow: 0 0 5px gray;
         height: 450px;
         border-radius: 7px;
-        padding: 30px 20px 30px 20px;
+        padding: 30px 20px 30px 10%;
         display: flex;
         flex-direction: column;
         justify-content: space-around;
         background-color: #343a40;
     }
-    i {
-        margin-left: 13vw;
+    #content i {
         display: inline-block;
-        height: 64px;
         font-size: 4rem;
     }
     .icon-warp {
         vertical-align: center;
+        display: flex;
+        justify-content: space-evenly;
     }
     .desc {
         display: inline-block;
+        margin-left: 10%;
         height: 64px;
-        margin-left: 70px;
-        font-size: 1.5rem;
+        line-height: 64px;
+        font-size: 2rem;
         vertical-align: top;
         padding: 0;
         color: white;
@@ -64,7 +73,7 @@ export default {
     }
     .desc-none {
         margin-top: 20px;
-        margin-left: 10vw;
+        margin-left: 0%;
     }
     .fa-dumbbell {
         color: #fa5252;
@@ -76,8 +85,17 @@ export default {
         color: #20c997;
     }
     @media (min-width: 768px) {
-        #content {
-            height: 800px;
+        #content-mobile {
+            display: none;
         }
+        #content i {
+            font-size: 6rem;
+        }
+        .desc {
+            font-size: 4rem;
+        }
+        .desc-none {
+            font-size: 3rem;
+        };
     }
 </style>
