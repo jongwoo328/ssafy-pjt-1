@@ -21,18 +21,20 @@
         </div>
     </form>
     <div id="btn-group">
-      <button @click="onChangePage">취소</button>
-      <button @click="onCreate">등록</button>
+      <Button  @click="onCreate" buttonText="확인"/>
+      <Button id="cancleB" @click="onChangePage" buttonText="취소" />
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+import Button from '@/components/common/Button.vue';
 // @ is an alias to /src
 export default {
   name: 'Review',
   components: {
+    Button
     
   },
   data: function() {
@@ -76,9 +78,17 @@ export default {
 };
 </script>
 <style scoped>
+#cancleB{
+  background-color: #343a40;
+  color : white;
+  border : 1px solid black;
+  opacity: 70%;
+}
 #btn-group{
   display: flex;
   flex-direction: row-reverse;
+  justify-content: space-between;
+  
 }
 .ReiewCreate{
   height:90vh;
