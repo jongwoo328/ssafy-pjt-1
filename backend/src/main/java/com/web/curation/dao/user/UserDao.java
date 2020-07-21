@@ -12,7 +12,7 @@ public interface UserDao {
 	int insert(User user);
 	int update(User user);
     User login(User user);
-    User findUserByUidAndPassword(User user);   
+    User findUserByUidAndPassword(User user);
 }
 
 //public interface UserDao extends JpaRepository<User, String> {
