@@ -2,31 +2,41 @@
   <div class="navbar-nav">
       <NavbarLinkListItem value="SignUp" />
       <NavbarLinkListItem value="Login" @click.native="changeLogin"/>
-      <LoginModal v-if="loginModal" @close="changeLogin">
+      <LoginModal v-if="loginModal" @close="changeLogin" @lost="changeModal">
       </LoginModal>
+      <LostPasswordModal v-if="lostPasswordModal" @close="changeLost">
+      </LostPasswordModal>
   </div>
 </template>
 
 <script>
 import NavbarLinkListItem from '@/components/nav/NavbarLinkListItem.vue'
 import LoginModal from '@/components/modal/LoginModal.vue'
+import LostPasswordModal  from '@/components/modal/LostPasswordModal.vue'
 
 export default {
   name: 'NavbarLinkList',
   data() {
     return {
-      loginModal: false
+      loginModal: false,
+      lostPasswordModal: false
     }
   },
   components: {
     NavbarLinkListItem,
     LoginModal,
+    LostPasswordModal,
   },
   methods: {
-    changeLogin(){
-      console.log(this.loginModal)
+    changeLogin () {
       this.loginModal = !this.loginModal
-      console.log(this.loginModal)
+    },
+    changeLost () {
+      this.lostPasswordModal = !this.lostPasswordModal
+    },
+    changeModal () {
+      this.loginModal = !this.loginModal
+      this.lostPasswordModal = !this.loginModal
     }
   },
 }
