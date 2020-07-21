@@ -6,10 +6,13 @@
 <mapper namespace="user">
 
     <select id="selectUser" resultType="user">
-        select uid,
+        select uno,
         email,
-        password,
-        create_date
+        pw,
+        name,
+        tel,
+        addr,
+        ispro
         from user
     </select>
     
@@ -50,7 +53,7 @@
     </select>
     
     <insert id = "join">
-        insert into user (uid, email, password) values (#{uid}, #{email},#{password})
+        insert into user (email, pw, name, tel, addr, ispro) values (#{email},#{pw},#{name},#{tel},#{addr},#{ispro})
     </insert>
     
     <update id = "updateUser">
