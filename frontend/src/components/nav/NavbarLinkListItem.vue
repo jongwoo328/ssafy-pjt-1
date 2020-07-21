@@ -13,7 +13,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
     .nav-item {
         margin-left: 10px;
         margin-right: 10px;
@@ -27,7 +27,7 @@ export default {
     .nav-item button:hover {
         border-bottom: 3px solid rgb(236,128,116);
     }
-    button {
+    .nav-item button {
         border: 0;
         background-color: transparent;
     }
