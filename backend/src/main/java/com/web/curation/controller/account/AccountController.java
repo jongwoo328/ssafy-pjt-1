@@ -18,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import io.swagger.annotations.ApiResponse;
@@ -35,66 +37,69 @@ import org.springframework.web.bind.annotation.RequestBody;
 @CrossOrigin(origins = { "*" })
 @RestController
 public class AccountController {
-
+	
+	private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
+	private static final String SUCCESS = "success";
+	private static final String FAIL = "fail";
+	
     @Autowired
     UserService userService;
 
     
-    @PostMapping("/account/login")
-    @ApiOperation(value = "로그인")
-    public Object login(@RequestBody SignupRequest test) {
-
-    System.out.println(test.getEmail());
-    System.out.println(test.getPassword());
-    User user = new User();
-    user.setEmail(test.getEmail());
-    user.setPassword(test.getPassword());
-    ResponseEntity response = null;
-    User userinfo = userService.login(user);
-    if (userinfo != null) {
-        final BasicResponse result = new BasicResponse();
-        result.status = true;
-        result.data = "success";
-        result.object = userinfo;
-        response = new ResponseEntity<>(result, HttpStatus.OK);
-    } else {
-        response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-    }
-    return response;
-}
+//    @PostMapping("/account/login")
+//    @ApiOperation(value = "로그인")
+//    public Object login(@RequestBody SignupRequest test) {
+//
+//    System.out.println(test.getEmail());
+//    System.out.println(test.getPassword());
+//    User user = new User();
+//    user.setEmail(test.getEmail());
+//    user.setPassword(test.getPassword());
+//    ResponseEntity response = null;
+//    User userinfo = userService.login(user);
+//    if (userinfo != null) {
+//        final BasicResponse result = new BasicResponse();
+//        result.status = true;
+//        result.data = "success";
+//        result.object = userinfo;
+//        response = new ResponseEntity<>(result, HttpStatus.OK);
+//    } else {
+//        response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//    }
+//    return response;
+//}
     
     @PostMapping("/account/signup")
     @ApiOperation(value = "가입하기")
     @Transactional
-    public Object signup(@Valid @RequestBody SignupRequest request) {
+    public ResponseEntity<BasicResponse> signup(@RequestBody User user) {
     	
-    	String email = request.getEmail();
+    	String email = user.getEmail();
     	System.out.println(email);
-    	User user = userService.getUserByEmail(email);
+    	User newUser = userService.getUserByEmail(email);
     	final BasicResponse result = new BasicResponse();
-    	if (user != null) {
+    	if (newUser != null) {
     		result.status = false;
     		result.data = "email";
-    		return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+    		return new ResponseEntity<BasicResponse>(result, HttpStatus.BAD_REQUEST);
     	}
-    	String uid = request.getNickname();
-    	user = userService.getUserByUid(uid);
-    	if (user != null) {
+    	String name = user.getName();
+    	newUser = userService.getUserByUid(name);
+    	if (newUser != null) {
     		result.status = false;
-    		result.data = "nickname";
-    		return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
+    		result.data = "name";
+    		return new ResponseEntity<BasicResponse>(result, HttpStatus.BAD_REQUEST);
     	}
     	
-    	String password = request.getPassword();
-    	System.out.println(uid);
-    	System.out.println(password);
-    	user = new User(uid, password, email);
-    	System.out.println(user);
-    	userService.insert(user);
-    	result.status = true;
-    	result.data = "success";
-    	
-    	return new ResponseEntity<>(result, HttpStatus.OK);
+    	logger.debug("호출");
+    	if(userService.insert(user)) {
+    		result.status = true;
+    		result.data = "success";
+    		return new ResponseEntity<BasicResponse>(result, HttpStatus.OK);    		
+    	}
+    	result.status = false;
+		result.data = "fail";
+    	return new ResponseEntity<BasicResponse>(result, HttpStatus.NOT_FOUND);  
     }
     
 //    @PostMapping("/account/login")
