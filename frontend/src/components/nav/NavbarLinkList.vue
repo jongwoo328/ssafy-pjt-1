@@ -1,6 +1,6 @@
 <template>
   <div class="navbar-nav">
-      <NavbarLinkListItem />
+      <NavbarLinkListItem value="SignUp" />
       <NavbarLinkListItem value="Login" @click.native="changeLogin"/>
       <LoginModal v-if="loginModal" @close="changeLogin" @lost="changeModal">
       </LoginModal>
