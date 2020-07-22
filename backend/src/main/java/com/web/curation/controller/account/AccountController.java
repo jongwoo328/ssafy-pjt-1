@@ -47,28 +47,30 @@ public class AccountController {
     
     @PostMapping("/account/login")
     @ApiOperation(value = "로그인")
-    public void login(@RequestBody SignupRequest test, HttpServletResponse response) {
+    public Object login(@RequestBody SignupRequest test, HttpServletResponse response) {
 
     System.out.println(test.getEmail());
     System.out.println(test.getPassword());
     User user = new User();
     user.setEmail(test.getEmail());
-    user.setPassword(test.getPassword());
-//    ResponseEntity response = null;
-//    User userinfo = userService.login(user);
+    user.setPw(test.getPassword());
+    ResponseEntity response1 = null;
+    User userinfo = userService.login(user);
     jwtutil = new JwtUtil();
     String jws = jwtutil.createToken(user);
-    if (true) {
-//        final BasicResponse result = new BasicResponse();
-//        result.status = true;
-//        result.data = "success";
-//        result.object = userinfo;
-//        response = new ResponseEntity<>(result, HttpStatus.OK);
+    if (userinfo != null) {
+        final BasicResponse result = new BasicResponse();
+        result.status = true;
+        result.data = "success";
+        result.object = userinfo;
+        response1 = new ResponseEntity<>(result, HttpStatus.OK);
     	response.setHeader("jwsToken", jws);
     	response.setHeader("Access-Control-Expose-Headers", "jwsToken");
     } else {
-//        response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        response1 = new ResponseEntity<String>("로그인 정보 에러", HttpStatus.OK);
     }
+    
+    return response1;
 }
     
     @PostMapping("/account/signup")
@@ -85,16 +87,15 @@ public class AccountController {
     		result.data = "email";
     		return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     	}
-    	String uid = request.getNickname();
-    	user = userService.getUserByUid(uid);
+    	user = userService.getUserByEmail(email);
     	if (user != null) {
     		result.status = false;
-    		result.data = "nickname";
+    		result.data = "email";
     		return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
     	}
     	
     	String password = request.getPassword();
-    	System.out.println(uid);
+    	System.out.println(email);
     	System.out.println(password);
 //    	user = new User(uid, password, email);
     	System.out.println(user);

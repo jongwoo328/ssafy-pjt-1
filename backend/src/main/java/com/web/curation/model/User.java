@@ -28,31 +28,35 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
+    private String userno;
+    
     private String email;
-
+    
     @JsonIgnore
-    private String password;
-
-    @Column(insertable = false, updatable = false)
-    private LocalDateTime createDate;
+    private String pw;
+    
+    private String name;
+    private String tel;
+    private String addr;
+    private boolean ispro;
   
 	public User() {}
 
-	public User(String password, String email) {
-	
-		this.password = password;
+	public User(String email, String pw, String name, String tel, String addr, boolean ispro) {
 		this.email = email;
+		this.pw = pw;
+		this.name = name;
+		this.tel = tel;
+		this.addr = addr;
+		this.ispro = ispro;
 	}
 
-	
-
-
-	public String getPassword() {
-		return password;
+	public String getUserno() {
+		return userno;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setUserno(String userno) {
+		this.userno = userno;
 	}
 
 	public String getEmail() {
@@ -63,15 +67,47 @@ public class User {
 		this.email = email;
 	}
 
-	public LocalDateTime getCreateDate() {
-		return createDate;
+	public String getPw() {
+		return pw;
 	}
 
-	public void setCreateDate(LocalDateTime createDate) {
-		this.createDate = createDate;
+	public void setPw(String pw) {
+		this.pw = pw;
 	}
 
-	
-    
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+
+	public String getAddr() {
+		return addr;
+	}
+
+	public void setAddr(String addr) {
+		this.addr = addr;
+	}
+
+	public boolean isIspro() {
+		return ispro;
+	}
+
+	public void setIspro(boolean ispro) {
+		this.ispro = ispro;
+	}
+
+
+
     
 }

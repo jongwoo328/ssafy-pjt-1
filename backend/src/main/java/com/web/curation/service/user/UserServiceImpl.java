@@ -17,10 +17,6 @@ public class UserServiceImpl implements UserService {
 		return userDao.getUserByEmail(email);
 	}
 
-	@Override
-	public User getUserByUid(String uid) {
-		return userDao.getUserByUid(uid);
-	}
 
 	@Override
 	public int insert(User user) {
@@ -38,8 +34,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User findUserByUidAndPassword(User user) {
-		return userDao.findUserByUidAndPassword(user);
+	public User findUserByEmailAndPassword(User user) {
+		return userDao.findUserByEmailAndPassword(user);
 	}
 
 }

@@ -18,11 +18,6 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public User getUserByUid(String uid) {
-		return sqlSession.selectOne("user.selectOneUserByUid", uid);
-	}
-
-	@Override
 	public int insert(User user) {
 		return sqlSession.insert("user.join", user);
 	}
@@ -40,8 +35,10 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public User findUserByUidAndPassword(User user) {
-		return sqlSession.selectOne("user.findUserByUidAndPassword", user);
+	public User findUserByEmailAndPassword(User user) {
+		return sqlSession.selectOne("user.findpw", user);
 	}
+
+
 
 }

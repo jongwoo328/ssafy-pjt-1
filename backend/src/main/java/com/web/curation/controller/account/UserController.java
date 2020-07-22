@@ -42,38 +42,38 @@ public class UserController {
 	@Autowired
     UserService userService;
 	
-	@GetMapping("{uid}")
-    @ApiOperation(value = "회원정보 관리")
-    public ResponseEntity<User> readUser(@PathVariable String uid) {
-		BasicResponse result = new BasicResponse();
-		result.status = true;
-        result.data = "success";
-        return new ResponseEntity<User>(userService.getUserByUid(uid), HttpStatus.OK);
-    }
+//	@GetMapping("{uid}")
+//    @ApiOperation(value = "회원정보 관리")
+//    public ResponseEntity<User> readUser(@PathVariable String uid) {
+//		BasicResponse result = new BasicResponse();
+//		result.status = true;
+//        result.data = "success";
+//        return new ResponseEntity<User>(userService.getUserByUid(uid), HttpStatus.OK);
+//    }
 	
-	@PostMapping("{uid}")
-	@ApiOperation(value = "비밀번호 확인")
-	public Object checkUser(@PathVariable String uid, @RequestParam(required = true) final String password) {
-		User user = new User();
-//		user.setUid(uid);
-		user.setPassword(password);
-		
-		User userinfo = userService.findUserByUidAndPassword(user);
-
-        ResponseEntity response = null;
-
-        if (userinfo != null) {
-            final BasicResponse result = new BasicResponse();
-            result.status = true;
-            result.data = "success";
-            result.object = userinfo;
-            response = new ResponseEntity<>(result, HttpStatus.OK);
-        } else {
-            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-        return response;
-    }
-	
+//	@PostMapping("{uid}")
+//	@ApiOperation(value = "비밀번호 확인")
+//	public Object checkUser(@PathVariable String uid, @RequestParam(required = true) final String password) {
+//		User user = new User();
+////		user.setUid(uid);
+////		user.setPassword(password);
+//		
+////		User userinfo = userService.findUserByUidAndPassword(user);
+//
+//        ResponseEntity response = null;
+//
+//        if (userinfo != null) {
+//            final BasicResponse result = new BasicResponse();
+//            result.status = true;
+//            result.data = "success";
+//            result.object = userinfo;
+//            response = new ResponseEntity<>(result, HttpStatus.OK);
+//        } else {
+//            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+//        }
+//        return response;
+//    }
+//	
 	@PutMapping("{uid}")
 	@ApiOperation(value = "회원정보 변경")
 	@Transactional
