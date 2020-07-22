@@ -2,7 +2,9 @@
   <div id="app">
     <Navbar/>
     <Sidebar/>
-    <router-view/>
+    <div id="view">
+      <router-view/>
+    </div>
   </div>
 </template>
 
@@ -21,5 +23,10 @@ export default {
 <style>
   body {
     margin: 0;
+  }
+  @media (min-width: 768px) {
+    #view {
+      margin-left: 250px;
+    }
   }
 </style>

@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Review from '../views/Review/Review.vue'
 import SignUp from '../views/accounts/SignUp.vue'
+import ServiceDetail from '@/views/services/ServiceDetail.vue'
 
 
 Vue.use(VueRouter)
@@ -14,7 +15,7 @@ Vue.use(VueRouter)
     component: Home
   },
   {
-    path: '/review',
+    path: '/services/:service_id/review/create',
     name: 'Review',
     component: Review
   },
@@ -23,6 +24,12 @@ Vue.use(VueRouter)
     name: 'SignUp',
     component: SignUp
   },
+  {
+    path: '/services/:service_id',
+    name: 'ServiceDetail',
+    component: ServiceDetail
+  },
+
 ]
 
 const router = new VueRouter({

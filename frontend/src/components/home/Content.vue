@@ -51,7 +51,7 @@ export default {
         display: inline-block;
         font-size: 4rem;
     }
-    .icon-warp {
+    .icon-wrap {
         vertical-align: center;
         display: flex;
         justify-content: space-evenly;
@@ -72,6 +72,7 @@ export default {
         border-bottom: 2px solid white;
     }
     .desc-none {
+        font-size: 1.5rem;
         margin-top: 20px;
         margin-left: 0%;
     }

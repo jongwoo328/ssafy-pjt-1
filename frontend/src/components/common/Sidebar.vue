@@ -20,8 +20,8 @@ export default {
             box-shadow: 2px 5px 3px gray;
             position: absolute;
             left: 0;
-            height: 120%;
-            width: 20%;
+            height: 110%;
+            /* width: 20%; */
             min-width: 250px;
             background-color: #fff4e6;
         }
