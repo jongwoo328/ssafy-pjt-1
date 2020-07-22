@@ -3,18 +3,17 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+// const session = this.$session
 export default new Vuex.Store({
   state: {
     isLoggedIn: false,
   },
   mutations: {
-    login(state, token) {
+    login(state) {
       state.isLoggedIn = true
-      this.$session.set('jwstoken', token)
     },
     logout(state) {
       state.isLoggedIn = false
-      this.$session.remove('jwstoken')
     }
   },
   actions: {

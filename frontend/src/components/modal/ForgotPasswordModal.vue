@@ -4,37 +4,36 @@
         <div class="modal-wrapper">
             <div class="modal-container">
             <div class="modal-header">
-              <h3>Login</h3>
+              <h4>Find your password</h4>
               <button type="button" class="close" data-dismiss="modal" @click="modalclose">&times;</button>
             </div>
-            <!-- <h1 @click="login">test</h1> -->
+
             <div class="modal-body">
                 <slot name="body">
                   <div class="form">
-                    <div class="input-box font-notojp">
-                      <label class="input-label" for="inputname">Email</label>
-                      <input type="text" id="inputname" placeholder="이메일을 입력하세요." v-model="loginData.email">
+                    <div class="input-box">
+                      <label class="input-label" for="inputemail">Email</label>
+                      <input type="text" id="Inputemail" placeholder="이메일을 입력하세요" v-model="ForgotData.email">
+                      <label class="input-label" for="inputtel">Tel</label>
+                      <input type="text" id="Inputtel" placeholder="휴대전화번호를 입력하세요. ('-' 제외)" v-model="ForgotData.tel">
                     </div>
-                    <div class="input-box font-notojp">
-                      <label class="input-label" for="inputpassword">Password</label>
-                      <input type="password" id="inputpassword" placeholder="패스워드를 입력하세요." v-model="loginData.password" @keyup.enter="login">
+                    <div class="button">
+                      <Button v-if="this.isfind" buttonText="Login" type="submit" data-dismiss="modal" @click.native="$emit('change')" />
+                      <Button v-else buttonText="Back" type="submit" data-dismiss="modal" @click.native="$emit('change')" />
+                      <Button buttonText="Submit" type="submit" @click.native="find" />
                     </div>
-                    <Button class="font-notojp" buttonText="Login" type="submit" @click.native="login" />
                   </div>
                 </slot>
             </div>
-            <hr>
-            <div class="modalfooter">
-                <slot name="footer">
-                  <a class="font-kor" data-dismiss="modal" href="#" @click="$emit('change')">Forgot password?</a>
-                  <br>        
-                  <a class="font-kor" data-dismiss="modal" href="/accounts/signup">Create account</a>
-                </slot>
-            </div>
-            </div>
-        </div>
-        </div>
 
+            <!-- <div class="modal-footer">
+                <slot name="footer">
+                  <a class="font-kor" data-dismiss="modal" href="#" @click="$emit('change')">Back</a>
+                </slot>
+            </div> -->
+            </div>
+        </div>
+        </div>
     </transition>
 </template>
 
@@ -43,34 +42,32 @@ import Button from '@/components/common/Button.vue'
 import axios from 'axios'
 
 export default {
-  name: 'LoginModal',
+  name: 'ForgotPasswordModal',
   components: {
     Button,
   },
   data() {
     return {
-      loginData: {
+      ForgotData: {
         email: null,
-        password: null,
+        tel: null,
       },
+      isfind: false,
     }
   },
   methods: {
-    login () {
-      console.log('test')
-      axios.post("http://192.168.43.204:8090/account/login", this.loginData)
+    find () {
+      console.log(this.ForgotData)
+      axios.post('http://192.168.43.109:3000/account/pwfind', this.ForgotData)
       .then(res => {
         console.log(res)
         if (res.status === 200) {
-          console.log(res.headers)
-          this.$session.set('jwstoken', res.headers.jwstoken)
-          this.$store.commit('login')
-          this.$router.push('/')
+          console.log(res)
+          if (res.data.status === true) {
+            this.isfind = true
+            alert(`임시비밀번호는 '${res.data.data}'입니다.`)
+          }
         }
-      })
-      .catch(err => {
-        console.log(err)
-        alert(err)
       })
     },
 
@@ -83,11 +80,16 @@ export default {
 
 <style scoped>
     /* model */
-  hr {
-    margin-top: 0;
+  .form {
+    text-align: right;
   }
-  .form button {
-    width: 100%;
+  .button {
+    display: flex;
+    justify-content: space-between;
+  }
+  .button :first-child {
+    color: rgb(236,128,116);
+    background-color: white;
   }
   .modalfooter {
     display: block;
@@ -95,23 +97,24 @@ export default {
     margin: 0 20px;
   }
   .input-box {
-   margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 25px;
   }
   .input-box input {
     width: 100%;
     height: 40px;
     border: 1.5px solid black;
     font-size: 13px;
+    margin-bottom: 20px;
     padding: 0 5px 0 5px;
     border-radius: 5px;
   }
   .input-label {
     /* display: none; */
+    text-align: left;
     margin: 5px 0 5px 0;
-  }
-  .login-type {
-    display: flex;
-    justify-content: space-around;
   }
   .modal-mask {
     position: fixed;
@@ -144,7 +147,7 @@ export default {
     padding-top: 0;
     padding-bottom: 0;
   }
-  .modal-header h3 {
+  .modal-header h4 {
     margin-top: 0;
     color: rgb(236,128,116);
   }
