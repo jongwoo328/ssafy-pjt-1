@@ -18,6 +18,16 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
+	public User getUserByUid(String uid) {
+		return sqlSession.selectOne("user.selectOneUserByUid", uid);
+	}
+	
+	@Override
+	public User getUserByTel(String tel) {
+		return sqlSession.selectOne("user.selectOneUserByTel", tel);
+	}
+
+	@Override
 	public int insert(User user) {
 		return sqlSession.insert("user.join", user);
 	}
@@ -27,6 +37,11 @@ public class UserDaoImpl implements UserDao {
 		// TODO Auto-generated method stub
 		return sqlSession.insert("user.updateUser", user);
 	}
+	
+	public int samplePw(User user) {
+		// TODO Auto-generated method stub
+		return sqlSession.update("user.samplePw", user);
+	}
 
 	@Override
 	public User login(User user) {
@@ -35,10 +50,8 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public User findUserByEmailAndPassword(User user) {
-		return sqlSession.selectOne("user.findpw", user);
+	public User findUserByEmailAndName(User user) {
+		return sqlSession.selectOne("user.findUserByEmailAndName", user);
 	}
-
-
 
 }

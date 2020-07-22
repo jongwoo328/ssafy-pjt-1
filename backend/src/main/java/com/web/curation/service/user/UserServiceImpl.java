@@ -17,10 +17,24 @@ public class UserServiceImpl implements UserService {
 		return userDao.getUserByEmail(email);
 	}
 
+	@Override
+	public User getUserByUid(String uid) {
+		return userDao.getUserByUid(uid);
+	}
+	
+	@Override
+	public User getUserByTel(String tel) {
+		return userDao.getUserByTel(tel);
+	}
 
 	@Override
 	public boolean insert(User user) {
 		return userDao.insert(user) == 1;
+	}
+	
+	@Override
+	public boolean samplePw(User user) {
+		return userDao.samplePw(user) == 1;
 	}
 
 	@Override
@@ -34,8 +48,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User findUserByEmailAndPassword(User user) {
-		return userDao.findUserByEmailAndPassword(user);
+	public User findUserByEmailAndName(User user) {
+		return userDao.findUserByEmailAndName(user);
 	}
 
 }
