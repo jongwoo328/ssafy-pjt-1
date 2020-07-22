@@ -1,10 +1,21 @@
 <template>
-  <div id="home">
+  <div id="home container">
     <div class="wrap container">
       <SearchbarWeb/>
       <div class="container home-inner">
         <Content/>
         <Join/>
+      </div>
+      <div id="search-result-wrap row">
+        <SearchResultCard/>
+        <SearchResultCard/>
+        <SearchResultCard/>
+        <SearchResultCard/>
+        <SearchResultCard/>
+        <SearchResultCard/>
+        <SearchResultCard/>
+        <SearchResultCard/>
+        <SearchResultCard/>
       </div>
     </div>
   </div>
@@ -14,6 +25,7 @@
 import Content from '@/components/home/Content.vue'
 import Join from '@/components/home/Join.vue'
 import SearchbarWeb from '@/components/home/SearchbarWeb.vue'
+import SearchResultCard from '@/components/search/SearchResultCard.vue'
 
 export default {
   name: 'Home',
@@ -21,6 +33,7 @@ export default {
     Content,
     Join,
     SearchbarWeb,
+    SearchResultCard,
   }
 }
 </script>
@@ -38,9 +51,6 @@ export default {
     #home .wrap {
       display: inline-block;
       width: 80%;
-    }
-    #home {
-      margin-left: 25%;
     }
   }
 </style>

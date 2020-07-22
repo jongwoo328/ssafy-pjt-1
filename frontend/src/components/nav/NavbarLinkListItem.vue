@@ -1,6 +1,6 @@
 <template>
     <li class="nav-item">
-        <button href="" v-text="value" class="font-roboto"></button>
+        <button v-text="value" class="font-roboto"></button>
     </li>
 </template>
 

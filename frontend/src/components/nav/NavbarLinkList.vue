@@ -1,8 +1,9 @@
 <template>
-  <div class="navbar-nav">
-      <NavbarLinkListItem value="SignUp" />
-      <NavbarLinkListItem value="Login" @click.native="changeLogin"/>
-      <LoginModal v-if="loginModal" @close="changeLogin" @change="changeModal">
+  <div class="navbar-nav"> 
+      <NoticeIcon/> 
+      <NavbarLinkListItem v-if="!isLoggedIn" value="SignUp" @click.native="toSignUp" />
+      <NavbarLinkListItem v-if="!isLoggedIn" value="Login" @click.native="changeLogin"/>
+      <LoginModal v-if="loginModal" @close="changeLogin" @lost="changeModal">
       </LoginModal>
       <ForgotPasswordModal v-if="forgotPasswordModal" @close="changeForgot" @change="changeModal">
       </ForgotPasswordModal>
@@ -39,6 +40,11 @@ export default {
       this.forgotPasswordModal = !this.loginModal
     }
   },
+  computed: {
+    isLoggedIn() {
+      return this.$store.getters.isLoggedIn
+    }
+  }
 }
 </script>
 

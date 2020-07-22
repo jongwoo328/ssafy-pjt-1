@@ -1,10 +1,9 @@
 <template>
   <div id="join">
       <form action="">
-          
           <input type="text" class="font-kor" :placeholder="placeHolder"><Button buttonText="검색" />
       </form>
-      <router-link class="font-kor" to='/accounts/signup' id="button-join">지금 가입하기</router-link>
+      <router-link v-if="!isLoggedIn" class="font-kor" to='/accounts/signup' id="button-join">지금 가입하기</router-link>
   </div>
 </template>
 
@@ -18,6 +17,11 @@ export default {
     data() {
         return {
             placeHolder: '하고싶은 것을 검색하세요'
+        }
+    },
+    computed: {
+        isLoggedIn() {
+            return this.$store.getters.isLoggedIn
         }
     }
 }
@@ -60,7 +64,7 @@ export default {
         background-color: white;
         border-radius: 10px;
     }
-    #button-join:hover {
+    #button-join:hover, #join button:hover {
         text-decoration: none;
         box-shadow: 0 1px 5px gray;
     }
