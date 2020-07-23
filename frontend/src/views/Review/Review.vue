@@ -10,7 +10,7 @@
         </div>
            <div class="form-group">
               <label>평점</label>
-              <star-rating v-model="rating" star-size="60" :show-rating="temp"></star-rating>
+              <star-rating v-model="rating" :star-size="starsize" :show-rating="temp"></star-rating>
            </div>
     <div id="btn-group">
       <Button  @click="onCreate" buttonText="확인"/>
@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import axios from "axios";
-import Button from '@/components/common/Button.vue';
+import axios from "axios"
+import Button from '@/components/common/Button.vue'
 import StarRating from 'vue-star-rating'
 
 
@@ -34,12 +34,14 @@ export default {
   },
   data: function() {
     return {
+      
       PayInfo: [],
       s_no: "",
       title: "",
       content: "",
-      rating:"",
-      temp:false
+      rating: null,
+      temp:false,
+      starsize : 50
     };
 },methods: {
   //   created() {
@@ -96,7 +98,7 @@ export default {
   
 }
 .ReiewCreate{
-  margin-top :10px;
+  margin-top :50px;
   height:70vh;
 }
 textarea{
