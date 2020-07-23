@@ -3,6 +3,7 @@ package com.web.curation.controller.account;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 
@@ -10,6 +11,7 @@ import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.user.SignupRequest;
 import com.web.curation.model.User;
+import com.web.curation.service.user.JwtUtil;
 import com.web.curation.service.user.UserService;
 
 import org.springframework.web.bind.annotation.RestController;
@@ -48,30 +50,37 @@ public class AccountController {
 	
     @Autowired
     UserService userService;
-
     
-//    @PostMapping("/account/login")
-//    @ApiOperation(value = "로그인")
-//    public Object login(@RequestBody SignupRequest test) {
-//
-//    System.out.println(test.getEmail());
-//    System.out.println(test.getPassword());
-//    User user = new User();
-//    user.setEmail(test.getEmail());
-//    user.setPassword(test.getPassword());
-//    ResponseEntity response = null;
-//    User userinfo = userService.login(user);
-//    if (userinfo != null) {
-//        final BasicResponse result = new BasicResponse();
-//        result.status = true;
-//        result.data = "success";
-//        result.object = userinfo;
-//        response = new ResponseEntity<>(result, HttpStatus.OK);
-//    } else {
-//        response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-//    }
-//    return response;
-//}
+    @Autowired
+	JwtUtil jwtutil;
+    
+    @PostMapping("/account/login")
+    @ApiOperation(value = "로그인")
+    public Object login(@RequestBody SignupRequest test, HttpServletResponse response) {
+
+    System.out.println(test.getEmail());
+    System.out.println(test.getPassword());
+    User user = new User();
+    user.setEmail(test.getEmail());
+    user.setPassword(test.getPassword());
+    ResponseEntity response1 = null;
+    User userinfo = userService.login(user);
+    jwtutil = new JwtUtil();
+    String jws = jwtutil.createToken(user);
+    if (userinfo != null) {
+        final BasicResponse result = new BasicResponse();
+        result.status = true;
+        result.data = "success";
+        result.object = userinfo;
+        response1 = new ResponseEntity<>(result, HttpStatus.OK);
+    	response.setHeader("jwsToken", jws);
+    	response.setHeader("Access-Control-Expose-Headers", "jwsToken");
+    } else {
+        response1 = new ResponseEntity<String>("로그인 정보 에러", HttpStatus.OK);
+    }
+    
+    return response1;
+}
     
     @PostMapping("/account/signup")
     @ApiOperation(value = "가입하기")
