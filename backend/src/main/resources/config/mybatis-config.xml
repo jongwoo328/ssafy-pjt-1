@@ -8,7 +8,11 @@
 	
 	<mappers>
 		<mapper resource="mappers/user.xml" />
+		<mapper resource="mappers/fselect.xml" />
+		<mapper resource="mappers/pay.xml" />
+		<mapper resource="mappers/qna.xml" />
 	</mappers>
+	
 </configuration>
 
 
