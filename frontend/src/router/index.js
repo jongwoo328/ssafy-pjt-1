@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Review from '../views/Review/Review.vue'
 import SignUp from '../views/accounts/SignUp.vue'
+import UserInfo from '../views/accounts/UserInfo.vue'
 import ServiceDetail from '@/views/services/ServiceDetail.vue'
 import ProfileAdd from '@/views/profile/ProfileAdd.vue'
 import Profile from '@/views/accounts/Profile.vue'
@@ -24,6 +25,11 @@ Vue.use(VueRouter)
     path: '/accounts/signup',
     name: 'SignUp',
     component: SignUp
+  },
+  {
+    path: '/accounts/userinfo',
+    name: 'UserInfo',
+    component: UserInfo
   },
   {
     path: '/services/:service_id',
