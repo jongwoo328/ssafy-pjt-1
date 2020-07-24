@@ -1,7 +1,7 @@
 <template>
   <div class="navbar-nav"> 
       <NoticeIcon/> 
-       <NavbarLinkListItem v-if="!isLoggedIn" value="서비스" @click.native="toserviceUp" />
+      <NavbarLinkListItem v-if="!isLoggedIn" value="서비스" @click.native="toserviceUp" />
       <NavbarLinkListItem v-if="!isLoggedIn" value="SignUp" @click.native="toSignUp" />
       <NavbarLinkListItem v-if="!isLoggedIn" value="Login" @click.native="changeLogin"/>
       <LoginModal v-if="loginModal" @close="changeLogin" @change="changeModal">
@@ -34,6 +34,9 @@ export default {
     ServiceAddModal
   },
   methods: {
+    toSignUp() {
+      this.$router.push({name: "SignUp"})
+    },
     changeLogin () {
       this.loginModal = !this.loginModal
     },
