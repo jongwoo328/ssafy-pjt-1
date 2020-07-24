@@ -1,6 +1,5 @@
 <template>
   <div id="service-detail" class="container">
-      
   </div>
 </template>
 
