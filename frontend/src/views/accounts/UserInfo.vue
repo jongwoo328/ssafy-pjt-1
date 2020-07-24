@@ -1,6 +1,6 @@
 <template>
   <div class="UserInfo">
-    <span class="UserInfo-text">회원정보</span>
+    <span class="UserInfo-text">내 정보</span>
     <hr class="mb-4 ">
 
     <div class="form-block">
@@ -96,7 +96,6 @@
             id="tel" 
             placeholder="Tel" 
             type="text"
-            autocapitalize="none"
         />
 
     </div>
@@ -146,7 +145,7 @@ export default {
       changePasswordConfirm: "",
       isError: false,
       passwordSchema: new PV(),
-      changeSuccess: false
+      isChangedPW: false,
     }
   },
   methods: {
@@ -164,17 +163,20 @@ export default {
         }
         else this.isError = false
 
-        if (this.changePassword === "" || (this.changePassword.length > 0 && !this.passwordSchema.validate(this.changePassword))) {
+        if (this.changePassword.length > 0 && !this.passwordSchema.validate(this.changePassword)) {
           this.isError = "비밀번호는 영문, 숫자포함 8자리 이상이어야 합니다."
           return
         }
         else this.isError = false
 
-        if (this.changePasswordConfirm === "" || (this.changePasswordConfirm.length > 0 && this.changePasswordConfirm !== this.changePassword)) {
+        if (this.changePasswordConfirm.length > 0 && this.changePasswordConfirm !== this.changePassword) {
           this.isError = "비밀번호 확인이 일치하지 않습니다."
           return
         }
         else this.isError = false
+
+        if (this.changePassword === "") this.isChangedPW = false
+        else this.isChangedPW = true
 
     },
     changeUserInfo() {
@@ -184,6 +186,7 @@ export default {
         alert(this.isError)
         return
       }
+
       let changeUser = {
         username: this.User.username,
         email: this.User.email,
@@ -192,6 +195,8 @@ export default {
         tel: this.User.tel
       }
 
+      if (!this.isChangedPW) changeUser.password = this.curPassword
+      console.log(changeUser)
       axios.post("http://address:port/changeUserInfo", changeUser)
       .then(res => {
         console.log(res)
@@ -240,7 +245,7 @@ border-style: none none solid none;
 .unchangeableInfo {
   border-style: none;
   font-weight: bold;
-  background-color: #adafad;
+  background-color: #bcbdbc;
 }
 
 .form-block-head {
