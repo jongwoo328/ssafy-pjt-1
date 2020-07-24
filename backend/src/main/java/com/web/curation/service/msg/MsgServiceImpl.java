@@ -20,17 +20,17 @@ public class MsgServiceImpl implements MsgService {
 	}
 
 	@Override
-	public Msg getMsgByNo(String msgno) {
+	public Msg getMsgByNo(int msgno) {
 		return msgDao.getMsgByNo(msgno);
 	}
 
 	@Override
-	public List<Msg> getReceiveMsg(String userno) {
+	public List<Msg> getReceiveMsg(int userno) {
 		return msgDao.getReceiveMsg(userno);
 	}
 
 	@Override
-	public List<Msg> getSendMsg(String userno) {
+	public List<Msg> getSendMsg(int userno) {
 		return msgDao.getSendMsg(userno);
 	}
 

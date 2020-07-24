@@ -20,17 +20,17 @@ public class MsgDaoImpl implements MsgDao {
 	}
 
 	@Override
-	public Msg getMsgByNo(String msgno) {
+	public Msg getMsgByNo(int msgno) {
 		return sqlSession.selectOne("msg.getMsgByNo", msgno);
 	}
 
 	@Override
-	public List<Msg> getReceiveMsg(String userno) {
+	public List<Msg> getReceiveMsg(int userno) {
 		return sqlSession.selectList("msg.getReceiveMsg", userno);
 	}
 
 	@Override
-	public List<Msg> getSendMsg(String userno) {
+	public List<Msg> getSendMsg(int userno) {
 		return sqlSession.selectList("msg.getSendMsg", userno);
 	}
 

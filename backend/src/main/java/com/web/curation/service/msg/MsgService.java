@@ -6,7 +6,7 @@ import com.web.curation.model.Msg;
 
 public interface MsgService {
 	boolean sendMsg(Msg msg);
-	Msg getMsgByNo(String msgno);
-	List<Msg> getReceiveMsg(String userno);
-	List<Msg> getSendMsg(String userno);
+	Msg getMsgByNo(int msgno);
+	List<Msg> getReceiveMsg(int userno);
+	List<Msg> getSendMsg(int userno);
 }

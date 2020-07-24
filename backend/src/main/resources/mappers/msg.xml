@@ -6,7 +6,7 @@
 <mapper namespace="msg">
 
 	<insert id = "sendMsg">
-        insert into msg (writerno, receiverno, title, content) values (#{writerno},#{receiverno},#{title},#{content})
+        insert into msg (writerno, receiverno, title, content, senddate) values (#{writerno},#{receiverno},#{title},#{content},now())
     </insert>
     
     <select id="getMsgByNo" resultType="Msg">
