@@ -5,6 +5,7 @@ import Review from '../views/Review/Review.vue'
 import SignUp from '../views/accounts/SignUp.vue'
 import ServiceDetail from '@/views/services/ServiceDetail.vue'
 import ProfileAdd from '@/views/profile/ProfileAdd.vue'
+import Profile from '@/views/accounts/Profile.vue'
 
 Vue.use(VueRouter)
 
@@ -34,8 +35,11 @@ Vue.use(VueRouter)
     name: 'ProfileAdd',
     component: ProfileAdd
   },
-  
-
+  {
+    path:'/accounts/:username',
+    name: 'Profile',
+    component: Profile
+  }
 ]
 
 const router = new VueRouter({

@@ -7,15 +7,7 @@
         <Join/>
       </div>
       <div id="search-result-wrap row">
-        <SearchResultCard/>
-        <SearchResultCard/>
-        <SearchResultCard/>
-        <SearchResultCard/>
-        <SearchResultCard/>
-        <SearchResultCard/>
-        <SearchResultCard/>
-        <SearchResultCard/>
-        <SearchResultCard/>
+        <SearchResultCard :services="serviceResult"/>
       </div>
     </div>
   </div>
@@ -34,6 +26,22 @@ export default {
     Join,
     SearchbarWeb,
     SearchResultCard,
+  },
+  data() {
+    return {
+      serviceResult: [
+        // 예시 표시용
+        {
+          s_no: 1,
+          s_name: '서비스 이름',
+          description: '서비스 설명',
+          seraddr: '주소',
+          price: '가격',
+          u_no: '프로',
+          c_no: 123123
+        }
+      ]
+    }
   }
 }
 </script>
