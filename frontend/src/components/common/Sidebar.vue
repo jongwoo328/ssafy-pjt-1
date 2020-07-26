@@ -1,7 +1,7 @@
 <template>
   <div id="sidebar">
       <div class="sidebar-link-list">
-        <router-link to='/test' class="sidebar-link font-kor"><p>내 정보</p></router-link>
+        <router-link to='/accounts/userinfo' class="sidebar-link font-kor"><p>내 정보</p></router-link>
         <router-link to='/test' class="sidebar-link font-kor"><p>내 프로필</p></router-link>
         <router-link to='/test' class="sidebar-link font-kor"><p>결제내역</p></router-link>
         <router-link to='/test' class="sidebar-link font-kor"><p>팔로우</p></router-link>

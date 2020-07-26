@@ -414,7 +414,7 @@ export default {
 .btn-components {
   width: 100%;
   outline: none;
-  box-shadow: 0 0 0 1.5px #EE4B55;
+  box-shadow: 0 0 0 3px #EE4B55;
 }
 
 .dup-err {
@@ -444,9 +444,10 @@ export default {
   margin-top: 30px;
 }
 .signup-text {
+  display: block;
   font-size: 30px;
   font-weight: bolder;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   /* color: #3487e683; */
 }
 
