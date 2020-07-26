@@ -36,8 +36,8 @@
             />
         </div>
         <div class="error-msg" v-if="errorData.email && (email || isFail)">{{ errorData.email }}</div>
-        <!-- <span v-if="email && duplicate.email">이미 존재하는 이메일입니다.</span> -->
-        <!-- <span v-else>이 이메일은 사용가능합니다.</span> -->
+        <span class="dup-err" v-if="email && duplicate.email === duplicate.impos">이미 존재하는 이메일입니다.</span>
+        <span class="success" v-if="email && duplicate.email === duplicate.pos">이 이메일은 사용가능합니다.</span>
     </div>
 
     <div class="form-block">
@@ -56,6 +56,8 @@
           />
           <!-- <span class="col-1"> </span> -->
         <div class="error-msg" v-if="errorData.username && (username || isFail)">{{ errorData.username }}</div>
+        <span class="dup-err" v-if="username && duplicate.username === duplicate.impos">이미 존재하는 사용자명입니다.</span>
+        <span class="success" v-if="username && duplicate.username === duplicate.pos">이 사용자명은 사용가능합니다.</span>
     </div>
 
 
@@ -167,22 +169,22 @@ export default {
       TermModal
     },
     created() {
-      // axios.get("http://192.168.43.245:9999/happyhouse/api/fselect", {
-      //   headers: {
-      //       'Content-Type': 'application/json',
-      //   }
-      // })
-      // .then(res => {
-      //   for (let si_data in res.data) {
-      //     this.siList.push({
-      //       "siCode": res.data[si_data]["sido_code"],
-      //       "siName": res.data[si_data]["sido_name"]
-      //       })
-      //   }
-      // })
-      // .catch(err => {
-      //   console.log(err)
-      // }),
+      axios.get("http://192.168.43.245:9999/happyhouse/api/fselect", {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+      })
+      .then(res => {
+        for (let si_data in res.data) {
+          this.siList.push({
+            "siCode": res.data[si_data]["sido_code"],
+            "siName": res.data[si_data]["sido_name"]
+            })
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      }),
       this.passwordSchema
         .is()
         .min(8)
@@ -221,8 +223,10 @@ export default {
         termPopup: false,
         isFail: false,
         duplicate: {
-          username: false,
-          email: false,
+          username: "",
+          email: "",
+          pos: "possible",
+          impos: "impossible"
         }
         // phoneNumValidation: /^\w{10}$/
       }
@@ -262,10 +266,10 @@ export default {
           }
         }).then(res => {
           console.log(res)
-          if (res) this.duplicate.username = false
+          if (res) this.duplicate.username = "possible"
         }).catch(err => {
           console.log(err)
-          if (err) this.duplicate.username = true
+          if (err) this.duplicate.username = "impossible"
         })
       },
       idCheck() {
@@ -274,9 +278,9 @@ export default {
             'Content-Type': 'application/json',
         }
       }).then(res => {
-        if (res) this.duplicate.email = false;
+        if (res) this.duplicate.email = "possible"
       }).catch(err => {
-        if (err) this.duplicate.email = true;
+        if (err) this.duplicate.email = "impossible"
       })
       },
       getGuInfo() {
@@ -405,7 +409,7 @@ export default {
   font-size: 17px;
   padding: 7px;
   margin-left: 10px;
-  /* width: 25%; */
+
 }
 .btn-components {
   width: 100%;
@@ -413,10 +417,13 @@ export default {
   box-shadow: 0 0 0 3px #EE4B55;
 }
 
-/* .deactivate {
-  background-color: rgb(158, 69, 59);
-  
-} */
+.dup-err {
+  color: #EE4B55;
+}
+
+.success {
+  color: greenyellow;
+}
 
 .passwordConfirm {
   margin: 10px 0 25px;
