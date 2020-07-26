@@ -36,8 +36,8 @@
             />
         </div>
         <div class="error-msg" v-if="errorData.email && (email || isFail)">{{ errorData.email }}</div>
-        <span v-if="email && duplicate.email">이미 존재하는 이메일입니다.</span>
-        <span v-else>이 이메일은 사용가능합니다.</span>
+        <!-- <span v-if="email && duplicate.email">이미 존재하는 이메일입니다.</span> -->
+        <!-- <span v-else>이 이메일은 사용가능합니다.</span> -->
     </div>
 
     <div class="form-block">
@@ -55,7 +55,7 @@
           :class="{ error : errorData.username && this.username }"
           />
           <!-- <span class="col-1"> </span> -->
-        <div class="error-msg" v-if="errorData.username && (username || isFail)">{{ errorData.username }}</div>z
+        <div class="error-msg" v-if="errorData.username && (username || isFail)">{{ errorData.username }}</div>
     </div>
 
 
@@ -410,7 +410,7 @@ export default {
 .btn-components {
   width: 100%;
   outline: none;
-  box-shadow: 0 0 0 1.5px #EE4B55;
+  box-shadow: 0 0 0 3px #EE4B55;
 }
 
 /* .deactivate {
@@ -437,9 +437,10 @@ export default {
   margin-top: 30px;
 }
 .signup-text {
+  display: block;
   font-size: 30px;
   font-weight: bolder;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   /* color: #3487e683; */
 }
 
