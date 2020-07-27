@@ -5,7 +5,7 @@
             <div class="modal-container">
             <div class="modal-header">
               <h3>Login</h3>
-              <button type="button" class="close" data-dismiss="modal" @click="modalclose">&times;</button>
+              <button type="button" class="close" data-dismiss="modal" @click="modalclose">×</button>
             </div>
             <!-- <h1 @click="login">test</h1> -->
             <div class="modal-body">
@@ -28,7 +28,7 @@
             <div class="modalfooter">
                 <slot name="footer">
                   <a class="font-kor" data-dismiss="modal" href="#" @click="$emit('change')">Forgot password?</a>
-                  <br>        
+                  <br>
                   <a class="font-kor" data-dismiss="modal" href="/accounts/signup">Create account</a>
                 </slot>
             </div>
@@ -38,6 +38,7 @@
 
     </transition>
 </template>
+
 
 <script>
 import Button from '@/components/common/Button.vue'
@@ -70,7 +71,7 @@ export default {
         this.errorData.email = "올바른 이메일 형식이 아닙니다."
       else this.errorData.email = false
     },
-    login () {  
+    login () {
       this.formCheck()
       let loginData = {
         email: this.email,
@@ -99,6 +100,7 @@ export default {
   },
 }
 </script>
+
 
 <style scoped>
     /* model */

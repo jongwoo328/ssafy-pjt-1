@@ -88,6 +88,12 @@ export default {
             this.isfind = true
             alert(`임시비밀번호는 '${res.data.data}'입니다.`)
           }
+          else if (res.data.data === 'email') {
+            alert('입력하신 메일 정보가 올바르지 않습니다.')
+          }
+          else if (res.data.data === 'tel') {
+            alert('입력하신 번호가 올바르지 않습니다.')
+          }
         }
       })
     },
