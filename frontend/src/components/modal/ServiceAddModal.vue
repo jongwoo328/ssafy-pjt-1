@@ -97,6 +97,7 @@ name: 'ServieAddModal',
     .modal-container {
          width: 250px;
     }
+
   }
   @media (min-width: 1000px) {
     .modal-container {
@@ -106,21 +107,20 @@ name: 'ServieAddModal',
   .modal-container {
 
     margin: 0px auto;
-    padding: 20px 30px;
+    padding: 0;
     background-color: #fff;
     border-radius: 2px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
     transition: all .3s ease;
     font-family: Helvetica, Arial, sans-serif;
      }
-
   .modal-header h3 {
     margin-top: 0;
     color: #42b983;
   }
 
   .modal-body {
-    margin: 20px 0;
+    margin: 0;
   }
 
   .modal-default-button {
@@ -154,7 +154,7 @@ name: 'ServieAddModal',
     border-radius: 7px;
     height: 50px;
         }
-        .input-box input {
+        .input-box input, .modal-container select {
     width: 100%;
     height: 40px;
     border: 1.5px solid black;
