@@ -1,110 +1,138 @@
 <template>
-  <div class="UserInfo">
+  <div class="UserInfo container">
     <span class="UserInfo-text">내 정보</span>
     <hr class="mb-4 ">
-
-    <div class="form-block">
-        <label class="form-block-head col-3" for="email">
-            <span class="form-block-text">Email</span>
-        </label>
-          <input 
-          class="input-text unchangeableInfo col-8"
-          :value="User.email"
-          id="email" 
-          disabled
-          />
-
-        <!-- <span v-if="email && duplicate.email">이미 존재하는 이메일입니다.</span> -->
-        <!-- <span v-else>이 이메일은 사용가능합니다.</span> -->
-    </div>
-
-    <div class="form-block">
-        <label class="form-block-head col-3" for="username">
-          Username
-        </label>
-          <input 
-          class="input-text unchangeableInfo col-8"
-          :value="User.username" 
-          id="username" 
-          disabled
-          />
-    </div>
-
-    <div class="form-block">
-        <label class="form-block-head col-3" for="curpassword">
-          Your Password
-        </label>
-          <input 
-          class="input-text col-8"
-          v-model="curPassword"
-          id="curPassword" 
-          type="password"
-          placeholder="Enter your password"
-          />
-    </div>
-
-    <div class="form-block">
-      <label class="form-block-head col-3" for="password">
-        New Password
-      </label>
-      <div class="col-8 new-password">
-        <input 
-            class="input-text"
-            v-model="changePassword" 
-            id="password" 
-            placeholder="New password" 
-            type="password"
-            autocapitalize="none"
-        />
-
-        <div class="passwordConfirm">
+    <div class="form-box">
+      <div class="form-block">
+          <label class="form-block-head col-2" for="email">
+              <span class="form-block-text">Email</span>
+          </label>
             <input 
-                class="input-text"
-                v-model="changePasswordConfirm" 
-                id="passwordConfirm"
-                aria-label="Email or phone"
-                placeholder="Password confirm" 
-                type="password"
-                autocapitalize="none"
-                @keyup.enter="signUp"
+            class="input-text unchangeableInfo col-8"
+            :value="User.email"
+            id="email" 
+            disabled
             />
-        
+
+          <!-- <span v-if="email && duplicate.email">이미 존재하는 이메일입니다.</span> -->
+          <!-- <span v-else>이 이메일은 사용가능합니다.</span> -->
+      </div>
+
+      <div class="form-block">
+          <label class="form-block-head col-2" for="username">
+            Username
+          </label>
+            <input 
+            class="input-text unchangeableInfo col-8"
+            :value="User.username" 
+            id="username" 
+            disabled
+            />
+      </div>
+
+      <div class="form-block">
+          <label class="form-block-head col-2" for="curpassword">
+            Your Password
+          </label>
+            <input 
+            class="input-text col-8"
+            v-model="curPassword"
+            id="curPassword" 
+            type="password"
+            placeholder="Enter your password"
+            />
+      </div>
+
+      <div class="form-block">
+        <label class="form-block-head col-2" for="password">
+          New Password
+        </label>
+        <div class="col-8 new-password">
+          <input 
+              class="input-text"
+              v-model="changePassword" 
+              id="password" 
+              placeholder="New password" 
+              type="password"
+              autocapitalize="none"
+          />
+
+          <div class="passwordConfirm">
+              <input 
+                  class="input-text"
+                  v-model="changePasswordConfirm" 
+                  id="passwordConfirm"
+                  aria-label="Email or phone"
+                  placeholder="Password confirm" 
+                  type="password"
+                  autocapitalize="none"
+                  @keyup.enter="signUp"
+              />
+          
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="form-block">
-        <label class="form-block-head col-3" for="Address">
-          Address
-        </label>
-          <input 
-          class="input-text col-8"
-          v-model="User.address" 
-          id="Address" 
-          type="text"
-          placeholder="Address"
-          />
-    </div>
-
-    <div class="form-block">
-        <label class="form-block-head col-3" for="TEL">
-          Tel
-        </label>
-        <input 
+      <!-- <div class="form-block">
+          <label class="form-block-head col-3" for="Address">
+            Address
+          </label>
+            <input 
             class="input-text col-8"
-            v-model="User.tel" 
-            id="tel" 
-            placeholder="Tel" 
+            v-model="User.address" 
+            id="Address" 
             type="text"
-        />
+            placeholder="Address"
+            />
+      </div> -->
 
+
+      <div class="form-group d-flex justify-content-around">
+          <label class="form-block-head col-2">
+            Address
+          </label>
+          <div class="col-8 form-address">
+            <select class="form-control" id="exampleFormControlSelect1" v-model="siInfo" >
+              <option value="" disabled selected>시/도</option>
+              <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj.siCode" v-text="si_obj.siName"></option>
+            </select>
+            <div class="d-flex ">
+              <select class="form-control col-6" id="exampleFormControlSelect2" v-model="guInfo">
+                <option value="" disabled selected>구/군</option>
+                <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj.guCode" v-text="gu_obj.guName"></option>
+              </select>
+              <select class="form-control col-6" id="exampleFormControlSelect3" v-model="dongInfo" >
+                <option value="" disabled selected>동/읍/면</option>
+                <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj.dongCode" v-text="dong_obj.dongName"></option>
+              </select>
+            </div>
+          </div>
+      </div>
+
+      <div class="form-block">
+          <label class="form-block-head col-2" for="TEL">
+            Tel
+          </label>
+          <input 
+              class="input-text col-8"
+              v-model="User.tel" 
+              id="tel" 
+              placeholder="Tel" 
+              type="text"
+          />
+
+      </div>
     </div>
-
-    <Button 
-        @click.native="changeUserInfo"
-        buttonText="회원정보수정"
-        class="btn-components"
-    />
+    <div class="d-flex justify-content-around">
+      <span class="col-2"></span>
+      <div class="col-8 pr-0">
+        <Button
+            @click.native="changeUserInfo"
+            buttonText="회원정보수정"
+            class="btn-components"
+        />
+      </div>
+    </div>
 
   </div>
 </template>
@@ -196,7 +224,7 @@ export default {
       }
 
       if (!this.isChangedPW) changeUser.password = this.curPassword
-      console.log(changeUser)
+      // console.log(changeUser)
       axios.post("http://address:port/changeUserInfo", changeUser)
       .then(res => {
         console.log(res)
@@ -246,7 +274,7 @@ border-style: none none solid none;
   border-style: none;
   font-weight: bold;
   background-color: #bcbdbc;
-}
+} 
 
 .form-block-head {
   font-size: 16px;
@@ -262,7 +290,7 @@ border-style: none none solid none;
 .form-block {
   display: flex;
   margin-bottom: 25px;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 
 .btn-components {
@@ -270,4 +298,10 @@ border-style: none none solid none;
   float: right;
 }
 
+.form-address {
+  padding: 0px;
+}
+/* .form-box {
+  margin-left: 400px;
+} */
 </style>
