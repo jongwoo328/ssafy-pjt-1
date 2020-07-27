@@ -154,6 +154,8 @@
 
 <script>
 
+let BASE_URL = "http://192.168.219.162"
+
 import PV from "password-validator";
 import * as EmailValidator from "email-validator";
 import axios from "axios"
@@ -169,7 +171,7 @@ export default {
       TermModal
     },
     created() {
-      axios.get("http://192.168.43.245:9999/happyhouse/api/fselect", {
+      axios.get(`${BASE_URL}:3000/happyhouse/api/fselect`, {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -260,7 +262,7 @@ export default {
     methods: {
       usernameCheck() {
         console.log("test")
-        axios.post("http://192.168.43.109:3000/account/signup/checkname", this.username, {
+        axios.get(`${BASE_URL}:8090/app/account/idcheck`, this.email,{
           headers: {
               'Content-Type': 'application/json',
           }
@@ -273,13 +275,15 @@ export default {
         })
       },
       idCheck() {
-        axios.post("http://192.168.43.109:3000/account/signup/checkemail", this.email, {
+        axios.post(`${BASE_URL}:8090/app/account/idcheck`, this.email, {
         headers: {
             'Content-Type': 'application/json',
         }
       }).then(res => {
+        console.log(res)
         if (res) this.duplicate.email = "possible"
       }).catch(err => {
+        console.log(err)
         if (err) this.duplicate.email = "impossible"
       })
       },
@@ -290,7 +294,7 @@ export default {
         this.guInfo = ""
         this.dongInfo = ""
 
-        axios.get(`http://192.168.43.245:9999/happyhouse/api/fselect/${si_params}`, {
+        axios.get(`${BASE_URL}:3000/happyhouse/api/fselect/${si_params}`, {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -311,7 +315,7 @@ export default {
         this.dongList = []
         this.dongInfo = ""
         // console.log(gu_params)
-        axios.get(`http://192.168.43.245:9999/happyhouse/api/fselect/sido/${gu_params}`, {
+        axios.get(`${BASE_URL}:3000/happyhouse/api/fselect/sido/${gu_params}`, {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -375,13 +379,13 @@ export default {
           'username': this.username,
           'password': this.password,
           'tel': this.tel,
-          'address': this.siInfo + this.guInfo + this.dongInfo,
+          'address': this.dongInfo,
           'isPro': this.isPro
         }
 
 
         console.log(signUpData)
-        axios.post("http://192.168.43.109:3000/account/signup", signUpData)
+        axios.post(`${BASE_URL}:3000/account/signup`, signUpData)
         .then(res => {
           this.isSubmit = true
           console.log(res)
