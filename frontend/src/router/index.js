@@ -5,7 +5,7 @@ import Review from '../views/Review/Review.vue'
 import SignUp from '../views/accounts/SignUp.vue'
 import UserInfo from '../views/accounts/UserInfo.vue'
 import ServiceDetail from '@/views/services/ServiceDetail.vue'
-import ProfileAdd from '@/views/profile/ProfileAdd.vue'
+import ProfileAdd from '@/views/accounts/ProfileAdd.vue'
 import Profile from '@/views/accounts/Profile.vue'
 
 Vue.use(VueRouter)
@@ -37,7 +37,7 @@ Vue.use(VueRouter)
     component: ServiceDetail
   },
   {
-    path: '/profile/add',
+    path: '/accounts/:username/create',
     name: 'ProfileAdd',
     component: ProfileAdd
   },

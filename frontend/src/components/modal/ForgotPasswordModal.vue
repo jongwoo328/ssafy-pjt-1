@@ -13,9 +13,12 @@
                   <div class="form">
                     <div class="input-box">
                       <label class="input-label" for="inputemail">Email</label>
-                      <input type="text" id="Inputemail" placeholder="이메일을 입력하세요" v-model="ForgotData.email">
+                      <div>
+                        <input type="text" id="Inputemail" class="mb-0" placeholder="이메일을 입력하세요" v-model="email">
+                        <div v-if="errorData.email" class="error-msg" v-text="errorData.email"></div>
+                      </div>
                       <label class="input-label" for="inputtel">Tel</label>
-                      <input type="text" id="Inputtel" placeholder="휴대전화번호를 입력하세요. ('-' 제외)" v-model="ForgotData.tel">
+                      <input type="text" id="Inputtel" placeholder="휴대전화번호를 입력하세요. ('-' 제외)" v-model="tel">
                     </div>
                     <div class="button">
                       <Button v-if="this.isfind" buttonText="Login" type="submit" data-dismiss="modal" @click.native="$emit('change')" />
@@ -39,6 +42,7 @@
 
 <script>
 import Button from '@/components/common/Button.vue'
+import * as EmailValidator from "email-validator";
 import axios from 'axios'
 
 export default {
@@ -48,17 +52,34 @@ export default {
   },
   data() {
     return {
-      ForgotData: {
-        email: null,
-        tel: null,
+      email: "",
+      tel: "",
+      errorData: {
+        email: ""
       },
       isfind: false,
     }
   },
+  watch: {
+    email: function() {
+      this.formCheck()
+    }
+  },
   methods: {
+    formCheck() {
+      if (this.email === "" || (this.email.length > 0 && !EmailValidator.validate(this.email)))
+        this.errorData.email = "올바른 이메일 형식이 아닙니다."
+      else this.errorData.email = false
+    },
     find () {
-      console.log(this.ForgotData)
-      axios.post('http://192.168.43.109:3000/account/pwfind', this.ForgotData)
+      this.formCheck()
+
+      let forgotData = {
+        email: this.email,
+        tel: this.tel
+      }
+
+      axios.post('http://192.168.43.109:3000/account/pwfind', forgotData)
       .then(res => {
         console.log(res)
         if (res.status === 200) {
@@ -66,6 +87,12 @@ export default {
           if (res.data.status === true) {
             this.isfind = true
             alert(`임시비밀번호는 '${res.data.data}'입니다.`)
+          }
+          else if (res.data.data === 'email') {
+            alert('입력하신 메일 정보가 올바르지 않습니다.')
+          }
+          else if (res.data.data === 'tel') {
+            alert('입력하신 번호가 올바르지 않습니다.')
           }
         }
       })
@@ -80,6 +107,7 @@ export default {
 
 <style scoped>
     /* model */
+  
   .form {
     text-align: right;
   }
@@ -181,5 +209,13 @@ export default {
   .modal-leave-active .modal-container {
     -webkit-transform: scale(1.1);
     transform: scale(1.1);
+  }
+
+  .error-msg {
+  width: 100%;
+  float: left;
+  color: #EE4B55;
+  font-size: 14px;
+  text-align: left;
   }
 </style>

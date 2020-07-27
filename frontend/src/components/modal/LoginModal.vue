@@ -5,7 +5,7 @@
             <div class="modal-container">
             <div class="modal-header">
               <h3>Login</h3>
-              <button type="button" class="close" data-dismiss="modal" @click="modalclose">&times;</button>
+              <button type="button" class="close" data-dismiss="modal" @click="modalclose">×</button>
             </div>
             <!-- <h1 @click="login">test</h1> -->
             <div class="modal-body">
@@ -13,11 +13,12 @@
                   <div class="form">
                     <div class="input-box font-notojp">
                       <label class="input-label" for="inputname">Email</label>
-                      <input type="text" id="inputname" placeholder="이메일을 입력하세요." v-model="loginData.email">
+                      <input type="text" id="inputname" placeholder="이메일을 입력하세요." v-model="email">
+                      <div v-if="errorData.email" class="error-msg" v-text="errorData.email"></div>
                     </div>
                     <div class="input-box font-notojp">
                       <label class="input-label" for="inputpassword">Password</label>
-                      <input type="password" id="inputpassword" placeholder="패스워드를 입력하세요." v-model="loginData.password" @keyup.enter="login">
+                      <input type="password" id="inputpassword" placeholder="패스워드를 입력하세요." v-model="password" @keyup.enter="login">
                     </div>
                     <Button class="font-notojp" buttonText="Login" type="submit" @click.native="login" />
                   </div>
@@ -27,7 +28,7 @@
             <div class="modalfooter">
                 <slot name="footer">
                   <a class="font-kor" data-dismiss="modal" href="#" @click="$emit('change')">Forgot password?</a>
-                  <br>        
+                  <br>
                   <a class="font-kor" data-dismiss="modal" href="/accounts/signup">Create account</a>
                 </slot>
             </div>
@@ -38,27 +39,46 @@
     </transition>
 </template>
 
+
 <script>
 import Button from '@/components/common/Button.vue'
 import axios from 'axios'
+import * as EmailValidator from "email-validator";
 
 export default {
   name: 'LoginModal',
   components: {
     Button,
   },
+  watch: {
+    email: function() {
+      this.formCheck()
+    }
+  },
   data() {
     return {
-      loginData: {
-        email: null,
-        password: null,
-      },
+      email: "",
+      password: "",
+      errorData: {
+        email: false,
+      }
     }
   },
   methods: {
+    formCheck() {
+      console.log(1)
+      if (this.email === "" || (this.email.length > 0 && !EmailValidator.validate(this.email)))
+        this.errorData.email = "올바른 이메일 형식이 아닙니다."
+      else this.errorData.email = false
+    },
     login () {
-      console.log('test')
-      axios.post("http://192.168.43.204:8090/account/login", this.loginData)
+      this.formCheck()
+      let loginData = {
+        email: this.email,
+        password: this.password
+      }
+
+      axios.post("http://192.168.43.204:8090/account/login", loginData)
       .then(res => {
         console.log(res)
         if (res.status === 200) {
@@ -80,6 +100,7 @@ export default {
   },
 }
 </script>
+
 
 <style scoped>
     /* model */
@@ -178,5 +199,12 @@ export default {
   .modal-leave-active .modal-container {
     -webkit-transform: scale(1.1);
     transform: scale(1.1);
+  }
+
+  .error-msg {
+  width: 100%;
+  float: left;
+  color: #EE4B55;
+  font-size: 14px;
   }
 </style>
