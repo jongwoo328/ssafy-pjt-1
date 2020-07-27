@@ -5,8 +5,7 @@
     <tr>
       <th scope="col">No</th>
       <th scope="col">제목</th>
-      <th scope="col">내용</th>
-      <th scope="col"></th>
+      <th scope="col">내용</th>  
     </tr>
   </thead>
   <tbody>
