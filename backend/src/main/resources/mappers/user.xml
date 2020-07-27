@@ -3,23 +3,29 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="user">
+<mapper namespace="com.web.curation.dao.UserDao">
 
     <select id="selectUser" resultType="user">
-        select uid,
+        select userno,
         email,
-        password,
-        create_date
+        pw,
+        name,
+        tel,
+        addr,
+        ispro
         from user
     </select>
     
     <select id="selectOneUserByUid" resultType="user">
-        select uid,
+        select userno,
         email,
-        password,
-        create_date
+        pw,
+        name,
+        tel,
+        addr,
+        ispro
         from user
-        where uid = #{uid}
+        where name = #{name}
     </select>
     
     <select id="login" resultType="user">
@@ -31,33 +37,57 @@
         where email = #{email} and password = #{password}
     </select>
     
-    <select id="findUserByUidAndPassword" resultType="user">
-        select uid,
+    <select id="findUserByEmailAndName" resultType="user">
+        select userno,
         email,
-        password,
-        create_date
+        pw,
+        name,
+        tel,
+        addr,
+        ispro
         from user
-        where uid = #{uid} and password = #{password}
+        where email = #{email} and name = #{username}
     </select>
     
     <select id="selectOneUserByEmail" resultType="user">
-        select uid,
+        select userno,
         email,
-        password,
-        create_date
+        pw,
+        name,
+        tel,
+        addr,
+        ispro
         from user
         where email = #{email}
     </select>
     
+    <select id="selectOneUserByTel" resultType="user">
+        select userno,
+        email,
+        pw,
+        name,
+        tel,
+        addr,
+        ispro
+        from user
+        where tel = #{tel}
+    </select>
+    
     <insert id = "join">
-        insert into user (uid, email, password) values (#{uid}, #{email},#{password})
+        insert into user (email, pw, name, tel, addr, ispro) values (#{email},#{password},#{username},#{tel},#{address},#{ispro})
     </insert>
+    
+    <update id="samplePw">
+    update user
+        set pw = #{password}
+        where email = #{email};
+    </update>
     
     <update id = "updateUser">
         update user
         set email = #{email},
-        password = #{password}
-        where uid = #{uid}
+        pw = #{password}
+        where userno = #{userno}
     </update>
     
 </mapper>

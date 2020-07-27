@@ -19,95 +19,83 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@DynamicInsert
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
-    @Id
     //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String userno;
-    
+    private int userno;
     private String email;
-    
-    @JsonIgnore
-    private String pw;
-    
-    private String name;
+    private String password;
+    private String username;
     private String tel;
-    private String addr;
+    private String address;
     private boolean ispro;
+
+    
   
 	public User() {}
-
-	public User(String email, String pw, String name, String tel, String addr, boolean ispro) {
+	public User(String email, String password, String username, String tel, String address, boolean ispro) {
+		super();
 		this.email = email;
-		this.pw = pw;
-		this.name = name;
+		this.password = password;
+		this.username = username;
 		this.tel = tel;
-		this.addr = addr;
+		this.address = address;
 		this.ispro = ispro;
 	}
-
-	public String getUserno() {
+	public User(int userno, String email, String password, String username, String tel, String address, boolean ispro) {
+		super();
+		this.userno = userno;
+		this.email = email;
+		this.password = password;
+		this.username = username;
+		this.tel = tel;
+		this.address = address;
+		this.ispro = ispro;
+	}
+	public int getUserno() {
 		return userno;
 	}
-
-	public void setUserno(String userno) {
+	public void setUserno(int userno) {
 		this.userno = userno;
 	}
-
 	public String getEmail() {
 		return email;
 	}
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public String getPw() {
-		return pw;
+	public String getPassword() {
+		return password;
 	}
-
-	public void setPw(String pw) {
-		this.pw = pw;
+	public void setPassword(String password) {
+		this.password = password;
 	}
-
-	public String getName() {
-		return name;
+	public String getUsername() {
+		return username;
 	}
-
-	public void setName(String name) {
-		this.name = name;
+	public void setUsername(String username) {
+		this.username = username;
 	}
-
 	public String getTel() {
 		return tel;
 	}
-
 	public void setTel(String tel) {
 		this.tel = tel;
 	}
-
-	public String getAddr() {
-		return addr;
+	public String getAddress() {
+		return address;
 	}
-
-	public void setAddr(String addr) {
-		this.addr = addr;
+	public void setAddress(String address) {
+		this.address = address;
 	}
-
 	public boolean isIspro() {
 		return ispro;
 	}
-
 	public void setIspro(boolean ispro) {
 		this.ispro = ispro;
 	}
-
-
-
-    
+	@Override
+	public String toString() {
+		return "User [uno=" + userno + ", email=" + email + ", password=" + password + ", username=" + username + ", tel="
+				+ tel + ", address=" + address + ", ispro=" + ispro + "]";
+	}
 }
