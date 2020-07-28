@@ -32,14 +32,17 @@ export default {
       serviceResult: [
         // 예시 표시용
         {
-          s_no: 1,
-          s_name: '서비스 이름',
-          description: '서비스 설명',
-          seraddr: '주소',
-          price: '가격',
-          u_no: '프로',
-          c_no: 123123
-        }
+          imgUrl: 'https://grepp-programmers.s3.amazonaws.com/production/company/logo/2640/_nolbal_bi_logo_%E1%84%89%E1%85%A6%E1%84%85%E1%85%A9.png',
+          s_no: 1
+        },
+        {
+          imgUrl: 'https://grepp-programmers.s3.amazonaws.com/production/company/logo/2640/_nolbal_bi_logo_%E1%84%89%E1%85%A6%E1%84%85%E1%85%A9.png',
+          s_no: 2
+        },
+        {
+          imgUrl: 'https://grepp-programmers.s3.amazonaws.com/production/company/logo/2640/_nolbal_bi_logo_%E1%84%89%E1%85%A6%E1%84%85%E1%85%A9.png',
+          s_no: 3
+        },
       ]
     }
   }

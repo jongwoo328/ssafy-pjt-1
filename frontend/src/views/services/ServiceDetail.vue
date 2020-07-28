@@ -2,7 +2,7 @@
   <div id="service-detail" class="container font-kor">
       <div class="service-info section">
           <div class="image-join">
-              <img src="@/assets/logo_mini.jpg" alt="">
+              <img src="@/assets/logo_mini.png" alt="">
           </div>
           <div class="info">
               <div>

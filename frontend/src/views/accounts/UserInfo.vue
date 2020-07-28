@@ -181,7 +181,6 @@ export default {
     .catch(err => {
       console.log(err)
     }),
-    console.log(this.$session.get('jwstoken')),
     
     axios.post(`${BASE_URL}:8090/account/userinfo`, "", {
             headers: {

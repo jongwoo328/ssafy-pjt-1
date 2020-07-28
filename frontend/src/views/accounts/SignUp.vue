@@ -96,22 +96,24 @@
     <form>
       <div class="form-group row">
         <div class="col-12">
-          <p>
+          <p class="form-block-head">
             <em class="asterisk-red">*</em>
             Address
           </p>
-          <select class="form-control" @click="open" @change="close" id="exampleFormControlSelect1" v-model="siInfo" >
+          <div class="px-1 d-flex">
+          <select class="form-control col-md-4" @click="open" @change="close" id="exampleFormControlSelect1" v-model="siInfo" >
             <option value="" disabled selected>시/도</option>
             <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName" ></option>
           </select>
-          <select class="form-control col-6" @click="open" @change="close" id="exampleFormControlSelect2" v-model="guInfo">
+          <select class="form-control col-md-4" @click="open" @change="close" id="exampleFormControlSelect2" v-model="guInfo">
             <option value="" disabled selected>구/군</option>
             <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
           </select>
-          <select class="form-control col-6" @click="open" @change="close" id="exampleFormControlSelect3" v-model="dongInfo" >
+          <select class="form-control col-md-4" @click="open" @change="close" id="exampleFormControlSelect3" v-model="dongInfo" >
             <option value="" disabled selected>동/읍/면</option>
             <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
           </select>
+          </div>
         </div>
         <!-- <div class="d-flex flex-wrap sub-address"> -->
         <!-- </div> -->
@@ -501,12 +503,6 @@ export default {
   color: red;
 }
 
-
-#signup .form-control {
-  border-radius: 10px;
-  border: 0.8px solid;
-}
-
 #signup .sub-address {
   margin-top: 10px;
 }
@@ -523,12 +519,13 @@ border: none;
   float: right;
 }
 
-#signup .input-text {
-width: 100%;
-height: 40px;
-border: 0.8px;
-padding-left: 10px;
-border-style: none none solid none;
+#signup .input-text, #signup select {
+  width: 100%;
+  height: 40px;
+  border: 0.8px;
+  border-radius: 0;
+  padding-left: 10px;
+  border-style: none none solid none;
 }
 
 #signup .input-radio {

@@ -1,7 +1,7 @@
 <template>
   <div class="navbar-nav"> 
       <NoticeIcon/> 
-      <NavbarLinkListItem v-if="!isLoggedIn" value="서비스" @click.native="toserviceUp" />
+      <!-- <NavbarLinkListItem v-if="isPro" value="서비스" @click.native="toserviceUp" /> -->
       <NavbarLinkListItem v-if="!isLoggedIn" value="SignUp" @click.native="toSignUp" />
       <NavbarLinkListItem v-if="!isLoggedIn" value="Login" @click.native="changeLogin"/>
       <NavbarLinkListItem v-if="isLoggedIn" value="Logout" @click.native="changeLogin"/>
@@ -57,6 +57,9 @@ export default {
   computed: {
     isLoggedIn() {
       return this.$store.getters.isLoggedIn
+    },
+    isPro() {
+      return this.$store.getters.isPro
     }
   }
 }
