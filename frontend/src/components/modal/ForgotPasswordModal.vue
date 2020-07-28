@@ -1,5 +1,6 @@
 <template>
   <transition name="modal">
+    <div id="forgotPasswordModal">
         <div class="modal-mask">
         <div class="modal-wrapper">
             <div class="modal-container">
@@ -23,6 +24,7 @@
                 </slot>
             </div>
             </div>
+        </div>
         </div>
         </div>
     </transition>
@@ -107,26 +109,26 @@ export default {
   .form {
     text-align: right;
   }
-  .button {
+  #forgotPasswordModal .button {
     display: flex;
     justify-content: space-between;
   }
-  .button :first-child {
+  #forgotPasswordModal .button :first-child {
     color: rgb(236,128,116);
     background-color: white;
   }
-  .modalfooter {
+  #forgotPasswordModal .modalfooter {
     display: block;
     text-align: right;
     margin: 0 20px;
   }
-  .input-box {
+  #forgotPasswordModal .input-box {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     margin-bottom: 25px;
   }
-  .input-box input {
+  #forgotPasswordModal .input-box input {
     width: 100%;
     height: 40px;
     border: 1.5px solid black;
@@ -135,12 +137,12 @@ export default {
     padding: 0 5px 0 5px;
     border-radius: 5px;
   }
-  .input-label {
+  #forgotPasswordModal .input-label {
     /* display: none; */
     text-align: left;
     margin: 5px 0 5px 0;
   }
-  .modal-mask {
+  #forgotPasswordModal .modal-mask {
     position: fixed;
     z-index: 9998;
     top: 0;
@@ -152,12 +154,12 @@ export default {
     transition: opacity .3s ease;
   }
 
-  .modal-wrapper {
+  #forgotPasswordModal .modal-wrapper {
     display: table-cell;
     vertical-align: middle;
   }
 
-  .modal-container {
+  #forgotPasswordModal .modal-container {
     width: 300px;
     margin: 0px auto;
     padding: 20px 10px;
@@ -167,20 +169,20 @@ export default {
     transition: all .3s ease;
     font-family: Helvetica, Arial, sans-serif;
   }
-  .modal-header {
+  #forgotPasswordModal .modal-header {
     padding-top: 0;
     padding-bottom: 0;
   }
-  .modal-header h4 {
+  #forgotPasswordModal .modal-header h4 {
     margin-top: 0;
     color: rgb(236,128,116);
   }
 
-  .modal-body {
+  #forgotPasswordModal .modal-body {
     margin: 0 0;
   }
 
-  .modal-default-button {
+  #forgotPasswordModal .modal-default-button {
     float: right;
   }
 
@@ -193,21 +195,21 @@ export default {
   * these styles.
   */
 
-  .modal-enter {
+  #forgotPasswordModal .modal-enter {
     opacity: 0;
   }
 
-  .modal-leave-active {
+  #forgotPasswordModal .modal-leave-active {
     opacity: 0;
   }
 
-  .modal-enter .modal-container,
-  .modal-leave-active .modal-container {
+  #forgotPasswordModal .modal-enter .modal-container,
+  #forgotPasswordModal .modal-leave-active .modal-container {
     -webkit-transform: scale(1.1);
     transform: scale(1.1);
   }
 
-  .error-msg {
+  #forgotPasswordModal .error-msg {
   width: 100%;
   float: left;
   color: #EE4B55;
