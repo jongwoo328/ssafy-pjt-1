@@ -1,5 +1,5 @@
 <template>
-  <div class="signup container">
+  <div class="signup container" id="signup">
     <span class="signup-text">Sign Up</span>
     <hr class="mb-4 ">
     <div class="signup-head">
@@ -55,7 +55,6 @@
           autocapitalize="none"
           :class="{ error : errorData.username && this.username }"
           />
-          <!-- <span class="col-1"> </span> -->
         <div class="error-msg" v-if="errorData.username && (username || isFail)">{{ errorData.username }}</div>
         <span class="dup-err" v-if="username && duplicate.username === duplicate.impos">이미 존재하는 사용자명입니다.</span>
         <span class="success" v-if="username && duplicate.username === duplicate.pos">이 사용자명은 사용가능합니다.</span>
@@ -140,25 +139,19 @@
         <input v-model="isTerm" type="checkbox" id="term" />
         <span>약관을 동의합니다.</span>
       </label>
+      <p></p>
       <TermModal v-if="termPopup" @close="termPopup = false">
       <h3 slot="header">전체 약관</h3>
-      </TermModal>  
-      <span @click="termPopup=true">약관보기</span>
+      </TermModal>
+      <span @click="termPopup=true" id="btn-term">약관보기</span>
       <div class="error-msg terms-err-msg" v-if="errorData.isTerm" v-text="errorData.isTerm"></div>
     </div>
-    <!-- <div class="btn-group col-8 col-md-4">
-      <Button 
-        @click.native="cancel"
-        buttonText="가입취소"
-        class="btn-components col-6 btn-cancel"
-      /> -->
       <Button 
           @click.native="signUp"
           buttonText="가입"
           class="btn-components col-4 col-md-2 btn-signup"
       />
     </div>
-  <!-- </div> -->
 </template>
 
 <script>
@@ -367,11 +360,6 @@ export default {
         }
         else this.errorData.isTerm = false
 
-        // let phoneNumValidation = /^\d{10}$/
-        // if (this.tel === "" || (this.tel.length > 0 && !this.tel.value.match(phoneNumValidation)))
-        //   this.errorData.tel = "전화번호를 입력하세요"
-        // else this.errorData.tel = false
-
         let isSubmit = true;  
         Object.values(this.errorData).map(v => {
           if (v) isSubmit = false;
@@ -412,121 +400,115 @@ export default {
 }
 </script>
 
-<style scoped>
-.signup {
+<style>
+#signup .signup {
   padding: 0 30px;
   margin-top: 30px;
 }
-.duplicateMsg {
+#signup .duplicateMsg {
   color: greenyellow;
 }
 
-.duplicate {
+#signup .duplicate {
   color: red;
 }
 
-.btn-id-check {
+#btn-term {
+  font-weight: bold;
+}
+#btn-term:hover {
+  cursor: pointer;
+}
+#signup .btn-id-check {
   height: 40px;
   font-size: 13px;
   padding: 7px;
   margin-left: 10px;
 }
 
-.btn-components {
+#signup .btn-components {
   width: 100%;
   outline: none;
-  /* box-shadow: 0 0 0 3px #EE4B55; */
 }
 
-.dup-err {
+#signup .dup-err {
   color: #EE4B55;
 }
 
-.success {
+#signup .success {
   color: greenyellow;
 }
 
-.passwordConfirm {
+#signup .passwordConfirm {
   margin: 10px 0 25px;
 }
-.signup-head {
+#signup .signup-head {
   display: flex;
   font-size: 15px;
   margin: 15px 4px;
 }
-.error-msg {
+#signup .error-msg {
   width: 100%;
   float: left;
   color: #EE4B55;
   font-size: 14px;
 }
 
-.signup-text {
+#signup .signup-text {
   display: block;
   font-weight: bolder;
   margin: 20px 0;
   font-size: 2rem;
 }
 
-.terms {
+#signup .terms {
   margin-bottom: 0;
 }
 
-.terms-err-msg {
+#signup .terms-err-msg {
   margin-left: 20px;
 }
 
 
-.form-block-head {
+#signup .form-block-head {
   font-size: 16px;
   margin: 0;
   padding: 8px 0 0 0;
   font-weight: bolder
 }
 
-.form-block {
+#signup .form-block {
   margin-bottom: 25px;
 }
 
 
-.asterisk-red {
+#signup .asterisk-red {
   color: red;
 }
 
 
-.form-control {
+#signup .form-control {
   border-radius: 10px;
   border: 0.8px solid;
 }
 
-.sub-address {
+#signup .sub-address {
   margin-top: 10px;
 }
 
 
-input:focus {
+#signup input:focus {
 outline: none;
 box-shadow: 0 0 0 3px #3487e683;
 border: none;
 }
 
-/* .btn-group {
-  margin: 10px 0;
-  padding: 0;
-  float: right;
-}
-
-.btn-cancel {
-  background-color: white;
-  color: rgb(236,128,116);
-} */
-
-.btn-signup {
+#signup .btn-signup {
   margin: 15px 0;
   float: right;
 }
 
-.input-text {
+#signup .input-text {
 width: 100%;
 height: 40px;
 border: 0.8px;
@@ -534,7 +516,7 @@ padding-left: 10px;
 border-style: none none solid none;
 }
 
-.input-radio {
+#signup .input-radio {
   margin: 0 5px;
   width: 15px;
   height: 15px;
