@@ -1,10 +1,10 @@
 <template>
   <div class="UserInfo container">
     <span class="UserInfo-text">내 정보</span>
-    <hr class="mb-4 ">
+    <hr class="mb-4">
     <div class="form-box">
       <div class="form-block">
-          <label class="form-block-head col-2" for="email">
+          <label class="form-block-head col-3 col-md-2" for="email">
               <span class="form-block-text">Email</span>
           </label>
             <input 
@@ -19,7 +19,7 @@
       </div>
 
       <div class="form-block">
-          <label class="form-block-head col-2" for="username">
+          <label class="form-block-head col-3 col-md-2" for="username">
             Username
           </label>
             <input 
@@ -31,7 +31,7 @@
       </div>
 
       <div class="form-block">
-          <label class="form-block-head col-2" for="curpassword">
+          <label class="form-block-head col-3 col-md-2" for="curpassword">
             Your Password
           </label>
             <input 
@@ -44,7 +44,7 @@
       </div>
 
       <div class="form-block">
-        <label class="form-block-head col-2" for="password">
+        <label class="form-block-head col-3 col-md-2" for="password">
           New Password
         </label>
         <div class="col-8 new-password">
@@ -88,7 +88,7 @@
 
 
       <div class="form-group d-flex justify-content-around">
-          <label class="form-block-head col-2">
+          <label class="form-block-head col-3 col-md-2">
             Address
           </label>
           <div class="col-8 form-address">
@@ -96,7 +96,7 @@
               <option value="" disabled selected>시/도</option>
               <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj.siCode" v-text="si_obj.siName"></option>
             </select>
-            <div class="d-flex ">
+            <div class="d-flex sub-address">
               <select class="form-control col-6" id="exampleFormControlSelect2" v-model="guInfo">
                 <option value="" disabled selected>구/군</option>
                 <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj.guCode" v-text="gu_obj.guName"></option>
@@ -110,7 +110,7 @@
       </div>
 
       <div class="form-block">
-          <label class="form-block-head col-2" for="TEL">
+          <label class="form-block-head col-3 col-md-2" for="TEL">
             Tel
           </label>
           <input 
@@ -123,8 +123,10 @@
 
       </div>
     </div>
+
+    
     <div class="d-flex justify-content-around">
-      <span class="col-2"></span>
+      <span class="col-3 col-md-2"></span>
       <div class="col-8 pr-0">
         <Button
             @click.native="changeUserInfo"
@@ -280,7 +282,7 @@ border-style: none none solid none;
   font-size: 16px;
   margin: 0;
   padding: 8px 0 0 0;
-  text-align: right;
+  /* text-align: right; */
   font-weight: bolder
 }
 
@@ -301,7 +303,9 @@ border-style: none none solid none;
 .form-address {
   padding: 0px;
 }
-/* .form-box {
-  margin-left: 400px;
-} */
+
+.sub-address {
+  margin-top: 10px;
+}
+
 </style>
