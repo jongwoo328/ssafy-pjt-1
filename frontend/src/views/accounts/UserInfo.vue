@@ -93,17 +93,20 @@
           </label>
           <div class="col-8 form-address">
             <select class="form-control" id="exampleFormControlSelect1" v-model="siInfo" >
-              <option value="" disabled selected>시/도</option>
-              <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj.siCode" v-text="si_obj.siName"></option>
+            <option v-if="siInfo" :value="siInfo" v-text="siInfo.siName"></option>
+            <option v-else value="" disabled selected>시/도</option>
+            <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName"></option>
             </select>
             <div class="d-flex sub-address">
               <select class="form-control col-6" id="exampleFormControlSelect2" v-model="guInfo">
-                <option value="" disabled selected>구/군</option>
-                <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj.guCode" v-text="gu_obj.guName"></option>
+                <option v-if="guInfo" :value="guInfo" v-text="guInfo.guName"></option>
+                <option v-else value="" disabled selected>구/군</option>
+                <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
               </select>
-              <select class="form-control col-6" id="exampleFormControlSelect3" v-model="dongInfo" >
-                <option value="" disabled selected>동/읍/면</option>
-                <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj.dongCode" v-text="dong_obj.dongName"></option>
+              <select class="form-control col-6" id="exampleFormControlSelect3" v-model="dongInfo">
+                <option v-if="dongInfo" :value="dongInfo" v-text="dongInfo.dongName"></option>
+                <option v-else value="" disabled selected>동/읍/면</option>
+                <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
               </select>
             </div>
           </div>
@@ -152,13 +155,42 @@ export default {
   components: {
     Button
   },
+  watch: {
+    siInfo: function() {
+      this.getGuInfo()
+    },
+    guInfo: function() {
+      this.getDongInfo()
+    }
+  },
   created() {
-    console.log(this.$session.get('jwstoken'))
-    axios.get(`${BASE_URL}/account/userinfo`)
+    // console.log(this.User)
+    axios.get(`${BASE_URL}:8090/fselect`, {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+      })
     .then(res => {
-      // res.data 에 유저의 정보가 담겨있다고 생각하고 작성
-      // this.user = res.data
+      for (let si_data in res.data) {
+        this.siList.push({
+          "siCode": res.data[si_data]["sido_code"],
+          "siName": res.data[si_data]["sido_name"]
+          })
+      }
+    })
+    .catch(err => {
+      console.log(err)
+    }),
+    console.log(this.$session.get('jwstoken')),
+    
+    axios.post(`${BASE_URL}:8090/account/userinfo`, "", {
+            headers: {
+              'Authorization': this.$session.get('jwstoken'),
+            }
+          })
+    .then(res => {
       console.log(res)
+      
     })
     .catch(err => {
       console.log(err)
@@ -167,12 +199,18 @@ export default {
   data() {
     return {
       User: {
-        username: "stebia",
-        email: "asdfasdf@naver.com",
-        password: "@qhdks123",
-        address: "경상북도 구미시 진평동",
+        username: "",
+        email: "",
+        password: "",
+        address: "",
         ispro: "",
-        tel: "01012345678",
+        tel: "",
+        addr1: "",
+        addr2: "",
+        addr3: "",
+        addr4: "",
+        addr5: "",
+        addr6: "",
       },
       curPassword: "",
       changePassword: "",
@@ -180,9 +218,70 @@ export default {
       isError: false,
       passwordSchema: new PV(),
       isChangedPW: false,
+      siList: [],
+      guList: [],
+      dongList: [],
+      siInfo: {
+        siName: "",
+        siCode: ""
+      },
+      guInfo: {
+        guName: "",
+        guCode: "",
+      },
+      dongInfo: {
+        dongName: "",
+        dongCode: "",
+      },
     }
   },
   methods: {
+    getGuInfo() {
+      let si_params = this.siInfo
+      this.guList = []
+      this.dongList = []
+      this.guInfo = ""
+      this.dongInfo = ""
+
+      axios.get(`${BASE_URL}:8090/fselect/${si_params.siCode}`, {
+      headers: {
+          'Content-Type': 'application/json',
+      }
+    }).then(res => {
+        for (let gu_data in res.data) {
+          this.guList.push({
+            "guCode": res.data[gu_data]["gugun_code"],
+            "guName": res.data[gu_data]["gugun_name"]
+            })
+        }
+
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+    getDongInfo() {
+      let gu_params = this.guInfo
+      this.dongList = []
+      this.dongInfo = ""
+      // console.log(gu_params)
+      axios.get(`${BASE_URL}:8090/fselect/sido/${gu_params.guCode}`, {
+      headers: {
+          'Content-Type': 'application/json',
+      }
+    })
+      .then(res => {
+        // console.log(res)
+
+        for (let dong_data in res.data) {
+          this.dongList.push({
+            "dongCode": res.data[dong_data]["code"],
+            "dongName": res.data[dong_data]["dong"]
+            })
+        }
+      }).catch(err => {
+        console.log(err)
+      })
+    },
     checkform() {
         if (this.User.password !== this.curPassword) {
           this.isError = "비밀번호가 일치하지 않습니다."
@@ -191,7 +290,7 @@ export default {
         else this.isError = false
 
         if (this.User.password === this.changePassword) {
-          this.isError = "현재 패스워드와 변경할 패스워드가 같습니다."
+          this.isError = "변경할 패스워드는 현재 패스워드와 달라야합니다."
           return
         }
         else this.isError = false
@@ -229,7 +328,6 @@ export default {
       }
 
       if (!this.isChangedPW) changeUser.password = this.curPassword
-      // console.log(changeUser)
       axios.post("http://address:port/changeUserInfo", changeUser)
       .then(res => {
         console.log(res)

@@ -66,7 +66,6 @@ export default {
   },
   methods: {
     formCheck() {
-      console.log(1)
       if (this.email === "" || (this.email.length > 0 && !EmailValidator.validate(this.email)))
         this.errorData.email = "올바른 이메일 형식이 아닙니다."
       else this.errorData.email = false
