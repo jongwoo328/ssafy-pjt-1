@@ -2,7 +2,7 @@
   <div id="sidebar">
       <div class="sidebar-link-list">
         <router-link to='/accounts/userinfo' class="sidebar-link font-kor"><p>내 정보</p></router-link>
-        <router-link to='/test' class="sidebar-link font-kor"><p>내 프로필</p></router-link>
+        <router-link v-if="$store.getters.isLoggedIn" :to="toMyProfile" class="sidebar-link font-kor"><p>내 프로필</p></router-link>
         <router-link to='/test' class="sidebar-link font-kor"><p>결제내역</p></router-link>
         <router-link to='/test' class="sidebar-link font-kor"><p>팔로우</p></router-link>
         <router-link to='/test' class="sidebar-link font-kor"><p>Q&A</p></router-link>
@@ -13,7 +13,11 @@
 <script>
 export default {
     name: 'Sidebar',
-
+    computed: {
+        toMyProfile(){
+            return `/accounts/${this.$store.getters.getUserData.name}`
+        } 
+    },
 
 }
 </script>
