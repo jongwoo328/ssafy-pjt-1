@@ -20,37 +20,19 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.time.LocalDateTime;
 
 public class User {
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userno;
-    private String email;
-    private String password;
-    private String username;
-    private String tel;
-    private String address;
-    private boolean ispro;
-
-    
-  
-	public User() {}
-	public User(String email, String password, String username, String tel, String address, boolean ispro) {
-		super();
-		this.email = email;
-		this.password = password;
-		this.username = username;
-		this.tel = tel;
-		this.address = address;
-		this.ispro = ispro;
-	}
-	public User(int userno, String email, String password, String username, String tel, String address, boolean ispro) {
-		super();
-		this.userno = userno;
-		this.email = email;
-		this.password = password;
-		this.username = username;
-		this.tel = tel;
-		this.address = address;
-		this.ispro = ispro;
-	}
+	// @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int userno;
+	private String email;
+	private String pw;
+	private String name;
+	private String tel;
+	private String addr1;
+	private String addr2;
+	private String addr3;
+	private String addr4;
+	private String addr5;
+	private String addr6;
+	private boolean ispro;
 	public int getUserno() {
 		return userno;
 	}
@@ -63,17 +45,17 @@ public class User {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getPassword() {
-		return password;
+	public String getPw() {
+		return pw;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+	public void setPw(String pw) {
+		this.pw = pw;
 	}
-	public String getUsername() {
-		return username;
+	public String getName() {
+		return name;
 	}
-	public void setUsername(String username) {
-		this.username = username;
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getTel() {
 		return tel;
@@ -81,11 +63,41 @@ public class User {
 	public void setTel(String tel) {
 		this.tel = tel;
 	}
-	public String getAddress() {
-		return address;
+	public String getAddr1() {
+		return addr1;
 	}
-	public void setAddress(String address) {
-		this.address = address;
+	public void setAddr1(String addr1) {
+		this.addr1 = addr1;
+	}
+	public String getAddr2() {
+		return addr2;
+	}
+	public void setAddr2(String addr2) {
+		this.addr2 = addr2;
+	}
+	public String getAddr3() {
+		return addr3;
+	}
+	public void setAddr3(String addr3) {
+		this.addr3 = addr3;
+	}
+	public String getAddr4() {
+		return addr4;
+	}
+	public void setAddr4(String addr4) {
+		this.addr4 = addr4;
+	}
+	public String getAddr5() {
+		return addr5;
+	}
+	public void setAddr5(String addr5) {
+		this.addr5 = addr5;
+	}
+	public String getAddr6() {
+		return addr6;
+	}
+	public void setAddr6(String addr6) {
+		this.addr6 = addr6;
 	}
 	public boolean isIspro() {
 		return ispro;
@@ -95,7 +107,9 @@ public class User {
 	}
 	@Override
 	public String toString() {
-		return "User [uno=" + userno + ", email=" + email + ", password=" + password + ", username=" + username + ", tel="
-				+ tel + ", address=" + address + ", ispro=" + ispro + "]";
+		return "User [userno=" + userno + ", email=" + email + ", pw=" + pw + ", name=" + name + ", tel=" + tel
+				+ ", addr1=" + addr1 + ", addr2=" + addr2 + ", addr3=" + addr3 + ", addr4=" + addr4 + ", addr5=" + addr5
+				+ ", addr6=" + addr6 + ", ispro=" + ispro + "]";
 	}
+	
 }

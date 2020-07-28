@@ -23,9 +23,9 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @ApiResponses(value = { @ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),
-        @ApiResponse(code = 403, message = "Forbidden", response = BasicResponse.class),
-        @ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
-        @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
+@ApiResponse(code = 403, message = "Forbidden", response = BasicResponse.class),
+@ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
+@ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
 
 //@CrossOrigin(origins = { "http://localhost:3000" })
 @CrossOrigin(origins = { "*" })
@@ -47,10 +47,10 @@ public class AccountController {
     public Object login(@RequestBody User test, HttpServletResponse response) {
 
     System.out.println(test.getEmail());
-    System.out.println(test.getPassword());
+    System.out.println(test.getPw());
     User user = new User();
     user.setEmail(test.getEmail());
-    user.setPassword(test.getPassword());
+    user.setPw(test.getPw());
     ResponseEntity response1 = null;
     User userinfo = userService.login(user);
     jwtutil = new JwtUtil();
@@ -84,7 +84,7 @@ public class AccountController {
     		result.data = "email";
     		return new ResponseEntity<BasicResponse>(result, HttpStatus.BAD_REQUEST);
     	}
-    	String name = user.getUsername();
+    	String name = user.getName();
     	newUser = userService.getUserByUid(name);
     	if (newUser != null) {
     		result.status = false;
@@ -126,7 +126,7 @@ public class AccountController {
     		result.data = "tel";
     		return new ResponseEntity<BasicResponse>(result, HttpStatus.OK);
     	}
-    	user.setPassword("sample123");
+    	user.setPw("sample123");
     	System.out.println(user);
     	if (userService.samplePw(user)) {
     		result.status = true;
@@ -166,7 +166,26 @@ public class AccountController {
     	}
     	return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
     }
-    
+    @PostMapping("/account/userinfo")
+    @ApiOperation(value = "회원정보 리턴")
+    public ResponseEntity<String> UserInfo(@RequestBody String email) {
+    	User user = userService.getUserByEmail(email);
+    	System.out.println(user);
+    	if (user != null) {
+    		return new ResponseEntity<String>(FAIL, HttpStatus.BAD_REQUEST);
+    	}
+    	return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+    }
+    @PostMapping("/account/userinfo/modify")
+    @ApiOperation(value = "회원정보 리턴")
+    public ResponseEntity<String> UserInfoModify(@RequestBody User user) {
+    	int cnt = userService.update(user);
+    	System.out.println(user);
+    	if (cnt != 1) {
+    		return new ResponseEntity<String>(FAIL, HttpStatus.BAD_REQUEST);
+    	}
+    	return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+    }
     
 //    @PostMapping("/account/login")
 //    @ApiOperation(value = "로그인")

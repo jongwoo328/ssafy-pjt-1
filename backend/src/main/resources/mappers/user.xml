@@ -6,87 +6,64 @@
 <mapper namespace="com.web.curation.dao.UserDao">
 
     <select id="selectUser" resultType="user">
-        select userno,
-        email,
-        pw,
-        name,
-        tel,
-        addr,
-        ispro
+        select *
         from user
     </select>
     
     <select id="selectOneUserByUid" resultType="user">
-        select userno,
-        email,
-        pw,
-        name,
-        tel,
-        addr,
-        ispro
+        select *
         from user
         where name = #{name}
     </select>
     
     <select id="login" resultType="user">
-        select uid,
-        email,
-        password,
-        create_date
+        select *
         from user
         where email = #{email} and password = #{password}
     </select>
     
     <select id="findUserByEmailAndName" resultType="user">
-        select userno,
-        email,
-        pw,
-        name,
-        tel,
-        addr,
-        ispro
+        select *
         from user
         where email = #{email} and name = #{username}
     </select>
     
     <select id="selectOneUserByEmail" resultType="user">
-        select userno,
-        email,
-        pw,
-        name,
-        tel,
-        addr,
-        ispro
+        select *
         from user
         where email = #{email}
     </select>
     
     <select id="selectOneUserByTel" resultType="user">
-        select userno,
-        email,
-        pw,
-        name,
-        tel,
-        addr,
-        ispro
+        select *
         from user
         where tel = #{tel}
     </select>
     
-    <insert id = "join">
-        insert into user (email, pw, name, tel, addr, ispro) values (#{email},#{password},#{username},#{tel},#{address},#{ispro})
+    <insert id = "join" >
+        insert into user (email, pw, name, tel, addr1,addr2,addr3,addr4,addr5,addr6, ispro) 
+        values (#{email},#{password},#{username},#{tel},#{addr1},#{addr2},#{addr3},#{addr4},#{addr5},#{addr6},#{ispro})
     </insert>
     
     <update id="samplePw">
     update user
-        set pw = #{password}
+        set pw = #{pw}
         where email = #{email};
     </update>
     
     <update id = "updateUser">
         update user
         set email = #{email},
-        pw = #{password}
+        pw = #{pw},
+        name =#{name},
+        tel = #{tel},
+        addr1 = #{addr1},
+        addr2 = #{addr2},
+        addr3 = #{addr3},
+        addr4 = #{addr4},
+        addr5 = #{addr5},
+        addr6 = #{addr6},
+        ispro =#{ispro}
         where userno = #{userno}
     </update>
     

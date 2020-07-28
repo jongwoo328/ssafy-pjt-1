@@ -1,20 +1,20 @@
 
 package com.web.curation.dao;
 
-import java.util.Optional;
+import org.apache.ibatis.annotations.Mapper;
 
 import com.web.curation.model.User;
-import org.springframework.data.jpa.repository.JpaRepository;
 
+@Mapper
 public interface UserDao {
-    User getUserByEmail(String email);
+	User getUserByEmail(String email);
 	User getUserByUid(String uid);
 	User getUserByTel(String tel);
 	int insert(User user);
-	int update(User user);
+	int updateUser(User user);
 	int samplePw(User user);
-    User login(User user);
-    User findUserByEmailAndName(User user);   
+	User login(User user);
+	 User findUserByEmailAndName(User user);   
 }
 
 //public interface UserDao extends JpaRepository<User, String> {
