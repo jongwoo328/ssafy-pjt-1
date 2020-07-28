@@ -4,6 +4,7 @@
       <NavbarLinkListItem v-if="!isLoggedIn" value="서비스" @click.native="toserviceUp" />
       <NavbarLinkListItem v-if="!isLoggedIn" value="SignUp" @click.native="toSignUp" />
       <NavbarLinkListItem v-if="!isLoggedIn" value="Login" @click.native="changeLogin"/>
+      <NavbarLinkListItem v-if="isLoggedIn" value="Logout" @click.native="changeLogin"/>
       <LoginModal v-if="loginModal" @close="changeLogin" @change="changeModal">
       </LoginModal>
       <ForgotPasswordModal v-if="forgotPasswordModal" @close="changeForgot" @change="changeModal">

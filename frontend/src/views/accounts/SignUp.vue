@@ -96,25 +96,25 @@
     <form>
       <div class="form-group row">
         <div class="col-12">
-          <label for="exampleFormControlSelect1">
+          <p>
             <em class="asterisk-red">*</em>
             Address
-          </label>
-          <select class="form-control" id="exampleFormControlSelect1" v-model="siInfo" >
+          </p>
+          <select class="form-control" @click="open" @change="close" id="exampleFormControlSelect1" v-model="siInfo" >
             <option value="" disabled selected>시/도</option>
-            <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName"></option>
+            <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName" ></option>
           </select>
-        </div>
-        <div class="col-12 d-flex sub-address">
-          <select class="form-control col-6" id="exampleFormControlSelect2" v-model="guInfo">
+          <select class="form-control col-6" @click="open" @change="close" id="exampleFormControlSelect2" v-model="guInfo">
             <option value="" disabled selected>구/군</option>
             <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
           </select>
-          <select class="form-control col-6" id="exampleFormControlSelect3" v-model="dongInfo" >
+          <select class="form-control col-6" @click="open" @change="close" id="exampleFormControlSelect3" v-model="dongInfo" >
             <option value="" disabled selected>동/읍/면</option>
             <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
           </select>
         </div>
+        <!-- <div class="d-flex flex-wrap sub-address"> -->
+        <!-- </div> -->
       </div>
     </form>
 
@@ -267,6 +267,12 @@ export default {
       }
     },
     methods: {
+      open(e) {
+        e.target.setAttribute('size', 5)
+      },
+      close(e) {
+        e.target.setAttribute('size', 0)
+      },
       usernameCheck() {
         axios.get(`${BASE_URL}:8090/app/account/idcheck`, this.email,{
           headers: {
@@ -407,6 +413,9 @@ export default {
 </script>
 
 <style>
+/* #signup select {
+  max-height: 300px;
+} */
 #signup .signup {
   padding: 0 30px;
   margin-top: 30px;
