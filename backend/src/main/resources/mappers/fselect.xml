@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.web.curation.dao.fselect.FselectDAO">
+<mapper namespace="com.web.curation.dao.FselectDAO">
 	<select id="selectSido" resultType="SidoCode">
 		select left(sido_code,2) sido_code, sido_name
 		from sidocode

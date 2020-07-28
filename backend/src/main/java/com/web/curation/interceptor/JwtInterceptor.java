@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import com.web.curation.service.user.JwtUtil;
+import com.web.curation.config.JwtUtil;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
