@@ -17,6 +17,7 @@ import NavbarLinkListItem from '@/components/nav/NavbarLinkListItem.vue'
 import LoginModal from '@/components/modal/LoginModal.vue'
 import ForgotPasswordModal  from '@/components/modal/ForgotPasswordModal.vue'
 import ServiceAddModal from '@/components/modal/ServiceAddModal.vue'
+import NoticeIcon from '@/components/common/NoticeIcon.vue'
 
 export default {
   name: 'NavbarLinkList',
@@ -31,7 +32,8 @@ export default {
     NavbarLinkListItem,
     LoginModal,
     ForgotPasswordModal,
-    ServiceAddModal
+    ServiceAddModal,
+    NoticeIcon
   },
   methods: {
     toSignUp() {

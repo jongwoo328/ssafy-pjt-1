@@ -75,10 +75,10 @@ export default {
       this.formCheck()
       let loginData = {
         email: this.email,
-        password: this.password
+        pw: this.password
       }
 
-      axios.post("http://192.168.43.204:8090/account/login", loginData)
+      axios.post("http://192.168.100.88:8090/account/login", loginData)
       .then(res => {
         console.log(res)
         if (res.status === 200) {

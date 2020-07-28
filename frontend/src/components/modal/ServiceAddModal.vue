@@ -59,7 +59,7 @@
 import Button from '@/components/common/Button.vue'
 
 export default {
-name: 'ServieAddModal',
+name: 'ServiceAddModal',
   components: {
     Button
   },
