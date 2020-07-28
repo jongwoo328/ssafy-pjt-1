@@ -3,61 +3,68 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="user">
+<mapper namespace="com.web.curation.dao.UserDao">
 
     <select id="selectUser" resultType="user">
-        select uid,
-        email,
-        password,
-        create_date
+        select *
         from user
     </select>
     
     <select id="selectOneUserByUid" resultType="user">
-        select uid,
-        email,
-        password,
-        create_date
+        select *
         from user
-        where uid = #{uid}
+        where name = #{name}
     </select>
     
     <select id="login" resultType="user">
-        select uid,
-        email,
-        password,
-        create_date
+        select *
         from user
         where email = #{email} and password = #{password}
     </select>
     
-    <select id="findUserByUidAndPassword" resultType="user">
-        select uid,
-        email,
-        password,
-        create_date
+    <select id="findUserByEmailAndName" resultType="user">
+        select *
         from user
-        where uid = #{uid} and password = #{password}
+        where email = #{email} and name = #{username}
     </select>
     
     <select id="selectOneUserByEmail" resultType="user">
-        select uid,
-        email,
-        password,
-        create_date
+        select *
         from user
         where email = #{email}
     </select>
     
-    <insert id = "join">
-        insert into user (uid, email, password) values (#{uid}, #{email},#{password})
+    <select id="selectOneUserByTel" resultType="user">
+        select *
+        from user
+        where tel = #{tel}
+    </select>
+    
+    <insert id = "join" >
+        insert into user (email, pw, name, tel, addr1,addr2,addr3,addr4,addr5,addr6, ispro) 
+        values (#{email},#{password},#{username},#{tel},#{addr1},#{addr2},#{addr3},#{addr4},#{addr5},#{addr6},#{ispro})
     </insert>
+    
+    <update id="samplePw">
+    update user
+        set pw = #{pw}
+        where email = #{email};
+    </update>
     
     <update id = "updateUser">
         update user
         set email = #{email},
-        password = #{password}
-        where uid = #{uid}
+        pw = #{pw},
+        name =#{name},
+        tel = #{tel},
+        addr1 = #{addr1},
+        addr2 = #{addr2},
+        addr3 = #{addr3},
+        addr4 = #{addr4},
+        addr5 = #{addr5},
+        addr6 = #{addr6},
+        ispro =#{ispro}
+        where userno = #{userno}
     </update>
     
 </mapper>

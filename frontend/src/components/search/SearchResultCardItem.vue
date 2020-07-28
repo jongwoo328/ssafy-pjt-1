@@ -3,7 +3,10 @@
       <div class="card-inner">
         <header>
             <h2 v-text="service.s_name"></h2>
-            <p v-text="service.u_no"></p>
+            <div class="pro-info">
+                <img src="https://grepp-programmers.s3.amazonaws.com/production/company/logo/2640/_nolbal_bi_logo_%E1%84%89%E1%85%A6%E1%84%85%E1%85%A9.png" alt="">
+                <p v-text="service.u_no"></p>
+            </div>
         </header>
         <hr>
         <div class="card-content">
@@ -77,5 +80,12 @@ export default {
     .card-content {
         padding-left: 5px;
         padding-right: 5px;
+    }
+    .pro-info img{
+        width: 50px;
+        height: 50px;
+    }
+    .pro-info p {
+        display: inline-block;
     }
 </style>

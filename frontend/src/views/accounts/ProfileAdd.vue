@@ -46,6 +46,7 @@ export default {
           const formData = new FormData()
           formData.append('profileImage', this.profileImage)
           formData.append('Comment', this.comment)
+          formData.append('userno', this.$store.getters.getUserData.userno)
 
           for (let key of formData.entries())
           {
@@ -54,7 +55,7 @@ export default {
 
           axios.post('http://192.168.100.88:8090/profile', formData, {
             headers: {
-              'Authorization': 'jwsToken' + this.$session.get('jwstoken'),
+              'Authorization': this.$session.get('jwstoken'),
               'Content-Type' : 'multipart/form-data'
             }
           }).then(res => {

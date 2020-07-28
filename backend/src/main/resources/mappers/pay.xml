@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.curation.dao.PayDAO">
+	
+	<!-- 결제 정보 조회 -->
+	<select id ="selectPay" resultType="Pay">
+		select payno,
+			   servno,
+			   userno
+		from pay
+		where servno = #{servno} and userno = #{userno}
+		
+	</select>
+	
+	<!-- 결제 정보 저장 -->
+	<insert id = "insert" parameterType="Pay">
+		insert into pay (
+			userno,
+			servno
+		) values (#{userno}, #{servno})
+	</insert>
+
+</mapper>
