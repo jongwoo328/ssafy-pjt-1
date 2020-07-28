@@ -13,6 +13,14 @@
             <div class="modal-body font-kor">
                 <slot name="body">
                     <div class="input-box">
+                      <label class="input-label form-block-head" for="inputname">분류</label>
+                        <div class="col-12 d-flex flex-wrap p-0">
+                        <select name="si" id="si" class="col-12 col-md-4 search-info m-0">
+                        <option value="none" disabled selected>분류</option>
+                      </select>
+                        </div>
+                    </div>
+                    <div class="input-box">
                       <label class="input-label form-block-head" for="inputname">서비스명  </label>
                       <input type="text" id="inputname" placeholder="서비스명을 입력하세요." v-model="servicedata.title">
                     </div>
