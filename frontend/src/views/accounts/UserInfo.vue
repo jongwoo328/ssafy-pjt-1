@@ -140,6 +140,9 @@
 </template>
 
 <script>
+
+let BASE_URL = "http://192.168.100.88"
+
 import axios from "axios"
 import Button from "@/components/common/Button.vue"
 import PV from "password-validator";
@@ -150,7 +153,8 @@ export default {
     Button
   },
   created() {
-    axios.get("https://address:port/destination")
+    console.log(this.$session.get('jwstoken'))
+    axios.get(`${BASE_URL}/account/userinfo`)
     .then(res => {
       // res.data 에 유저의 정보가 담겨있다고 생각하고 작성
       // this.user = res.data
@@ -180,7 +184,6 @@ export default {
   },
   methods: {
     checkform() {
-
         if (this.User.password !== this.curPassword) {
           this.isError = "비밀번호가 일치하지 않습니다."
           return
@@ -245,7 +248,7 @@ export default {
 <style scoped>
 .UserInfo-text {
   display: block;
-  font-size: 30px;
+  font-size: 2rem;
   font-weight: bolder;
   margin-bottom: 20px;
 }

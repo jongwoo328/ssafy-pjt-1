@@ -103,17 +103,17 @@
           </label>
           <select class="form-control" id="exampleFormControlSelect1" v-model="siInfo" >
             <option value="" disabled selected>시/도</option>
-            <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj.siCode" v-text="si_obj.siName"></option>
+            <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName"></option>
           </select>
         </div>
         <div class="col-12 d-flex sub-address">
           <select class="form-control col-6" id="exampleFormControlSelect2" v-model="guInfo">
             <option value="" disabled selected>구/군</option>
-            <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj.guCode" v-text="gu_obj.guName"></option>
+            <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
           </select>
           <select class="form-control col-6" id="exampleFormControlSelect3" v-model="dongInfo" >
             <option value="" disabled selected>동/읍/면</option>
-            <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj.dongCode" v-text="dong_obj.dongName"></option>
+            <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
           </select>
         </div>
       </div>
@@ -163,7 +163,7 @@
 
 <script>
 
-let BASE_URL = "http://192.168.219.162"
+let BASE_URL = "http://192.168.100.88"
 
 import PV from "password-validator";
 import * as EmailValidator from "email-validator";
@@ -180,7 +180,7 @@ export default {
       TermModal
     },
     created() {
-      axios.get(`${BASE_URL}:3000/happyhouse/api/fselect`, {
+      axios.get(`${BASE_URL}:8090/fselect`, {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -213,6 +213,12 @@ export default {
         passwordConfirm: "",
         email: "",
         tel: "",
+        addr1: "",
+        addr2: "",
+        addr3: "",
+        addr4: "",
+        addr5: "",
+        addr6: "",
         errorData: {
           username: false,
           password: false,
@@ -268,12 +274,7 @@ export default {
       }
     },
     methods: {
-      cancel() {
-        console.log(1)
-        this.$router.push({name: 'Home'})
-      },
       usernameCheck() {
-        console.log("test")
         axios.get(`${BASE_URL}:8090/app/account/idcheck`, this.email,{
           headers: {
               'Content-Type': 'application/json',
@@ -306,7 +307,7 @@ export default {
         this.guInfo = ""
         this.dongInfo = ""
 
-        axios.get(`${BASE_URL}:3000/happyhouse/api/fselect/${si_params}`, {
+        axios.get(`${BASE_URL}:8090/fselect/${si_params.siCode}`, {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -327,7 +328,7 @@ export default {
         this.dongList = []
         this.dongInfo = ""
         // console.log(gu_params)
-        axios.get(`${BASE_URL}:3000/happyhouse/api/fselect/sido/${gu_params}`, {
+        axios.get(`${BASE_URL}:8090/fselect/sido/${gu_params.guCode}`, {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -389,16 +390,21 @@ export default {
 
         let signUpData = {
           'email': this.email,
-          'username': this.username,
-          'password': this.password,
+          'name': this.username,
+          'pw': this.password,
           'tel': this.tel,
-          'address': this.dongInfo,
-          'isPro': this.isPro
+          'addr1': this.siInfo.siCode,
+          'addr2': this.siInfo.siName,
+          'addr3': this.guInfo.guCode,
+          'addr4': this.guInfo.guName,
+          'addr5': this.dongInfo.dongCode,
+          'addr6': this.dongInfo.dongName,
+          'ispro': this.isPro
         }
 
 
         console.log(signUpData)
-        axios.post(`${BASE_URL}:3000/account/signup`, signUpData)
+        axios.post(`${BASE_URL}:8090/account/signup`, signUpData)
         .then(res => {
           this.isSubmit = true
           console.log(res)
