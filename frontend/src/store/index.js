@@ -32,6 +32,9 @@ export default new Vuex.Store({
     },
     getUserData(state) {
       return state.userData
+    },
+    isPro(state) {
+      return state.userData.ispro
     }
   }
 })

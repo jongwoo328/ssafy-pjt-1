@@ -9,7 +9,7 @@
                 <input type="text" class="col-7 search-info">
                 <Button buttonText="검색" />
           </div>
-          <div class="col-12 row">
+          <div class="offset-3 col row">
             <select name="si" id="si" class="col-2 search-info">
                 <option value="none" disabled selected>시/도</option>
             </select>
@@ -50,9 +50,19 @@ export default {
             padding-top: 30px;
         }
         .search-info {
-            margin: 10px 5px 10px 5px;
+            width: 100%;
+            height: 40px;
+            border: 0.8px;
+            border-radius: 0;
+            padding-left: 10px;
+            border-style: none none solid none;
+            /* margin: 10px 5px 10px 5px;
             border-radius: 7px;
-            height: 50px;
+            height: 50px; */
+        }
+        #join-web button {
+            margin-left: 20px;
+            padding: 5px 10px;
         }
         #category {
             min-width: 84px;

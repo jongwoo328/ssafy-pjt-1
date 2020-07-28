@@ -2,15 +2,15 @@
 <div id="content">
     <div id="content-mobile">
             <div class="icon-wrap">
-                <i class="fas fa-dumbbell left-30"></i>
+                <i class="fas fa-dumbbell"></i>
                 <div class="desc font-lobster">Fitness</div>
             </div>
             <div class="icon-wrap">
-                <i class="fas fa-drum left-60"></i>
+                <i class="fas fa-drum"></i>
                 <div class="desc font-lobster">Music</div>
             </div>
             <div class="icon-wrap">
-                <i class="fas fa-square-root-alt left-30"></i>
+                <i class="fas fa-square-root-alt"></i>
                 <div class="desc font-lobster">Study</div>
             </div>
             <div class="icon-wrap">

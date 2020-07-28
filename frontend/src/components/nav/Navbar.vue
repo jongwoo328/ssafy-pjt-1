@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar">
-      <a href="/" class="navbar-brand"><img src="../../assets/logo_mini.jpg" alt="logo"></a>
+      <a href="/" class="navbar-brand"><img src="../../assets/logo_mini.png" alt="logo"></a>
       <NavbarLinkList/>
   </nav>
 </template>
