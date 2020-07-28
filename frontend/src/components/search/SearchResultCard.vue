@@ -13,7 +13,7 @@ export default {
         SearchResultCardItem
     },
     props: {
-        services: Object
+        services: Array,
     }
 }
 </script>

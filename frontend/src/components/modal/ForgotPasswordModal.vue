@@ -10,30 +10,18 @@
 
             <div class="modal-body">
                 <slot name="body">
-                  <div class="form">
-                    <div class="input-box">
+                  <form class="form" @submit.prevent="find">
                       <label class="input-label" for="inputemail">Email</label>
-                      <div>
-                        <input type="text" id="Inputemail" class="mb-0" placeholder="이메일을 입력하세요" v-model="email">
-                        <div v-if="errorData.email" class="error-msg" v-text="errorData.email"></div>
-                      </div>
-                      <label class="input-label" for="inputtel">Tel</label>
-                      <input type="text" id="Inputtel" placeholder="휴대전화번호를 입력하세요. ('-' 제외)" v-model="tel">
-                    </div>
-                    <div class="button">
+                      <input name="inputemail" type="text" id="Inputemail" class="mb-0" placeholder="이메일을 입력하세요" v-model="email">
+                      <div v-if="errorData.email" class="error-msg" v-text="errorData.email"></div>
+                      <input type="text" name="password" id="password">
+                      <input type="text" name="username" id="username">
                       <Button v-if="this.isfind" buttonText="Login" type="submit" data-dismiss="modal" @click.native="$emit('change')" />
                       <Button v-else buttonText="Back" type="submit" data-dismiss="modal" @click.native="$emit('change')" />
-                      <Button buttonText="Submit" type="submit" @click.native="find" />
-                    </div>
-                  </div>
+                      <Button buttonText="Submit" type="submit"/>
+                  </form>
                 </slot>
             </div>
-
-            <!-- <div class="modal-footer">
-                <slot name="footer">
-                  <a class="font-kor" data-dismiss="modal" href="#" @click="$emit('change')">Back</a>
-                </slot>
-            </div> -->
             </div>
         </div>
         </div>
@@ -44,6 +32,7 @@
 import Button from '@/components/common/Button.vue'
 import * as EmailValidator from "email-validator";
 import axios from 'axios'
+import emailjs from 'emailjs-com';
 
 export default {
   name: 'ForgotPasswordModal',
@@ -53,11 +42,11 @@ export default {
   data() {
     return {
       email: "",
-      tel: "",
       errorData: {
         email: ""
       },
       isfind: false,
+      password: ""
     }
   },
   watch: {
@@ -71,43 +60,50 @@ export default {
         this.errorData.email = "올바른 이메일 형식이 아닙니다."
       else this.errorData.email = false
     },
-    find () {
+    find (e) {
       this.formCheck()
 
       let forgotData = {
         email: this.email,
-        tel: this.tel
       }
-
-      axios.post('http://192.168.43.109:3000/account/pwfind', forgotData)
+      axios.post('http://192.168.100.88:8090/account/pwfind', forgotData)
       .then(res => {
         console.log(res)
         if (res.status === 200) {
           console.log(res)
           if (res.data.status === true) {
             this.isfind = true
-            alert(`임시비밀번호는 '${res.data.data}'입니다.`)
+            document.getElementById('password').value = res.data.data
+            document.getElementById('username').value = 'test'
+
+            console.log(process.env.VUE_APP_USER_ID)
+            console.log(process.env.VUE_APP_TEMPLATE_KEY)
+            emailjs.sendForm('gmail', process.env.VUE_APP_TEMPLATE_KEY, e.target, process.env.VUE_APP_USER_ID)
+            .then((result) => {
+                console.log('SUCCESS!', result.status, result.text);
+            }, (error) => {
+                console.log('FAILED...', error);
+            })
+            alert('임시비밀번호를 발송하였습니다.')
           }
           else if (res.data.data === 'email') {
             alert('입력하신 메일 정보가 올바르지 않습니다.')
           }
-          else if (res.data.data === 'tel') {
-            alert('입력하신 번호가 올바르지 않습니다.')
-          }
         }
       })
     },
-
     modalclose () {
       this.$emit('close')
-    },
+    }
   },
 }
 </script>
 
 <style scoped>
     /* model */
-  
+  #password, #username {
+    display: none;
+  }
   .form {
     text-align: right;
   }

@@ -1,6 +1,6 @@
 <template>
   <div id="profile" class="container">
-      <h1>Profile</h1>
+      <h3>Profile</h3>
       <hr>
       <ProfileFrame v-if="profileFrame" />
       <br>
@@ -38,6 +38,9 @@ export default {
 <style scoped>
     #profile {
         padding-top: 50px;
+    }
+    h3 {
+      font-size: 3rem;
     }
     Button {
         float: right;

@@ -10,7 +10,9 @@
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.5",
+    "email-js": "^2.0.2",
     "email-validator": "^2.0.4",
+    "emailjs-com": "^2.6.3",
     "jquery": "^3.5.1",
     "password-validator": "^5.0.3",
     "vue": "^2.6.11",

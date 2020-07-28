@@ -58,7 +58,7 @@ import Button from '@/components/common/Button.vue'
 // import axios from 'axios'
 
 export default {
-name: 'ServieAddModal',
+name: 'ServiceAddModal',
   components: {
     Button
   },

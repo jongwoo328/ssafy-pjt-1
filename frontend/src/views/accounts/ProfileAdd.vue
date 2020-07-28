@@ -1,5 +1,5 @@
 <template>
-  <div class="profile">
+  <div class="profile container">
       <h3>Profile</h3>
       <hr>
       <div>
@@ -10,7 +10,7 @@
         <input ref="profileImage" type="file" id="file" accept="image/*" @change="fileSelect">
         <br>
         <label for="description">소개</label>
-        <textarea name ="description" id="description" v-model="description"></textarea>
+        <textarea name ="description" id="description" v-model="comment"></textarea>
       </div>
       <Button class="ml-auto" type="submit" button-text="등록" @click.native="submit" />
   </div>
@@ -27,7 +27,7 @@ export default {
         return {
             profileImage: '',
             profileImageUrl: null,
-            description: null,
+            comment: null,
             profileframe: true,
         }
     },
@@ -45,20 +45,21 @@ export default {
         submit() {
           const formData = new FormData()
           formData.append('profileImage', this.profileImage)
-          formData.append('profileImageUrl', this.profileImageUrl)
-          formData.append('Description', this.description)
+          formData.append('Comment', this.comment)
 
           for (let key of formData.entries())
           {
             console.log(`${key}`)
           }
 
-          axios.post('http://localhost:8080/profile/add', formData, {
+          axios.post('http://192.168.100.88:8090/profile', formData, {
             headers: {
+              'Authorization': 'jwsToken' + this.$session.get('jwstoken'),
               'Content-Type' : 'multipart/form-data'
             }
           }).then(res => {
             console.log(res)
+            this.$router.push({ name : 'Profile' })
           }).catch(err => {
             console.log(err)
           })
@@ -69,7 +70,7 @@ export default {
 
 <style scoped>
     .profile {
-        margin: 30px 20px 30px 20px;
+        padding-top: 50px;
     }
     h3 {
       font-size: 3rem;
