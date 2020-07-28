@@ -1,5 +1,5 @@
 <template>
-  <div class="signup">
+  <div class="signup container">
     <span class="signup-text">Sign Up</span>
     <hr class="mb-4 ">
     <div class="signup-head">
@@ -21,7 +21,7 @@
         </label>
         <div class="d-flex justify-content-between">
           <input 
-          class="input-text col-8"
+          class="input-text col-8 col-md-8"
           v-model="email" 
           id="email" 
           placeholder="이메일을 입력하세요." 
@@ -29,10 +29,11 @@
           autocapitalize="none"
           :class="{ error : errorData.email  && this.email }"
           />
+          <div class="d-none d-md-block col-md-2"></div>
           <Button 
               @click.native="idCheck"
               buttonText="중복체크"
-              class="btn-components id-check-btn"
+              class="btn-components btn-id-check"
             />
         </div>
         <div class="error-msg" v-if="errorData.email && (email || isFail)">{{ errorData.email }}</div>
@@ -133,23 +134,31 @@
         />
         <div class="error-msg" v-if="errorData.tel && (tel || isFail)">{{ errorData.tel }}</div>
     </div>
-    <label>
-      <em class="asterisk-red">*</em>
-      <input v-model="isTerm" type="checkbox" id="term" />
-      <span>약관을 동의합니다.</span>
-    </label>
-    <TermModal v-if="termPopup" @close="termPopup = false">
-    <h3 slot="header">전체 약관</h3>
-    </TermModal>  
-    <span @click="termPopup=true">약관보기</span>
-    <div class="error-msg tems-err-msg" v-if="errorData.isTerm" v-text="errorData.isTerm"></div>
-    <Button 
-        @click.native="signUp"
-        buttonText="SignUp"
-        class="btn-components"
-    />
-
-  </div>
+    <div class="term">
+      <label class="mb-0">
+        <em class="asterisk-red">*</em>
+        <input v-model="isTerm" type="checkbox" id="term" />
+        <span>약관을 동의합니다.</span>
+      </label>
+      <TermModal v-if="termPopup" @close="termPopup = false">
+      <h3 slot="header">전체 약관</h3>
+      </TermModal>  
+      <span @click="termPopup=true">약관보기</span>
+      <div class="error-msg terms-err-msg" v-if="errorData.isTerm" v-text="errorData.isTerm"></div>
+    </div>
+    <!-- <div class="btn-group col-8 col-md-4">
+      <Button 
+        @click.native="cancel"
+        buttonText="가입취소"
+        class="btn-components col-6 btn-cancel"
+      /> -->
+      <Button 
+          @click.native="signUp"
+          buttonText="가입"
+          class="btn-components col-4 col-md-2 btn-signup"
+      />
+    </div>
+  <!-- </div> -->
 </template>
 
 <script>
@@ -230,7 +239,6 @@ export default {
           pos: "possible",
           impos: "impossible"
         }
-        // phoneNumValidation: /^\w{10}$/
       }
     },
     watch: {
@@ -260,6 +268,10 @@ export default {
       }
     },
     methods: {
+      cancel() {
+        console.log(1)
+        this.$router.push({name: 'Home'})
+      },
       usernameCheck() {
         console.log("test")
         axios.get(`${BASE_URL}:8090/app/account/idcheck`, this.email,{
@@ -355,7 +367,8 @@ export default {
         }
         else this.errorData.isTerm = false
 
-        // if (this.tel === "" || (this.tel.length > 0 && !this.tel.value.match(this.phoneNumValidation)))
+        // let phoneNumValidation = /^\d{10}$/
+        // if (this.tel === "" || (this.tel.length > 0 && !this.tel.value.match(phoneNumValidation)))
         //   this.errorData.tel = "전화번호를 입력하세요"
         // else this.errorData.tel = false
 
@@ -400,6 +413,10 @@ export default {
 </script>
 
 <style scoped>
+.signup {
+  padding: 0 30px;
+  margin-top: 30px;
+}
 .duplicateMsg {
   color: greenyellow;
 }
@@ -408,17 +425,17 @@ export default {
   color: red;
 }
 
-.id-check-btn {
+.btn-id-check {
   height: 40px;
-  font-size: 17px;
+  font-size: 13px;
   padding: 7px;
   margin-left: 10px;
-
 }
+
 .btn-components {
   width: 100%;
   outline: none;
-  box-shadow: 0 0 0 3px #EE4B55;
+  /* box-shadow: 0 0 0 3px #EE4B55; */
 }
 
 .dup-err {
@@ -443,16 +460,12 @@ export default {
   color: #EE4B55;
   font-size: 14px;
 }
-.signup {
-  padding: 0 30px;
-  margin-top: 30px;
-}
+
 .signup-text {
   display: block;
-  font-size: 30px;
   font-weight: bolder;
-  margin-bottom: 20px;
-  /* color: #3487e683; */
+  margin: 20px 0;
+  font-size: 2rem;
 }
 
 .terms {
@@ -463,25 +476,23 @@ export default {
   margin-left: 20px;
 }
 
+
 .form-block-head {
-  display: block;
   font-size: 16px;
+  margin: 0;
+  padding: 8px 0 0 0;
+  font-weight: bolder
 }
 
 .form-block {
   margin-bottom: 25px;
 }
+
+
 .asterisk-red {
   color: red;
 }
 
-.input-text {
-  width: 100%;
-  height: 40px;
-  border-radius: 10px;
-  border: 0.8px solid;
-  padding-left: 10px;
-}
 
 .form-control {
   border-radius: 10px;
@@ -492,9 +503,35 @@ export default {
   margin-top: 10px;
 }
 
+
 input:focus {
-  outline: none;
-  box-shadow: 0 0 0 1.5px #3487e683;
+outline: none;
+box-shadow: 0 0 0 3px #3487e683;
+border: none;
+}
+
+/* .btn-group {
+  margin: 10px 0;
+  padding: 0;
+  float: right;
+}
+
+.btn-cancel {
+  background-color: white;
+  color: rgb(236,128,116);
+} */
+
+.btn-signup {
+  margin: 15px 0;
+  float: right;
+}
+
+.input-text {
+width: 100%;
+height: 40px;
+border: 0.8px;
+padding-left: 10px;
+border-style: none none solid none;
 }
 
 .input-radio {
