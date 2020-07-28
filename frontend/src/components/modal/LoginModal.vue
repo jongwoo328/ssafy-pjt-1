@@ -81,11 +81,15 @@ export default {
       axios.post("http://192.168.100.88:8090/account/login", loginData)
       .then(res => {
         console.log(res)
-        if (res.status === 200) {
+        if (res.data.status === true) {
           console.log(res.headers)
           this.$session.set('jwstoken', res.headers.jwstoken)
-          this.$store.commit('login')
+          this.$store.commit('login', res.data.object)
           this.$router.push('/')
+          this.modalclose()
+        }
+        else {
+          alert('일치하는 회원정보가 없습니다.')
         }
       })
       .catch(err => {

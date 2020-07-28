@@ -13,14 +13,15 @@
                 <slot name="body">
                   <form class="form" @submit.prevent="find">
                       <label class="input-label" for="inputemail">Email</label>
+                      <br>
                       <input name="inputemail" type="text" id="Inputemail" class="mb-0" placeholder="이메일을 입력하세요" v-model="email">
                       <div v-if="errorData.email" class="error-msg" v-text="errorData.email"></div>
                       <input type="text" name="password" id="password">
                       <input type="text" name="username" id="username">
-                      <Button v-if="this.isfind" buttonText="Login" type="submit" data-dismiss="modal" @click.native="$emit('change')" />
-                      <Button v-else buttonText="Back" type="submit" data-dismiss="modal" @click.native="$emit('change')" />
-                      <Button buttonText="Submit" type="submit"/>
+                      <Button class="backbutton"  v-if="this.isfind" buttonText="Login" type="submit" data-dismiss="modal" @click.native="$emit('change')" />
+                      <Button class="submitbutton" buttonText="Submit" type="submit"/>
                   </form>
+                  <Button class="backbutton" v-if="!this.isfind" buttonText="Back" data-dismiss="modal" @click.native="$emit('change')" />
                 </slot>
             </div>
             </div>
@@ -103,19 +104,40 @@ export default {
 
 <style scoped>
     /* model */
+  input {
+    width: 100%;
+    height: 40px;
+    border: 0.8px;
+    padding-left: 10px;
+    border-style: none none solid none;
+  }
+  label {
+    font-size: 16px;
+    margin: 0 0 10px 0;
+    padding: 8px 0 0 0;
+    text-align: right;
+    font-weight: bolder
+  }
+  Button {
+    margin-top: 10px;
+  }
+  .backbutton {
+    float: left;
+    color: rgb(236,128,116);
+    background-color: white;
+  }
+  .submitbutton {
+    float: right;
+  }
   #password, #username {
     display: none;
   }
   .form {
-    text-align: right;
+    text-align: left;
   }
   #forgotPasswordModal .button {
     display: flex;
     justify-content: space-between;
-  }
-  #forgotPasswordModal .button :first-child {
-    color: rgb(236,128,116);
-    background-color: white;
   }
   #forgotPasswordModal .modalfooter {
     display: block;
@@ -179,7 +201,7 @@ export default {
   }
 
   #forgotPasswordModal .modal-body {
-    margin: 0 0;
+    margin-bottom: 50px;
   }
 
   #forgotPasswordModal .modal-default-button {
