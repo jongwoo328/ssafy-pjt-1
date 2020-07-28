@@ -1,6 +1,6 @@
 <template>
   <div id="profile" class="container">
-      <h1>Profile</h1>
+      <h3>Profile</h3>
       <hr>
       <ProfileFrame v-if="profileFrame" />
       <br>
@@ -35,18 +35,21 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
     #profile {
         padding-top: 50px;
     }
-    Button {
+    #profileAdd h3 {
+      font-size: 3rem;
+    }
+    #profile Button {
         float: right;
     }
-    .description {
+    #profile .description {
         display: flex;
         justify-content: space-between;
     }
-    .description Button {
+    #profile .description Button {
         color: rgb(236,128,116);
         background-color: white;
     }

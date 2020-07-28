@@ -1,5 +1,5 @@
 <template>
-  <div class="signup">
+  <div class="signup container" id="signup">
     <span class="signup-text">Sign Up</span>
     <hr class="mb-4 ">
     <div class="signup-head">
@@ -21,7 +21,7 @@
         </label>
         <div class="d-flex justify-content-between">
           <input 
-          class="input-text col-8"
+          class="input-text col-8 col-md-8"
           v-model="email" 
           id="email" 
           placeholder="이메일을 입력하세요." 
@@ -29,10 +29,11 @@
           autocapitalize="none"
           :class="{ error : errorData.email  && this.email }"
           />
+          <div class="d-none d-md-block col-md-2"></div>
           <Button 
               @click.native="idCheck"
               buttonText="중복체크"
-              class="btn-components id-check-btn"
+              class="btn-components btn-id-check"
             />
         </div>
         <div class="error-msg" v-if="errorData.email && (email || isFail)">{{ errorData.email }}</div>
@@ -54,7 +55,6 @@
           autocapitalize="none"
           :class="{ error : errorData.username && this.username }"
           />
-          <!-- <span class="col-1"> </span> -->
         <div class="error-msg" v-if="errorData.username && (username || isFail)">{{ errorData.username }}</div>
         <span class="dup-err" v-if="username && duplicate.username === duplicate.impos">이미 존재하는 사용자명입니다.</span>
         <span class="success" v-if="username && duplicate.username === duplicate.pos">이 사용자명은 사용가능합니다.</span>
@@ -102,17 +102,17 @@
           </label>
           <select class="form-control" id="exampleFormControlSelect1" v-model="siInfo" >
             <option value="" disabled selected>시/도</option>
-            <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj.siCode" v-text="si_obj.siName"></option>
+            <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName"></option>
           </select>
         </div>
         <div class="col-12 d-flex sub-address">
           <select class="form-control col-6" id="exampleFormControlSelect2" v-model="guInfo">
             <option value="" disabled selected>구/군</option>
-            <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj.guCode" v-text="gu_obj.guName"></option>
+            <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
           </select>
           <select class="form-control col-6" id="exampleFormControlSelect3" v-model="dongInfo" >
             <option value="" disabled selected>동/읍/면</option>
-            <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj.dongCode" v-text="dong_obj.dongName"></option>
+            <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
           </select>
         </div>
       </div>
@@ -133,28 +133,30 @@
         />
         <div class="error-msg" v-if="errorData.tel && (tel || isFail)">{{ errorData.tel }}</div>
     </div>
-    <label>
-      <em class="asterisk-red">*</em>
-      <input v-model="isTerm" type="checkbox" id="term" />
-      <span>약관을 동의합니다.</span>
-    </label>
-    <TermModal v-if="termPopup" @close="termPopup = false">
-    <h3 slot="header">전체 약관</h3>
-    </TermModal>  
-    <span @click="termPopup=true">약관보기</span>
-    <div class="error-msg tems-err-msg" v-if="errorData.isTerm" v-text="errorData.isTerm"></div>
-    <Button 
-        @click.native="signUp"
-        buttonText="SignUp"
-        class="btn-components"
-    />
-
-  </div>
+    <div class="term">
+      <label class="mb-0">
+        <em class="asterisk-red">*</em>
+        <input v-model="isTerm" type="checkbox" id="term" />
+        <span>약관을 동의합니다.</span>
+      </label>
+      <p></p>
+      <TermModal v-if="termPopup" @close="termPopup = false">
+      <h3 slot="header">전체 약관</h3>
+      </TermModal>
+      <span @click="termPopup=true" id="btn-term">약관보기</span>
+      <div class="error-msg terms-err-msg" v-if="errorData.isTerm" v-text="errorData.isTerm"></div>
+    </div>
+      <Button 
+          @click.native="signUp"
+          buttonText="가입"
+          class="btn-components col-4 col-md-2 btn-signup"
+      />
+    </div>
 </template>
 
 <script>
 
-let BASE_URL = "http://192.168.219.162"
+let BASE_URL = "http://192.168.100.88"
 
 import PV from "password-validator";
 import * as EmailValidator from "email-validator";
@@ -171,7 +173,7 @@ export default {
       TermModal
     },
     created() {
-      axios.get(`${BASE_URL}:3000/happyhouse/api/fselect`, {
+      axios.get(`${BASE_URL}:8090/fselect`, {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -204,6 +206,12 @@ export default {
         passwordConfirm: "",
         email: "",
         tel: "",
+        addr1: "",
+        addr2: "",
+        addr3: "",
+        addr4: "",
+        addr5: "",
+        addr6: "",
         errorData: {
           username: false,
           password: false,
@@ -230,7 +238,6 @@ export default {
           pos: "possible",
           impos: "impossible"
         }
-        // phoneNumValidation: /^\w{10}$/
       }
     },
     watch: {
@@ -261,7 +268,6 @@ export default {
     },
     methods: {
       usernameCheck() {
-        console.log("test")
         axios.get(`${BASE_URL}:8090/app/account/idcheck`, this.email,{
           headers: {
               'Content-Type': 'application/json',
@@ -294,7 +300,7 @@ export default {
         this.guInfo = ""
         this.dongInfo = ""
 
-        axios.get(`${BASE_URL}:3000/happyhouse/api/fselect/${si_params}`, {
+        axios.get(`${BASE_URL}:8090/fselect/${si_params.siCode}`, {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -315,7 +321,7 @@ export default {
         this.dongList = []
         this.dongInfo = ""
         // console.log(gu_params)
-        axios.get(`${BASE_URL}:3000/happyhouse/api/fselect/sido/${gu_params}`, {
+        axios.get(`${BASE_URL}:8090/fselect/sido/${gu_params.guCode}`, {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -355,10 +361,6 @@ export default {
         }
         else this.errorData.isTerm = false
 
-        // if (this.tel === "" || (this.tel.length > 0 && !this.tel.value.match(this.phoneNumValidation)))
-        //   this.errorData.tel = "전화번호를 입력하세요"
-        // else this.errorData.tel = false
-
         let isSubmit = true;  
         Object.values(this.errorData).map(v => {
           if (v) isSubmit = false;
@@ -376,16 +378,21 @@ export default {
 
         let signUpData = {
           'email': this.email,
-          'username': this.username,
-          'password': this.password,
+          'name': this.username,
+          'pw': this.password,
           'tel': this.tel,
-          'address': this.dongInfo,
-          'isPro': this.isPro
+          'addr1': this.siInfo.siCode,
+          'addr2': this.siInfo.siName,
+          'addr3': this.guInfo.guCode,
+          'addr4': this.guInfo.guName,
+          'addr5': this.dongInfo.dongCode,
+          'addr6': this.dongInfo.dongName,
+          'ispro': this.isPro
         }
 
 
         console.log(signUpData)
-        axios.post(`${BASE_URL}:3000/account/signup`, signUpData)
+        axios.post(`${BASE_URL}:8090/account/signup`, signUpData)
         .then(res => {
           this.isSubmit = true
           console.log(res)
@@ -399,105 +406,123 @@ export default {
 }
 </script>
 
-<style scoped>
-.duplicateMsg {
+<style>
+#signup .signup {
+  padding: 0 30px;
+  margin-top: 30px;
+}
+#signup .duplicateMsg {
   color: greenyellow;
 }
 
-.duplicate {
+#signup .duplicate {
   color: red;
 }
 
-.id-check-btn {
+#btn-term {
+  font-weight: bold;
+}
+#btn-term:hover {
+  cursor: pointer;
+}
+#signup .btn-id-check {
   height: 40px;
-  font-size: 17px;
+  font-size: 13px;
   padding: 7px;
   margin-left: 10px;
-
 }
-.btn-components {
+
+#signup .btn-components {
   width: 100%;
   outline: none;
-  box-shadow: 0 0 0 3px #EE4B55;
 }
 
-.dup-err {
+#signup .dup-err {
   color: #EE4B55;
 }
 
-.success {
+#signup .success {
   color: greenyellow;
 }
 
-.passwordConfirm {
+#signup .passwordConfirm {
   margin: 10px 0 25px;
 }
-.signup-head {
+#signup .signup-head {
   display: flex;
   font-size: 15px;
   margin: 15px 4px;
 }
-.error-msg {
+#signup .error-msg {
   width: 100%;
   float: left;
   color: #EE4B55;
   font-size: 14px;
 }
-.signup {
-  padding: 0 30px;
-  margin-top: 30px;
-}
-.signup-text {
+
+#signup .signup-text {
   display: block;
-  font-size: 30px;
   font-weight: bolder;
-  margin-bottom: 20px;
-  /* color: #3487e683; */
+  margin: 20px 0;
+  font-size: 2rem;
 }
 
-.terms {
+#signup .terms {
   margin-bottom: 0;
 }
 
-.terms-err-msg {
+#signup .terms-err-msg {
   margin-left: 20px;
 }
 
-.form-block-head {
-  display: block;
+
+#signup .form-block-head {
   font-size: 16px;
+  margin: 0;
+  padding: 8px 0 0 0;
+  font-weight: bolder
 }
 
-.form-block {
+#signup .form-block {
   margin-bottom: 25px;
 }
-.asterisk-red {
+
+
+#signup .asterisk-red {
   color: red;
 }
 
-.input-text {
-  width: 100%;
-  height: 40px;
-  border-radius: 10px;
-  border: 0.8px solid;
-  padding-left: 10px;
-}
 
-.form-control {
+#signup .form-control {
   border-radius: 10px;
   border: 0.8px solid;
 }
 
-.sub-address {
+#signup .sub-address {
   margin-top: 10px;
 }
 
-input:focus {
-  outline: none;
-  box-shadow: 0 0 0 1.5px #3487e683;
+
+#signup input:focus {
+outline: none;
+box-shadow: 0 0 0 3px #3487e683;
+border: none;
 }
 
-.input-radio {
+#signup .btn-signup {
+  margin: 15px 0;
+  float: right;
+}
+
+#signup .input-text {
+width: 100%;
+height: 40px;
+border: 0.8px;
+padding-left: 10px;
+border-style: none none solid none;
+}
+
+#signup .input-radio {
   margin: 0 5px;
   width: 15px;
   height: 15px;
