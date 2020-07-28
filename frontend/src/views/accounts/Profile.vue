@@ -35,18 +35,18 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
     #profile {
         padding-top: 50px;
     }
-    Button {
+    #profile Button {
         float: right;
     }
-    .description {
+    #profile .description {
         display: flex;
         justify-content: space-between;
     }
-    .description Button {
+    #profile .description Button {
         color: rgb(236,128,116);
         background-color: white;
     }

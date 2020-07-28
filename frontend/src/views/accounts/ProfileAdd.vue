@@ -1,5 +1,5 @@
 <template>
-  <div class="profile">
+  <div class="profile" id="profileAdd">
       <h3>Profile</h3>
       <hr>
       <div>
@@ -67,30 +67,30 @@ export default {
 }
 </script>
 
-<style scoped>
-    .profile {
+<style>
+    #profileAdd {
         margin: 30px 20px 30px 20px;
     }
-    h3 {
+    #profileAdd h3 {
       font-size: 3rem;
     }
-    img {
+    #profileAdd img {
         object-fit: cover;
         margin-top: 20px;
         width: 150px;
         height: 150px;
         border-radius: 7px;
     }
-    textarea{
+    #profileAdd textarea{
         width: 100%;
         height: 270px;
         box-shadow: 0 0 5px gray;
         border-radius: 7px;
     }
-    input {
+    #profileAdd input {
         margin-bottom: 20px;
     }
-    Button {
+    #profileAdd Button {
         float: right;
         margin: 15px 0 15px 0px;
     }
