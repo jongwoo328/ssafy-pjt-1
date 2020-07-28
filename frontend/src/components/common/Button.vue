@@ -19,6 +19,6 @@ export default {
         color: white;
         padding: 10px 15px 10px 15px;
         font-size: 1.25rem;
-        border-radius: 7px;
+        border-radius: 3px;
     }
 </style>
