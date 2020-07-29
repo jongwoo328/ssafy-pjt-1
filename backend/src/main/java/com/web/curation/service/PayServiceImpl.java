@@ -16,7 +16,7 @@ public class PayServiceImpl implements PayService{
 	public boolean insert(Pay pay) {
 		return dao.insert(pay) == 1;
 	}
-
+		
 	@Override
 	public Pay serchPayed(int userno, int servno) {
 		return dao.searchPayed(userno, servno);
