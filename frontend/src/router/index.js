@@ -37,7 +37,7 @@ Vue.use(VueRouter)
     component: ServiceDetail
   },
   {
-    path: '/accounts/:username/create',
+    path: '/accounts/:username/:type',
     name: 'ProfileAdd',
     component: ProfileAdd
   },

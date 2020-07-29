@@ -1,5 +1,6 @@
 <template>
-  <div class="profile container" id="profileAdd">
+  <div>
+    <div v-if="!urltype" class="profile container" id="profileAdd">
       <h3>Profile</h3>
       <hr>
       <div>
@@ -13,7 +14,23 @@
         <textarea name ="description" id="description" v-model="comment"></textarea>
       </div>
       <Button class="ml-auto" type="submit" button-text="등록" @click.native="submit" />
-  </div>
+    </div>
+    <div v-else class="profile container" id="profileAdd">
+      <h3>Profile</h3>
+      <hr>
+      <div>
+        <img v-if="profileImageUrl" :src="profileImageUrl">
+        <br>
+        <label for="file"><ProfileFrame v-if="profileframe" /></label>
+        <br>
+        <input ref="profileImage" type="file" id="file" accept="image/*" @change="fileSelect">
+        <br>
+        <label for="description">소개</label>
+        <textarea name ="description" id="description" v-model="comment"></textarea>
+      </div>
+      <Button class="ml-auto" type="submit" button-text="등록" @click.native="submit" />
+   </div>
+  </div>  
 </template>
 
 <script>
@@ -29,12 +46,32 @@ export default {
             profileImageUrl: null,
             comment: null,
             profileframe: true,
+            urltype: "",
         }
     },
     components: {
       Button,
       ProfileFrame
     },
+    created() {
+        if (this.$route.params.type === "update") this.urltype = true
+        else this.urltype = false
+
+        if (this.urltype) {
+          axios.get(`http://172.30.1.13:8090/profile/${this.$store.getters.getUserData.userno}`)
+          .then(res => {
+              this.profileframe = false
+              console.log(res)  
+              this.profileImageUrl = 'http://172.30.1.13:8090/' + res.data.imgurl,
+              this.comment = res.data.comment
+              console.log(this.profileData.imgUrl)
+              console.log(this.profileData.comment)
+          })
+          .catch(err => {
+              console.log(err)
+          })
+              }
+      },
     methods: {
         fileSelect() {
             console.log(this.$refs)
@@ -53,7 +90,7 @@ export default {
             console.log(`${key}`)
           }
 
-          axios.post('http://192.168.100.88:8090/profile', formData, {
+          axios.post('http://172.30.1.13:8090/profile', formData, {
             headers: {
               'Authorization': this.$session.get('jwstoken'),
               'Content-Type' : 'multipart/form-data'
@@ -74,7 +111,7 @@ export default {
         margin: 30px 20px 30px 20px;
     }
     #profileAdd h3 {
-      font-size: 3rem;
+      font-size: 2rem;
     }
     #profileAdd img {
         object-fit: cover;
