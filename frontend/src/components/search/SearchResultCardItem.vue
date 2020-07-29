@@ -77,7 +77,6 @@ export default {
         flex-direction: row;
         justify-content: flex-end;
     }
-    } */
     .card-wrap:hover {
         box-shadow: 0 1px 5px gray;
     }
