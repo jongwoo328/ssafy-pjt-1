@@ -7,6 +7,7 @@ import UserInfo from '../views/accounts/UserInfo.vue'
 import ServiceDetail from '@/views/services/ServiceDetail.vue'
 import ProfileAdd from '@/views/accounts/ProfileAdd.vue'
 import Profile from '@/views/accounts/Profile.vue'
+import Qna from '@/views/qna/Qna.vue'
 
 Vue.use(VueRouter)
 
@@ -45,6 +46,11 @@ Vue.use(VueRouter)
     path:'/accounts/:username',
     name: 'Profile',
     component: Profile
+  },
+  {
+    path: '/qna',
+    name: 'Qna',
+    component: Qna
   }
 ]
 
