@@ -36,6 +36,7 @@ import Button from '@/components/common/Button.vue'
 import * as EmailValidator from "email-validator";
 import axios from 'axios'
 import emailjs from 'emailjs-com';
+import URL from "@/util/http-common.js"
 
 export default {
   name: 'ForgotPasswordModal',
@@ -69,7 +70,7 @@ export default {
       let forgotData = {
         email: this.email,
       }
-      axios.post('http://192.168.100.88:8090/account/pwfind', forgotData)
+      axios.post(`${URL.BASE_URL}${URL.PORT}/account/pwfind`, forgotData)
       .then(res => {
         console.log(res)
         if (res.status === 200) {

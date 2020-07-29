@@ -43,7 +43,8 @@
 <script>
 import Button from '@/components/common/Button.vue'
 import axios from 'axios'
-import * as EmailValidator from "email-validator";
+import * as EmailValidator from "email-validator"
+import URL from "@/util/http-common.js"
 
 export default {
   name: 'LoginModal',
@@ -77,7 +78,7 @@ export default {
         pw: this.password
       }
 
-      axios.post("http://192.168.100.88:8090/account/login", loginData)
+      axios.post(`${URL.BASE_URL}${URL.PORT}/account/login`, loginData)
       .then(res => {
         console.log(res)
         if (res.data.status === true) {

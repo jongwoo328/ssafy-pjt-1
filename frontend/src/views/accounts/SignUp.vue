@@ -30,8 +30,8 @@
           :class="{ error : errorData.email  && this.email }"
           />
           <div class="d-none d-md-block col-md-2"></div>
-          <Button 
-              @click.native="idCheck"
+          <Button
+              @click.native="emailCheck"
               buttonText="중복체크"
               class="btn-components btn-id-check"
             />
@@ -97,32 +97,28 @@
       <div class="form-group row">
         <div class="col-12">
           <p class="form-block-head">
-            <em class="asterisk-red">*</em>
             Address
           </p>
           <div class="px-1 d-flex">
-          <select class="form-control col-md-4" @click="open" @change="close" id="exampleFormControlSelect1" v-model="siInfo" >
-            <option value="" disabled selected>시/도</option>
-            <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName" ></option>
-          </select>
-          <select class="form-control col-md-4" @click="open" @change="close" id="exampleFormControlSelect2" v-model="guInfo">
-            <option value="" disabled selected>구/군</option>
-            <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
-          </select>
-          <select class="form-control col-md-4" @click="open" @change="close" id="exampleFormControlSelect3" v-model="dongInfo" >
-            <option value="" disabled selected>동/읍/면</option>
-            <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
-          </select>
+            <select class="form-control col-md-4" @click="open" @change="close" id="exampleFormControlSelect1" v-model="siInfo" >
+              <option value="" disabled selected>시/도</option>
+              <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName" ></option>
+            </select>
+            <select class="form-control col-md-4" @click="open" @change="close" id="exampleFormControlSelect2" v-model="guInfo">
+              <option value="" disabled selected>구/군</option>
+              <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
+            </select>
+            <select class="form-control col-md-4" @click="open" @change="close" id="exampleFormControlSelect3" v-model="dongInfo" >
+              <option value="" disabled selected>동/읍/면</option>
+              <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
+            </select>
           </div>
         </div>
-        <!-- <div class="d-flex flex-wrap sub-address"> -->
-        <!-- </div> -->
       </div>
     </form>
 
     <div class="form-block">
         <label class="form-block-head" for="TEL">
-          <em class="asterisk-red">*</em>
           Tel:
           </label>
         <input 
@@ -158,8 +154,7 @@
 
 <script>
 
-let BASE_URL = "http://192.168.100.88"
-
+import URL from "@/util/http-common.js"
 import PV from "password-validator";
 import * as EmailValidator from "email-validator";
 import axios from "axios"
@@ -175,7 +170,7 @@ export default {
       TermModal
     },
     created() {
-      axios.get(`${BASE_URL}:8090/fselect`, {
+      axios.get(`${URL.BASE_URL}${URL.PORT}/fselect`, {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -206,7 +201,7 @@ export default {
         username: "",
         password: "",
         passwordConfirm: "",
-        email: "",
+        email: "",  
         tel: "",
         addr1: "",
         addr2: "",
@@ -270,35 +265,41 @@ export default {
     },
     methods: {
       open(e) {
-        e.target.setAttribute('size', 5)
+        // e.target.setAttribute('size', 5)
+        console.log(e)
       },
       close(e) {
         e.target.setAttribute('size', 0)
       },
       usernameCheck() {
-        axios.get(`${BASE_URL}:8090/app/account/idcheck`, this.email,{
+
+        const chkUsername = this.username.toLowerCase()
+
+        axios.post(`${URL.BASE_URL}${URL.PORT}/account/signup/checkname`, chkUsername,{
           headers: {
               'Content-Type': 'application/json',
           }
         }).then(res => {
-          console.log(res)
-          if (res) this.duplicate.username = "possible"
+          if (res.data === "success") this.duplicate.username = "possible"
+          else this.duplicate.username = "impossible"
         }).catch(err => {
-          console.log(err)
-          if (err) this.duplicate.username = "impossible"
+          if (err) alert("알 수 없는 오류가 발생했습니다.")
         })
       },
-      idCheck() {
-        axios.post(`${BASE_URL}:8090/app/account/idcheck`, this.email, {
+      emailCheck() {
+        
+        const chkEmail = this.email.toLowerCase()
+
+        axios.post(`${URL.BASE_URL}${URL.PORT}/account/signup/checkemail`, chkEmail, {
         headers: {
             'Content-Type': 'application/json',
         }
-      }).then(res => {
-        console.log(res)
-        if (res) this.duplicate.email = "possible"
+      })
+        .then(res => {
+        if (res.data === "success") this.duplicate.email = "possible"
+        else this.duplicate.email = "impossible"
       }).catch(err => {
-        console.log(err)
-        if (err) this.duplicate.email = "impossible"
+        if (err) alert("알 수 없는 오류가 발생했습니다.")
       })
       },
       getGuInfo() {
@@ -308,7 +309,7 @@ export default {
         this.guInfo = ""
         this.dongInfo = ""
 
-        axios.get(`${BASE_URL}:8090/fselect/${si_params.siCode}`, {
+        axios.get(`${URL.BASE_URL}${URL.PORT}/fselect/${si_params.siCode}`, {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -328,14 +329,14 @@ export default {
         let gu_params = this.guInfo
         this.dongList = []
         this.dongInfo = ""
-        // console.log(gu_params)
-        axios.get(`${BASE_URL}:8090/fselect/sido/${gu_params.guCode}`, {
+
+        axios.get(`${URL.BASE_URL}${URL.PORT}/fselect/sido/${gu_params.guCode}`, {
         headers: {
             'Content-Type': 'application/json',
         }
       })
         .then(res => {
-          // console.log(res)
+          console.log(res.data)
 
           for (let dong_data in res.data) {
             this.dongList.push({
@@ -343,6 +344,7 @@ export default {
               "dongName": res.data[dong_data]["dong"]
               })
           }
+          console.log(this.dongList)
         }).catch(err => {
           console.log(err)
         })
@@ -398,11 +400,12 @@ export default {
           'ispro': this.isPro
         }
 
-
+    
         console.log(signUpData)
-        axios.post(`${BASE_URL}:8090/account/signup`, signUpData)
+        axios.post(`${URL.BASE_URL}${URL.PORT}/account/signup`, signUpData)
         .then(res => {
           this.isSubmit = true
+          this.$router.push({name: "Home"})
           console.log(res)
         })
         .catch(err => {
@@ -521,7 +524,7 @@ border: none;
 
 #signup .input-text, #signup select {
   width: 100%;
-  height: 40px;
+  /* height: 40px; */
   border: 0.8px;
   border-radius: 0;
   padding-left: 10px;
@@ -534,13 +537,13 @@ border: none;
   height: 15px;
 }
 
-.error {
+#signup .error {
   border: 1px solid;
   border-color: #EE4B55;
   outline-style: none;
 }
 
-.form-group label:first-child {
+#signup .form-group label:first-child {
   display: block;
 }
 

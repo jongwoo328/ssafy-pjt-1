@@ -1,5 +1,5 @@
 <template>
-  <div class="UserInfo container">
+  <div id="UserInfo" class="UserInfo container">
     <span class="UserInfo-text">내 정보</span>
     <hr class="mb-4">
     <div class="form-box">
@@ -14,8 +14,7 @@
             disabled
             />
 
-          <!-- <span v-if="email && duplicate.email">이미 존재하는 이메일입니다.</span> -->
-          <!-- <span v-else>이 이메일은 사용가능합니다.</span> -->
+
       </div>
 
       <div class="form-block">
@@ -34,15 +33,14 @@
           <label class="form-block-head col-3 col-md-2" for="curpassword">
             Your Password
           </label>
-            <input 
-            class="input-text col-8"
-            v-model="curPassword"
-            id="curPassword" 
-            type="password"
-            placeholder="Enter your password"
-            />
+          <input 
+          class="input-text col-8"
+          v-model="curPassword"
+          id="curPassword" 
+          type="password"
+          placeholder="Enter your password"
+          />
       </div>
-
       <div class="form-block">
         <label class="form-block-head col-3 col-md-2" for="password">
           New Password
@@ -127,10 +125,11 @@
       </div>
     </div>
 
-    
     <div class="d-flex justify-content-around">
-      <span class="col-3 col-md-2"></span>
+      <span class="col-3 col-md-2" >
+      </span>
       <div class="col-8 pr-0">
+        <!-- <span v-if="!curPassword" class="error-msg">현재 비밀번호를 입력하여야 정보수정이 가능합니다.</span> -->
         <Button
             @click.native="changeUserInfo"
             buttonText="회원정보수정"
@@ -144,8 +143,8 @@
 
 <script>
 
-let BASE_URL = "http://192.168.100.88"
 
+import URL from "@/util/http-common.js"
 import axios from "axios"
 import Button from "@/components/common/Button.vue"
 import PV from "password-validator";
@@ -165,7 +164,7 @@ export default {
   },
   created() {
     // console.log(this.User)
-    axios.get(`${BASE_URL}:8090/fselect`, {
+    axios.get(`${URL.BASE_URL}${URL.PORT}/fselect`, {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -181,19 +180,18 @@ export default {
     .catch(err => {
       console.log(err)
     }),
-    
-    axios.post(`${BASE_URL}:8090/account/userinfo`, "", {
-            headers: {
-              'Authorization': this.$session.get('jwstoken'),
-            }
-          })
-    .then(res => {
-      console.log(res)
-      
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    this.User.userno = this.$store.getters.getUserData.userno
+    this.User.username = this.$store.getters.getUserData.name,
+    this.User.email =  this.$store.getters.getUserData.email,
+    this.User.password =  this.$store.getters.getUserData.pw,
+    this.User.ispro =  this.$store.getters.getUserData.ispro,
+    this.User.tel =  this.$store.getters.getUserData.tel,
+    this.siInfo.siName =  this.$store.getters.getUserData.addr2,
+    this.siInfo.siCode =  this.$store.getters.getUserData.addr1,
+    this.guInfo.guName =  this.$store.getters.getUserData.addr4,
+    this.guInfo.guCode =  this.$store.getters.getUserData.addr3,
+    this.dongInfo.dongName =  this.$store.getters.getUserData.addr6,
+    this.dongInfo.dongCode =  this.$store.getters.getUserData.addr5
   },
   data() {
     return {
@@ -201,7 +199,6 @@ export default {
         username: "",
         email: "",
         password: "",
-        address: "",
         ispro: "",
         tel: "",
         addr1: "",
@@ -210,6 +207,7 @@ export default {
         addr4: "",
         addr5: "",
         addr6: "",
+        userno: "",
       },
       curPassword: "",
       changePassword: "",
@@ -242,7 +240,7 @@ export default {
       this.guInfo = ""
       this.dongInfo = ""
 
-      axios.get(`${BASE_URL}:8090/fselect/${si_params.siCode}`, {
+      axios.get(`${URL.BASE_URL}${URL.PORT}/fselect/${si_params.siCode}`, {
       headers: {
           'Content-Type': 'application/json',
       }
@@ -262,8 +260,7 @@ export default {
       let gu_params = this.guInfo
       this.dongList = []
       this.dongInfo = ""
-      // console.log(gu_params)
-      axios.get(`${BASE_URL}:8090/fselect/sido/${gu_params.guCode}`, {
+      axios.get(`${URL.BASE_URL}${URL.PORT}/fselect/sido/${gu_params.guCode}`, {
       headers: {
           'Content-Type': 'application/json',
       }
@@ -282,26 +279,14 @@ export default {
       })
     },
     checkform() {
+        if (!this.curPassword) {
+          this.isError = "현재 비밀번호를 입력하여야 정보수정이 가능합니다."
+          return
+        }
+        else this.isError = false
+
         if (this.User.password !== this.curPassword) {
-          this.isError = "비밀번호가 일치하지 않습니다."
-          return
-        }
-        else this.isError = false
-
-        if (this.User.password === this.changePassword) {
-          this.isError = "변경할 패스워드는 현재 패스워드와 달라야합니다."
-          return
-        }
-        else this.isError = false
-
-        if (this.changePassword.length > 0 && !this.passwordSchema.validate(this.changePassword)) {
-          this.isError = "비밀번호는 영문, 숫자포함 8자리 이상이어야 합니다."
-          return
-        }
-        else this.isError = false
-
-        if (this.changePasswordConfirm.length > 0 && this.changePasswordConfirm !== this.changePassword) {
-          this.isError = "비밀번호 확인이 일치하지 않습니다."
+          this.isError = "현재 비밀번호가 일치하지 않습니다."
           return
         }
         else this.isError = false
@@ -309,9 +294,28 @@ export default {
         if (this.changePassword === "") this.isChangedPW = false
         else this.isChangedPW = true
 
+        if (this.changePassword){
+          if (this.User.password === this.changePassword) {
+            this.isError = "변경할 패스워드는 현재 패스워드와 달라야합니다."
+            return
+          }
+          else this.isError = false
+          if (this.changePassword.length > 0 && !this.passwordSchema.validate(this.changePassword)) {
+            this.isError = "비밀번호는 영문, 숫자포함 8자리 이상이어야 합니다."
+            return
+          }
+          else this.isError = false
+        }
+
+        if (this.changePasswordConfirm.length > 0 && this.changePasswordConfirm !== this.changePassword) {
+          this.isError = "비밀번호 확인이 일치하지 않습니다."
+          return
+        }
+        else this.isError = false
+
+
     },
     changeUserInfo() {
-      
       this.checkform()
       if (this.isError) {
         alert(this.isError)
@@ -319,18 +323,31 @@ export default {
       }
 
       let changeUser = {
-        username: this.User.username,
+        userno: this.User.userno,
+        name: this.User.username,
         email: this.User.email,
-        password: this.changePassword,
-        address: this.User.address,
-        tel: this.User.tel
+        pw: this.changePassword,
+        tel: this.User.tel,
+        ispro: this.User.ispro,
+        addr1: this.siInfo.siCode,
+        addr2: this.siInfo.siName,
+        addr3: this.guInfo.guCode,
+        addr4: this.guInfo.guName,
+        addr5: this.dongInfo.dongCode,
+        addr6: this.dongInfo.dongName
       }
 
-      if (!this.isChangedPW) changeUser.password = this.curPassword
-      axios.post("http://address:port/changeUserInfo", changeUser)
+      if (!this.isChangedPW) changeUser.pw = this.curPassword
+      console.log(changeUser)
+      axios.post(`${URL.BASE_URL}${URL.PORT}/account/userinfo/modify`, changeUser, {
+            headers: {
+              'Authorization': this.$session.get('jwstoken'),
+            }
+          })
       .then(res => {
         console.log(res)
         alert("회원정보가 수정되었습니다.")
+        this.$router.push({ name: "Home" })
       })
       .catch(err => {
         console.log(err)
@@ -342,29 +359,30 @@ export default {
 }
 </script>
 
-<style scoped>
-.UserInfo-text {
+<style>
+#UserInfo .UserInfo-text {
   display: block;
   font-size: 2rem;
   font-weight: bolder;
-  margin-bottom: 20px;
+  margin: 20px 0;
+  
 }
 
-.UserInfo {
+#UserInfo  .UserInfo {
   padding: 0 30px;
   margin-top: 30px;
 }
-input:focus {
+#UserInfo input:focus {
 outline: none;
 box-shadow: 0 0 0 3px #3487e683;
 border: none;
 }
 
-.passwordConfirm {
+#UserInfo .passwordConfirm {
   margin: 10px 0 25px;
 }
 
-.input-text {
+#UserInfo .input-text {
 width: 100%;
 height: 40px;
 border: 0.8px;
@@ -372,13 +390,13 @@ padding-left: 10px;
 border-style: none none solid none;
 }
 
-.unchangeableInfo {
+#UserInfo .unchangeableInfo {
   border-style: none;
   font-weight: bold;
   background-color: #bcbdbc;
 } 
 
-.form-block-head {
+#UserInfo .form-block-head {
   font-size: 16px;
   margin: 0;
   padding: 8px 0 0 0;
@@ -386,26 +404,41 @@ border-style: none none solid none;
   font-weight: bolder
 }
 
-.new-password {
+#UserInfo .new-password {
   padding: 0;
 }
-.form-block {
+
+#UserInfo .form-block {
   display: flex;
   margin-bottom: 25px;
   justify-content: space-around;
 }
 
-.btn-components {
-  margin-top: 30px;
+#UserInfo .btn-components {
+  margin-top: 0px;
   float: right;
 }
 
-.form-address {
+#UserInfo select {
+    width: 100%;
+    height: 40px;
+    border: 0.8px;
+    border-radius: 0;
+    padding-left: 10px;
+    border-style: none none solid none;
+}
+#UserInfo .form-address {
   padding: 0px;
 }
 
-.sub-address {
+#UserInfo .sub-address {
   margin-top: 10px;
 }
 
+#UserInfo .error-msg {
+  width: 100%;
+  color: #EE4B55;
+  font-size: 14px;
+  text-align: right;
+}
 </style>

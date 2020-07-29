@@ -8,6 +8,8 @@ import ServiceDetail from '@/views/services/ServiceDetail.vue'
 import ProfileAdd from '@/views/accounts/ProfileAdd.vue'
 import Profile from '@/views/accounts/Profile.vue'
 import Service from '@/views/services/MyService.vue'
+import Qna from '@/views/qna/Qna.vue'
+
 Vue.use(VueRouter)
 
   const routes = [
@@ -42,7 +44,7 @@ Vue.use(VueRouter)
     component: ServiceDetail
   },
   {
-    path: '/accounts/:username/create',
+    path: '/accounts/:username/:type',
     name: 'ProfileAdd',
     component: ProfileAdd
   },
@@ -50,6 +52,11 @@ Vue.use(VueRouter)
     path:'/accounts/:username',
     name: 'Profile',
     component: Profile
+  },
+  {
+    path: '/qna',
+    name: 'Qna',
+    component: Qna
   }
 ]
 

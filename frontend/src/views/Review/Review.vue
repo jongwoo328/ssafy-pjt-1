@@ -23,7 +23,7 @@
 import axios from "axios"
 import Button from '@/components/common/Button.vue'
 import StarRating from 'vue-star-rating'
-
+import URL from "@/util/http-common.js"
 
 export default {
   name: 'Review',
@@ -60,7 +60,7 @@ export default {
   // },
     onCreate() {
       axios
-        .post("/api/qna", {
+        .post(`${URL.BASE_URL}${URL.PORT}/api/qna`, {
           // Userid: this.$session.get("jwt").id,
           ReviewTitle: this.title,
           ReviewContent: this.content
