@@ -37,6 +37,7 @@
 import axios from 'axios'
 import Button from '@/components/common/Button.vue'
 import ProfileFrame from '@/components/common/ProfileFrame.vue'
+import URL from "@/util/http-common.js"
 
 export default {
     name: 'ProfileAdd',
@@ -90,7 +91,7 @@ export default {
             console.log(`${key}`)
           }
 
-          axios.post('http://172.30.1.13:8090/profile', formData, {
+          axios.post(`${URL.BASE_URL}${URL.PORT}/profile`, formData, {
             headers: {
               'Authorization': this.$session.get('jwstoken'),
               'Content-Type' : 'multipart/form-data'

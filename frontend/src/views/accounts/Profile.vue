@@ -78,7 +78,7 @@ export default {
         }
     },
     created() {
-        axios.get(`http://172.30.1.13:8090/profile/${this.$store.getters.getUserData.userno}`)
+        axios.get(`${URL.BASE_URL}${URL.PORT}/profile/${this.getUrlUsername}`)
         .then(res => {
             console.log(res)
             this.profileData = {

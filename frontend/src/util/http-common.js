@@ -1,8 +1,6 @@
-import axios from "axios";
-
-export default axios.create({
-  baseURL: "http://192.168.219.176:9999/connector",
-  headers: {
-    "Content-type": "application/json",
-  },
-});
+export default {
+  URL : {
+    BASE_URL: "http://172.30.1.13",
+    PORT: ":8090"
+  }
+}
