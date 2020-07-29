@@ -7,6 +7,7 @@ import UserInfo from '../views/accounts/UserInfo.vue'
 import ServiceDetail from '@/views/services/ServiceDetail.vue'
 import ProfileAdd from '@/views/accounts/ProfileAdd.vue'
 import Profile from '@/views/accounts/Profile.vue'
+import Service from '@/views/services/MyService.vue'
 import Qna from '@/views/qna/Qna.vue'
 
 Vue.use(VueRouter)
@@ -16,6 +17,11 @@ Vue.use(VueRouter)
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/myservice',
+    name: 'Service',
+    component : Service
   },
   {
     path: '/services/:service_id/review/create',
