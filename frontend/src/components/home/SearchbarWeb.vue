@@ -9,14 +9,14 @@
                 <input type="text" class="col-7 search-info">
                 <Button buttonText="검색" />
           </div>
-          <div class="offset-3 col row">
-            <select name="si" id="si" class="col-2 search-info">
+          <div class="offset-3 col row mt-2">
+            <select name="si" id="si" class="col-3 search-info">
                 <option value="none" disabled selected>시/도</option>
             </select>
-            <select name="gu" id="gu" class="col-2 search-info">
+            <select name="gu" id="gu" class="col-3 search-info">
                 <option value="none" disabled selected>구/군</option>
             </select>
-            <select name="dong" id="dong" class="col-2 search-info">
+            <select name="dong" id="dong" class="col-3 search-info">
                 <option value="none" disabled selected>동/읍/면</option>
             </select>
           </div>
