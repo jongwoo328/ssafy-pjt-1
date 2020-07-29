@@ -1,5 +1,5 @@
 <template>
-  <div class="UserInfo container">
+  <div id="UserInfo" class="UserInfo container">
     <span class="UserInfo-text">내 정보</span>
     <hr class="mb-4">
     <div class="form-box">
@@ -144,7 +144,7 @@
 
 <script>
 
-let BASE_URL = "http://192.168.100.88"
+let BASE_URL = "http://172.30.1.13"
 
 import axios from "axios"
 import Button from "@/components/common/Button.vue"
@@ -181,19 +181,18 @@ export default {
     .catch(err => {
       console.log(err)
     }),
-    
-    axios.post(`${BASE_URL}:8090/account/userinfo`, "", {
-            headers: {
-              'Authorization': this.$session.get('jwstoken'),
-            }
-          })
-    .then(res => {
-      console.log(res)
-      
-    })
-    .catch(err => {
-      console.log(err)
-    })
+    this.User.userno = this.$store.getters.getUserData.userno
+    this.User.username = this.$store.getters.getUserData.name,
+    this.User.email =  this.$store.getters.getUserData.email,
+    this.User.password =  this.$store.getters.getUserData.pw,
+    this.User.ispro =  this.$store.getters.getUserData.ispro,
+    this.User.tel =  this.$store.getters.getUserData.tel,
+    this.siInfo.siName =  this.$store.getters.getUserData.addr2,
+    this.siInfo.siCode =  this.$store.getters.getUserData.addr1,
+    this.guInfo.guName =  this.$store.getters.getUserData.addr4,
+    this.guInfo.guCode =  this.$store.getters.getUserData.addr3,
+    this.dongInfo.dongName =  this.$store.getters.getUserData.addr6,
+    this.dongInfo.dongCode =  this.$store.getters.getUserData.addr5
   },
   data() {
     return {
@@ -201,7 +200,6 @@ export default {
         username: "",
         email: "",
         password: "",
-        address: "",
         ispro: "",
         tel: "",
         addr1: "",
@@ -210,6 +208,7 @@ export default {
         addr4: "",
         addr5: "",
         addr6: "",
+        userno: "",
       },
       curPassword: "",
       changePassword: "",
@@ -262,7 +261,6 @@ export default {
       let gu_params = this.guInfo
       this.dongList = []
       this.dongInfo = ""
-      // console.log(gu_params)
       axios.get(`${BASE_URL}:8090/fselect/sido/${gu_params.guCode}`, {
       headers: {
           'Content-Type': 'application/json',
@@ -288,17 +286,21 @@ export default {
         }
         else this.isError = false
 
-        if (this.User.password === this.changePassword) {
-          this.isError = "변경할 패스워드는 현재 패스워드와 달라야합니다."
-          return
-        }
-        else this.isError = false
+        if (this.changePassword === "") this.isChangedPW = false
+        else this.isChangedPW = true
 
-        if (this.changePassword.length > 0 && !this.passwordSchema.validate(this.changePassword)) {
-          this.isError = "비밀번호는 영문, 숫자포함 8자리 이상이어야 합니다."
-          return
+        if (this.changePassword){
+          if (this.User.password === this.changePassword) {
+            this.isError = "변경할 패스워드는 현재 패스워드와 달라야합니다."
+            return
+          }
+          else this.isError = false
+          if (this.changePassword.length > 0 && !this.passwordSchema.validate(this.changePassword)) {
+            this.isError = "비밀번호는 영문, 숫자포함 8자리 이상이어야 합니다."
+            return
+          }
+          else this.isError = false
         }
-        else this.isError = false
 
         if (this.changePasswordConfirm.length > 0 && this.changePasswordConfirm !== this.changePassword) {
           this.isError = "비밀번호 확인이 일치하지 않습니다."
@@ -306,12 +308,9 @@ export default {
         }
         else this.isError = false
 
-        if (this.changePassword === "") this.isChangedPW = false
-        else this.isChangedPW = true
 
     },
     changeUserInfo() {
-      
       this.checkform()
       if (this.isError) {
         alert(this.isError)
@@ -319,18 +318,31 @@ export default {
       }
 
       let changeUser = {
-        username: this.User.username,
+        userno: this.User.userno,
+        name: this.User.username,
         email: this.User.email,
-        password: this.changePassword,
-        address: this.User.address,
-        tel: this.User.tel
+        pw: this.changePassword,
+        tel: this.User.tel,
+        ispro: this.User.ispro,
+        addr1: this.siInfo.siCode,
+        addr2: this.siInfo.siName,
+        addr3: this.guInfo.guCode,
+        addr4: this.guInfo.guName,
+        addr5: this.dongInfo.dongCode,
+        addr6: this.dongInfo.dongName
       }
 
-      if (!this.isChangedPW) changeUser.password = this.curPassword
-      axios.post("http://address:port/changeUserInfo", changeUser)
+      if (!this.isChangedPW) changeUser.pw = this.curPassword
+      console.log(changeUser)
+      axios.post(`${BASE_URL}:8090/account/userinfo/modify`, changeUser, {
+            headers: {
+              'Authorization': this.$session.get('jwstoken'),
+            }
+          })
       .then(res => {
         console.log(res)
         alert("회원정보가 수정되었습니다.")
+        this.$router.push({ name: "Home" })
       })
       .catch(err => {
         console.log(err)
@@ -342,29 +354,30 @@ export default {
 }
 </script>
 
-<style scoped>
-.UserInfo-text {
+<style>
+#UserInfo .UserInfo-text {
   display: block;
   font-size: 2rem;
   font-weight: bolder;
-  margin-bottom: 20px;
+  margin: 20px 0;
+  
 }
 
-.UserInfo {
+#UserInfo  .UserInfo {
   padding: 0 30px;
   margin-top: 30px;
 }
-input:focus {
+#UserInfo input:focus {
 outline: none;
 box-shadow: 0 0 0 3px #3487e683;
 border: none;
 }
 
-.passwordConfirm {
+#UserInfo .passwordConfirm {
   margin: 10px 0 25px;
 }
 
-.input-text {
+#UserInfo .input-text {
 width: 100%;
 height: 40px;
 border: 0.8px;
@@ -372,13 +385,13 @@ padding-left: 10px;
 border-style: none none solid none;
 }
 
-.unchangeableInfo {
+#UserInfo .unchangeableInfo {
   border-style: none;
   font-weight: bold;
   background-color: #bcbdbc;
 } 
 
-.form-block-head {
+#UserInfo .form-block-head {
   font-size: 16px;
   margin: 0;
   padding: 8px 0 0 0;
@@ -386,25 +399,34 @@ border-style: none none solid none;
   font-weight: bolder
 }
 
-.new-password {
+#UserInfo .new-password {
   padding: 0;
 }
-.form-block {
+
+#UserInfo .form-block {
   display: flex;
   margin-bottom: 25px;
   justify-content: space-around;
 }
 
-.btn-components {
+#UserInfo .btn-components {
   margin-top: 30px;
   float: right;
 }
 
-.form-address {
+#UserInfo select {
+    width: 100%;
+    height: 40px;
+    border: 0.8px;
+    border-radius: 0;
+    padding-left: 10px;
+    border-style: none none solid none;
+}
+#UserInfo .form-address {
   padding: 0px;
 }
 
-.sub-address {
+#UserInfo .sub-address {
   margin-top: 10px;
 }
 
