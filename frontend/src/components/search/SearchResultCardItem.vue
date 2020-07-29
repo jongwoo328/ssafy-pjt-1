@@ -60,9 +60,6 @@ export default {
     }
     .card-img {
         position: relative;
-        /* border: 1px solid black;
-        border-style: solid solid none solid;
-        border-bottom: 1px solid gray; */
         cursor: pointer;
     }
     .card-img img{
@@ -70,8 +67,6 @@ export default {
         max-height: 100%;
     }
     .card-desc {
-        /* border: 1px solid black;
-        border-style: none solid solid solid; */
         padding: 10px;
         display: flex;
         flex-direction: column;
@@ -82,21 +77,8 @@ export default {
         flex-direction: row;
         justify-content: flex-end;
     }
-    /* .card-desc .follow {
-        text-align: right;
-        font-size: 0.7rem;
-    }
-    .card-desc .follow-text {
-        background-color: blueviolet;
-        border-radius: 5px;
-        color: white;
-        padding: 2px 4px 2px 4px;
     } */
     .card-wrap:hover {
         box-shadow: 0 1px 5px gray;
     }
-    /* .card-desc .follow-count {
-        margin-left: 5px;
-        font-size: 1rem;
-    } */
 </style>
