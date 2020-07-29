@@ -30,6 +30,7 @@
 <script>
 import axios from "axios";
 import Button from "@/components/common/Button.vue"
+import URL from "@/util/http-common.js"
 // @ is an alias to /src
 export default {
   name: 'Review',
@@ -45,7 +46,7 @@ export default {
 },methods: {
     created() {
     axios
-      .get("/api/review/{no}")
+      .get(`${URL.BASE_URL}${URL.PORT}/api/review/{no}`)
       .then(({ data }) => {
         this.no = data.no;
         this.title = data.title;
@@ -58,7 +59,7 @@ export default {
   },
     onCreate() {
       axios
-        .post("/api/review", {
+        .post(`${URL.BASE_URL}${URL.PORT}/api/review`, {
           // Userid: this.$session.get("jwt").id,
           ReviewTitle: this.title,
           ReviewContent: this.content

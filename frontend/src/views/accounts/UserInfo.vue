@@ -14,8 +14,7 @@
             disabled
             />
 
-          <!-- <span v-if="email && duplicate.email">이미 존재하는 이메일입니다.</span> -->
-          <!-- <span v-else>이 이메일은 사용가능합니다.</span> -->
+
       </div>
 
       <div class="form-block">
@@ -34,15 +33,14 @@
           <label class="form-block-head col-3 col-md-2" for="curpassword">
             Your Password
           </label>
-            <input 
-            class="input-text col-8"
-            v-model="curPassword"
-            id="curPassword" 
-            type="password"
-            placeholder="Enter your password"
-            />
+          <input 
+          class="input-text col-8"
+          v-model="curPassword"
+          id="curPassword" 
+          type="password"
+          placeholder="Enter your password"
+          />
       </div>
-
       <div class="form-block">
         <label class="form-block-head col-3 col-md-2" for="password">
           New Password
@@ -127,10 +125,11 @@
       </div>
     </div>
 
-    
     <div class="d-flex justify-content-around">
-      <span class="col-3 col-md-2"></span>
+      <span class="col-3 col-md-2" >
+      </span>
       <div class="col-8 pr-0">
+        <!-- <span v-if="!curPassword" class="error-msg">현재 비밀번호를 입력하여야 정보수정이 가능합니다.</span> -->
         <Button
             @click.native="changeUserInfo"
             buttonText="회원정보수정"
@@ -144,8 +143,8 @@
 
 <script>
 
-let BASE_URL = "http://172.30.1.13"
 
+import URL from "@/util/http-common.js"
 import axios from "axios"
 import Button from "@/components/common/Button.vue"
 import PV from "password-validator";
@@ -165,7 +164,7 @@ export default {
   },
   created() {
     // console.log(this.User)
-    axios.get(`${BASE_URL}:8090/fselect`, {
+    axios.get(`${URL.BASE_URL}${URL.PORT}/fselect`, {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -241,7 +240,7 @@ export default {
       this.guInfo = ""
       this.dongInfo = ""
 
-      axios.get(`${BASE_URL}:8090/fselect/${si_params.siCode}`, {
+      axios.get(`${URL.BASE_URL}${URL.PORT}/fselect/${si_params.siCode}`, {
       headers: {
           'Content-Type': 'application/json',
       }
@@ -261,7 +260,7 @@ export default {
       let gu_params = this.guInfo
       this.dongList = []
       this.dongInfo = ""
-      axios.get(`${BASE_URL}:8090/fselect/sido/${gu_params.guCode}`, {
+      axios.get(`${URL.BASE_URL}${URL.PORT}/fselect/sido/${gu_params.guCode}`, {
       headers: {
           'Content-Type': 'application/json',
       }
@@ -280,8 +279,14 @@ export default {
       })
     },
     checkform() {
+        if (!this.curPassword) {
+          this.isError = "현재 비밀번호를 입력하여야 정보수정이 가능합니다."
+          return
+        }
+        else this.isError = false
+
         if (this.User.password !== this.curPassword) {
-          this.isError = "비밀번호가 일치하지 않습니다."
+          this.isError = "현재 비밀번호가 일치하지 않습니다."
           return
         }
         else this.isError = false
@@ -334,7 +339,7 @@ export default {
 
       if (!this.isChangedPW) changeUser.pw = this.curPassword
       console.log(changeUser)
-      axios.post(`${BASE_URL}:8090/account/userinfo/modify`, changeUser, {
+      axios.post(`${URL.BASE_URL}${URL.PORT}/account/userinfo/modify`, changeUser, {
             headers: {
               'Authorization': this.$session.get('jwstoken'),
             }
@@ -410,7 +415,7 @@ border-style: none none solid none;
 }
 
 #UserInfo .btn-components {
-  margin-top: 30px;
+  margin-top: 0px;
   float: right;
 }
 
@@ -430,4 +435,10 @@ border-style: none none solid none;
   margin-top: 10px;
 }
 
+#UserInfo .error-msg {
+  width: 100%;
+  color: #EE4B55;
+  font-size: 14px;
+  text-align: right;
+}
 </style>

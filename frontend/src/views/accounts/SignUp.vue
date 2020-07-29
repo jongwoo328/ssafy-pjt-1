@@ -154,8 +154,7 @@
 
 <script>
 
-let BASE_URL = "http://172.30.1.13"
-
+import URL from "@/util/http-common.js"
 import PV from "password-validator";
 import * as EmailValidator from "email-validator";
 import axios from "axios"
@@ -171,7 +170,7 @@ export default {
       TermModal
     },
     created() {
-      axios.get(`${BASE_URL}:8090/fselect`, {
+      axios.get(`${URL.BASE_URL}${URL.PORT}/fselect`, {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -276,16 +275,14 @@ export default {
 
         const chkUsername = this.username.toLowerCase()
 
-        axios.post(`${BASE_URL}:8090/account/signup/checkname`, chkUsername,{
+        axios.post(`${URL.BASE_URL}${URL.PORT}/account/signup/checkname`, chkUsername,{
           headers: {
               'Content-Type': 'application/json',
           }
         }).then(res => {
-          console.log(res)
           if (res.data === "success") this.duplicate.username = "possible"
           else this.duplicate.username = "impossible"
         }).catch(err => {
-          console.log(err)
           if (err) alert("알 수 없는 오류가 발생했습니다.")
         })
       },
@@ -293,17 +290,15 @@ export default {
         
         const chkEmail = this.email.toLowerCase()
 
-        axios.post(`${BASE_URL}:8090/account/signup/checkemail`, chkEmail, {
+        axios.post(`${URL.BASE_URL}${URL.PORT}/account/signup/checkemail`, chkEmail, {
         headers: {
             'Content-Type': 'application/json',
         }
       })
         .then(res => {
-        console.log(res)
         if (res.data === "success") this.duplicate.email = "possible"
         else this.duplicate.email = "impossible"
       }).catch(err => {
-        console.log(err)
         if (err) alert("알 수 없는 오류가 발생했습니다.")
       })
       },
@@ -314,7 +309,7 @@ export default {
         this.guInfo = ""
         this.dongInfo = ""
 
-        axios.get(`${BASE_URL}:8090/fselect/${si_params.siCode}`, {
+        axios.get(`${URL.BASE_URL}${URL.PORT}/fselect/${si_params.siCode}`, {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -335,7 +330,7 @@ export default {
         this.dongList = []
         this.dongInfo = ""
 
-        axios.get(`${BASE_URL}:8090/fselect/sido/${gu_params.guCode}`, {
+        axios.get(`${URL.BASE_URL}${URL.PORT}/fselect/sido/${gu_params.guCode}`, {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -407,7 +402,7 @@ export default {
 
     
         console.log(signUpData)
-        axios.post(`${BASE_URL}:8090/account/signup`, signUpData)
+        axios.post(`${URL.BASE_URL}${URL.PORT}/account/signup`, signUpData)
         .then(res => {
           this.isSubmit = true
           this.$router.push({name: "Home"})

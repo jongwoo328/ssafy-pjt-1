@@ -76,7 +76,7 @@ export default {
         }
     },
     created() {
-        axios.get(`http://192.168.100.88:8090/profile/${this.getUrlUsername}`)
+        axios.get(`${URL.BASE_URL}${URL.PORT}/profile/${this.getUrlUsername}`)
         .then(res => {
             console.log(res)
             this.profileData = {
