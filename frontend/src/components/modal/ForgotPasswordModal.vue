@@ -70,7 +70,7 @@ export default {
       let forgotData = {
         email: this.email,
       }
-      axios.post(`${URL.BASE_URL}${URL.PORT}/account/pwfind`, forgotData)
+      axios.post(`${URL.BASE_URL}/account/pwfind`, forgotData)
       .then(res => {
         console.log(res)
         if (res.status === 200) {

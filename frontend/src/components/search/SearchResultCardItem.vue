@@ -14,7 +14,7 @@
                 <Badge 
                 badgeColor="blueviolet"
                 badgeText="USER"
-                badgeCount="0" />
+                :badgeCount="0" />
             </div>
         </div>
       </div>

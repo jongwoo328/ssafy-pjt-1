@@ -79,8 +79,8 @@ export default {
         pw: this.password
       }
 
-      console.log(`${URL.BASE_URL}${URL.PORT}/account/login`)
-      axios.post(`${URL.BASE_URL}${URL.PORT}/account/login`, loginData)
+      console.log(`${URL.BASE_URL}/account/login`)
+      axios.post(`${URL.BASE_URL}/account/login`, loginData)
       .then(res => {
         console.log(res)
         if (res.data.status === true) {
