@@ -1,4 +1,4 @@
 export default {
-  BASE_URL: "http://172.30.1.13",
+  BASE_URL: "http://192.168.219.164",
   PORT: ":8090"
 }
