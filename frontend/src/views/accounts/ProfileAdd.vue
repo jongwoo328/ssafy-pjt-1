@@ -1,0 +1,153 @@
+<template>
+  <div>
+    <div v-if="!urltype" class="profile container" id="profileAdd">
+      <h3>Profile</h3>
+      <hr>
+      <div>
+        <img v-if="profileImageUrl" :src="profileImageUrl">
+        <br>
+        <label for="file"><ProfileFrame v-if="profileframe" /></label>
+        <br>
+        <input ref="profileImage" type="file" id="file" accept="image/*" @change="fileSelect">
+        <br>
+        <label for="description">소개</label>
+        <textarea name ="description" id="description" v-model="comment"></textarea>
+      </div>
+      <Button class="ml-auto" type="submit" button-text="등록" @click.native="submit" />
+    </div>
+    <div v-else class="profile container" id="profileAdd">
+      <h3>Profile</h3>
+      <hr>
+      <div>
+        <img v-if="profileImageUrl" :src="profileImageUrl">
+        <br>
+        <label for="file"><ProfileFrame v-if="profileframe" /></label>
+        <br>
+        <input ref="profileImage" type="file" id="file" accept="image/*" @change="fileSelect">
+        <br>
+        <label for="description">소개</label>
+        <textarea name ="description" id="description" v-model="comment"></textarea>
+      </div>
+      <Button class="ml-auto" type="submit" button-text="수정" @click.native="submit" />
+   </div>
+  </div>  
+</template>
+
+<script>
+import axios from 'axios'
+import Button from '@/components/common/Button.vue'
+import ProfileFrame from '@/components/common/ProfileFrame.vue'
+import HTTP from "@/util/http-common.js"
+
+export default {
+    name: 'ProfileAdd',
+    data() {
+        return {
+            profileImage: '',
+            profileImageUrl: null,
+            comment: null,
+            profileframe: true,
+            urltype: "",
+        }
+    },
+    components: {
+      Button,
+      ProfileFrame
+    },
+    created() {
+        if (this.$route.params.type === "update") this.urltype = true
+        else this.urltype = false
+
+        if (this.urltype) {
+          axios.get(`${HTTP.BASE_URL}/profile/${this.$store.getters.getUserData.userno}`)
+          .then(res => {
+              this.profileframe = false
+              console.log(res)  
+              this.profileImageUrl = `${HTTP.BASE_URL}/` + res.data.imgurl,
+              this.comment = res.data.comment
+              console.log(this.profileData.imgUrl)
+              console.log(this.profileData.comment)
+          })
+          .catch(err => {
+              console.log(err)
+          })
+              }
+      },
+    methods: {
+        fileSelect() {
+            console.log(this.$refs)
+            this.profileImage = this.$refs.profileImage.files[0]
+            this.profileImageUrl = URL.createObjectURL(this.profileImage)
+            this.profileframe = false
+        },
+        submit() {
+          const formData = new FormData()
+          formData.append('profileImage', this.profileImage)
+          formData.append('Comment', this.comment)
+          formData.append('userno', this.$store.getters.getUserData.userno)
+
+          for (let key of formData.entries())
+          {
+            console.log(`${key}`)
+          }
+
+          if (this.urltype) {
+            axios.put(`${HTTP.BASE_URL}/profile`, formData, {
+            headers: {
+              'Authorization': this.$session.get('jwstoken'),
+              'Content-Type' : 'multipart/form-data'
+            }
+          }).then(res => {
+            console.log(res)
+            this.$router.push({ name : 'Profile' })
+          }).catch(err => {
+            console.log(err)
+          })
+          }
+
+          else {
+            axios.post(`${HTTP.BASE_URL}/profile`, formData, {
+            headers: {
+              'Authorization': this.$session.get('jwstoken'),
+              'Content-Type' : 'multipart/form-data'
+              }
+            }).then(res => {
+              console.log(res)
+              this.$router.push({ name : 'Profile' })
+            }).catch(err => {
+              console.log(err)
+            })
+          } 
+        }
+    },
+}
+</script>
+
+<style>
+    #profileAdd {
+        margin: 30px 20px 30px 20px;
+    }
+    #profileAdd h3 {
+      font-size: 2rem;
+    }
+    #profileAdd img {
+        object-fit: cover;
+        margin-top: 20px;
+        width: 150px;
+        height: 150px;
+        border-radius: 7px;
+    }
+    #profileAdd textarea{
+        width: 100%;
+        height: 270px;
+        box-shadow: 0 0 5px gray;
+        border-radius: 7px;
+    }
+    #profileAdd input {
+        margin-bottom: 20px;
+    }
+    #profileAdd Button {
+        float: right;
+        margin: 15px 0 15px 0px;
+    }
+</style>

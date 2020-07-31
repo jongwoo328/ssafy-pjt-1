@@ -19,68 +19,97 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@DynamicInsert
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User {
-    @Id
-    //@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String uid;
-
-    @JsonIgnore
-    private String password;
-    private String email;
-
-    @Column(insertable = false, updatable = false)
-    private LocalDateTime createDate;
-  
-	public User() {}
-
-	public User(String uid, String password, String email) {
-		this.uid = uid;
-		this.password = password;
-		this.email = email;
+	// @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int userno;
+	private String email;
+	private String pw;
+	private String name;
+	private String tel;
+	private String addr1;
+	private String addr2;
+	private String addr3;
+	private String addr4;
+	private String addr5;
+	private String addr6;
+	private boolean ispro;
+	public int getUserno() {
+		return userno;
 	}
-
-	public String getUid() {
-		return uid;
+	public void setUserno(int userno) {
+		this.userno = userno;
 	}
-
-	public void setUid(String uid) {
-		this.uid = uid;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
 	public String getEmail() {
 		return email;
 	}
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
-	public LocalDateTime getCreateDate() {
-		return createDate;
+	public String getPw() {
+		return pw;
 	}
-
-	public void setCreateDate(LocalDateTime createDate) {
-		this.createDate = createDate;
+	public void setPw(String pw) {
+		this.pw = pw;
 	}
-
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getTel() {
+		return tel;
+	}
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+	public String getAddr1() {
+		return addr1;
+	}
+	public void setAddr1(String addr1) {
+		this.addr1 = addr1;
+	}
+	public String getAddr2() {
+		return addr2;
+	}
+	public void setAddr2(String addr2) {
+		this.addr2 = addr2;
+	}
+	public String getAddr3() {
+		return addr3;
+	}
+	public void setAddr3(String addr3) {
+		this.addr3 = addr3;
+	}
+	public String getAddr4() {
+		return addr4;
+	}
+	public void setAddr4(String addr4) {
+		this.addr4 = addr4;
+	}
+	public String getAddr5() {
+		return addr5;
+	}
+	public void setAddr5(String addr5) {
+		this.addr5 = addr5;
+	}
+	public String getAddr6() {
+		return addr6;
+	}
+	public void setAddr6(String addr6) {
+		this.addr6 = addr6;
+	}
+	public boolean isIspro() {
+		return ispro;
+	}
+	public void setIspro(boolean ispro) {
+		this.ispro = ispro;
+	}
 	@Override
 	public String toString() {
-		return "User [uid=" + uid + ", password=" + password + ", email=" + email + ", createDate=" + createDate + "]";
+		return "User [userno=" + userno + ", email=" + email + ", pw=" + pw + ", name=" + name + ", tel=" + tel
+				+ ", addr1=" + addr1 + ", addr2=" + addr2 + ", addr3=" + addr3 + ", addr4=" + addr4 + ", addr5=" + addr5
+				+ ", addr6=" + addr6 + ", ispro=" + ispro + "]";
 	}
-    
-    
+	
 }

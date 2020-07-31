@@ -100,11 +100,22 @@
 		</dependency>
 		
 		<dependency>
-        	<groupId>io.jsonwebtoken</groupId>
-        	<artifactId>jjwt</artifactId>
-        	<version>0.9.1</version>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.11.2</version>
 		</dependency>
-
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.11.2</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId> <!-- or jjwt-gson if Gson is preferred -->
+			<version>0.11.2</version>
+			<scope>runtime</scope>
+		</dependency>
 		<!-- 디비 셋팅 주석 -->
 		<dependency>
             <groupId>org.springframework.boot</groupId>
@@ -126,6 +137,15 @@
        <groupId>com.fasterxml.jackson.core</groupId>
        <artifactId>jackson-databind</artifactId>
     </dependency>
+    
+    <!-- 파일 업로드 -->
+    <dependency>
+    	<groupId>commons-fileupload</groupId>
+    	<artifactId>commons-fileupload</artifactId>
+    	<version>1.3.2</version>
+    </dependency>
+    
+    
 	</dependencies>
 
 	<build>
