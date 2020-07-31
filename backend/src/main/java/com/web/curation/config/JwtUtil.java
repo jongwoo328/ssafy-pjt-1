@@ -15,14 +15,14 @@ public class JwtUtil {
 	
 	
 	private Key key;
-	
+	private int userno = 0;
 	
 	public JwtUtil() {
 		this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 	}
 	
 	public String createToken(User user) {
-		String jws = Jwts.builder().claim("email", user.getEmail()).signWith(key).compact();
+		String jws = Jwts.builder().claim("email", user.getEmail()).claim("userno", user.getUserno()).signWith(key).compact();
 		return jws;
 	}
 
@@ -30,6 +30,19 @@ public class JwtUtil {
 		return key;
 	}
 
+	public int getUserno() {
+		return userno;
+	}
+
+	public void setUserno(int userno) {
+		this.userno = userno;
+	}
+
+	public void setKey(Key key) {
+		this.key = key;
+	}
+	
+	
 //	public void verifyToken(String givenToken) {
 //		// TODO Auto-generated method stub
 //		

@@ -21,7 +21,7 @@ import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = { "*" })
 @RestController
-@RequestMapping("fselect")
+@RequestMapping("/fselect")
 public class FselectController {
 	private static final Logger logger = LoggerFactory.getLogger(FselectController.class);
 	private static final String SUCCESS = "success";

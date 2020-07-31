@@ -17,7 +17,7 @@
 	</select>
 	
 	<select id="selectDong"  resultType="DongCode">
-		select left(code,2) code, city, dongcode, gugun, dong, lat, lng
+		select  left(code,2) ccode,code ,city,dongcode,dong, gugun, lat, lng
 		from dongcode
 		where left(dongcode,5) = #{gugun}
 		order by dong
