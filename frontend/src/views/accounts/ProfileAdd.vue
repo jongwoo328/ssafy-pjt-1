@@ -59,11 +59,11 @@ export default {
         else this.urltype = false
 
         if (this.urltype) {
-          axios.get(`${HTTP.BASE_URL}${HTTP.PORT}/profile/${this.$store.getters.getUserData.userno}`)
+          axios.get(`${HTTP.BASE_URL}/profile/${this.$store.getters.getUserData.userno}`)
           .then(res => {
               this.profileframe = false
               console.log(res)  
-              this.profileImageUrl = `${HTTP.BASE_URL}${HTTP.PORT}` + res.data.imgurl,
+              this.profileImageUrl = `${HTTP.BASE_URL}/` + res.data.imgurl,
               this.comment = res.data.comment
               console.log(this.profileData.imgUrl)
               console.log(this.profileData.comment)
@@ -92,7 +92,7 @@ export default {
           }
 
           if (this.urltype) {
-            axios.put(`${HTTP.BASE_URL}${HTTP.PORT}/profile`, formData, {
+            axios.put(`${HTTP.BASE_URL}/profile`, formData, {
             headers: {
               'Authorization': this.$session.get('jwstoken'),
               'Content-Type' : 'multipart/form-data'
@@ -106,7 +106,7 @@ export default {
           }
 
           else {
-            axios.post(`${HTTP.BASE_URL}${HTTP.PORT}/profile`, formData, {
+            axios.post(`${HTTP.BASE_URL}/profile`, formData, {
             headers: {
               'Authorization': this.$session.get('jwstoken'),
               'Content-Type' : 'multipart/form-data'
