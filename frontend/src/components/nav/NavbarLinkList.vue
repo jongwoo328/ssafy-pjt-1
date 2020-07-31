@@ -4,7 +4,7 @@
       <!-- <NavbarLinkListItem v-if="isPro" value="서비스" @click.native="toserviceUp" /> -->
       <NavbarLinkListItem v-if="!isLoggedIn" value="SignUp" @click.native="toSignUp" />
       <NavbarLinkListItem v-if="!isLoggedIn" value="Login" @click.native="changeLogin"/>
-      <NavbarLinkListItem v-if="isLoggedIn" value="Logout" @click.native="changeLogin"/>
+      <NavbarLinkListItem v-if="isLoggedIn" value="Logout" @click.native="logout"/>
       <LoginModal v-if="loginModal" @close="changeLogin" @change="changeModal">
       </LoginModal>
       <ForgotPasswordModal v-if="forgotPasswordModal" @close="changeForgot" @change="changeModal">
@@ -52,6 +52,10 @@ export default {
     },
     toserviceUp(){
       this.serviceAddModal = !this.serviceAddModal;
+    },
+    logout() {
+      this.$store.commit('logout')
+      this.$router.push('/')
     }
   },
   computed: {
