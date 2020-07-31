@@ -164,11 +164,7 @@ export default {
   },
   created() {
     // console.log(this.User)
-    axios.get(`${URL.BASE_URL}${URL.PORT}/fselect`, {
-        headers: {
-            'Content-Type': 'application/json',
-        }
-      })
+    axios.get(`${URL.BASE_URL}/fselect`, URL.JSON_HEADER)
     .then(res => {
       for (let si_data in res.data) {
         this.siList.push({
@@ -240,11 +236,8 @@ export default {
       this.guInfo = ""
       this.dongInfo = ""
 
-      axios.get(`${URL.BASE_URL}${URL.PORT}/fselect/${si_params.siCode}`, {
-      headers: {
-          'Content-Type': 'application/json',
-      }
-    }).then(res => {
+      axios.get(`${URL.BASE_URL}/fselect/${si_params.siCode}`, URL.JSON_HEADER)
+      .then(res => {
         for (let gu_data in res.data) {
           this.guList.push({
             "guCode": res.data[gu_data]["gugun_code"],
@@ -260,11 +253,7 @@ export default {
       let gu_params = this.guInfo
       this.dongList = []
       this.dongInfo = ""
-      axios.get(`${URL.BASE_URL}${URL.PORT}/fselect/sido/${gu_params.guCode}`, {
-      headers: {
-          'Content-Type': 'application/json',
-      }
-    })
+      axios.get(`${URL.BASE_URL}/fselect/sido/${gu_params.guCode}`, URL.JSON_HEADER)
       .then(res => {
         // console.log(res)
 
@@ -339,7 +328,7 @@ export default {
 
       if (!this.isChangedPW) changeUser.pw = this.curPassword
       console.log(changeUser)
-      axios.post(`${URL.BASE_URL}${URL.PORT}/account/userinfo/modify`, changeUser, {
+      axios.post(`${URL.BASE_URL}/account/userinfo/modify`, changeUser, {
             headers: {
               'Authorization': this.$session.get('jwstoken'),
             }

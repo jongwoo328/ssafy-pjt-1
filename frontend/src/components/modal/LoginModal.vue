@@ -72,13 +72,15 @@ export default {
       else this.errorData.email = false
     },
     login () {
+      console.log(URL.URL)
       this.formCheck()
       let loginData = {
         email: this.email,
         pw: this.password
       }
 
-      axios.post(`${URL.BASE_URL}${URL.PORT}/account/login`, loginData)
+      console.log(`${URL.BASE_URL}/account/login`)
+      axios.post(`${URL.BASE_URL}/account/login`, loginData)
       .then(res => {
         console.log(res)
         if (res.data.status === true) {

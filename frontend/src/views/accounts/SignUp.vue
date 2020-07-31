@@ -170,11 +170,7 @@ export default {
       TermModal
     },
     created() {
-      axios.get(`${URL.BASE_URL}${URL.PORT}/fselect`, {
-        headers: {
-            'Content-Type': 'application/json',
-        }
-      })
+      axios.get(`${URL.BASE_URL}/fselect`, URL.JSON_HEADER)
       .then(res => {
         for (let si_data in res.data) {
           this.siList.push({
@@ -275,11 +271,8 @@ export default {
 
         const chkUsername = this.username.toLowerCase()
 
-        axios.post(`${URL.BASE_URL}${URL.PORT}/account/signup/checkname`, chkUsername,{
-          headers: {
-              'Content-Type': 'application/json',
-          }
-        }).then(res => {
+        axios.post(`${URL.BASE_URL}/account/signup/checkname`, chkUsername, URL.JSON_HEADER)
+        .then(res => {
           if (res.data === "success") this.duplicate.username = "possible"
           else this.duplicate.username = "impossible"
         }).catch(err => {
@@ -290,11 +283,7 @@ export default {
         
         const chkEmail = this.email.toLowerCase()
 
-        axios.post(`${URL.BASE_URL}${URL.PORT}/account/signup/checkemail`, chkEmail, {
-        headers: {
-            'Content-Type': 'application/json',
-        }
-      })
+        axios.post(`${URL.BASE_URL}/account/signup/checkemail`, chkEmail, URL.JSON_HEADER)
         .then(res => {
         if (res.data === "success") this.duplicate.email = "possible"
         else this.duplicate.email = "impossible"
@@ -309,11 +298,8 @@ export default {
         this.guInfo = ""
         this.dongInfo = ""
 
-        axios.get(`${URL.BASE_URL}${URL.PORT}/fselect/${si_params.siCode}`, {
-        headers: {
-            'Content-Type': 'application/json',
-        }
-      }).then(res => {
+        axios.get(`${URL.BASE_URL}/fselect/${si_params.siCode}`, URL.JSON_HEADER)
+        .then(res => {
           for (let gu_data in res.data) {
             this.guList.push({
               "guCode": res.data[gu_data]["gugun_code"],
@@ -330,11 +316,7 @@ export default {
         this.dongList = []
         this.dongInfo = ""
 
-        axios.get(`${URL.BASE_URL}${URL.PORT}/fselect/sido/${gu_params.guCode}`, {
-        headers: {
-            'Content-Type': 'application/json',
-        }
-      })
+        axios.get(`${URL.BASE_URL}/fselect/sido/${gu_params.guCode}`, URL.JSON_HEADER)
         .then(res => {
           console.log(res.data)
 
@@ -402,7 +384,7 @@ export default {
 
     
         console.log(signUpData)
-        axios.post(`${URL.BASE_URL}${URL.PORT}/account/signup`, signUpData)
+        axios.post(`${URL.BASE_URL}/account/signup`, signUpData)
         .then(res => {
           this.isSubmit = true
           this.$router.push({name: "Home"})
