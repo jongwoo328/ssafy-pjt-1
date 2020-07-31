@@ -1,8 +1,8 @@
 <template>
     <div id="profile" class="container">
-        <div v-if="isProfileNull" class="container profile">
+        <div class="container profile">
             <span class="main-text">Profile</span>
-            <router-link v-if="isMyProfile" :to="toProfileAdd"><Button type="submit" buttonText="등록"/></router-link>
+            <router-link :to="toProfileAdd"><Button type="submit" buttonText="등록"/></router-link>
             <hr>
             <ProfileFrame v-if="profileFrame" />
             <br>
@@ -12,7 +12,7 @@
             <hr>
             <p>작성한 프로필이 없습니다.</p>
         </div>
-        <div v-else class="container profile">
+        <div class="container profile">
             <div class="web-button">
                 <router-link :to="toProfileModify" ><Button id="modifyButton" button-text="수정" /> </router-link>
             </div>
@@ -62,27 +62,27 @@ export default {
     },
     computed: {
         toProfileAdd(){
-            return `/accounts/${this.$store.getters.getUserData.name}/create`
+            return `/accounts/${this.getUrlUsername}/create`
         },
         toProfileModify(){
-            return `/accounts/${this.$store.getters.getUserData.name}/update`
+            return `/accounts/${this.getUrlUsername}/update`
         },
         getUrlUsername() {
             return this.$route.params.username
         },
-        isProfileNull() {
-            return this.isProfile === false
-        },
-        isMyProfile() {
-            return this.getUrlUsername === this.$store.getters.getUserData.name
-        }
+        // isProfileNull() {
+        //     return this.isProfile === false
+        // },
+        // isMyProfile() {
+        //     return this.getUrlUsername === this.$store.getters.getUserData.name
+        // }
     },
     created() {
         axios.get(`${URL.BASE_URL}${URL.PORT}/profile/${this.getUrlUsername}`)
         .then(res => {
             console.log(res)
             this.profileData = {
-                imgUrl: 'http://172.30.1.13:8090/' + res.data.imgurl,
+                imgUrl: `${URL.BASE_URL}${URL.PORT}` + res.data.imgurl,
                 comment: res.data.comment
             }
             console.log(this.profileData.imgUrl)
