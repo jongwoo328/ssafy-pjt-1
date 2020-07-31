@@ -16,14 +16,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**").allowedOrigins("http://localhost:8090");
+		registry.addMapping("/**").allowedOrigins("http://192.168.100.83:8090");
 
 	}
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(jwtInterceptor)
-				.addPathPatterns("/qna/**");
+				/*.addPathPatterns("/profile/**")*/
+				.addPathPatterns("/account/userinfo");
 	}
 
 //    {

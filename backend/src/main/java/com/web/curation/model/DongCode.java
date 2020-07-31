@@ -1,6 +1,7 @@
 package com.web.curation.model;
 
 public class DongCode {
+	private String ccode;
 	private String code;
 	private String city;
 	private String gugun;
@@ -13,7 +14,8 @@ public class DongCode {
 		
 	}
 
-	public DongCode(String code, String city, String gugun, String dongcode, String dong, String lat, String lng) {
+	public DongCode(String ccode, String code, String city, String gugun, String dongcode, String dong, String lat, String lng) {
+		this.ccode = ccode;
 		this.code = code;
 		this.city = city;
 		this.gugun = gugun;
@@ -21,6 +23,16 @@ public class DongCode {
 		this.dong = dong;
 		this.lat = lat;
 		this.lng = lng;
+	}
+
+	
+	
+	public String getCcode() {
+		return ccode;
+	}
+
+	public void setCcode(String ccode) {
+		this.ccode = ccode;
 	}
 
 	public String getCode() {

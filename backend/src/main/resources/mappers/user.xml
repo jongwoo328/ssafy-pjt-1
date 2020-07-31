@@ -10,7 +10,7 @@
         from user
     </select>
     
-    <select id="selectOneUserByUid" resultType="user">
+    <select id="getUserByUid" resultType="user">
         select *
         from user
         where name = #{name}
@@ -19,16 +19,16 @@
     <select id="login" resultType="user">
         select *
         from user
-        where email = #{email} and password = #{password}
+        where email = #{email} and pw = #{pw}
     </select>
     
     <select id="findUserByEmailAndName" resultType="user">
         select *
         from user
-        where email = #{email} and name = #{username}
+        where email = #{email} and name = #{name}
     </select>
     
-    <select id="selectOneUserByEmail" resultType="user">
+    <select id="getUserByEmail" resultType="user">
         select *
         from user
         where email = #{email}
@@ -40,9 +40,9 @@
         where tel = #{tel}
     </select>
     
-    <insert id = "join" >
+    <insert id = "insert" >
         insert into user (email, pw, name, tel, addr1,addr2,addr3,addr4,addr5,addr6, ispro) 
-        values (#{email},#{password},#{username},#{tel},#{addr1},#{addr2},#{addr3},#{addr4},#{addr5},#{addr6},#{ispro})
+        values (#{email},#{pw},#{name},#{tel},#{addr1},#{addr2},#{addr3},#{addr4},#{addr5},#{addr6},#{ispro})
     </insert>
     
     <update id="samplePw">
