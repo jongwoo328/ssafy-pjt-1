@@ -63,7 +63,7 @@ export default {
           .then(res => {
               this.profileframe = false
               console.log(res)  
-              this.profileImageUrl = `${HTTP.BASE_URL}` + res.data.imgurl,
+              this.profileImageUrl = `${HTTP.BASE_URL}/` + res.data.imgurl,
               this.comment = res.data.comment
               console.log(this.profileData.imgUrl)
               console.log(this.profileData.comment)

@@ -1,8 +1,8 @@
 <template>
     <div id="profile" class="container">
-        <div class="container profile">
+        <div v-if="isProfileNull" class="container profile">
             <span class="main-text">Profile</span>
-            <router-link :to="toProfileAdd"><Button type="submit" buttonText="등록"/></router-link>
+            <router-link v-if="isMyProfile" :to="toProfileAdd"><Button type="submit" buttonText="등록"/></router-link>
             <hr>
             <ProfileFrame v-if="profileFrame" />
             <br>
@@ -12,9 +12,9 @@
             <hr>
             <p>작성한 프로필이 없습니다.</p>
         </div>
-        <div class="container profile">
+        <div v-else class="container profile">
             <div class="web-button">
-                <router-link :to="toProfileModify" ><Button id="modifyButton" button-text="수정" /> </router-link>
+                <router-link v-if="isMyProfile" :to="toProfileModify" ><Button id="modifyButton" button-text="수정" /> </router-link>
             </div>
             <div class="userInfo">
                 <h3 v-text="getUrlUsername + '\'s Profile'"></h3>
@@ -24,7 +24,7 @@
             <div class="mobile-box">
                 <div class="description-box">
                     <h3>소개</h3>
-                    <router-link :to="toProfileModify" ><Button id="modifyButton" button-text="수정" /> </router-link>
+                    <router-link v-if="isMyProfile" :to="toProfileModify" ><Button id="modifyButton" button-text="수정" /> </router-link>
                 </div>
                 <hr>
                 <div class="profile-box">
@@ -51,6 +51,7 @@ import ProfileFrame from '@/components/common/ProfileFrame.vue'
 import Button from '@/components/common/Button.vue'
 import axios from 'axios'
 import ServiceList from '@/components/service/ServiceList.vue'
+import URL from "@/util/http-common.js"
 
 
 export default {
@@ -62,27 +63,27 @@ export default {
     },
     computed: {
         toProfileAdd(){
-            return `/accounts/${this.getUrlUsername}/create`
+            return `/accounts/${this.$store.getters.getUserData.name}/create`
         },
         toProfileModify(){
-            return `/accounts/${this.getUrlUsername}/update`
+            return `/accounts/${this.$store.getters.getUserData.name}/update`
         },
         getUrlUsername() {
             return this.$route.params.username
         },
-        // isProfileNull() {
-        //     return this.isProfile === false
-        // },
-        // isMyProfile() {
-        //     return this.getUrlUsername === this.$store.getters.getUserData.name
-        // }
+        isProfileNull() {
+            return this.isProfile === false
+        },
+        isMyProfile() {
+            return this.getUrlUsername === this.$store.getters.getUserData.name
+        }
     },
     created() {
-        axios.get(`${URL.BASE_URL}/profile/${this.getUrlUsername}`)
+        axios.get(`${URL.BASE_URL}/profile/${this.$store.getters.getUserData.userno}`)
         .then(res => {
             console.log(res)
             this.profileData = {
-                imgUrl: `${URL.BASE_URL}` + res.data.imgurl,
+                imgUrl: `${URL.BASE_URL}/` + res.data.imgurl,
                 comment: res.data.comment
             }
             console.log(this.profileData.imgUrl)
