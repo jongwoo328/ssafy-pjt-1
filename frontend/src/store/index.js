@@ -20,6 +20,7 @@ export default new Vuex.Store({
     },
     logout(state) {
       state.isLoggedIn = false
+      state.userData = null
     }
   },
   actions: {
