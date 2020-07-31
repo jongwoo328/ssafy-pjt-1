@@ -78,11 +78,11 @@ export default {
         // }
     },
     created() {
-        axios.get(`${URL.BASE_URL}${URL.PORT}/profile/${this.getUrlUsername}`)
+        axios.get(`${URL.BASE_URL}/profile/${this.getUrlUsername}`)
         .then(res => {
             console.log(res)
             this.profileData = {
-                imgUrl: `${URL.BASE_URL}${URL.PORT}` + res.data.imgurl,
+                imgUrl: `${URL.BASE_URL}` + res.data.imgurl,
                 comment: res.data.comment
             }
             console.log(this.profileData.imgUrl)
