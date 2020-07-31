@@ -1,5 +1,5 @@
 <template>
-  <button class="custom-button" v-text="buttonText">
+  <button :id="id" class="custom-button" v-text="buttonText">
   </button>
 </template>
 
@@ -8,6 +8,7 @@ export default {
     name: 'Button',
     props: {
         buttonText: String,
+        id: String
     }
 }
 </script>
