@@ -27,7 +27,7 @@
 		update profile
 		   set
 		   	   comment = #{comment},
-		   	   imgurl = #{imgrul} 
+		   	   imgurl = #{imgurl} 
 		 where userno = #{userno};
 	</update>
 

@@ -53,8 +53,8 @@ public class AccountController {
     user.setPw(test.getPw());
     ResponseEntity response1 = null;
     User userinfo = userService.login(user);
-    jwtutil = new JwtUtil();
     String jws = jwtutil.createToken(user);
+    System.out.println(jwtutil.getKey());
     if (userinfo != null) {
         final BasicResponse result = new BasicResponse();
         result.status = true;
@@ -74,7 +74,7 @@ public class AccountController {
     @ApiOperation(value = "가입하기")
     @Transactional
     public ResponseEntity<BasicResponse> signup(@RequestBody User user) {
-    	
+    	System.out.println(user);
     	String email = user.getEmail();
     	System.out.println(email);
     	User newUser = userService.getUserByEmail(email);
@@ -118,19 +118,34 @@ public class AccountController {
     		result.data = "email";
     		return new ResponseEntity<BasicResponse>(result, HttpStatus.OK);
     	}
-    	String tel = user.getTel();
-    	newUser = userService.getUserByTel(tel);
-    	System.out.println(newUser);
-    	if (newUser == null) {
-    		result.status = false;
-    		result.data = "tel";
-    		return new ResponseEntity<BasicResponse>(result, HttpStatus.OK);
+//    	String tel = user.getTel();
+//    	newUser = userService.getUserByTel(tel);
+//    	System.out.println(newUser);
+//    	if (newUser == null) {
+//    		result.status = false;
+//    		result.data = "tel";
+//    		return new ResponseEntity<BasicResponse>(result, HttpStatus.OK);
+//    	}
+    	
+    	char[] charSet = new char[] {'Z','K','W', '0', 'E', 'J', '1','N', 'A', '2','P',  'B', '3', 'S','C', '4'
+    			, 'D','M','Q', '5','L', 'F', '6','G','V',  '7','H','O', '8','I','T', '9',     
+    			   'R',   'U',  'X', 'Y'  }; 
+    	int idx = 0;
+    	StringBuffer sb = new StringBuffer();
+    	System.out.println("charSet.length :::: "+charSet.length);
+    	for (int i = 0; i < 8; i++) { 
+    		idx = (int) (charSet.length * Math.random());
+    		System.out.println("idx :::: "+idx); 
+    		sb.append(charSet[idx]);
     	}
-    	user.setPw("sample123");
+    	
+
+    	
+    	user.setPw(sb.toString());
     	System.out.println(user);
     	if (userService.samplePw(user)) {
     		result.status = true;
-    		result.data = "sample123";
+    		result.data = sb.toString();
     		return new ResponseEntity<BasicResponse>(result, HttpStatus.OK); 
     	}
 //    	if(newUser) {
@@ -150,7 +165,7 @@ public class AccountController {
     	User user = userService.getUserByEmail(email);
     	System.out.println(user);
     	if (user != null) {
-    		return new ResponseEntity<String>(FAIL, HttpStatus.BAD_REQUEST);
+    		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
     	}
     	return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
     }
@@ -159,10 +174,10 @@ public class AccountController {
     @ApiOperation(value = "이름 중복체크")
     public ResponseEntity<String> checkName(@RequestBody String username) {
     	System.out.println(username);
-    	User user = userService.getUserByEmail(username);
+    	User user = userService.getUserByUid(username);
     	System.out.println(user);
     	if (user != null) {
-    		return new ResponseEntity<String>(FAIL, HttpStatus.BAD_REQUEST);
+    		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
     	}
     	return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
     }
@@ -170,6 +185,7 @@ public class AccountController {
     @ApiOperation(value = "회원정보 리턴")
     public ResponseEntity<String> UserInfo(@RequestBody String email) {
     	User user = userService.getUserByEmail(email);
+    	System.out.println(jwtutil.getUserno());
     	System.out.println(user);
     	if (user != null) {
     		return new ResponseEntity<String>(FAIL, HttpStatus.BAD_REQUEST);

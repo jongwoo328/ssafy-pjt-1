@@ -2,10 +2,15 @@ package com.web.curation.dao;
 
 import java.util.List;
 
-import com.web.curation.model.Service;
+import org.apache.ibatis.annotations.Mapper;
 
+import com.web.curation.model.ConnectorService;
+
+//@Mapper
 public interface ServiceDAO {
-	public List<Service> selectService(int userno);
-	public Service selectServiceByNo(int userno, int servno);
-	public int insertServie(Service service);
+	public List<ConnectorService> selectServiceByUserno(int userno);
+	public List<ConnectorService> selectServiceByDongcode(String seraddr, String word);
+	public ConnectorService selectServiceByNo(int servno);
+	public int insertService(ConnectorService service);
+	public int deleteService(int servno);
 }

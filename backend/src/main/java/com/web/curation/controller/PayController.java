@@ -18,7 +18,7 @@ import io.swagger.annotations.ApiOperation;
 
 @CrossOrigin(origins = {"*"},maxAge = 6000)
 @RestController
-@RequestMapping("/api/pay")
+@RequestMapping("/pay")
 public class PayController {
 	private static final Logger logger = LoggerFactory.getLogger(PayController.class);
 	private static final String SUCCESS = "success";
@@ -36,6 +36,6 @@ public class PayController {
 		if(service.insert(pay)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}
 }

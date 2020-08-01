@@ -28,7 +28,7 @@
         <label for="description">소개</label>
         <textarea name ="description" id="description" v-model="comment"></textarea>
       </div>
-      <Button class="ml-auto" type="submit" button-text="등록" @click.native="submit" />
+      <Button class="ml-auto" type="submit" button-text="수정" @click.native="submit" />
    </div>
   </div>  
 </template>
@@ -37,7 +37,7 @@
 import axios from 'axios'
 import Button from '@/components/common/Button.vue'
 import ProfileFrame from '@/components/common/ProfileFrame.vue'
-import URL from "@/util/http-common.js"
+import HTTP from "@/util/http-common.js"
 
 export default {
     name: 'ProfileAdd',
@@ -59,11 +59,11 @@ export default {
         else this.urltype = false
 
         if (this.urltype) {
-          axios.get(`http://172.30.1.13:8090/profile/${this.$store.getters.getUserData.userno}`)
+          axios.get(`${HTTP.BASE_URL}/profile/${this.$store.getters.getUserData.userno}`)
           .then(res => {
               this.profileframe = false
               console.log(res)  
-              this.profileImageUrl = 'http://172.30.1.13:8090/' + res.data.imgurl,
+              this.profileImageUrl = `${HTTP.BASE_URL}/` + res.data.imgurl,
               this.comment = res.data.comment
               console.log(this.profileData.imgUrl)
               console.log(this.profileData.comment)
@@ -91,7 +91,8 @@ export default {
             console.log(`${key}`)
           }
 
-          axios.post(`${URL.BASE_URL}${URL.PORT}/profile`, formData, {
+          if (this.urltype) {
+            axios.put(`${HTTP.BASE_URL}/profile`, formData, {
             headers: {
               'Authorization': this.$session.get('jwstoken'),
               'Content-Type' : 'multipart/form-data'
@@ -102,6 +103,21 @@ export default {
           }).catch(err => {
             console.log(err)
           })
+          }
+
+          else {
+            axios.post(`${HTTP.BASE_URL}/profile`, formData, {
+            headers: {
+              'Authorization': this.$session.get('jwstoken'),
+              'Content-Type' : 'multipart/form-data'
+              }
+            }).then(res => {
+              console.log(res)
+              this.$router.push({ name : 'Profile' })
+            }).catch(err => {
+              console.log(err)
+            })
+          } 
         }
     },
 }
