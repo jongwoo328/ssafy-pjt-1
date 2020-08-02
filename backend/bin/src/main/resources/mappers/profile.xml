@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.curation.dao.ProfileDAO">
+	
+	<!-- 프로필 상세 조회 -->
+	<select id="selectProfileByNo" resultType="Profile">
+		select 
+				pno,
+				userno,
+				comment,
+				imgurl
+		 from profile
+		 where userno = #{userno}
+	</select>
+
+	<!-- 프로필 등록 -->
+	<insert id="insertProfile" parameterType="Profile">
+		insert into profile (
+			userno, comment, imgurl
+		) values (#{userno}, #{comment},#{imgurl})
+	</insert>
+	
+	<!-- 프로필 수정 -->
+	<update id="updateProfile" parameterType="Profile">
+		update profile
+		   set
+		   	   comment = #{comment},
+		   	   imgurl = #{imgurl} 
+		 where userno = #{userno};
+	</update>
+
+	<!-- 프로필 삭제 -->
+	<delete id="deleteProfile" parameterType="int">
+		delete 
+		  from profile
+		 where userno = #{userno}
+	</delete>
+
+</mapper>

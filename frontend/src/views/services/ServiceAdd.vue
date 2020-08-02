@@ -96,7 +96,7 @@ export default {
 
     },
      created() {
-         axios.get('${URL.BASE_URL}/fselect/cate') 
+         axios.get(`${URL.BASE_URL}/fselect/cate`,URL.JSON_HEADER) 
           .then(res => {
             console.log(res)
             for(let category in res.data){
@@ -117,9 +117,10 @@ export default {
             console.log(err)
         }),
         axios.get(`${URL.BASE_URL}/fselect`, URL.JSON_HEADER)
-      .then(res => {
-        for (let si_data in res.data) {
-          this.siList.push({
+             .then(res => {
+                 console.log(res);
+             for (let si_data in res.data) {
+                 this.siList.push({
             "siCode": res.data[si_data]["sido_code"],
             "siName": res.data[si_data]["sido_name"]
             })
