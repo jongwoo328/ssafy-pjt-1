@@ -9,7 +9,7 @@ import ProfileAdd from '@/views/accounts/ProfileAdd.vue'
 import Profile from '@/views/accounts/Profile.vue'
 import Service from '@/views/services/MyService.vue'
 import Qna from '@/views/qna/Qna.vue'
-
+import ServiceAdd from '@/views/services/ServiceAdd.vue'
 Vue.use(VueRouter)
 
   const routes = [
@@ -57,6 +57,11 @@ Vue.use(VueRouter)
     path: '/qna',
     name: 'Qna',
     component: Qna
+  },
+  {
+    path: '/service/create',
+    name: 'ServiceAdd',
+    component : ServiceAdd
   }
 ]
 
