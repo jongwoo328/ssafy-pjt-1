@@ -59,7 +59,7 @@ public class ServiceController {
 	}
 	
 	@ApiOperation(value = "각 서비스 정보 반환", response = ConnectorService.class)
-	@GetMapping("{servno}")
+	@GetMapping("/detail/{servno}")
 	public Object detailService(@PathVariable int userno, @PathVariable int servno) {
 		ConnectorService serv = svc.detailService(servno);
 		
@@ -113,8 +113,6 @@ public class ServiceController {
 	@PostMapping
 	public ResponseEntity<String> writeProfile(HttpServletRequest request) {
 		
-		MultipartHttpServletRequest mrequest = (MultipartHttpServletRequest)request;
-		MultipartFile imgFiles = mrequest.getFile("serviceImage");
 		ConnectorService serv = new ConnectorService();
 		serv.setUserno(Integer.parseInt(request.getParameter("userno")));
 		serv.setCateno(Integer.parseInt(request.getParameter("cateno")));
@@ -127,7 +125,9 @@ public class ServiceController {
 		serv.setSaddr4(request.getParameter("saddr4"));
 		serv.setSaddr5(request.getParameter("saddr5"));
 		serv.setSaddr6(request.getParameter("saddr6"));
-		
+		System.out.println(serv);
+		MultipartHttpServletRequest mrequest = (MultipartHttpServletRequest)request;
+		MultipartFile imgFiles = mrequest.getFile("serviceImage");
 		if(imgFiles != null) {
 			System.out.println(mrequest.getFileNames());
 			System.out.println(imgFiles.getOriginalFilename());			
