@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.web.curation.dao.ServiceDAO">
 
 	<!-- 개인이 등록한 서비스 조회 -->
@@ -39,10 +42,16 @@
 			   imgurl
 		 from service
 		 <if test= "cateno != 0 and saddr5 != null and word != null">
-		 where cateno = #{cateno} and saddr5 = #{saddr5} and servname Like '%#{word}%' 
+		 where cateno = #{cateno} and saddr5 = #{saddr5} and 
+		 <foreach collection="word" item="keyword" index="index" separator="or servname Like " open ="(servname LIKE " close=")">
+		 '%#{keyword}%'
+		 </foreach>
 		 </if>
 		 <if test= "cateno == 0 and saddr5 == null and word != null">
-		 where servname Like '%#{word}%'
+		 where 
+		 <foreach collection="word" item="keyword" index="index" separator="or servname Like " open ="servname LIKE ">
+		 '%#{keyword}%'
+		 </foreach>
 		 </if>
 		 <if test= "cateno == 0 and saddr5 != null and word == null">
 		 where saddr = #{saddr}
@@ -54,11 +63,17 @@
 		 where cateno = #{cateno} and saddr5 = #{saddr5}
 		 </if>
 		 <if test= "cateno != 0 and saddr5 == null and word != null">
-		 where cateno = #{cateno} and word Like '%#{word}%'
+		 where cateno = #{cateno} and 
+		 <foreach collection="word" item="keyword" index="index" separator="or servname Like " open ="(servname LIKE " close=")">
+		 '%#{keyword}%'
+		 </foreach>
 		 </if>
 		 
 		 <if test= "cateno == 0 and saddr5 != null and word != null">
-		 where saddr5 = #{saddr5} and word Like '%#{word}%'
+		 where saddr5 = #{saddr5} and
+		 <foreach collection="word" item="keyword" index="index" separator="or servname Like " open ="(servname LIKE " close=")">
+		 '%#{keyword}%'
+		 </foreach>
 		 </if>
 		 
 		 order by servno desc
@@ -85,10 +100,10 @@
 	
 	
 	<!-- 서비스 등록 -->
-	<insert id ="insertService">
+	<insert id ="insertService" parameterType="ConnectorService">
 	insert into service
 	(userno, cateno, servname, price, description, saddr1, saddr2, saddr3, saddr4, saddr5, saddr6, imgurl)
-	values (#{userno}, #{cateno}, #{servno}, #{price}, #{description}, #{saddr1}, #{saddr2}, #{saddr3}, #{saddr4}, #{saddr5}, #{saddr6}, #{imgurl})
+	values (#{userno}, #{cateno}, #{servname}, #{price}, #{description}, #{saddr1}, #{saddr2}, #{saddr3}, #{saddr4}, #{saddr5}, #{saddr6}, #{imgurl})
 	</insert>
 	
 	<!-- 서비스 수정 -->

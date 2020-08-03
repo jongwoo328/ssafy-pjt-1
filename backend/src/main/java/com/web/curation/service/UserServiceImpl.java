@@ -52,4 +52,9 @@ public class UserServiceImpl implements UserService {
 		return userDao.findUserByEmailAndName(user);
 	}
 
+	@Override
+	public User getUserByUserno(int userno) {
+		return userDao.getUserByUserno(userno);
+	}
+
 }
