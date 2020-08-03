@@ -52,7 +52,7 @@ export default {
 <style>
   @media (min-width: 768px) and (max-width: 999px) {
     #home .wrap {
-      margin-left: 250px;
+      margin-left: 200px;
     }
   }
   @media (min-width: 1000px) {

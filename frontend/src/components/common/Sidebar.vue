@@ -35,7 +35,7 @@ export default {
             left: 0;
             height: 150vh;
             /* width: 20%; */
-            min-width: 250px;
+            min-width: 200px;
             /* background-color: white; */
         }
         .sidebar-link-list {

@@ -72,7 +72,7 @@ export default {
       else this.errorData.email = false
     },
     login () {
-      console.log(URL.URL)
+      // console.log(URL.URL)
       this.formCheck()
       let loginData = {
         email: this.email,
