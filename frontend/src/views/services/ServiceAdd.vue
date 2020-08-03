@@ -15,13 +15,13 @@
                 <label class="font-kor"  for="servicename"> 
                     서비스 이름 
                 </label>
-                <input class="input-text" v-model="cname" id="servicename"/>
+                <input class="input-text" v-model="servname" id="servicename"/>
             </div>
             <div class="form-block">
                 <label class="font-kor"  for="serviceprice"> 
                 가격 
                 </label>
-                <input class="input-text" v-model="price" id="serviceprice"/>
+                <input class="input-text" type="number" v-model="price" id="serviceprice"/>
             </div>
             <div form-group d-flex justify-content-around>
                 <label class="font-kor" >
@@ -158,13 +158,14 @@ export default {
             console.log(this.serviceImageUrl)
         },
          submit(){
+             
              const formData = new FormData()
              const temp = document.getElementsByClassName('ql-editor')[0]
              this.description = temp.innerHTML
-            formData.append('serviceImage', this.servieImage)
+            formData.append('serviceImage', this.serviceImage)
             formData.append('cateno', this.cateno)
-            // formData.append('userno', this.$store.getters.getUserData.userno)
-
+            formData.append('userno', this.$store.getters.getUserData.userno)
+            formData.append('servname', this.servname)
             formData.append('price', this.price)
             formData.append('description', this.description)
             formData.append('saddr1', this.siInfo.siCode)
@@ -177,10 +178,10 @@ export default {
             {
             console.log(`${key}`)
             }
-            axios.post(`${HTTP.BASE_URL}/service`,HTTP.JSON_HEADER) 
+            axios.post(`${HTTP.BASE_URL}/service`,formData) 
                 .then(res => {
                  console.log(res);
-                 
+                 this.$router.push("/myservice")
       })
       .catch(err => {
         console.log(err)
