@@ -9,6 +9,8 @@ import ProfileAdd from '@/views/accounts/ProfileAdd.vue'
 import Profile from '@/views/accounts/Profile.vue'
 import Service from '@/views/services/MyService.vue'
 import Qna from '@/views/qna/Qna.vue'
+import QnaDetail from '@/views/qna/QnaDetail.vue'
+import QnaCreate from '@/views/qna/QnaCreate.vue'
 
 Vue.use(VueRouter)
 
@@ -57,7 +59,18 @@ Vue.use(VueRouter)
     path: '/qna',
     name: 'Qna',
     component: Qna
-  }
+  },
+  {
+    path: '/qna/create',
+    name: 'QnaCreate',
+    component: QnaCreate
+  },
+  {
+    path: '/qna/:q_no',
+    name: 'QnaDetail',
+    component: QnaDetail
+  },
+
 ]
 
 const router = new VueRouter({
