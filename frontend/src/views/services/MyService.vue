@@ -35,10 +35,12 @@ export default {
         axios.get(`${HTTP.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
         .then(res => {
             console.log(res)
-            this.serviceData = {
-                imgUrl: `${HTTP.BASE_URL}` + res.data.imgurl,
-                comment: res.data.comment
-            }
+            // for(let serv in res.data){
+            //     this.serviceData.push {
+            //         imgUrl: `${HTTP.BASE_URL}` + res.data.imgurl,
+            //         comment: res.data.comment
+            //     }
+            // }
             console.log(this.serviceData.imgUrl)
             console.log(this.serviceData.title)
             if (res.data === 'fail') {
@@ -53,7 +55,7 @@ export default {
        return {
             profileFrame: false,
             isService: false,
-            serviceData: "test",
+            serviceData: [],
       serviceResult: [
         {
           imgUrl: "",
