@@ -18,7 +18,10 @@
             </div>
             <div class="userInfo">
                 <h3 v-text="getUrlUsername + '\'s Profile'"></h3>
-                <img class="userImg" :src="profileData.imgUrl" alt="profile">
+                <transition>
+                    <img v-show="isLoaded" class="userImg" :src="profileData.imgUrl" alt="profile" @load="onImgLoad">            
+                </transition>
+                <img v-show="!isLoaded" class="userImg" src="@/assets/loading2.gif" alt="loading...">
             </div>
             
             <div class="mobile-box">
@@ -36,7 +39,7 @@
                 <div class="index">
                     <h3>소개</h3>
                 </div>
-                <span v-text="profileData.comment"></span>
+                <span v-html="profileData.comment"></span>
             </div>
 
             <div class="service-box">
@@ -78,29 +81,39 @@ export default {
             return this.getUrlUsername === this.$store.getters.getUserData.name
         }
     },
+    methods: {
+        onImgLoad () {
+            console.log('load')
+            this.isLoaded = true
+        }
+    },
     created() {
-        axios.get(`${URL.BASE_URL}/profile/${this.$store.getters.getUserData.userno}`)
-        .then(res => {
-            console.log(res)
-            this.profileData = {
-                imgUrl: `${URL.BASE_URL}/` + res.data.imgurl,
-                comment: res.data.comment
-            }
-            console.log(this.profileData.imgUrl)
-            console.log(this.profileData.comment)
-            if (res.data === 'fail') {
-                this.isProfile = false
-            }
-        })
-        .catch(err => {
-            console.log(err)
-        })
+        setTimeout(() => {
+            console.log('test')
+            axios.get(`${URL.BASE_URL}/profile/${this.$store.getters.getUserData.userno}`)
+            .then(res => {
+                console.log(res)
+                this.profileData = {
+                    imgUrl: `${URL.BASE_URL}/` + res.data.imgurl,
+                    comment: res.data.comment
+                }
+                console.log(this.profileData.imgUrl)
+                console.log(this.profileData.comment)
+                if (res.data === 'fail') {
+                    this.isProfile = false
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }, 500);
     },
     data() {
         return {
             profileFrame: true,
             isProfile: true,
             profileData: "testHaveData",
+            isLoaded: false,
             serviceResult: [
                 // 예시 표시용
                 {

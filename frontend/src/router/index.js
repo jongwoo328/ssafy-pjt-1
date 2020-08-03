@@ -75,7 +75,7 @@ Vue.use(VueRouter)
     path: '/qna/:q_no',
     name: 'QnaDetail',
     component: QnaDetail
-  }
+  },
 ]
 
 const router = new VueRouter({

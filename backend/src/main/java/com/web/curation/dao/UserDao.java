@@ -14,7 +14,7 @@ public interface UserDao {
 	int updateUser(User user);
 	int samplePw(User user);
 	User login(User user);
-	 User findUserByEmailAndName(User user);   
+	User findUserByEmailAndName(User user);   
 }
 
 //public interface UserDao extends JpaRepository<User, String> {

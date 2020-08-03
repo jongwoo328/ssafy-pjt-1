@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.web.curation.dao.FselectDAO;
+import com.web.curation.model.Category;
 import com.web.curation.model.DongCode;
 import com.web.curation.model.SidoCode;
 
@@ -28,6 +29,11 @@ public class FselectServiceImpl implements FselectService {
 	@Override
 	public List<DongCode> selectDong(String gugun) {
 		return dao.selectDong(gugun);
+	}
+
+	@Override
+	public List<Category> selectCategory() {
+		return dao.selectCategory();
 	}
 	
 	
