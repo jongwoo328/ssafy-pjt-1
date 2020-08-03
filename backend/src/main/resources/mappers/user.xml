@@ -10,6 +10,12 @@
         from user
     </select>
     
+    <select id="getUserByUserno" resultType="user">
+    	select *
+    	from user
+    	where userno = #{userno}
+    </select>
+    
     <select id="getUserByUid" resultType="user">
         select *
         from user

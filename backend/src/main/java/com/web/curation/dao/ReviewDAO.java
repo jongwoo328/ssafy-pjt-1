@@ -8,7 +8,7 @@ import com.web.curation.model.Review;
 
 @Mapper
 public interface ReviewDAO {
-	public List<Review> selectReview();
+	public List<Review> selectReview(int servno);
 	public Review selectReviewByNo (int revno);
 	public int insertReview(Review review);
 	public int updateReview(Review review);

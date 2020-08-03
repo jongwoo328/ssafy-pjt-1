@@ -2,7 +2,9 @@ package com.web.curation.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,6 +26,9 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.web.curation.model.ConnectorService;
+import com.web.curation.model.Pay;
+import com.web.curation.model.Profile;
+import com.web.curation.service.PayService;
 import com.web.curation.service.ServiceService;
 
 import io.swagger.annotations.ApiOperation;
@@ -32,12 +37,15 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/service")
 public class ServiceController {
-	private static final String  SAVE_PATH = "C:/Users/multicampus/Desktop/s03p12d106-backend-jingi/backend/src/main/resources/static/img/service/";
+	private static final String  SAVE_PATH = "C:\\Users\\multicampus\\Desktop\\git\\s03p13d106\\backend\\src\\main\\resources\\static\\img\\service/";
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 	
 	@Autowired
 	ServiceService svc;
+	
+	@Autowired
+	PayService pay;
 	
 	@ApiOperation(value = "서비스 정보 반환", response = ConnectorService.class)
 	@GetMapping("{userno}")
@@ -52,11 +60,23 @@ public class ServiceController {
 	
 	@ApiOperation(value = "각 서비스 정보 반환", response = ConnectorService.class)
 	@GetMapping("{servno}")
-	public Object detailService(@PathVariable int servno) {
+	public Object detailService(@PathVariable int userno, @PathVariable int servno) {
 		ConnectorService serv = svc.detailService(servno);
+		
+		Pay p = pay.searchPayed(userno, servno);
+		
+		
 		
 		if(serv != null) {
 			serv.setImgurl("img/service/"+serv.getImgurl());
+			if(p != null) {
+				serv.setRevcheck(true);
+				System.out.println("리뷰 작성 가능");
+			} else {
+				serv.setRevcheck(false);
+				System.out.println("결제 내역 없음");
+			}
+			
 			return new ResponseEntity<ConnectorService>(serv, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>(FAIL, HttpStatus.OK);
@@ -67,7 +87,15 @@ public class ServiceController {
 	@PostMapping("/{word}")
 	public Object selectServiceByDongcode(HttpServletRequest request) {
 		String dongcode = request.getParameter("dongcode");
-		String word = request.getParameter("word");
+		String keyword = request.getParameter("word");
+		keyword = keyword.trim();
+		StringTokenizer st = new StringTokenizer(keyword);
+		List<String> word = new ArrayList<String>();
+		while(st.hasMoreTokens()) {
+			word.add(st.nextToken());
+		}
+		
+		
 		int cateno = Integer.parseInt(request.getParameter("cateno"));
 		List<ConnectorService> servList = svc.selectServiceByDongcode(cateno, dongcode, word);
 		if(servList != null) {
@@ -87,8 +115,6 @@ public class ServiceController {
 		
 		MultipartHttpServletRequest mrequest = (MultipartHttpServletRequest)request;
 		MultipartFile imgFiles = mrequest.getFile("serviceImage");
-		System.out.println(mrequest.getFileNames());
-		System.out.println(imgFiles.getOriginalFilename());
 		ConnectorService serv = new ConnectorService();
 		serv.setUserno(Integer.parseInt(request.getParameter("userno")));
 		serv.setCateno(Integer.parseInt(request.getParameter("cateno")));
@@ -102,26 +128,31 @@ public class ServiceController {
 		serv.setSaddr5(request.getParameter("saddr5"));
 		serv.setSaddr6(request.getParameter("saddr6"));
 		
-		String originalFileName = imgFiles.getOriginalFilename();
-		String time = new String();
-		time += System.currentTimeMillis();
-		String saveFile = SAVE_PATH + time + originalFileName;
-		try {
-			imgFiles.transferTo(new File(saveFile));
-		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
+		if(imgFiles != null) {
+			System.out.println(mrequest.getFileNames());
+			System.out.println(imgFiles.getOriginalFilename());			
+			String originalFileName = imgFiles.getOriginalFilename();
+			String time = new String();
+			time += System.currentTimeMillis();
+			String saveFile = SAVE_PATH + time + originalFileName;
+			try {
+				imgFiles.transferTo(new File(saveFile));
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}
+			
+			serv.setImgurl(time + originalFileName);
+			
+		} else {
+			serv.setImgurl("null.png");
 		}
-		
-		serv.setImgurl(time + originalFileName);
 		
 		if(svc.resistService(serv)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
-		
-//		return new ResponseEntity<String>(saveFile, HttpStatus.OK);
-		
+
 	}
 
 	@ApiOperation(value = "servno에 해당하는 서비스 정보를 수정한다.", response = String.class)
@@ -144,23 +175,33 @@ public class ServiceController {
 		service.setSaddr4(request.getParameter("saddr4"));
 		service.setSaddr5(request.getParameter("saddr5"));
 		service.setSaddr6(request.getParameter("saddr6"));
-		File file = new File(SAVE_PATH + pre.getImgurl());
-		if(file.exists() == true) {
-			file.delete();
+		
+		if(imgFiles != null) {
+			if(pre.getImgurl().equals("null.png")) {
+				
+			} else {
+				File file = new File(SAVE_PATH + pre.getImgurl());
+				if(file.exists() == true) {
+					file.delete();
+				}				
+			}
+			String originalFileName = imgFiles.getOriginalFilename();
+			String time = new String("");
+			time += System.currentTimeMillis();
+			String saveFile = SAVE_PATH + time + originalFileName;
+			
+			try {
+				imgFiles.transferTo(new File(saveFile));
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}
+			
+			service.setImgurl(time + originalFileName);
+		} else {
+			service.setImgurl(pre.getImgurl());
 		}
 		
-		String originalFileName = imgFiles.getOriginalFilename();
-		String time = new String("");
-		time += System.currentTimeMillis();
-		String saveFile = SAVE_PATH + time + originalFileName;
 		
-		try {
-			imgFiles.transferTo(new File(saveFile));
-		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
-		}
-		
-		service.setImgurl(time + originalFileName);
 		
 		if(svc.updateService(service)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
@@ -172,15 +213,20 @@ public class ServiceController {
 	
 	@ApiOperation(value = "서비스 정보 삭제")
 	@DeleteMapping("{servno}")
-	public ResponseEntity<String> deleteService(@PathVariable int servno, @RequestBody ConnectorService service){
+	public ResponseEntity<String> deleteService(@RequestBody ConnectorService service){
 		System.out.println("삭제");
 		
-		File file = new File(SAVE_PATH + service.getImgurl());
-		if(file.exists() == true) {
-			file.delete();
+		if(service.getImgurl().equals("null.png")) {
+			
+		} else {
+			File file = new File(SAVE_PATH + service.getImgurl());
+			if(file.exists() == true) {
+				file.delete();
+			}			
 		}
 		
-		if(svc.deleteService(servno)) {
+		
+		if(svc.deleteService(service.getServno())) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		

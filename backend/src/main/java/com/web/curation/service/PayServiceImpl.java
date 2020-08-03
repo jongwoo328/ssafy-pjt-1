@@ -18,7 +18,7 @@ public class PayServiceImpl implements PayService{
 	}
 
 	@Override
-	public Pay serchPayed(int userno, int servno) {
+	public Pay searchPayed(int userno, int servno) {
 		return dao.selectPay(userno, servno);
 	}
 	

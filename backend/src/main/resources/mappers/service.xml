@@ -39,10 +39,16 @@
 			   imgurl
 		 from service
 		 <if test= "cateno != 0 and saddr5 != null and word != null">
-		 where cateno = #{cateno} and saddr5 = #{saddr5} and servname Like '%#{word}%' 
+		 where cateno = #{cateno} and saddr5 = #{saddr5} and 
+		 <foreach collection="word" item="keyword" index="index" separator="or servname Like " open ="(servname LIKE " close=")">
+		 '%#{keyword}%'
+		 </foreach>
 		 </if>
 		 <if test= "cateno == 0 and saddr5 == null and word != null">
-		 where servname Like '%#{word}%'
+		 where 
+		 <foreach collection="word" item="keyword" index="index" separator="or servname Like " open ="servname LIKE ">
+		 '%#{keyword}%'
+		 </foreach>
 		 </if>
 		 <if test= "cateno == 0 and saddr5 != null and word == null">
 		 where saddr = #{saddr}
@@ -54,11 +60,17 @@
 		 where cateno = #{cateno} and saddr5 = #{saddr5}
 		 </if>
 		 <if test= "cateno != 0 and saddr5 == null and word != null">
-		 where cateno = #{cateno} and word Like '%#{word}%'
+		 where cateno = #{cateno} and 
+		 <foreach collection="word" item="keyword" index="index" separator="or servname Like " open ="(servname LIKE " close=")">
+		 '%#{keyword}%'
+		 </foreach>
 		 </if>
 		 
 		 <if test= "cateno == 0 and saddr5 != null and word != null">
-		 where saddr5 = #{saddr5} and word Like '%#{word}%'
+		 where saddr5 = #{saddr5} and
+		 <foreach collection="word" item="keyword" index="index" separator="or servname Like " open ="(servname LIKE " close=")">
+		 '%#{keyword}%'
+		 </foreach>
 		 </if>
 		 
 		 order by servno desc

@@ -9,7 +9,7 @@ import com.web.curation.model.ConnectorService;
 @Mapper
 public interface ServiceDAO {
 	public List<ConnectorService> selectServiceByUserno(int userno);
-	public List<ConnectorService> selectServiceByDongcode(int cateno, String saddr5, String word);
+	public List<ConnectorService> selectServiceByDongcode(int cateno, String saddr5, List<String> word);
 	public ConnectorService selectServiceByNo(int servno);
 	public int insertService(ConnectorService service);
 	public int updateService(ConnectorService service);

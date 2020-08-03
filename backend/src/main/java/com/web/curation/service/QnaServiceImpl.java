@@ -42,5 +42,20 @@ public class QnaServiceImpl implements QnaService {
 	public boolean deleteQna(int qnano) {
 		return dao.deleteQna(qnano) == 1;
 	}
+
+	@Override
+	public List<Qna> selectQnaByUserno(int userno) {
+		return dao.selectQnaByUserno(userno);
+	}
+
+	@Override
+	public boolean resistAnswerQna(Qna qna) {
+		return dao.resistAnswerQna(qna) == 1;
+	}
+
+	@Override
+	public boolean updateAnswerQna(Qna qna) {
+		return dao.updateAnswerQna(qna) == 1;
+	}
 	
 }
