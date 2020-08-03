@@ -3,7 +3,7 @@
         <h3>내 서비스</h3>
         <hr>
         <div class="button-box">
-            <Button button-text="추가"/>        
+            <Button type="button" onclick="toServiceAdd()" button-text="추가" />        
         </div>
         <div v-if="!isService">
                <p>등록한 서비스가 없습니다.</p>
@@ -25,6 +25,29 @@ export default {
         
         Button,
         SearchResultCard
+    },methods:{
+        onChangePage() {
+        this.$router.push("/serviceadd");
+    }
+
+    },
+    created() {
+        axios.get(`${URL.BASE_URL}${URL.PORT}/service/${this.getUrlUsername}`)
+        .then(res => {
+            console.log(res)
+            this.serviceData = {
+                imgUrl: 'http://172.30.1.13:8090/' + res.data.imgurl,
+                comment: res.data.comment
+            }
+            console.log(this.serviceData.imgUrl)
+            console.log(this.serviceData.title)
+            if (res.data === 'fail') {
+                this.isProfile = false
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
     },
     created() {
         axios.get(`${URL.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
@@ -65,11 +88,11 @@ export default {
       ]
     }
     },
-    computed:{
-        toServiceAdd(){
-            return '/';
-        }
-    }
+    // methods:{
+    //    toServiceAdd(){
+    //         return `/serviceadd`
+    //     }
+    // }
 }
 </script>
 <style scoped>

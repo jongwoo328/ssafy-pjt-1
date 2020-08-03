@@ -2,39 +2,109 @@
     <div class="container">
         <h3>서비스 등록</h3>
         <hr>
-        <div>
-            <label>분류</label>
-            <select name ="category">
-                <option value="" v-model:>
+            <div >
+                <label>분류</label>
+                    <select name ="category"  v-model="categoryInfo">
+                        <option value="" disabled selected>분류</option>
+                        <option v-for="category in categoryList" :key="category.cateno" :value="cateno" v-text="category.cname" ></option>
+                    </select>
+                
+            </div>
+            <div class="form-block">
+                <label for="servicename"> 
+                    서비스 이름 
+                </label>
+                <input class="input-text" v-model="cname" id="servicename"/>
+            </div>
+            <div class="form-block">
+                <label for="servicedescription"> 
+                서비스 내용 
+                </label>
+                <input class="input-text" v-model="cname" id="servicedescription"/>
+            </div>
+            <div class="form-block">
+                <label for="serviceprice"> 
+                가격 
+                </label>
+                <input class="input-text" v-model="price" id="serviceprice"/>
+            </div>
+            <div>
+                이미지
+                <input ref="profileImage" type="file" id="file" accept="image/*" @change="fileSelect">
 
-        </div>
+            </div>
+            <div>
+                <label class="form-block-head col-3 col-md-2">
+                주소
+                </label>
+                <select class="form-control" id="exampleFormControlSelect1" v-model="siInfo" >
+                <option v-if="siInfo" :value="siInfo" v-text="siInfo.siName"></option>
+                <option v-else value="" disabled selected>시/도</option>
+                <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName"></option>
+                </select>
+                <div class="d-flex sub-address">
+                <select class="form-control col-6" id="exampleFormControlSelect2" v-model="guInfo">
+                    <option v-if="guInfo" :value="guInfo" v-text="guInfo.guName"></option>
+                    <option v-else value="" disabled selected>구/군</option>
+                    <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
+                </select>
+                <select class="form-control col-6" id="exampleFormControlSelect3" v-model="dongInfo">
+                    <option v-if="dongInfo" :value="dongInfo" v-text="dongInfo.dongName"></option>
+                    <option v-else value="" disabled selected>동/읍/면</option>
+                    <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
+                </select>
+            </div>
+            <div>
+
+            </div>
+    </div>
+        <Button class="btn_1" type="submit" button-text="등록" @click.native="submit"/>
     </div>
 </template>
 <script>
 import URL from "@/util/http-common.js"
-import Axios from 'axios'
+import axios from 'axios'
+import Button from '@/components/common/Button.vue'
 
 export default {
     name : 'ServiceAdd',
     components : {
-
+        Button
     },
     data(){
         return {
-            Category:[
-                {
-                    cateno:"",
-                    cname:""
-                }
-            ],
-
+            categoryList: [],
+            siList: [],
+            guList: [],
+            dongList: [],
+            categoryInfo:"",
+            siInfo: "",
+            guInfo: "",
+            dongInfo: "",
+            cateno: "",
+            servname:"",
+            price:"",
+            description:"",
+            saddr1:"",
+            saddr2:"",
+            saddr3:"",
+            saddr4:"",
+            saddr5:"",
+            saddr6:"",
+            imgurl:"",
         }
 
     },
      created() {
-         axios.get('${URL.BASE_URL}/fselect/cate') 
+         axios.get(`${URL.BASE_URL}/fselect/cate`,URL.JSON_HEADER) 
           .then(res => {
             console.log(res)
+            for(let category in res.data){
+                this.categoryList.push({
+                    "cname" : res.data[category]["cname"],
+                    "cateno" : res.data[category]["cateno"]
+                })
+            }
             this.Category = {
                 cateno:  res.data.cateno,
                 cname: res.data.cname
@@ -45,7 +115,86 @@ export default {
         })
         .catch(err => {
             console.log(err)
+        }),
+        axios.get(`${URL.BASE_URL}/fselect`, URL.JSON_HEADER)
+             .then(res => {
+                 console.log(res);
+             for (let si_data in res.data) {
+                 this.siList.push({
+            "siCode": res.data[si_data]["sido_code"],
+            "siName": res.data[si_data]["sido_name"]
+            })
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+     },methods:{
+          submit() {
+          const formData = new FormData()
+          formData.append('profileImage', this.profileImage)
+          formData.append('Comment', this.comment)
+          formData.append('userno', this.$store.getters.getUserData.userno)
+
+          for (let key of formData.entries())
+          {
+            console.log(`${key}`)
+          }
+          },
+         getGuInfo() {
+        let si_params = this.siInfo
+        this.guList = []
+        this.dongList = []
+        this.guInfo = ""
+        this.dongInfo = ""
+
+        axios.get(`${URL.BASE_URL}/fselect/${si_params.siCode}`, URL.JSON_HEADER)
+        .then(res => {
+          for (let gu_data in res.data) {
+            this.guList.push({
+              "guCode": res.data[gu_data]["gugun_code"],
+              "guName": res.data[gu_data]["gugun_name"]
+              })
+          }
+
+        }).catch(err => {
+          console.log(err)
         })
+      },
+      getDongInfo() {
+        let gu_params = this.guInfo
+        this.dongList = []
+        this.dongInfo = ""
+
+        axios.get(`${URL.BASE_URL}/fselect/sido/${gu_params.guCode}`, URL.JSON_HEADER)
+        .then(res => {
+          console.log(res.data)
+
+          for (let dong_data in res.data) {
+            this.dongList.push({
+              "dongCode": res.data[dong_data]["code"],
+              "dongName": res.data[dong_data]["dong"]
+              })
+          }
+          console.log(this.dongList)
+        }).catch(err => {
+          console.log(err)
+        })
+      }
      }
 }
 </script>
+<style scoped>
+    .input-text {
+        width: 90%;
+        height: 40px;
+        border: 0.8px;
+        padding-left: 10px;
+        border-style: none none solid none;
+    }
+    .form-block {
+        display: flex;
+        margin-bottom: 25px;
+        justify-content: space-around;
+    }
+</style>
