@@ -62,12 +62,11 @@ Vue.use(VueRouter)
     component: Qna
   },
   {
-<<<<<<< frontend/src/router/index.js
     path: '/service/create',
     name: 'ServiceAdd',
     component : ServiceAdd
-  }
-=======
+  },
+  {
     path: '/qna/create',
     name: 'QnaCreate',
     component: QnaCreate
@@ -76,9 +75,7 @@ Vue.use(VueRouter)
     path: '/qna/:q_no',
     name: 'QnaDetail',
     component: QnaDetail
-  },
-
->>>>>>> frontend/src/router/index.js
+  }
 ]
 
 const router = new VueRouter({
