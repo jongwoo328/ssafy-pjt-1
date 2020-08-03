@@ -126,8 +126,9 @@
             v-model="tel" 
             id="tel" 
             placeholder="휴대전화번호를 입력하세요 ('-' 제외)" 
-            type="text"
+            type="tel"
             autocapitalize="none"
+            pattern="[0-9]{3}-[0-9]{4}-[0-9]{4}"
         />
         <div class="error-msg" v-if="errorData.tel && (tel || isFail)">{{ errorData.tel }}</div>
     </div>

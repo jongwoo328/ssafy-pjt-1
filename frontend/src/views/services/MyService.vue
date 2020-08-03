@@ -5,9 +5,9 @@
         <div class="button-box">
             <Button type="button" onclick="toServiceAdd()" button-text="추가" />        
         </div>
-        <!-- <div v-if="!isService">
+        <div v-if="!isService">
                <p>등록한 서비스가 없습니다.</p>
-        </div> -->
+        </div>
         <div class="service-box">
            <SearchResultCard :services="serviceResult"/>   
         </div>  
@@ -49,8 +49,27 @@ export default {
             console.log(err)
         })
     },
+    created() {
+        axios.get(`${URL.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
+        .then(res => {
+            console.log(res)
+            this.serviceData = {
+                imgUrl: 'http://172.30.1.13:8090/' + res.data.imgurl,
+                comment: res.data.comment
+            }
+            console.log(this.serviceData.imgUrl)
+            console.log(this.serviceData.title)
+            if (res.data === 'fail') {
+                this.isService = false
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    },
     data(){
        return {
+            profileFrame: false,
             isService: false,
             serviceData: "test",
       serviceResult: [
