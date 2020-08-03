@@ -48,14 +48,29 @@
 <script>
 import Button from '@/components/common/Button.vue'
 import ReviewList from '@/components/service/ReviewList.vue'
+import HTTP from "@/util/http-common.js"
+import axios from 'axios'
 
 export default {
     name: 'ServiceDetail',
     data() {
         return {
             serviceId: 0,
-            serviceData: {},
-
+            serviceData: {
+                 servname :"",
+                price : "",
+                saddr1 : "",
+                saddr2 : "",
+                saddr3 : "",
+                saddr4 : "",
+                saddr5 : "",
+                saddr6 : "",
+                imgUrl : "",
+                description : "",
+            },
+        
+            review: [],
+            point : "",
         }
     },
     components: {
@@ -63,7 +78,40 @@ export default {
         ReviewList,
     },
     created() {
-        
+        axios.get(`${HTTP.BASE_URL}/service/detail/${this.$route.params.serviceId}`,HTTP.JSON_HEADER)
+        .then(res =>{
+            this.serviceData ={
+                imgUrl:`${URL.BASE_URL}/` + res.data.imgUrl,
+                servname : res.data.servname,
+                price : res.data.price,
+                saddr1 : res.data.saddr1,
+                saddr2 : res.data.saddr2,
+                saddr3 : res.data.saddr3,
+                saddr4 : res.data.saddr4,
+                saddr5 : res.data.saddr5,
+                saddr6 : res.data.saddr6,
+                description : res.data.description
+            }
+        })
+        .catch(err => {
+                console.log(err)
+        })
+        axios.get(`${HTTP.BASE_URL}/review/${this.$route.params.serviceId}`)
+        .then(res => {
+            console.log(res);
+            for(let review in res.data){
+                this.review.push({
+                   "title" : res.data[review]["title"],
+                   "content" : res.data[review]["content"],
+                   "point" : res.data[review]["point"],
+                   "writer" : res.data[review]["writer"]
+                })
+          
+            }
+        })
+        .catch(err => {
+                console.log(err)
+        })
     }
 }
 </script>

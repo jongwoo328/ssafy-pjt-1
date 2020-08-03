@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mapper namespace="com.web.curation.dao.ServiceDAO">
+
+	<!-- 개인이 등록한 서비스 조회 -->
+	<select id="selectServiceByUserno" resultType="ConnectorService">
+		select servno,
+			   userno,
+			   cateno,
+			   servname,
+			   price,
+			   description,
+			   saddr1,
+			   saddr2,
+			   saddr3,
+			   saddr4,
+			   saddr5,
+			   saddr6,
+			   imgurl
+			   
+		  from service
+		  where userno = #{userno}
+		  order by servno desc
+	</select>
+	
+	<!-- 지역별 서비스 조회 -->
+	<select id="selectServiceByDongcode" resultType="ConnectorService">
+		select servno,
+			   userno,
+			   cateno,
+			   servname,
+			   price,
+			   description,
+			   saddr1,
+			   saddr2,
+			   saddr3,
+			   saddr4,
+			   saddr5,
+			   saddr6,
+			   imgurl
+		 from service
+		 <if test= "cateno != 0 and saddr5 != null and word != null">
+		 where cateno = #{cateno} and saddr5 = #{saddr5} and servname Like '%#{word}%' 
+		 </if>
+		 <if test= "cateno == 0 and saddr5 == null and word != null">
+		 where servname Like '%#{word}%'
+		 </if>
+		 <if test= "cateno == 0 and saddr5 != null and word == null">
+		 where saddr = #{saddr}
+		 </if>
+		 <if test= "cateno != 0 and saddr5 == null and word == null">
+		 where cateno = #{cateno}
+		 </if>
+		 <if test= "cateno != 0 and saddr5 != null and word == null">
+		 where cateno = #{cateno} and saddr5 = #{saddr5}
+		 </if>
+		 <if test= "cateno != 0 and saddr5 == null and word != null">
+		 where cateno = #{cateno} and word Like '%#{word}%'
+		 </if>
+		 
+		 <if test= "cateno == 0 and saddr5 != null and word != null">
+		 where saddr5 = #{saddr5} and word Like '%#{word}%'
+		 </if>
+		 
+		 order by servno desc
+	</select>
+
+	<!-- 서비스 세부 조회 -->
+	<select id="selectServiceByNo" resultType="ConnectorService">
+	select servno,
+			   userno,
+			   cateno,
+			   servname,
+			   price,
+			   description,
+			   saddr1,
+			   saddr2,
+			   saddr3,
+			   saddr4,
+			   saddr5,
+			   saddr6,
+			   imgurl
+	from service
+	where servno = {servno} 
+	</select>
+	
+	
+	<!-- 서비스 등록 -->
+	<insert id ="insertService">
+	insert into service
+	(userno, cateno, servname, price, description, saddr1, saddr2, saddr3, saddr4, saddr5, saddr6, imgurl)
+	values (#{userno}, #{cateno}, #{servno}, #{price}, #{description}, #{saddr1}, #{saddr2}, #{saddr3}, #{saddr4}, #{saddr5}, #{saddr6}, #{imgurl})
+	</insert>
+	
+	<!-- 서비스 수정 -->
+	<update id="updateService" parameterType="ConnectorService">
+		update service
+		   set
+		   		cateno = #{cateno}, 
+		   	   servname = #{servname},
+		   	   price = #{price},
+		   	   discription = #{discription},
+		   	   saddr1 = #{saddr1},
+		   	   saddr2 = #{saddr2},
+		   	   saddr3 = #{saddr3},
+		   	   saddr4 = #{saddr4},
+		   	   saddr5 = #{saddr5},
+		   	   saddr6 = #{saddr6},
+		   	   imgurl = #{imgurl}
+		   	    
+		 where servno = #{servno};
+	</update>
+
+	<!-- 서비스 삭제 -->
+	<delete id="deleteService" parameterType="int">
+		delete 
+		  from service  
+		 where servno = #{servno}
+	</delete>
+
+</mapper>
