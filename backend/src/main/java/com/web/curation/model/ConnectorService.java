@@ -14,6 +14,7 @@ public class ConnectorService {
 	private String saddr5;
 	private String saddr6;
 	private String imgurl;
+	private boolean revcheck;
 	
 	public ConnectorService() {
 		
@@ -22,7 +23,8 @@ public class ConnectorService {
 	
 
 	public ConnectorService(int servno, int userno, int cateno, String servname, int price, String description,
-			String saddr1, String saddr2, String saddr3, String saddr4, String saddr5, String saddr6, String imgurl) {
+			String saddr1, String saddr2, String saddr3, String saddr4, String saddr5, String saddr6, String imgurl,
+			boolean revcheck) {
 		this.servno = servno;
 		this.userno = userno;
 		this.cateno = cateno;
@@ -36,7 +38,11 @@ public class ConnectorService {
 		this.saddr5 = saddr5;
 		this.saddr6 = saddr6;
 		this.imgurl = imgurl;
+		this.revcheck = revcheck;
 	}
+
+
+
 	public int getServno() {
 		return servno;
 	}
@@ -141,13 +147,26 @@ public class ConnectorService {
 		this.imgurl = imgurl;
 	}
 
+	public boolean isRevcheck() {
+		return revcheck;
+	}
+
+	public void setRevcheck(boolean revcheck) {
+		this.revcheck = revcheck;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return "ConnectorService [servno=" + servno + ", userno=" + userno + ", cateno=" + cateno + ", servname="
 				+ servname + ", price=" + price + ", description=" + description + ", saddr1=" + saddr1 + ", saddr2="
 				+ saddr2 + ", saddr3=" + saddr3 + ", saddr4=" + saddr4 + ", saddr5=" + saddr5 + ", saddr6=" + saddr6
-				+ ", imgurl=" + imgurl + "]";
+				+ ", imgurl=" + imgurl + ", revcheck=" + revcheck + "]";
 	}
+	
+	
+
 	
 	
 	
