@@ -27,7 +27,7 @@
 		select cateno,
 			   cname
 		from category
-		order by cateno desc
+		order by cateno
 	</select>
 
 </mapper>
