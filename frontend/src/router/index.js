@@ -76,8 +76,6 @@ Vue.use(VueRouter)
     name: 'QnaDetail',
     component: QnaDetail
   },
-
-
 ]
 
 const router = new VueRouter({

@@ -31,25 +31,24 @@ export default {
     }
 
     },
-   
-    // created() {
-    //     axios.get(`${URL.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
-    //     .then(res => {
-    //         console.log(res)
-    //         this.serviceData = {
-    //             imgUrl: 'http://172.30.1.13:8090/' + res.data.imgurl,
-    //             comment: res.data.comment
-    //         }
-    //         console.log(this.serviceData.imgUrl)
-    //         console.log(this.serviceData.title)
-    //         if (res.data === 'fail') {
-    //             this.isService = false
-    //         }
-    //     })
-    //     .catch(err => {
-    //         console.log(err)
-    //     })
-    // },
+    created() {
+        axios.get(`${URL.BASE_URL}${URL.PORT}/service/${this.getUrlUsername}`)
+        .then(res => {
+            console.log(res)
+            this.serviceData = {
+                imgUrl: 'http://172.30.1.13:8090/' + res.data.imgurl,
+                comment: res.data.comment
+            }
+            console.log(this.serviceData.imgUrl)
+            console.log(this.serviceData.title)
+            if (res.data === 'fail') {
+                this.isProfile = false
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    },
     data(){
        return {
             profileFrame: false,
