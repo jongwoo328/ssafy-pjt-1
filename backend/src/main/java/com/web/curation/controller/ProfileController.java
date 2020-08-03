@@ -141,7 +141,7 @@ public class ProfileController {
 	public ResponseEntity<String> deleteProfile(@RequestBody Profile profile){
 		System.out.println("삭제");
 		
-		File file = new File(profile.getImgurl());
+		File file = new File(SAVE_PATH + profile.getImgurl());
 		if(file.exists() == true) {
 			file.delete();
 		}
