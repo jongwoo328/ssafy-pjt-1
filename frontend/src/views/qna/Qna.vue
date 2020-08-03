@@ -5,7 +5,7 @@
     <div class="qna-title">
       <h3>내 질문 목록</h3>
       <div>
-        <router-link to='/test'>작성</router-link>
+        <router-link to='/qna/create'>작성</router-link>
       </div>
     </div>
     <Table :rowList="qnaList" />
