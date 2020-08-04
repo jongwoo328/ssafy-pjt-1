@@ -110,6 +110,7 @@ export default {
           }).then(res => {
             console.log(res)
             this.$router.push({ name : 'Profile' })
+            this.$router.go()
           }).catch(err => {
             console.log(err)
           })
