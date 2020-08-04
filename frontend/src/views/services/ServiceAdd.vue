@@ -8,7 +8,6 @@
                         <option value="" disabled selected>분류</option>
                         <option v-for="category in categoryList" :key="category.cateno" :value="cateno" v-text="category.cname" ></option>
                     </select>
-                
             </div>
             <div class="form-block">
                 <label for="servicename"> 
@@ -38,9 +37,9 @@
                 주소
                 </label>
                 <select class="form-control" id="exampleFormControlSelect1" v-model="siInfo" >
-                <option v-if="siInfo" :value="siInfo" v-text="siInfo.siName"></option>
-                <option v-else value="" disabled selected>시/도</option>
-                <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName"></option>
+                    <option v-if="siInfo" :value="siInfo" v-text="siInfo.siName"></option>
+                    <option v-else value="" disabled selected>시/도</option>
+                    <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName"></option>
                 </select>
                 <div class="d-flex sub-address">
                 <select class="form-control col-6" id="exampleFormControlSelect2" v-model="guInfo">
@@ -105,10 +104,7 @@ export default {
                     "cateno" : res.data[category]["cateno"]
                 })
             }
-            this.Category = {
-                cateno:  res.data.cateno,
-                cname: res.data.cname
-            }
+            
             console.log(this.Category.cateno)
             console.log(this.Category.cname)
            
@@ -121,15 +117,17 @@ export default {
                  console.log(res);
              for (let si_data in res.data) {
                  this.siList.push({
-            "siCode": res.data[si_data]["sido_code"],
-            "siName": res.data[si_data]["sido_name"]
-            })
-        }
+                    "siCode": res.data[si_data]["sido_code"],
+                    "siName": res.data[si_data]["sido_name"]
+              })
+            }
+        console.log(this.siList)
       })
       .catch(err => {
         console.log(err)
       })
-     },methods:{
+     },
+     methods:{
           submit() {
           const formData = new FormData()
           formData.append('profileImage', this.profileImage)
@@ -143,10 +141,10 @@ export default {
           },
          getGuInfo() {
         let si_params = this.siInfo
-        this.guList = []
-        this.dongList = []
-        this.guInfo = ""
-        this.dongInfo = ""
+            this.guList = []
+            this.dongList = []
+            this.guInfo = ""
+            this.dongInfo = ""
 
         axios.get(`${URL.BASE_URL}/fselect/${si_params.siCode}`, URL.JSON_HEADER)
         .then(res => {
