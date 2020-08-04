@@ -3,6 +3,8 @@ package com.web.curation.controller;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -126,7 +128,61 @@ public class ServiceController {
 		}
 	}
 
-	@ApiOperation(value = "서비스 검색", response = ConnectorService.class)
+	
+	@ApiOperation(value = "서비스 초기화면에 6개 띄운다", response = List.class)
+	@GetMapping("/main")
+	public Object mainService() {
+		List<ConnectorService> servList = svc.selectServiceByDongcode(0, null, null);
+		List<ConnectorService> resultList = new ArrayList<ConnectorService>();
+		
+		if(servList != null) {
+			List<Review> revList = rev.totalReview();
+			for(ConnectorService serv : servList) {
+				serv.setImgurl("img/service/" + serv.getImgurl());
+				System.out.println(serv.getServname());
+				int count = 0;
+				double sum = 0.0;
+				int sno = serv.getServno();
+				for(Review r : revList) {
+					if(r.getServno() == serv.getServno()) {
+						sum += r.getPoint();
+						count++;
+					}
+				}
+				if(count == 0) {
+					serv.setAvgpoint(0.0);
+				} else {
+					
+					serv.setAvgpoint(Math.round((sum/count) * 10) / 10.0);
+				}
+				System.out.println(serv.getAvgpoint());
+			}
+			
+			Collections.sort(servList, new Comparator<ConnectorService>() {
+
+				@Override
+				public int compare(ConnectorService o1, ConnectorService o2) {
+					return Double.compare(o2.getAvgpoint(), o1.getAvgpoint());
+				}
+			});
+			
+			
+			int c = 0;
+			for(ConnectorService s : servList) {
+				resultList.add(s);
+				c++;
+				
+				if(c == 6) {
+					break;
+				}
+			}
+			
+		}
+		return new ResponseEntity<List<ConnectorService>>(resultList, HttpStatus.OK);
+		
+	}
+	
+	@ApiOperation(value = "서비스 검색", response = List.class)
 	@PostMapping("/search/{word}")
 	public Object selectServiceByDongcode(HttpServletRequest request) {
 		String dongcode = request.getParameter("dongcode");

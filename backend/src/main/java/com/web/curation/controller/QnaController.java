@@ -85,7 +85,7 @@ public class QnaController {
 		if(service.writeQna(qna)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "글번호에 해당하는 게시글의 정보를 수정한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
@@ -98,7 +98,7 @@ public class QnaController {
 		if(service.updateQna(qna)) {
 			return new ResponseEntity<String> (SUCCESS, HttpStatus.OK);
 		}
-		return new ResponseEntity<String> (FAIL, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<String> (FAIL, HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "글번호에 해당하는 게시글의 정보를 수정한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
@@ -110,7 +110,7 @@ public class QnaController {
 		if(service.resistAnswerQna(qna)) {
 			return new ResponseEntity<String> (SUCCESS, HttpStatus.OK);
 		}
-		return new ResponseEntity<String> (FAIL, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<String> (FAIL, HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "글번호에 해당하는 게시글의 정보를 수정한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
@@ -122,7 +122,7 @@ public class QnaController {
 		if(service.updateAnswerQna(qna)) {
 			return new ResponseEntity<String> (SUCCESS, HttpStatus.OK);
 		}
-		return new ResponseEntity<String> (FAIL, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<String> (FAIL, HttpStatus.OK);
 	}
 	
 	
@@ -134,6 +134,6 @@ public class QnaController {
 		if (service.deleteQna(qnano)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}
 }

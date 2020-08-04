@@ -31,7 +31,7 @@
         update review
         set title = #{title},
         content = #{content},
-        point = #{point};
+        point = #{point}
         where revno = #{revno}
     </update>
     

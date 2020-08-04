@@ -5,7 +5,7 @@ import java.sql.Date;
 public class Msg {
 	private int msgno, writerno, reciverno;
 	private String title, content;
-	private Date senddate;
+	private String senddate;
 	private String writername;
 	private String recivername;
 	private boolean readcheck;
@@ -14,7 +14,7 @@ public class Msg {
 		
 	}
 	
-	public Msg(int msgno, int writerno, int reciverno, String title, String content, Date senddate) {
+	public Msg(int msgno, int writerno, int reciverno, String title, String content, String senddate) {
 		this.msgno = msgno;
 		this.writerno = writerno;
 		this.reciverno = reciverno;
@@ -60,10 +60,10 @@ public class Msg {
 		this.readcheck = readcheck;
 	}
 
-	public Date getSenddate() {
+	public String getSenddate() {
 		return senddate;
 	}
-	public void setSenddate(Date senddate) {
+	public void setSenddate(String senddate) {
 		this.senddate = senddate;
 	}
 	public String getWritername() {
