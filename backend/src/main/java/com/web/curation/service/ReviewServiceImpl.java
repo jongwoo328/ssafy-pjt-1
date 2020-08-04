@@ -41,4 +41,9 @@ public class ReviewServiceImpl implements ReviewService {
 		return dao.deleteReview(revno) == 1;
 	}
 
+	@Override
+	public List<Review> totalReview() {
+		return dao.totalReview();
+	}
+
 }

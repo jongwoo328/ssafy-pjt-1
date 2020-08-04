@@ -1,5 +1,7 @@
 package com.web.curation.model;
 
+import java.util.List;
+
 public class ConnectorService {
 	private int servno;
 	private int userno;
@@ -15,7 +17,22 @@ public class ConnectorService {
 	private String saddr6;
 	private String imgurl;
 	private boolean revcheck;
+	private double avgpoint;
+	private List<Review> rev;
 	
+	
+	public List<Review> getRev() {
+		return rev;
+	}
+
+
+
+	public void setRev(List<Review> rev) {
+		this.rev = rev;
+	}
+
+
+
 	public ConnectorService() {
 		
 	}
@@ -39,6 +56,18 @@ public class ConnectorService {
 		this.saddr6 = saddr6;
 		this.imgurl = imgurl;
 		this.revcheck = revcheck;
+	}
+
+
+
+	public double getAvgpoint() {
+		return avgpoint;
+	}
+
+
+
+	public void setAvgpoint(double avgpoint) {
+		this.avgpoint = avgpoint;
 	}
 
 

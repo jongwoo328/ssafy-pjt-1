@@ -9,6 +9,11 @@
         insert into review (userno, servno, title, content, point, cdate) values (#{userno},#{servno},#{title},#{content},#{point},now())
     </insert>
     
+    <select id="totalReview" resultType="Review">
+    	select *
+    	from review
+    </select>
+    
     <select id="selectReview" resultType="Review">
         select *
         from review

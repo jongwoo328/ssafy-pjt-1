@@ -33,6 +33,23 @@ public class User {
 	private String addr5;
 	private String addr6;
 	private boolean ispro;
+	private int msgcount;
+	private boolean checkadmin;
+	
+	
+	
+	public boolean isCheckadmin() {
+		return checkadmin;
+	}
+	public void setCheckadmin(boolean checkadmin) {
+		this.checkadmin = checkadmin;
+	}
+	public int getMsgcount() {
+		return msgcount;
+	}
+	public void setMsgcount(int msgcount) {
+		this.msgcount = msgcount;
+	}
 	public int getUserno() {
 		return userno;
 	}
@@ -105,11 +122,14 @@ public class User {
 	public void setIspro(boolean ispro) {
 		this.ispro = ispro;
 	}
+	
 	@Override
 	public String toString() {
 		return "User [userno=" + userno + ", email=" + email + ", pw=" + pw + ", name=" + name + ", tel=" + tel
 				+ ", addr1=" + addr1 + ", addr2=" + addr2 + ", addr3=" + addr3 + ", addr4=" + addr4 + ", addr5=" + addr5
-				+ ", addr6=" + addr6 + ", ispro=" + ispro + "]";
+				+ ", addr6=" + addr6 + ", ispro=" + ispro + ", msgcount=" + msgcount + "]";
 	}
+	
+	
 	
 }
