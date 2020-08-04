@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import Table from '@/components/common/Table.vue'
+import Table from '@/components/qna/Table.vue'
 import axios from 'axios'
 import URL from '@/util/http-common.js'
 import Time from '@/util/time-common.js'

@@ -9,7 +9,6 @@
     <label for="" class="font-kor">내용</label>
     <Editor/>
     <Button buttonText="작성" id="create" @click.native="postQna"/>
-    <button @click="test">ddasdf</button>
   </div>
 </template>
 
@@ -40,6 +39,7 @@ export default {
             axios.post(`${URL.BASE_URL}/qna`, qnaData, URL.JSON_HEADER)
             .then(res => {
                 console.log(res)
+                this.$router.push({ name:'Qna' })
             })
             .catch(err => console.log(err))
         },

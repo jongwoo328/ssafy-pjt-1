@@ -16,7 +16,7 @@
 <script>
 import Button from '@/components/common/Button.vue'
 import SearchResultCard from '@/components/search/SearchResultCard.vue'
-// import axios from 'axios'
+import axios from 'axios'
 // import URL from '@/util/http-common.js'
 
 export default {
