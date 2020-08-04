@@ -1,5 +1,5 @@
 <template>
-    <div class="badge" :style="backgroundColor">
+    <div :class="getClass" :style="backgroundColor">
         <span class="badge-text" v-text="badgeText"></span>
         <span v-if="!isCountNull" class="badge-count" v-text="badgeCount"></span>
     </div>
@@ -14,7 +14,8 @@ export default {
         badgeCount: {
             type: Number,
             default: -1
-        }
+        },
+        badgeClass: String
     },
     computed: {
         backgroundColor() {
@@ -23,6 +24,12 @@ export default {
         isCountNull() {
             return this.badgeCount === -1
         },
+        getClass() {
+            if (this.badgeClass !== undefined ) {
+                return `badge ${this.badgeClass}`
+            }
+            return 'badge'
+        }
     }
 }
 </script>

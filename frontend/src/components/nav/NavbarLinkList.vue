@@ -1,7 +1,7 @@
 <template>
   <div class="navbar-nav"> 
       <NoticeIcon/> 
-      <!-- <NavbarLinkListItem v-if="isPro" value="서비스" @click.native="toserviceUp" /> -->
+      <!-- <NavbarLinkListItem v-if="isPro" value="My Services" @click.native="toserviceUp" /> -->
       <NavbarLinkListItem v-if="!isLoggedIn" value="SignUp" @click.native="toSignUp" />
       <NavbarLinkListItem v-if="!isLoggedIn" value="Login" @click.native="changeLogin"/>
       <NavbarLinkListItem v-if="isLoggedIn" value="Logout" @click.native="logout"/>

@@ -36,6 +36,9 @@ export default new Vuex.Store({
     },
     isPro(state) {
       return state.userData.ispro
+    },
+    isAdmin(state) {
+      return state.userData.checkadmin
     }
   }
 })

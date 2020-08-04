@@ -17,7 +17,7 @@ export default {
 </script>
 
 <style>
-  nav {
+  nav.navbar {
     z-index: 3;
     box-shadow: 0 1px 5px gray;
     padding: 0 !important;
@@ -26,16 +26,16 @@ export default {
   .navbar-brand {
     padding: 0 !important;
   }
-  nav img {
+  nav.navbar img {
     width: auto;
     height: auto;
     max-height: 70px;
   }
   @media (min-width: 768px) {
-    nav {
+    nav.navbar {
       height: 100px;
     }
-    nav img {
+    nav.navbar img {
       max-height: 100px;
     }
   }
