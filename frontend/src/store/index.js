@@ -35,7 +35,11 @@ export default new Vuex.Store({
       return state.userData
     },
     isPro(state) {
-      return state.userData.ispro
+      if (state.userData) {
+        return state.userData.ispro
+      } else {
+        return false
+      }
     },
     isAdmin(state) {
       return state.userData.checkadmin

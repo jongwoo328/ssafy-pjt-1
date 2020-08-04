@@ -12,7 +12,7 @@
         
         <div class="w3-bar" id="paginator">
             <a class="w3-button" @click="previous">&laquo;</a>
-            <a v-for="pNum in currentPages" :key="pNum" v-text="pNum" class="w3-button" @click="getPage"/>
+            <a v-for="pNum in pageRange" :key="pNum" v-text="pNum" class="w3-button" @click="getPage"/>
             <a class="w3-button" @click="next">&raquo;</a>
         </div>
     </table>
@@ -32,7 +32,6 @@ export default {
             pageNow: 1,
             range: 5,
             beforeIndex: 1,
-            // currentPages: this.pageRag
         }
     },
     props: {
@@ -55,13 +54,6 @@ export default {
         rangeStart() {
             return Math.floor(this.pageNow / this.range)
         },
-        // currentPages() {
-        //     if (this.pageNumber > 5) {
-        //         return [1, 2, 3, 4, 5]
-        //     } else {
-        //         return [...Array(this.pageNumber).keys()].map(key => key + 1)
-        //     }
-        // }
     },
     methods: {
         previous() {
