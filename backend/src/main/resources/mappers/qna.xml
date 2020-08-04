@@ -68,7 +68,7 @@
 	<!-- 답변 등록 -->
 	<update id="resistAnswerQna" parameterType="Qna">
 		update qna
-		   set
+		   set	
 		   	   awriter = #{awriter}, 
 		   	   acontent = #{acontent},
 		   	   adate = now()

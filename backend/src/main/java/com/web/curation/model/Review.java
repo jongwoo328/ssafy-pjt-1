@@ -4,7 +4,7 @@ public class Review {
 	private int revno;
 	private int userno;
 	private String writer;
-	private int servo;
+	private int servno;
 	private String title;
 	private String content;
 	private int point;
@@ -38,12 +38,12 @@ public class Review {
 		this.writer = writer;
 	}
 
-	public int getServo() {
-		return servo;
+	public int getServno() {
+		return servno;
 	}
 
-	public void setServo(int servo) {
-		this.servo = servo;
+	public void setServno(int servno) {
+		this.servno = servno;
 	}
 
 	public String getTitle() {
@@ -78,12 +78,12 @@ public class Review {
 		this.cdate = cdate;
 	}
 
-	public Review(int revno, int userno, String writer, int servo, String title, String content, int point,
+	public Review(int revno, int userno, String writer, int servno, String title, String content, int point,
 			String cdate) {
 		this.revno = revno;
 		this.userno = userno;
 		this.writer = writer;
-		this.servo = servo;
+		this.servno = servno;
 		this.title = title;
 		this.content = content;
 		this.point = point;
@@ -92,7 +92,7 @@ public class Review {
 
 	@Override
 	public String toString() {
-		return "Review [revno=" + revno + ", userno=" + userno + ", writer=" + writer + ", servo=" + servo + ", title="
+		return "Review [revno=" + revno + ", userno=" + userno + ", writer=" + writer + ", servno=" + servno + ", title="
 				+ title + ", content=" + content + ", point=" + point + ", cdate=" + cdate + "]";
 	}
 	

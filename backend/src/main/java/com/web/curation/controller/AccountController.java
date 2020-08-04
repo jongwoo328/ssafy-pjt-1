@@ -1,5 +1,7 @@
 package com.web.curation.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
@@ -9,13 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.web.curation.config.JwtUtil;
+import com.web.curation.model.Admin;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.User;
+import com.web.curation.service.MsgService;
 import com.web.curation.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -42,6 +48,9 @@ public class AccountController {
     @Autowired
 	JwtUtil jwtutil;
     
+    @Autowired
+    MsgService msg;
+    
     @PostMapping("/account/login")
     @ApiOperation(value = "로그인")
     public Object login(@RequestBody User test, HttpServletResponse response) {
@@ -56,7 +65,17 @@ public class AccountController {
     String jws = jwtutil.createToken(user);
     System.out.println(jwtutil.getKey());
     if (userinfo != null) {
-        final BasicResponse result = new BasicResponse();
+    	userinfo.setMsgcount(msg.msgCount(userinfo.getUserno()));
+    	
+    	Admin checkadmin = userService.checkAdmin(userinfo.getUserno());
+        
+    	if(checkadmin == null) {
+    		userinfo.setCheckadmin(false);
+    	} else {
+    		userinfo.setCheckadmin(true);
+    	}
+    	
+    	final BasicResponse result = new BasicResponse();
         result.status = true;
         result.data = "success";
         result.object = userinfo;
@@ -69,6 +88,14 @@ public class AccountController {
     
     return response1;
 }
+    
+    @ApiOperation(value = "모든 유저 name 정보 반환", response = List.class)
+    @GetMapping("/account/total/{word}")
+    public ResponseEntity<List<String>> totalUser(@PathVariable String word){
+    	System.out.println("이름 요청보냄");
+    	return new ResponseEntity<List<String>>(userService.totalUserName(word), HttpStatus.OK);
+    }
+    
     
     @PostMapping("/account/signup")
     @ApiOperation(value = "가입하기")
@@ -85,7 +112,7 @@ public class AccountController {
     		return new ResponseEntity<BasicResponse>(result, HttpStatus.BAD_REQUEST);
     	}
     	String name = user.getName();
-    	newUser = userService.getUserByUid(name);
+    	newUser = userService.getUserByName(name);
     	if (newUser != null) {
     		result.status = false;
     		result.data = "name";
@@ -174,7 +201,7 @@ public class AccountController {
     @ApiOperation(value = "이름 중복체크")
     public ResponseEntity<String> checkName(@RequestBody String username) {
     	System.out.println(username);
-    	User user = userService.getUserByUid(username);
+    	User user = userService.getUserByName(username);
     	System.out.println(user);
     	if (user != null) {
     		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
