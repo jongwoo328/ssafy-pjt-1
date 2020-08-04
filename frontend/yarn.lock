@@ -7953,6 +7953,18 @@ vue-loader@^15.9.2:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
+vue-msgbox@^0.2.14:
+  version "0.2.14"
+  resolved "https://registry.yarnpkg.com/vue-msgbox/-/vue-msgbox-0.2.14.tgz#daf027faf2eeca798de3248e85ae802c87c38540"
+  integrity sha1-2vAn+vLuynmN4ySOha6ALIfDhUA=
+  dependencies:
+    vue-popup "^0.1.13"
+
+vue-popup@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/vue-popup/-/vue-popup-0.1.13.tgz#fc03251ec17751b520c79c41ad4c69f8889833db"
+  integrity sha1-/AMlHsF3UbUgx5xBrUxp+IiYM9s=
+
 vue-quill-editor@^3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/vue-quill-editor/-/vue-quill-editor-3.0.6.tgz#1f85646211d68a31a80a72cb7f45bb2f119bc8fb"
