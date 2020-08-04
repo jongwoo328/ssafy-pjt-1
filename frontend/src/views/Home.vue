@@ -26,7 +26,7 @@ export default {
     Join,
     SearchbarWeb,
     SearchResultCard,
-  },
+  }, 
   data() {
     return {
       serviceResult: [

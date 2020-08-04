@@ -35,12 +35,6 @@ export default {
         axios.get(`${HTTP.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
         .then(res => {
             console.log(res)
-            // for(let serv in res.data){
-            //     this.serviceData.push ({
-            //         "imgUrl": `${HTTP.BASE_URL}` + res.data[serv]["imgurl"],
-            //         "avgpoint": res.data[serv]["avgpoint"],
-            //     })
-            // }
             this.services = res.data
             this.isProfile=true
          
