@@ -37,7 +37,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/profile")
 public class ProfileController {
-	private static final String  SAVE_PATH = "C:\\Users\\multicampus\\Desktop\\s03p12d106-backend-jingi\\backend\\src\\main\\resources\\static\\img\\profile/";
+	private static final String  SAVE_PATH = "C:\\Users\\multicampus\\Desktop\\git\\s03p13d106\\backend\\src\\main\\resources\\static\\img\\profile/";
 	private static final Logger logger = LoggerFactory.getLogger(QnaController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
@@ -68,25 +68,28 @@ public class ProfileController {
 		
 		MultipartHttpServletRequest mrequest = (MultipartHttpServletRequest)request;
 		MultipartFile imgFiles = mrequest.getFile("profileImage");
-		System.out.println(mrequest.getFileNames());
-		System.out.println(imgFiles.getOriginalFilename());
-		System.out.println(request.getParameter("Comment"));
 		Profile profile = new Profile();
 		profile.setComment(request.getParameter("Comment"));
 		profile.setUserno(Integer.parseInt(request.getParameter("userno")));
 		
-		String originalFileName = imgFiles.getOriginalFilename();
-		String cur_time = new String("");
-		cur_time += System.currentTimeMillis();
-		String saveFile = SAVE_PATH + cur_time + originalFileName;
-		
-		try {
-			imgFiles.transferTo(new File(saveFile));
-		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
+		if(imgFiles != null) {
+			System.out.println(mrequest.getFileNames());
+			System.out.println(imgFiles.getOriginalFilename());
+			System.out.println(request.getParameter("Comment"));
+			String originalFileName = imgFiles.getOriginalFilename();
+			String cur_time = new String("");
+			cur_time += System.currentTimeMillis();
+			String saveFile = SAVE_PATH + cur_time + originalFileName;
+			try {
+				imgFiles.transferTo(new File(saveFile));
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}
+			profile.setImgurl(cur_time + originalFileName);
+		} else {
+			profile.setImgurl("null.png");
 		}
 		
-		profile.setImgurl(cur_time + originalFileName);
 		
 		if(service.writeProfile(profile)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
@@ -103,29 +106,40 @@ public class ProfileController {
 	@PutMapping
 	public ResponseEntity<String> updateProfile(HttpServletRequest request) throws JsonMappingException, JsonProcessingException{
 		MultipartHttpServletRequest mrequest = (MultipartHttpServletRequest)request;
-		MultipartFile imgFiles = mrequest.getFile("profileImage");
-		Profile pre = service.detailProfile(Integer.parseInt(request.getParameter("userno")));
 		
+		Profile pre = service.detailProfile(Integer.parseInt(request.getParameter("userno")));
 		Profile profile = new Profile();
 		profile.setComment(request.getParameter("Comment"));
 		profile.setUserno(Integer.parseInt(request.getParameter("userno")));
-		File file = new File(SAVE_PATH + pre.getImgurl());
-		if(file.exists() == true) {
-			file.delete();
+		MultipartFile imgFiles = mrequest.getFile("profileImage");
+		
+		if(imgFiles != null) {
+			
+			if(pre.getImgurl().equals("null.png")) {
+				
+			} else {
+				File file = new File(SAVE_PATH + pre.getImgurl());
+				if(file.exists() == true) {
+					file.delete();
+				}				
+			}
+			
+			String originalFileName = imgFiles.getOriginalFilename();
+			String cur_time = new String("");
+			cur_time += System.currentTimeMillis();
+			String saveFile = SAVE_PATH + cur_time + originalFileName;
+			try {
+				imgFiles.transferTo(new File(saveFile));
+			} catch (IllegalStateException | IOException e) {
+				e.printStackTrace();
+			}
+			
+			profile.setImgurl(cur_time + originalFileName);
+			
+		} else {
+			profile.setImgurl(pre.getImgurl());
 		}
 		
-		String originalFileName = imgFiles.getOriginalFilename();
-		String cur_time = new String("");
-		cur_time += System.currentTimeMillis();
-		String saveFile = SAVE_PATH + cur_time + originalFileName;
-		
-		try {
-			imgFiles.transferTo(new File(saveFile));
-		} catch (IllegalStateException | IOException e) {
-			e.printStackTrace();
-		}
-		
-		profile.setImgurl(cur_time + originalFileName);
 		
 		if(service.updateProfile(profile)) {
 			System.out.println("프로필 업데이트 성공");
@@ -141,12 +155,18 @@ public class ProfileController {
 	public ResponseEntity<String> deleteProfile(@RequestBody Profile profile){
 		System.out.println("삭제");
 		
-		File file = new File(profile.getImgurl());
-		if(file.exists() == true) {
-			file.delete();
+		
+		if(profile.getImgurl().equals("null.png")) {
+			
+		} else {
+			File file = new File(SAVE_PATH + profile.getImgurl());
+			if(file.exists() == true) {
+				file.delete();
+			}			
 		}
 		
-		if(service.deleteProfile(jwtutil.getUserno())) {
+		
+		if(service.deleteProfile(profile.getUserno())) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		

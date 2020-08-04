@@ -17,8 +17,8 @@ public class ReviewServiceImpl implements ReviewService {
 	
 	
 	@Override
-	public List<Review> retrieveReview() {
-		return dao.selectReview();
+	public List<Review> retrieveReview(int servno) {
+		return dao.selectReview(servno);
 	}
 
 	@Override
@@ -39,6 +39,11 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public boolean deleteReview(int revno) {
 		return dao.deleteReview(revno) == 1;
+	}
+
+	@Override
+	public List<Review> totalReview() {
+		return dao.totalReview();
 	}
 
 }

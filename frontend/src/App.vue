@@ -26,7 +26,7 @@ export default {
   }
   @media (min-width: 768px) {
     #view {
-      margin-left: 250px;
+      margin-left: 200px;
     }
   }
 </style>

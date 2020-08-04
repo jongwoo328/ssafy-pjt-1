@@ -6,11 +6,15 @@ public class Msg {
 	private int msgno, writerno, reciverno;
 	private String title, content;
 	private Date senddate;
+	private String writername;
+	private String recivername;
+	private boolean readcheck;
+	
 	public Msg() {
-		super();
+		
 	}
+	
 	public Msg(int msgno, int writerno, int reciverno, String title, String content, Date senddate) {
-		super();
 		this.msgno = msgno;
 		this.writerno = writerno;
 		this.reciverno = reciverno;
@@ -48,15 +52,39 @@ public class Msg {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	public boolean isReadcheck() {
+		return readcheck;
+	}
+
+	public void setReadcheck(boolean readcheck) {
+		this.readcheck = readcheck;
+	}
+
 	public Date getSenddate() {
 		return senddate;
 	}
 	public void setSenddate(Date senddate) {
 		this.senddate = senddate;
 	}
+	public String getWritername() {
+		return writername;
+	}
+	public void setWritername(String writername) {
+		this.writername = writername;
+	}
+	public String getRecivername() {
+		return recivername;
+	}
+	public void setRecivername(String recivername) {
+		this.recivername = recivername;
+	}
+
 	@Override
 	public String toString() {
 		return "Msg [msgno=" + msgno + ", writerno=" + writerno + ", reciverno=" + reciverno + ", title=" + title
-				+ ", content=" + content + ", senddate=" + senddate + "]";
+				+ ", content=" + content + ", senddate=" + senddate + ", writername=" + writername + ", recivername="
+				+ recivername + ", readcheck=" + readcheck + "]";
 	}
+	
+	
 }
