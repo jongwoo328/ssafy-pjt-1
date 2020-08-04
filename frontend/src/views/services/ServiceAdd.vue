@@ -7,7 +7,7 @@
 
                     <select  class="form-control col-6" name ="category"  v-model="categoryInfo">
                         <option value="" disabled selected>분류</option>
-                        <option v-for="category in categoryList" :key="category.cateno" :value="cateno" v-text="category.cname" ></option>
+                        <option v-for="category in categoryList" :key="category.cateno" :value="category_obj" v-text="category.cname" ></option>
                     </select>
                 
             </div>
@@ -23,7 +23,7 @@
                 </label>
                 <input class="input-text" type="number" v-model="price" id="serviceprice"/>
             </div>
-            <div form-group d-flex justify-content-around>
+            <div  class="form-block d-flex justify-content-around">
                 <label class="font-kor" >
                 주소
                 </label>
@@ -44,10 +44,12 @@
                     <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
                 </select>
             </div>
-            <div>
+            </div>
+            <div class="form-block">
                 <img v-if="serviceImageUrl" :src="serviceImageUrl">
                 <br>
                 <label class="font-kor" >
+                    이미지
                 </label>
                 <br>
                 <input ref="serviceImage" type="file" id="file" accept="image/*" @change="fileSelect">
@@ -63,7 +65,6 @@
             <div>
 
             </div>
-    </div>
         <Button class="btn_1" type="submit" button-text="등록" @click.native="submit()"/>
     </div>
 </template>
@@ -87,17 +88,20 @@ export default {
             ],
             guList: [],
             dongList: [],
-            categoryInfo:"",
+            categoryInfo:{
+                cateno : "",
+                canem : null
+            },
             siInfo: {
-                siName: "",
+                siName: null,
                 siCode: ""
             },
             guInfo: {
-                guName: "",
+                guName: null,
                  guCode: "",
             },
             dongInfo: {
-                dongName: "",
+                dongName: null,
                 dongCode: "",
             },
             serviceImage:"",
@@ -253,5 +257,16 @@ export default {
     }
     #servicecreate{
         margin-top: 40px;
+    }
+    img {
+        object-fit: cover;
+        margin-top: 20px;
+        width: 150px;
+        height: 150px;
+        border-radius: 7px;
+    }
+    .ql-container {
+        margin-top:30px;
+        height: 300px;
     }
 </style>
