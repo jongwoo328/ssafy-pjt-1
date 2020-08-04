@@ -9,13 +9,13 @@
                <p>등록한 서비스가 없습니다.</p>
         </div>
         <div v-else class="service-box">
-           <SearchResultCard :services="serviceResult"/>   
+           <ServiceList :services="services"/>   
         </div>  
     </div>
 </template>
 <script>
 import Button from '@/components/common/Button.vue'
-import SearchResultCard from '@/components/search/SearchResultCard.vue'
+import ServiceList from '@/components/service/ServiceList.vue'
 import axios from 'axios'
 import HTTP from '@/util/http-common.js'
 
@@ -24,7 +24,7 @@ export default {
     components:{
         
         Button,
-        SearchResultCard
+        ServiceList
     },methods:{
         toServiceAdd() {
         this.$router.push("/service/create");
@@ -36,16 +36,14 @@ export default {
         .then(res => {
             console.log(res)
             // for(let serv in res.data){
-            //     this.serviceData.push {
-            //         imgUrl: `${HTTP.BASE_URL}` + res.data.imgurl,
-            //         comment: res.data.comment
-            //     }
+            //     this.serviceData.push ({
+            //         "imgUrl": `${HTTP.BASE_URL}` + res.data[serv]["imgurl"],
+            //         "avgpoint": res.data[serv]["avgpoint"],
+            //     })
             // }
-            console.log(this.serviceData.imgUrl)
-            console.log(this.serviceData.title)
-            if (res.data === 'fail') {
-                this.isProfile = false
-            }
+            this.services = res.data
+            this.isProfile=true
+         
         })
         .catch(err => {
             console.log(err)
@@ -72,15 +70,15 @@ export default {
     data(){
        return {
             profileFrame: false,
-            isService: false,
-            serviceData: [],
+            isService: true,
+            services: [],
       serviceResult: [
         {
           imgUrl: "",
           servno: "",
           servname : "",
           description : "",
-          
+          avgpoint : ""
         }
       ]
     }

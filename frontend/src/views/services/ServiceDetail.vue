@@ -9,28 +9,29 @@
                 <p class="mobile"><i class="fas fa-won-sign"></i>가격</p>
                 <p class="mobile"><i class="far fa-smile"></i>평점</p>
                 <p class="mobile"><i class="fas fa-map-marker-alt"></i>위치</p>
-                <h1>서비스 이름</h1>
+                <h1>{{serviceData.servname}}</h1>
                 <hr>
                 <div class="web price">
                     <span class="label"><i class="fas fa-won-sign"></i> 가격</span>
-                    <p><span>1000</span>원</p>
+                    <p><span>{{serviceData.price}}</span>원</p>
                 </div>
                 <div class="web rating">
                     <span class="label"><i class="far fa-smile"></i> 평점</span>
-                    <p><span>5</span>점</p>
+                    <p><span>{{point}}</span>점</p>
                 </div>
                 <div class="web addr">
                     <span class="label"><i class="fas fa-map-marker-alt"></i> 위치</span>
-                    <p>주소 주소 주소</p>
+                    <p>{{addr}}</p>
                 </div>
               </div>
+              <Button buttonText="문의하기" />
               <Button buttonText="신청하기" />
           </div>
       </div>
       <div class="service-desc section">
           <h2>설명</h2>
           <hr>
-          <p>{{description}} </p>
+          <p v-html="serviceData.description"> </p>
       </div>
       <div class="review section">
           <h2>리뷰</h2>
@@ -50,6 +51,7 @@ export default {
     name: 'ServiceDetail',
     data() {
         return {
+            userno: "",
             serviceId: 0,
             serviceData: {
                  servname :"",
@@ -62,8 +64,9 @@ export default {
                 saddr6 : "",
                 imgUrl : "",
                 description : "",
+                payed :"",
             },
-        
+            addr: "",
             review: [],
             point : "",
         }
@@ -73,8 +76,22 @@ export default {
         ReviewList,
     },
     created() {
-        axios.get(`${HTTP.BASE_URL}/service/detail/${this.$route.params.serviceId}`,HTTP.JSON_HEADER)
+        if(this.$store.getters.getUserData === null){
+            this.userno = 0;    
+        } else{
+            this.userno = `${this.$store.getters.getUserData.userno}`
+        }       
+        // const formData = new FormData()
+        //     formData.append('servno', `${this.$route.params.service_id}`)
+        //     formData.append('userno', this.userno)
+        //      for (let key of formData.entries())
+        //     {
+        //     console.log(`${key}`)
+        //     }
+    
+        axios.get(`${HTTP.BASE_URL}/service/detail/servno=${this.$route.params.service_id}&userno=${this.userno}`)
         .then(res =>{
+            console.log(res)
             this.serviceData ={
                 imgUrl:`${URL.BASE_URL}/` + res.data.imgUrl,
                 servname : res.data.servname,
@@ -85,13 +102,16 @@ export default {
                 saddr4 : res.data.saddr4,
                 saddr5 : res.data.saddr5,
                 saddr6 : res.data.saddr6,
-                description : res.data.description
+                description : res.data.description,
+                payed : res.data.revcheck
             }
+            this.point = res.data.avgpoint,
+            this.addr = this.serviceData.saddr2+" "+this.serviceData.saddr4+" "+this.serviceData.saddr6
         })
         .catch(err => {
                 console.log(err)
         })
-        axios.get(`${HTTP.BASE_URL}/review/${this.$route.params.serviceId}`)
+        axios.get(`${HTTP.BASE_URL}/review/${this.$route.params.service_id}`,HTTP.JSON_HEADER)
         .then(res => {
             console.log(res);
             for(let review in res.data){

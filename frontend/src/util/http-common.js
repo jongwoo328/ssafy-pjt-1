@@ -1,5 +1,5 @@
 export default {
-  BASE_URL: "http://192.168.0.9:8090",
+  BASE_URL: "http://192.168.100.88:8090",
 
   JSON_HEADER: {
     headers: {
@@ -7,4 +7,4 @@ export default {
     }
   },
 
-}
+} 
