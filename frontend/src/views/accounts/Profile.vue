@@ -31,7 +31,7 @@
                 </div>
                 <hr>
                 <div class="profile-box">
-                    <span v-text="profileData.comment"></span>
+                    <span class="comment" v-html="profileData.comment"></span>
                 </div>
             </div>
 
@@ -39,7 +39,7 @@
                 <div class="index">
                     <h3>소개</h3>
                 </div>
-                <span v-html="profileData.comment"></span>
+                <span class="comment" v-html="profileData.comment"></span>
             </div>
 
             <div class="service-box">
@@ -190,6 +190,9 @@ export default {
     }
     #profile .profile-box {
         margin: 20px 0 35px 0;
+    }
+    #profile .comment p{
+        margin-bottom: 0 !important;
     }
     #profile .description-box {
         display: flex;

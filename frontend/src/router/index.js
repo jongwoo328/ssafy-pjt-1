@@ -12,6 +12,7 @@ import Qna from '@/views/qna/Qna.vue'
 import ServiceAdd from '@/views/services/ServiceAdd.vue'
 import QnaDetail from '@/views/qna/QnaDetail.vue'
 import QnaCreate from '@/views/qna/QnaCreate.vue'
+import MessageList from '@/views/message/messageList.vue'
 
 Vue.use(VueRouter)
 
@@ -75,6 +76,11 @@ Vue.use(VueRouter)
     path: '/qna/:q_no',
     name: 'QnaDetail',
     component: QnaDetail
+  },
+  {
+    path: '/message',
+    name: 'MessageList',
+    component: MessageList
   },
 ]
 
