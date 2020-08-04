@@ -5,23 +5,27 @@ public class Qna {
 	private int userno;
 	private String qtitle;
 	private String qcontent;
+	private String acontent;
 	private String awriter;
 	private String qdate;
 	private String adate;
+	private String qwriter;
 	
 	public Qna() {
 		
 	}
-	
-	public Qna(int qnano, int userno, String qtitle, String qcontent, String awriter, String qdate, String adate) {
-	
+
+	public Qna(int qnano, int userno, String qtitle, String qcontent, String acontent, String awriter, String qdate, String adate,
+			String qwriter) {
 		this.qnano = qnano;
 		this.userno = userno;
 		this.qtitle = qtitle;
 		this.qcontent = qcontent;
+		this.acontent = acontent;
 		this.awriter = awriter;
 		this.qdate = qdate;
 		this.adate = adate;
+		this.qwriter = qwriter;
 	}
 
 	public int getQnano() {
@@ -55,6 +59,13 @@ public class Qna {
 	public void setQcontent(String qcontent) {
 		this.qcontent = qcontent;
 	}
+	public String getAcontent() {
+		return acontent;
+	}
+	
+	public void setAcontent(String acontent) {
+		this.acontent = acontent;
+	}
 
 	public String getAwriter() {
 		return awriter;
@@ -80,15 +91,20 @@ public class Qna {
 		this.adate = adate;
 	}
 
+	public String getQwriter() {
+		return qwriter;
+	}
+
+	public void setQwriter(String qwriter) {
+		this.qwriter = qwriter;
+	}
+
 	@Override
 	public String toString() {
 		return "Qna [qnano=" + qnano + ", userno=" + userno + ", qtitle=" + qtitle + ", qcontent=" + qcontent
-				+ ", awriter=" + awriter + ", qdate=" + qdate + ", adate=" + adate + "]";
+				+ ", acontent=" + acontent + ", awriter=" + awriter + ", qdate=" + qdate + ", adate=" + adate
+				+ ", qwriter=" + qwriter + "]";
 	}
-	
-	
-	
-	
-	
+
 	
 }

@@ -14,6 +14,9 @@
 
 <script>
 import Table from '@/components/common/Table.vue'
+import axios from 'axios'
+import URL from '@/util/http-common.js'
+import Time from '@/util/time-common.js'
 
 export default {
     name:'Qna',
@@ -22,28 +25,34 @@ export default {
     },
     data() {
       return {
-        qnaList: [
-          {
-            q_no: 1,
-            q_title: '질문있습니다asdfasdfasdfasdfasdf',
-            q_content: '내용',
-            q_date: '날짜날짜',
-            u_no: 3,
-            a_writer: '답변자',
-            a_content: '답변내용',
-            a_date: '답변날짜'
-          },
-          {
-            q_no: 1,
-            q_title: '질문있습니다',
-            q_content: '내용',
-            q_date: '날짜날짜',
-            u_no: 3,
-            a_writer: '답변자',
-            a_content: '답변내용',
-            a_date: '답변날짜'
+        qnaList: []
+      }
+    },
+    created() {
+      axios.get(`${URL.BASE_URL}/qna/${this.userNumber}`)
+      .then(res => {
+
+        let qnaData = res.data
+        // console.log(qnaData)
+
+        for (let i in qnaData){
+          const now = new Date(Date.now())
+          const date = new Date(qnaData[i].qdate)
+
+          if (Time.isSameDay(now, date)) {
+            qnaData[i].qdate = qnaData[i].qdate.split(' ')[1]
+            
+          } else {
+            qnaData[i].qdate = qnaData[i].qdate.split(' ')[0].slice(2)
           }
-        ]
+        }
+        this.qnaList = qnaData
+      })
+      .catch(err => console.log(err))
+    },
+    computed: {
+      userNumber() {
+        return this.$store.getters.getUserData.userno
       }
     }
 }

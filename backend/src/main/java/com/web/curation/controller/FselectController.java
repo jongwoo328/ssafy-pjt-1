@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.web.curation.model.Category;
 import com.web.curation.model.DongCode;
 import com.web.curation.model.SidoCode;
 import com.web.curation.service.FselectService;
@@ -36,6 +37,16 @@ public class FselectController {
 		System.out.println("시도 코드 정보 전달");
 		return new ResponseEntity<List<SidoCode>>(service.selectSido(), HttpStatus.OK);
 	}
+	
+	@ApiOperation(value = "카테고리 정보 전달", response = List.class)
+	@GetMapping("/cate")
+	public ResponseEntity<List<Category>> cateInfo() throws Exception {
+		System.out.println("카테고리 정보 전달");
+		return new ResponseEntity<List<Category>>(service.selectCategory(), HttpStatus.OK);
+	}
+	
+	
+	
 	
 	@ApiOperation(value = "해당 시/도의 구/군 정보 전달", response = List.class)
 	@GetMapping("{sido}")

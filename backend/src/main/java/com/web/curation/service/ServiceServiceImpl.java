@@ -9,10 +9,10 @@ import com.web.curation.dao.ServiceDAO;
 import com.web.curation.model.ConnectorService;
 
 
-//@Service
+@Service
 public class ServiceServiceImpl implements ServiceService{
 //	
-//	@Autowired
+	@Autowired
 	ServiceDAO dao;
 
 	@Override
@@ -21,8 +21,8 @@ public class ServiceServiceImpl implements ServiceService{
 	}
 
 	@Override
-	public List<ConnectorService> selectServiceByDongcode(String dongcode, String word) {
-		return dao.selectServiceByDongcode(dongcode, word);
+	public List<ConnectorService> selectServiceByDongcode(int cateno, String saddr5, List<String> word) {
+		return dao.selectServiceByDongcode(cateno, saddr5, word);
 	}
 
 	@Override
@@ -38,6 +38,11 @@ public class ServiceServiceImpl implements ServiceService{
 	@Override
 	public boolean deleteService(int servno) {
 		return dao.deleteService(servno) == 1;
+	}
+
+	@Override
+	public boolean updateService(ConnectorService service) {
+		return dao.updateService(service) == 1;
 	}
 	
 	

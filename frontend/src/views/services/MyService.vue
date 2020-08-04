@@ -3,12 +3,12 @@
         <h3>내 서비스</h3>
         <hr>
         <div class="button-box">
-            <Button type="button" onclick="toServiceAdd()" button-text="추가" />        
+            <Button type="submit" @click.native="toServiceAdd" button-text="추가" />        
         </div>
         <div v-if="!isService">
                <p>등록한 서비스가 없습니다.</p>
         </div>
-        <div class="service-box">
+        <div v-else class="service-box">
            <SearchResultCard :services="serviceResult"/>   
         </div>  
     </div>
@@ -17,7 +17,7 @@
 import Button from '@/components/common/Button.vue'
 import SearchResultCard from '@/components/search/SearchResultCard.vue'
 import axios from 'axios'
-import URL from '@/util/http-common.js'
+import HTTP from '@/util/http-common.js'
 
 export default {
     name: 'MyService',
@@ -26,19 +26,21 @@ export default {
         Button,
         SearchResultCard
     },methods:{
-        onChangePage() {
-        this.$router.push("/serviceadd");
+        toServiceAdd() {
+        this.$router.push("/service/create");
     }
 
     },
     created() {
-        axios.get(`${URL.BASE_URL}${URL.PORT}/service/${this.getUrlUsername}`)
+        axios.get(`${HTTP.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
         .then(res => {
             console.log(res)
-            this.serviceData = {
-                imgUrl: 'http://172.30.1.13:8090/' + res.data.imgurl,
-                comment: res.data.comment
-            }
+            // for(let serv in res.data){
+            //     this.serviceData.push {
+            //         imgUrl: `${HTTP.BASE_URL}` + res.data.imgurl,
+            //         comment: res.data.comment
+            //     }
+            // }
             console.log(this.serviceData.imgUrl)
             console.log(this.serviceData.title)
             if (res.data === 'fail') {
@@ -71,28 +73,18 @@ export default {
        return {
             profileFrame: false,
             isService: false,
-            serviceData: "test",
+            serviceData: [],
       serviceResult: [
         {
-          imgUrl: 'https://grepp-programmers.s3.amazonaws.com/production/company/logo/2640/_nolbal_bi_logo_%E1%84%89%E1%85%A6%E1%84%85%E1%85%A9.png',
-          s_no: 1
-        },
-        {
-          imgUrl: 'https://grepp-programmers.s3.amazonaws.com/production/company/logo/2640/_nolbal_bi_logo_%E1%84%89%E1%85%A6%E1%84%85%E1%85%A9.png',
-          s_no: 2
-        },
-        {
-          imgUrl: 'https://grepp-programmers.s3.amazonaws.com/production/company/logo/2640/_nolbal_bi_logo_%E1%84%89%E1%85%A6%E1%84%85%E1%85%A9.png',
-          s_no: 3
-        },
+          imgUrl: "",
+          servno: "",
+          servname : "",
+          description : "",
+          
+        }
       ]
     }
     },
-    // methods:{
-    //    toServiceAdd(){
-    //         return `/serviceadd`
-    //     }
-    // }
 }
 </script>
 <style scoped>

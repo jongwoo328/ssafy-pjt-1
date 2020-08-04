@@ -3,6 +3,7 @@ package com.web.curation.model;
 public class Review {
 	private int revno;
 	private int userno;
+	private String writer;
 	private int servo;
 	private String title;
 	private String content;
@@ -11,16 +12,6 @@ public class Review {
 	
 	public Review() {
 		
-	}
-	
-	public Review(int revno, int userno, int servo, String title, String content, int point, String cdate) {
-		this.revno = revno;
-		this.userno = userno;
-		this.servo = servo;
-		this.title = title;
-		this.content = content;
-		this.point = point;
-		this.cdate = cdate;
 	}
 
 	public int getRevno() {
@@ -37,6 +28,14 @@ public class Review {
 
 	public void setUserno(int userno) {
 		this.userno = userno;
+	}
+
+	public String getWriter() {
+		return writer;
+	}
+
+	public void setWriter(String writer) {
+		this.writer = writer;
 	}
 
 	public int getServo() {
@@ -79,11 +78,24 @@ public class Review {
 		this.cdate = cdate;
 	}
 
+	public Review(int revno, int userno, String writer, int servo, String title, String content, int point,
+			String cdate) {
+		this.revno = revno;
+		this.userno = userno;
+		this.writer = writer;
+		this.servo = servo;
+		this.title = title;
+		this.content = content;
+		this.point = point;
+		this.cdate = cdate;
+	}
+
 	@Override
 	public String toString() {
-		return "Review [revno=" + revno + ", userno=" + userno + ", servo=" + servo + ", title=" + title + ", content="
-				+ content + ", point=" + point + ", cdate=" + cdate + "]";
+		return "Review [revno=" + revno + ", userno=" + userno + ", writer=" + writer + ", servo=" + servo + ", title="
+				+ title + ", content=" + content + ", point=" + point + ", cdate=" + cdate + "]";
 	}
+	
 	
 	
 }

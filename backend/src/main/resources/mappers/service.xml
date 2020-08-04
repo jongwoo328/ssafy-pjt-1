@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.web.curation.dao.ServiceDAO">
 
 	<!-- 개인이 등록한 서비스 조회 -->
@@ -9,7 +12,13 @@
 			   servname,
 			   price,
 			   description,
-			   seraddr
+			   saddr1,
+			   saddr2,
+			   saddr3,
+			   saddr4,
+			   saddr5,
+			   saddr6,
+			   imgurl
 			   
 		  from service
 		  where userno = #{userno}
@@ -24,35 +33,103 @@
 			   servname,
 			   price,
 			   description,
-			   seraddr
+			   saddr1,
+			   saddr2,
+			   saddr3,
+			   saddr4,
+			   saddr5,
+			   saddr6,
+			   imgurl
 		 from service
-		 <if test= 'seraddr != null and 'word' != null'>
-		 where seraddr = #{seraddr} and servname Like '%#{word}%' 
+		 <if test= "cateno != 0 and saddr5 != null and word != null">
+		 where cateno = #{cateno} and saddr5 = #{saddr5} and 
+		 <foreach collection="word" item="keyword" index="index" separator="or servname Like " open ="(servname LIKE " close=")">
+		 '%#{keyword}%'
+		 </foreach>
 		 </if>
+		 <if test= "cateno == 0 and saddr5 == null and word != null">
+		 where 
+		 <foreach collection="word" item="keyword" index="index" separator="or servname Like " open ="servname LIKE ">
+		 '%#{keyword}%'
+		 </foreach>
+		 </if>
+		 <if test= "cateno == 0 and saddr5 != null and word == null">
+		 where saddr = #{saddr}
+		 </if>
+		 <if test= "cateno != 0 and saddr5 == null and word == null">
+		 where cateno = #{cateno}
+		 </if>
+		 <if test= "cateno != 0 and saddr5 != null and word == null">
+		 where cateno = #{cateno} and saddr5 = #{saddr5}
+		 </if>
+		 <if test= "cateno != 0 and saddr5 == null and word != null">
+		 where cateno = #{cateno} and 
+		 <foreach collection="word" item="keyword" index="index" separator="or servname Like " open ="(servname LIKE " close=")">
+		 '%#{keyword}%'
+		 </foreach>
+		 </if>
+		 
+		 <if test= "cateno == 0 and saddr5 != null and word != null">
+		 where saddr5 = #{saddr5} and
+		 <foreach collection="word" item="keyword" index="index" separator="or servname Like " open ="(servname LIKE " close=")">
+		 '%#{keyword}%'
+		 </foreach>
+		 </if>
+		 
 		 order by servno desc
 	</select>
 
-	<!-- 게시글 등록 -->
-	<insert id="insertQna" parameterType="Qna">
-		insert into qna (
-			qtitle,qcontent,userno
-		) values (#{qtitle}, #{qcontent},#{userno})
+	<!-- 서비스 세부 조회 -->
+	<select id="selectServiceByNo" resultType="ConnectorService">
+	select servno,
+			   userno,
+			   cateno,
+			   servname,
+			   price,
+			   description,
+			   saddr1,
+			   saddr2,
+			   saddr3,
+			   saddr4,
+			   saddr5,
+			   saddr6,
+			   imgurl
+	from service
+	where servno = {servno} 
+	</select>
+	
+	
+	<!-- 서비스 등록 -->
+	<insert id ="insertService" parameterType="ConnectorService">
+	insert into service
+	(userno, cateno, servname, price, description, saddr1, saddr2, saddr3, saddr4, saddr5, saddr6, imgurl)
+	values (#{userno}, #{cateno}, #{servname}, #{price}, #{description}, #{saddr1}, #{saddr2}, #{saddr3}, #{saddr4}, #{saddr5}, #{saddr6}, #{imgurl})
 	</insert>
 	
-	<!-- 게시글 수정 -->
-	<update id="updateQna" parameterType="Qna">
-		update qna
+	<!-- 서비스 수정 -->
+	<update id="updateService" parameterType="ConnectorService">
+		update service
 		   set
-		   		qtitle = #{qtitle}, 
-		   	   qcontent = #{qcontent} 
-		 where qnano = #{qnano};
+		   		cateno = #{cateno}, 
+		   	   servname = #{servname},
+		   	   price = #{price},
+		   	   discription = #{discription},
+		   	   saddr1 = #{saddr1},
+		   	   saddr2 = #{saddr2},
+		   	   saddr3 = #{saddr3},
+		   	   saddr4 = #{saddr4},
+		   	   saddr5 = #{saddr5},
+		   	   saddr6 = #{saddr6},
+		   	   imgurl = #{imgurl}
+		   	    
+		 where servno = #{servno};
 	</update>
 
-	<!-- 게시글 삭제 -->
-	<delete id="deleteQna" parameterType="int">
+	<!-- 서비스 삭제 -->
+	<delete id="deleteService" parameterType="int">
 		delete 
-		  from qna  
-		 where qnano = #{qnano}
+		  from service  
+		 where servno = #{servno}
 	</delete>
 
 </mapper>

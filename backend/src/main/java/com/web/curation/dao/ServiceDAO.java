@@ -6,11 +6,12 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.web.curation.model.ConnectorService;
 
-//@Mapper
+@Mapper
 public interface ServiceDAO {
 	public List<ConnectorService> selectServiceByUserno(int userno);
-	public List<ConnectorService> selectServiceByDongcode(String seraddr, String word);
+	public List<ConnectorService> selectServiceByDongcode(int cateno, String saddr5, List<String> word);
 	public ConnectorService selectServiceByNo(int servno);
 	public int insertService(ConnectorService service);
+	public int updateService(ConnectorService service);
 	public int deleteService(int servno);
 }

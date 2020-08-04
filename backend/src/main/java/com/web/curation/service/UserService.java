@@ -6,6 +6,7 @@ public interface UserService {
 	User getUserByEmail(String email);
 	User getUserByUid(String uid);
 	User getUserByTel(String tel);
+	User getUserByUserno(int userno);
 	boolean insert(User user);
 	boolean samplePw(User user);
 	int update(User user);

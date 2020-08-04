@@ -1,39 +1,30 @@
 <template>
-    <div class="container">
+    <div id="servicecreate" class="container">
         <h3>서비스 등록</h3>
         <hr>
-            <div >
-                <label>분류</label>
-                    <select name ="category"  v-model="categoryInfo">
+            <div class=" form-group d-flex justify-content-around">
+                <label class="font-kor" >분류</label>
+
+                    <select  class="form-control col-6" name ="category"  v-model="categoryInfo">
                         <option value="" disabled selected>분류</option>
                         <option v-for="category in categoryList" :key="category.cateno" :value="cateno" v-text="category.cname" ></option>
                     </select>
+                
             </div>
             <div class="form-block">
-                <label for="servicename"> 
+                <label class="font-kor"  for="servicename"> 
                     서비스 이름 
                 </label>
-                <input class="input-text" v-model="cname" id="servicename"/>
+                <input class="input-text" v-model="servname" id="servicename"/>
             </div>
             <div class="form-block">
-                <label for="servicedescription"> 
-                서비스 내용 
-                </label>
-                <input class="input-text" v-model="cname" id="servicedescription"/>
-            </div>
-            <div class="form-block">
-                <label for="serviceprice"> 
+                <label class="font-kor"  for="serviceprice"> 
                 가격 
                 </label>
-                <input class="input-text" v-model="price" id="serviceprice"/>
+                <input class="input-text" type="number" v-model="price" id="serviceprice"/>
             </div>
-            <div>
-                이미지
-                <input ref="profileImage" type="file" id="file" accept="image/*" @change="fileSelect">
-
-            </div>
-            <div>
-                <label class="form-block-head col-3 col-md-2">
+            <div form-group d-flex justify-content-around>
+                <label class="font-kor" >
                 주소
                 </label>
                 <select class="form-control" id="exampleFormControlSelect1" v-model="siInfo" >
@@ -54,33 +45,64 @@
                 </select>
             </div>
             <div>
+                <img v-if="serviceImageUrl" :src="serviceImageUrl">
+                <br>
+                <label class="font-kor" >
+                </label>
+                <br>
+                <input ref="serviceImage" type="file" id="file" accept="image/*" @change="fileSelect">
+                <br>
+            </div>
+            <div class="form-block">
+                <label class="font-kor" for="servicedescription"> 
+                서비스 내용 
+                </label>
+                <br>
+                <Editor/>
+            </div>
+            <div>
 
             </div>
     </div>
-        <Button class="btn_1" type="submit" button-text="등록" @click.native="submit"/>
+        <Button class="btn_1" type="submit" button-text="등록" @click.native="submit()"/>
     </div>
 </template>
 <script>
-import URL from "@/util/http-common.js"
+import HTTP from "@/util/http-common.js"
 import axios from 'axios'
 import Button from '@/components/common/Button.vue'
+import Editor from '@/components/common/Editor.vue'
 
 export default {
     name : 'ServiceAdd',
     components : {
-        Button
+        Button,
+        Editor
     },
     data(){
         return {
             categoryList: [],
-            siList: [],
+            siList: [
+
+            ],
             guList: [],
             dongList: [],
             categoryInfo:"",
-            siInfo: "",
-            guInfo: "",
-            dongInfo: "",
-            cateno: "",
+            siInfo: {
+                siName: "",
+                siCode: ""
+            },
+            guInfo: {
+                guName: "",
+                 guCode: "",
+            },
+            dongInfo: {
+                dongName: "",
+                dongCode: "",
+            },
+            serviceImage:"",
+            serviceImageUrl: "",
+            cateno: "1",
             servname:"",
             price:"",
             description:"",
@@ -93,60 +115,86 @@ export default {
             imgurl:"",
         }
 
-    },
+    }, watch: {
+        siInfo: function() {
+        this.getGuInfo()
+      },
+         guInfo: function() {
+         this.getDongInfo()
+    }
+  },
      created() {
-         axios.get(`${URL.BASE_URL}/fselect/cate`,URL.JSON_HEADER) 
+         axios.get(`${HTTP.BASE_URL}/fselect/cate`,HTTP.JSON_HEADER) 
           .then(res => {
-            console.log(res)
             for(let category in res.data){
                 this.categoryList.push({
                     "cname" : res.data[category]["cname"],
                     "cateno" : res.data[category]["cateno"]
                 })
             }
-            
-            console.log(this.Category.cateno)
-            console.log(this.Category.cname)
-           
         })
         .catch(err => {
             console.log(err)
         }),
-        axios.get(`${URL.BASE_URL}/fselect`, URL.JSON_HEADER)
+        axios.get(`${HTTP.BASE_URL}/fselect`, HTTP.JSON_HEADER)
              .then(res => {
                  console.log(res);
              for (let si_data in res.data) {
                  this.siList.push({
-                    "siCode": res.data[si_data]["sido_code"],
-                    "siName": res.data[si_data]["sido_name"]
-              })
-            }
-        console.log(this.siList)
+            "siCode": res.data[si_data]["sido_code"],
+            "siName": res.data[si_data]["sido_name"]
+            })
+        }
+            console.log(this.siList)
       })
       .catch(err => {
         console.log(err)
       })
-     },
-     methods:{
-          submit() {
-          const formData = new FormData()
-          formData.append('profileImage', this.profileImage)
-          formData.append('Comment', this.comment)
-          formData.append('userno', this.$store.getters.getUserData.userno)
-
-          for (let key of formData.entries())
-          {
+     },methods:{
+         fileSelect() {
+            console.log(this.$refs)
+            this.serviceImage = this.$refs.serviceImage.files[0]
+            this.serviceImageUrl = URL.createObjectURL(this.serviceImage)
+            console.log(this.serviceImageUrl)
+        },
+         submit(){
+             
+             const formData = new FormData()
+             const temp = document.getElementsByClassName('ql-editor')[0]
+             this.description = temp.innerHTML
+            formData.append('serviceImage', this.serviceImage)
+            formData.append('cateno', this.cateno)
+            formData.append('userno', this.$store.getters.getUserData.userno)
+            formData.append('servname', this.servname)
+            formData.append('price', this.price)
+            formData.append('description', this.description)
+            formData.append('saddr1', this.siInfo.siCode)
+            formData.append('saddr2', this.siInfo.siName)
+            formData.append('saddr3', this.guInfo.guCode)
+            formData.append('saddr4', this.guInfo.guName)
+            formData.append('saddr5', this.dongInfo.dongCode)
+            formData.append('saddr6', this.dongInfo.dongName)
+             for (let key of formData.entries())
+            {
             console.log(`${key}`)
-          }
-          },
+            }
+            axios.post(`${HTTP.BASE_URL}/service`,formData) 
+                .then(res => {
+                 console.log(res);
+                 this.$router.push("/myservice")
+      })
+      .catch(err => {
+        console.log(err)
+      })
+         },
          getGuInfo() {
-        let si_params = this.siInfo
-            this.guList = []
-            this.dongList = []
-            this.guInfo = ""
-            this.dongInfo = ""
+                let si_params = this.siInfo
+                this.guList = []
+                this.dongList = []
+                this.guInfo = ""
+                this.dongInfo = ""
 
-        axios.get(`${URL.BASE_URL}/fselect/${si_params.siCode}`, URL.JSON_HEADER)
+        axios.get(`${HTTP.BASE_URL}/fselect/${si_params.siCode}`, HTTP.JSON_HEADER)
         .then(res => {
           for (let gu_data in res.data) {
             this.guList.push({
@@ -164,9 +212,9 @@ export default {
         this.dongList = []
         this.dongInfo = ""
 
-        axios.get(`${URL.BASE_URL}/fselect/sido/${gu_params.guCode}`, URL.JSON_HEADER)
+        axios.get(`${HTTP.BASE_URL}/fselect/sido/${gu_params.guCode}`, HTTP.JSON_HEADER)
         .then(res => {
-          console.log(res.data)
+      
 
           for (let dong_data in res.data) {
             this.dongList.push({
@@ -194,5 +242,16 @@ export default {
         display: flex;
         margin-bottom: 25px;
         justify-content: space-around;
+    }
+    Button {
+        margin-left : 30px;
+        margin-top : 30px;
+
+    }
+    #servicecreate label,textarea{
+        display: block;
+    }
+    #servicecreate{
+        margin-top: 40px;
     }
 </style>
