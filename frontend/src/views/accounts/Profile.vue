@@ -87,7 +87,7 @@ export default {
             this.isLoaded = true
         }
     },
-    created() {
+    mounted() {
         setTimeout(() => {
             console.log('test')
             axios.get(`${URL.BASE_URL}/profile/${this.$store.getters.getUserData.userno}`)

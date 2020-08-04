@@ -13,8 +13,8 @@
                       <div class="form">
                         <div class="input-box font-notojp">
                           <label class="input-label" for="inputname">TO</label>
-                          <input class="s" autocomplete="off" type="text" id="inputname" placeholder="받는사람을 입력하세요." v-model="toUsername" @change="nameCheck">
-                          <ul class="r" :class="{ show: isActive }">
+                          <input class="s" autocomplete="off" type="text" id="inputname" placeholder="받는사람을 입력하세요." @input="nameCheck">
+                          <ul class="r" v-if="isActive">
                               <li tabindex="-1" v-for="(el,index) in filters" :key="index" @click="changeValue(el)" @keyup.enter="selectValue('enter', el)"><span>{{ el }}</span></li>
                           </ul>
                           <!-- <select v-model="selected">
@@ -53,11 +53,11 @@ export default {
   components: {
     Button,
   },
-  watch: {
-    toUsername: function() {
-      this.nameCheck(this.toUsername)
-    }
-  },
+  // watch: {
+  //   toUsername: function() {
+  //     this.nameCheck(this.toUsername)
+  //   }
+  // },
   data() {
     return {
       toUsername: "",
@@ -70,8 +70,11 @@ export default {
   },
   methods: {
     changeValue(str) {
-        this.isActive = false
-        document.querySelector('.s').value = str
+      console.log(`change value: ${str}`);
+      document.querySelector('.s').value = str;
+      this.toUsername = str
+      this.isActive = false;
+      console.log(this.toUsername)
     },
     selectValue(keycode, str) {
         if (this.isActive) {
@@ -137,8 +140,8 @@ export default {
       this.$emit('close')
     },
     nameCheck(event) {
-      console.log(event)
-      axios.get(`${URL.BASE_URL}/account/total/${event}`)
+      console.log(event.target.value)
+      axios.get(`${URL.BASE_URL}/account/total/${event.target.value}`)
       .then(res => {
         this.filters = res.data
         this.isActive = true
@@ -154,6 +157,18 @@ export default {
 
 <style>
     /* model */
+  #messageModal ul{
+    padding: 0;
+    
+  }
+  #messageModal li{
+    list-style: none;
+    width: 100%;
+    background-color: rgb(212, 211, 211);
+  }
+  #messageModal li:hover{
+    background-color: darkgray
+  }
   #messageModal hr {
     margin-top: 0;
   }

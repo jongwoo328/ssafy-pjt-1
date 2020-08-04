@@ -12,7 +12,7 @@ import Qna from '@/views/qna/Qna.vue'
 import ServiceAdd from '@/views/services/ServiceAdd.vue'
 import QnaDetail from '@/views/qna/QnaDetail.vue'
 import QnaCreate from '@/views/qna/QnaCreate.vue'
-import MessageList from '@/views/message/messageList.vue'
+import MessageList from '@/views/message/MessageList.vue'
 
 Vue.use(VueRouter)
 
