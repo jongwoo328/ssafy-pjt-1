@@ -27,13 +27,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.web.curation.model.ConnectorService;
 import com.web.curation.model.Pay;
-import com.web.curation.model.Profile;
+import com.web.curation.model.Review;
 import com.web.curation.service.PayService;
+import com.web.curation.service.ReviewService;
 import com.web.curation.service.ServiceService;
 
 import io.swagger.annotations.ApiOperation;
 
-@CrossOrigin(origins = { "*" })
+@CrossOrigin(origins = {"*"},maxAge = 6000)
 @RestController
 @RequestMapping("/service")
 public class ServiceController {
@@ -47,11 +48,35 @@ public class ServiceController {
 	@Autowired
 	PayService pay;
 	
+	@Autowired
+	ReviewService rev;
+	
 	@ApiOperation(value = "서비스 정보 반환", response = ConnectorService.class)
 	@GetMapping("{userno}")
 	public Object selectServiceByUserno(@PathVariable int userno) {
 		List<ConnectorService> servList = svc.selectServiceByUserno(userno);
+		
 		if(servList != null) {
+			List<Review> revList = rev.totalReview();
+			for(ConnectorService s : servList) {
+				double sum = 0.0;
+				int sno = s.getServno();
+				int count = 0;
+				for(Review r : revList) {
+					if(sno == r.getServno()) {
+						sum += r.getPoint();
+						count ++;
+					}
+				}
+				
+				if(count == 0) {
+					sum = 0.0;
+				} else {
+					sum = sum / count;
+				}
+				s.setAvgpoint(Math.round((sum) * 10) / 10.0);
+				s.setImgurl("img/service/" + s.getImgurl());
+			}
 			return new ResponseEntity<List<ConnectorService>>(servList, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>(FAIL, HttpStatus.OK);
@@ -59,15 +84,33 @@ public class ServiceController {
 	}
 	
 	@ApiOperation(value = "각 서비스 정보 반환", response = ConnectorService.class)
-	@GetMapping("/detail/{servno}")
-	public Object detailService(@PathVariable int userno, @PathVariable int servno) {
+	@GetMapping("/detail/servno={servno}&userno={userno}")
+	public Object detailService(@PathVariable int servno, @PathVariable int userno) {
+		System.out.println(servno);
+		System.out.println(userno); 
+		
 		ConnectorService serv = svc.detailService(servno);
+		
 		
 		Pay p = pay.searchPayed(userno, servno);
 		
-		
-		
 		if(serv != null) {
+			List<Review> revList = rev.retrieveReview(servno);
+			
+			double sum = 0.0;
+			int count = 0;
+			for(Review r : revList) {
+				sum += r.getPoint();
+				count++;
+			}
+			if(count == 0) {
+				serv.setAvgpoint(0.0);
+			} else {
+				serv.setAvgpoint(Math.round((sum/count) * 10) / 10.0);
+			}
+//			if(revList != null) {
+//				serv.setRev(revList);				
+//			}
 			serv.setImgurl("img/service/"+serv.getImgurl());
 			if(p != null) {
 				serv.setRevcheck(true);
@@ -84,24 +127,58 @@ public class ServiceController {
 	}
 
 	@ApiOperation(value = "서비스 검색", response = ConnectorService.class)
-	@PostMapping("/{word}")
+	@PostMapping("/search/{word}")
 	public Object selectServiceByDongcode(HttpServletRequest request) {
 		String dongcode = request.getParameter("dongcode");
 		String keyword = request.getParameter("word");
-		keyword = keyword.trim();
-		StringTokenizer st = new StringTokenizer(keyword);
+		System.out.println(keyword);
+		System.out.println(dongcode);
 		List<String> word = new ArrayList<String>();
-		while(st.hasMoreTokens()) {
-			word.add(st.nextToken());
+		
+		if(keyword != null) {
+			keyword = keyword.trim();
+			StringTokenizer st = new StringTokenizer(keyword);
+			while(st.hasMoreTokens()) {
+				word.add(st.nextToken());
+			}
+			
 		}
 		
 		
 		int cateno = Integer.parseInt(request.getParameter("cateno"));
-		List<ConnectorService> servList = svc.selectServiceByDongcode(cateno, dongcode, word);
+		System.out.println(cateno);
+		List<ConnectorService> servList; 
+		if(keyword != null) {
+			servList = svc.selectServiceByDongcode(cateno, dongcode, word);
+		} else {
+			servList = svc.selectServiceByDongcode(cateno, dongcode, null);
+		}
 		if(servList != null) {
+			List<Review> revList = rev.totalReview();
 			for(ConnectorService serv : servList) {
 				serv.setImgurl("img/service/" + serv.getImgurl());
+				System.out.println(serv.getServname());
+				int count = 0;
+				double sum = 0.0;
+				int sno = serv.getServno();
+				for(Review r : revList) {
+					if(r.getServno() == serv.getServno()) {
+						sum += r.getPoint();
+						count++;
+					}
+				}
+				if(count == 0) {
+					serv.setAvgpoint(0.0);
+				} else {
+					
+					serv.setAvgpoint(Math.round((sum/count) * 10) / 10.0);
+				}
+				System.out.println(serv.getAvgpoint());
 			}
+			
+			
+			
+			
 			return new ResponseEntity<List<ConnectorService>>(servList, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>(FAIL, HttpStatus.OK);
@@ -160,7 +237,8 @@ public class ServiceController {
 	public ResponseEntity<String> updateProfile(HttpServletRequest request) throws JsonMappingException, JsonProcessingException{
 		MultipartHttpServletRequest mrequest = (MultipartHttpServletRequest)request;
 		MultipartFile imgFiles = mrequest.getFile("serviceImage");
-		ConnectorService pre = svc.detailService(Integer.parseInt(request.getParameter("servno")));
+		ConnectorService pre = new ConnectorService();
+//				svc.detailService(Integer.parseInt(request.getParameter("servno")));
 		
 		ConnectorService service = new ConnectorService();
 		
@@ -211,26 +289,26 @@ public class ServiceController {
 				
 	}
 	
-	@ApiOperation(value = "서비스 정보 삭제")
-	@DeleteMapping("{servno}")
-	public ResponseEntity<String> deleteService(@RequestBody ConnectorService service){
-		System.out.println("삭제");
-		
-		if(service.getImgurl().equals("null.png")) {
-			
-		} else {
-			File file = new File(SAVE_PATH + service.getImgurl());
-			if(file.exists() == true) {
-				file.delete();
-			}			
-		}
-		
-		
-		if(svc.deleteService(service.getServno())) {
-			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-		}
-		
-		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
-	}
+//	@ApiOperation(value = "서비스 정보 삭제")
+//	@DeleteMapping("{servno}")
+//	public ResponseEntity<String> deleteService(@RequestBody ConnectorService service){
+//		System.out.println("삭제");
+//		
+//		if(service.getImgurl().equals("null.png")) {
+//			
+//		} else {
+//			File file = new File(SAVE_PATH + service.getImgurl());
+//			if(file.exists() == true) {
+//				file.delete();
+//			}			
+//		}
+//		
+//		
+//		if(svc.deleteService(service.getServno())) {
+//			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+//		}
+//		
+//		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+//	}
 
 }

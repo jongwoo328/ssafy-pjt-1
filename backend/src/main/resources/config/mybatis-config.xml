@@ -6,6 +6,7 @@
       	<package name="com.web.curation.model"/>
    	</typeAliases>
 	<mappers>
+	<mapper resource="mappers/review.xml" />
 	<mapper resource="mappers/service.xml" />
 		<mapper resource="mappers/user.xml" />
 		<mapper resource="mappers/fselect.xml" />

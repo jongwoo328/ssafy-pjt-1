@@ -36,11 +36,11 @@ public class ReviewController {
 	private UserService user;
 	
 	@ApiOperation(value = "전체 리뷰 목록을 가져온다.", response = String.class)
-	@GetMapping("{servno}")
+	@GetMapping("/{servno}")
 	public Object retrieveReview(@PathVariable int servno) {
 		List<Review> list = revService.retrieveReview(servno);
 		if (list == null) {
-			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 		}
 		
 		for(Review rev : list) {
@@ -53,7 +53,7 @@ public class ReviewController {
 	}
 	
 	@ApiOperation(value = "해당 리뷰 내용을 가져온다.", response = String.class)
-	@GetMapping("{revno}")
+	@GetMapping("/detail/{revno}")
 	public Object detailReview(@PathVariable int revno) {
 		Review review = revService.detailReview(revno);
 		if (review == null) {
@@ -69,9 +69,12 @@ public class ReviewController {
 	@ApiOperation(value = "리뷰를 작성한다.", response = String.class)
 	@PostMapping
 	public ResponseEntity<String> writeReview(@RequestBody Review review) {
+		System.out.println(review);
 		if (revService.writeReview(review)) {
+			System.out.println("작성 성공");
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
+		System.out.println("실패");
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 	
@@ -81,8 +84,9 @@ public class ReviewController {
 		if (revService.updateReview(review)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}
+	
 	
 	@ApiOperation(value = "글번호에 해당하는 리뷰를 삭제한다.", response = String.class)
 	@DeleteMapping("{revno}")
@@ -90,7 +94,7 @@ public class ReviewController {
 		if (revService.deleteReview(qnano)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}
 	
 	

@@ -7,9 +7,11 @@ import org.apache.ibatis.annotations.Mapper;
 import com.web.curation.model.Msg;
 
 @Mapper
-public interface MsgDao {
-	int sendMsg(Msg msg);
-	Msg getMsgByNo(int msgno);
-	List<Msg> getReceiveMsg(int userno);
-	List<Msg> getSendMsg(int userno);
+public interface MsgDAO {
+	int msgCount(int userno);
+	public List<Msg> selectMsg(int userno);
+	public Msg selectMsgByMsgno(int msgno);
+	public int updateMsg(Msg msg);
+	public int insertMsg(Msg msg);
+	public int deleteMsg(int msgno);
 }
