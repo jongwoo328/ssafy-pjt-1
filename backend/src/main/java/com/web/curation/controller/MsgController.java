@@ -50,8 +50,16 @@ public class MsgController {
 		return new ResponseEntity<List<Msg>>(list, HttpStatus.OK);
 	}
 	
+	@ApiOperation(value = "읽지 않은 쪽지 개수 반환", response = Integer.class)
+	@GetMapping("/count/{userno}")
+	public ResponseEntity<Integer> msgCount(@PathVariable int userno) throws Exception {
+		
+		return new ResponseEntity<Integer>(msg.msgCount(userno), HttpStatus.OK); 
+	}
+	
+	
 	@ApiOperation(value = "쪽지 세부 정보 전달", response = Msg.class)
-	@GetMapping("/{msgno}")
+	@GetMapping("/detail/{msgno}")
 	public ResponseEntity<Msg> detailMsg(@PathVariable int msgno) throws Exception {
 		System.out.println(msgno + " msgno 세부정보 전달");
 		Msg detailMsg = msg.detailMsg(msgno);
