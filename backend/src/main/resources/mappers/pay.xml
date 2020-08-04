@@ -5,7 +5,7 @@
 <mapper namespace="com.web.curation.dao.PayDAO">
 	
 	<!-- 결제 정보 조회 -->
-	<select id ="selectPay" resultType="Pay">
+	<select id ="selectPay" parameterType="map" resultType="Pay">
 		select payno,
 			   servno,
 			   userno

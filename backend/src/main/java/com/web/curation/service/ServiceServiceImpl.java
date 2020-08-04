@@ -22,6 +22,7 @@ public class ServiceServiceImpl implements ServiceService{
 
 	@Override
 	public List<ConnectorService> selectServiceByDongcode(int cateno, String saddr5, List<String> word) {
+		System.out.println("service 통과");
 		return dao.selectServiceByDongcode(cateno, saddr5, word);
 	}
 

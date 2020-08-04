@@ -127,7 +127,7 @@ public class QnaController {
 	
 	
 	@ApiOperation(value = "글번호에 해당하는 게시글의 정보를 삭제한다. 그리고 DB삭제 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
-	@DeleteMapping("{qnano}")
+	@DeleteMapping("/{qnano}")
 	public ResponseEntity<String> deleteQna(@PathVariable int qnano) {
 		logger.debug("deleteQna - 호출");
 		System.out.println("삭제");
