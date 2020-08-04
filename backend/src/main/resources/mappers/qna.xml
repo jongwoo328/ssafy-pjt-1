@@ -59,9 +59,8 @@
 	<update id="updateQna" parameterType="Qna">
 		update qna
 		   set
-		   		qtitle = #{qtitle}, 
-		   	   qcontent = #{qcontent},
-		   	   qdate = now()
+		   	   qtitle = #{qtitle}, 
+		   	   qcontent = #{qcontent}
 		 where qnano = #{qnano};
 	</update>
 
