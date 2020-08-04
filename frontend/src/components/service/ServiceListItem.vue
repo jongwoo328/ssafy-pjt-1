@@ -1,38 +1,46 @@
 <template>
-  <div class="search-result-card col-12 col-xl-4 font-kor">
-      <div class="card-inner">
-        <header>
-            <h2 v-text="service.s_name"></h2>
-            <div class="pro-info">
-                <img src="https://grepp-programmers.s3.amazonaws.com/production/company/logo/2640/_nolbal_bi_logo_%E1%84%89%E1%85%A6%E1%84%85%E1%85%A9.png" alt="">
-                <p v-text="service.u_no"></p>
-            </div>
-        </header>
-        <hr>
-        <div class="card-content">
-            <div class="card-description">
-                <!-- <img src="@/assets/logo_mini.jpg" alt=""> -->
-                <p v-text="service.description"></p>
+  <div class="search-result-card col-6 col-xl-4 font-kor">
+      <div class="card-wrap">
+        <div class="card-img">
+            <img :src="getImgUrl" alt="service_image">
+            <div class="card-cover">
+                <h3 v-text="service.servname"></h3>
             </div>
         </div>
-        <hr>
-        <footer>
-            <div class="card-addr">
-                <p v-text="service.seraddr"></p>
+        <div class="card-desc">
+            <span v-text="service.servname"></span>
+            <div class="badges">
+                <Badge 
+                badgeColor="forestgreen"
+                badgeText="평점"
+                :badgeCount="service.avgpoint" />
+                <Badge 
+                badgeColor="blueviolet"
+                badgeText="USER"
+                :badgeCount="0" />
             </div>
-            <div class="card-price">
-                <p><span v-text="service.price"></span> 원</p>
-            </div>
-        </footer>
+        </div>
       </div>
   </div>
 </template>
 
 <script>
+import Badge from '@/components/common/Badge.vue'
+import URL from '@/util/http-common.js'
+
 export default {
     name: 'ServiceListItem',
     props: {
         service: Object
+    },
+    components:{
+        Badge
+    },
+    computed: {
+        getImgUrl() {
+            console.log(this.service)
+            return `${URL.BASE_URL}/${this.service.imgurl}`
+        }
     }
     
 }

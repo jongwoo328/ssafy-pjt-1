@@ -13,7 +13,7 @@
             </div>
             <div class="form-block">
                 <label class="font-kor"  for="servicename"> 
-                    서비스 이름 
+                    제목
                 </label>
                 <input class="input-text" v-model="servname" id="servicename"/>
             </div>
@@ -55,7 +55,7 @@
             </div>
             <div class="form-block">
                 <label class="font-kor" for="servicedescription"> 
-                서비스 내용 
+                내용 
                 </label>
                 <br>
                 <Editor/>

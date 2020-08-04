@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.web.curation.dao.FselectDAO">
+	<select id="selectSido" resultType="SidoCode">
+		select left(sido_code,2) sido_code, sido_name
+		from sidocode
+		order by sido_code
+	</select>
+	
+	<select id="selectGugun" resultType="SidoCode">
+		select left(gugun_code,5) gugun_code, gugun_name
+		from guguncode
+		where left(gugun_code,2) = #{sido}
+		order by gugun_code
+	</select>
+	
+	<select id="selectDong"  resultType="DongCode">
+		select  left(code,2) ccode,code ,city,dongcode,dong, gugun, lat, lng
+		from dongcode
+		where left(dongcode,5) = #{gugun}
+		order by dong
+	</select>
+
+	<select id="selectCategory" resultType="Category">
+		select cateno,
+			   cname
+		from category
+		order by cateno desc
+	</select>
+
+</mapper>
