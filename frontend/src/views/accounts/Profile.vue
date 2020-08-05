@@ -43,7 +43,7 @@
             </div>
 
             <div class="service-box">
-                <ServiceList :services="serviceResult" />   
+                <ServiceList :services="services" />   
             </div>
         </div>
     </div>
@@ -54,7 +54,7 @@ import ProfileFrame from '@/components/common/ProfileFrame.vue'
 import Button from '@/components/common/Button.vue'
 import axios from 'axios'
 import ServiceList from '@/components/service/ServiceList.vue'
-import URL from "@/util/http-common.js"
+import HTTP from "@/util/http-common.js"
 
 
 export default {
@@ -87,14 +87,25 @@ export default {
             this.isLoaded = true
         }
     },
+    created(){
+          axios.get(`${HTTP.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
+        .then(res => {
+            console.log(res)
+            this.services = res.data
+            this.isProfile=true
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    },
     mounted() {
         setTimeout(() => {
             console.log('test')
-            axios.get(`${URL.BASE_URL}/profile/${this.$store.getters.getUserData.userno}`)
+            axios.get(`${HTTP.BASE_URL}/profile/${this.$store.getters.getUserData.userno}`)
             .then(res => {
                 console.log(res)
                 this.profileData = {
-                    imgUrl: `${URL.BASE_URL}/` + res.data.imgurl,
+                    imgUrl: `${HTTP.BASE_URL}/` + res.data.imgurl,
                     comment: res.data.comment
                 }
                 console.log(this.profileData.imgUrl)
@@ -114,6 +125,7 @@ export default {
             isProfile: true,
             profileData: "testHaveData",
             isLoaded: false,
+            services:[],
             serviceResult: [
                 // 예시 표시용
                 {
