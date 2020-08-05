@@ -5,7 +5,7 @@
           <div class="col-12">
                 <select v-model="categoryInfo" name="category" id="category" class="col-1 search-info">
                     <option value="none" selected disabled>분류</option>
-                    <option v-for="category in categoryList" :key="category.cateno" :value="category_obj" v-text="category.cname" ></option>
+                    <option v-for="category in categoryList" :key="category.cateno" :value="category.cateno" v-text="category.cname" ></option>
                 </select>
                 <input type="text" class="col-7 search-info">
                 <Button buttonText="검색" />
