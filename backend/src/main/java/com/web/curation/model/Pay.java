@@ -4,13 +4,39 @@ public class Pay {
 	private int payno;
 	private int servno;
 	private int userno;
+	private String pdate;
+	private String servname;
+	private int price;
 	
+	public String getServname() {
+		return servname;
+	}
+
+	public void setServname(String servname) {
+		this.servname = servname;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
+	}
+
+	public String getPdate() {
+		return pdate;
+	}
+
+	public void setPdate(String pdate) {
+		this.pdate = pdate;
+	}
+
 	public Pay() {
 		
 	}
 	
-	public Pay(int payno, int servno, int userno) {
-		this.payno = payno;
+	public Pay(int servno, int userno) {
 		this.servno = servno;
 		this.userno = userno;
 	}
@@ -37,6 +63,11 @@ public class Pay {
 
 	public void setUserno(int userno) {
 		this.userno = userno;
+	}
+
+	@Override
+	public String toString() {
+		return "Pay [payno=" + payno + ", servno=" + servno + ", userno=" + userno + ", pdate=" + pdate + "]";
 	}
 	
 	

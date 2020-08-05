@@ -19,8 +19,21 @@ public class ConnectorService {
 	private boolean revcheck;
 	private double avgpoint;
 	private List<Review> rev;
+	private int payCount;
 	
 	
+	public int getPayCount() {
+		return payCount;
+	}
+
+
+
+	public void setPayCount(int payCount) {
+		this.payCount = payCount;
+	}
+
+
+
 	public List<Review> getRev() {
 		return rev;
 	}

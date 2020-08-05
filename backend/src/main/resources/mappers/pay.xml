@@ -5,21 +5,43 @@
 <mapper namespace="com.web.curation.dao.PayDAO">
 	
 	<!-- 결제 정보 조회 -->
-	<select id ="selectPay" parameterType="map" resultType="Pay">
+	<select id ="selectPay" parameterType="Pay" resultType="Pay">
 		select payno,
 			   servno,
-			   userno
+			   userno,
+			   pdate
 		from pay
 		where servno = #{servno} and userno = #{userno}
 		
 	</select>
 	
+	<!-- 회원 결제 내역 조회 -->
+	<select id="userPay" resultType="Pay">
+		select *
+		from pay
+		where userno = #{userno}
+	</select>
+	
+	
 	<!-- 결제 정보 저장 -->
 	<insert id = "insert" parameterType="Pay">
 		insert into pay (
 			userno,
-			servno
-		) values (#{userno}, #{servno})
+			servno,
+			pdate
+		) values (#{userno}, #{servno}, now())
 	</insert>
 
+	<!-- 결제 한 사람 수 조회 -->
+	<select id="payCount" resultType="Integer">
+		select count(*) as count
+		from pay
+		where servno = #{servno}
+	</select>
+	
+	<!-- 결제 취소 -->
+	<delete id="cancelPay" parameterType="Pay">
+		delete from pay
+		where userno = #{userno} and servno = #{serno}
+	</delete>
 </mapper>

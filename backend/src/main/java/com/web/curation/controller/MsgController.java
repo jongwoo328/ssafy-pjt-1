@@ -67,6 +67,7 @@ public class MsgController {
 			msg.readMsg(detailMsg);
 			detailMsg.setReadcheck(true);
 		}
+		detailMsg.setWritername(user.getUserByUserno(detailMsg.getWriterno()).getName());
 		
 		return new ResponseEntity<Msg>(detailMsg,HttpStatus.OK);
 	}
