@@ -7,7 +7,7 @@
         <Join/>
       </div>
       <div id="search-result-wrap row">
-        <SearchResultCard :services="serviceResult"/>
+        <SearchResultCard :services="services"/>
       </div>
     </div>
   </div>
@@ -18,7 +18,8 @@ import Content from '@/components/home/Content.vue'
 import Join from '@/components/home/Join.vue'
 import SearchbarWeb from '@/components/home/SearchbarWeb.vue'
 import SearchResultCard from '@/components/search/SearchResultCard.vue'
-
+import axios from 'axios'
+import HTTP from '@/util/http-common.js'
 export default {
   name: 'Home',
   components: {
@@ -27,23 +28,22 @@ export default {
     SearchbarWeb,
     SearchResultCard,
   }, 
+  created(){
+        axios.get(`${HTTP.BASE_URL}/service/main`)
+        .then(res => {
+            console.log(res)
+            this.services = res.data
+            this.services.forEach(service => {
+              service.imgurl = `${HTTP.BASE_URL}/${service.imgurl}`
+            })
+        })
+        .catch(err => {
+            console.log(err)
+        })
+  },
   data() {
     return {
-      serviceResult: [
-        // 예시 표시용
-        {
-          imgUrl: 'https://grepp-programmers.s3.amazonaws.com/production/company/logo/2640/_nolbal_bi_logo_%E1%84%89%E1%85%A6%E1%84%85%E1%85%A9.png',
-          s_no: 1
-        },
-        {
-          imgUrl: 'https://grepp-programmers.s3.amazonaws.com/production/company/logo/2640/_nolbal_bi_logo_%E1%84%89%E1%85%A6%E1%84%85%E1%85%A9.png',
-          s_no: 2
-        },
-        {
-          imgUrl: 'https://grepp-programmers.s3.amazonaws.com/production/company/logo/2640/_nolbal_bi_logo_%E1%84%89%E1%85%A6%E1%84%85%E1%85%A9.png',
-          s_no: 3
-        },
-      ]
+       services: [],
     }
   }
 }

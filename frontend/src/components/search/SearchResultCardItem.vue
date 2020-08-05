@@ -2,8 +2,8 @@
   <div class="search-result-card col-6 col-xl-4 font-kor">
       <div class="card-wrap">
         <div class="card-img">
-            <img :src="service.imgUrl" alt="service_image">
-            <div class="card-cover">
+            <img :src="service.imgurl" alt="service_image">
+            <div class="card-cover" @click="changeDetail">
                 <h3 v-text="service.servname"></h3>
             </div>
         </div>
@@ -14,7 +14,7 @@
                 badgeColor="forestgreen"
                 badgeText="평점"
                 :badgeCount="service.avgpoint" />
-                <Badge 
+                 <Badge 
                 badgeColor="blueviolet"
                 badgeText="USER"
                 :badgeCount="0" />
@@ -37,6 +37,11 @@ export default {
     },
     computed: {
         
+    },
+    methods:{
+        changeDetail(){
+            this.$router.push(`/services/${this.service.servno}`)
+        }
     }
     
 }

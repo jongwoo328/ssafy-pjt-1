@@ -36,7 +36,6 @@ export default {
         .then(res => {
             console.log(res)
             this.services = res.data
-            this.isProfile=true
          
         })
         .catch(err => {

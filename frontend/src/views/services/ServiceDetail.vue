@@ -2,7 +2,7 @@
   <div id="service-detail" class="container font-kor">
       <div class="service-info section">
           <div class="image-join">
-              <img src="@/assets/logo_mini.png" alt="">
+              <img :src="serviceData.imgUrl" alt="">
           </div>
           <div class="info">
               <div>
@@ -24,8 +24,14 @@
                     <p>{{addr}}</p>
                 </div>
               </div>
+            <div v-if="!isOwner">
               <Button buttonText="문의하기" />
               <Button buttonText="신청하기" />
+            </div>
+            <div v-else>
+                <Button buttonText="수정" @click.native="onchangePage" />
+              <Button buttonText="삭제" @click.native=" removeService "/>
+            </div>
           </div>
       </div>
       <div class="service-desc section">
@@ -51,6 +57,7 @@ export default {
     name: 'ServiceDetail',
     data() {
         return {
+            isOwner:false,
             userno: "",
             serviceId: 0,
             serviceData: {
@@ -75,25 +82,33 @@ export default {
         Button,
         ReviewList,
     },
+    methods:{
+        onchangePage(){
+              this.$router.push(`/services/${this.$route.params.service_id}/modify`)
+        },
+        removeService(){
+            axios.delete(`${HTTP.BASE_URL}/service/${this.$route.params.service_id}`)
+            .then(res =>{
+                console.log(res)
+                console.log("삭제성공")
+                this.$router.push(`/myservice`)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
+    },
     created() {
         if(this.$store.getters.getUserData === null){
             this.userno = 0;    
         } else{
             this.userno = `${this.$store.getters.getUserData.userno}`
         }       
-        // const formData = new FormData()
-        //     formData.append('servno', `${this.$route.params.service_id}`)
-        //     formData.append('userno', this.userno)
-        //      for (let key of formData.entries())
-        //     {
-        //     console.log(`${key}`)
-        //     }
-    
         axios.get(`${HTTP.BASE_URL}/service/detail/servno=${this.$route.params.service_id}&userno=${this.userno}`)
         .then(res =>{
             console.log(res)
             this.serviceData ={
-                imgUrl:`${URL.BASE_URL}/` + res.data.imgUrl,
+                imgUrl:`${HTTP.BASE_URL}/` + res.data.imgurl,
                 servname : res.data.servname,
                 price : res.data.price,
                 saddr1 : res.data.saddr1,
@@ -107,6 +122,9 @@ export default {
             }
             this.point = res.data.avgpoint,
             this.addr = this.serviceData.saddr2+" "+this.serviceData.saddr4+" "+this.serviceData.saddr6
+            if(this.userno==res.data.userno){
+                this.isOwner=true;
+            }
         })
         .catch(err => {
                 console.log(err)
