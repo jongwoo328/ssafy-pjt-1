@@ -170,10 +170,26 @@ export default {
         this.updateCheck = false
       },
       updateYes() {
-        // data = {
-
-        // }
-        axios.put(`${URL.BASE_URL}/qna/${this.qnaNumber}`, )
+        const updateContent = document.querySelector('#update-editor .ql-editor').innerHTML
+        const updateTitle = document.querySelector('#qtitle').value
+        const data = {
+          qnano: this.qnaNumber,
+          qtitle: updateTitle,
+          qcontent: updateContent
+        }
+        axios.put(`${URL.BASE_URL}/qna/${this.qnaNumber}`, data, URL.JSON_HEADER)
+        .then(res => {
+          if (res.data === 'success') {
+            this.$router.go()
+          } else if (res.data === 'fail') {
+            alert('수정되지 않았습니다')
+          } else {
+            alert('알수없는 오류')
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
       }
     },
 
