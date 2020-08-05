@@ -13,13 +13,10 @@
                       <div class="form">
                         <div class="input-box font-notojp">
                           <label class="input-label" for="inputname">TO</label>
-                          <input class="s" autocomplete="off" type="text" id="inputname" placeholder="받는사람을 입력하세요." @input="nameCheck">
+                          <input class="s" autocomplete="off" type="text" id="inputname" placeholder="받는사람을 입력하세요." :value="toUsername" @input="nameCheck">
                           <ul class="r" v-if="isActive">
                               <li tabindex="-1" v-for="(el,index) in filters" :key="index" @click="changeValue(el)" @keyup.enter="selectValue('enter', el)"><span>{{ el }}</span></li>
                           </ul>
-                          <!-- <select v-model="selected">
-                              <option :v-if="filters" v-for="(item, index) in filters" :key="index">{{ item }}</option>
-                          </select> -->
                         </div>
                         <div class="input-box font-notojp">
                           <label class="input-label" for="inputtitle">TITLE</label>
@@ -53,14 +50,12 @@ export default {
   components: {
     Button,
   },
-  // watch: {
-  //   toUsername: function() {
-  //     this.nameCheck(this.toUsername)
-  //   }
-  // },
+  props: {
+    recivername: String,
+  },
   data() {
     return {
-      toUsername: "",
+      toUsername: this.recivername,
       fromUsername: this.$store.getters.getUserData.name,
       title: "",
       comment: "",

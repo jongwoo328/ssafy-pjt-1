@@ -51,7 +51,7 @@ export default {
         display: inline-block;
         padding: 5px 10px 5px 10px;
     }
-    .card-inner:hover {
+    /* .card-inner:hover {
         background-color: whitesmoke;
         cursor: pointer;
     }
@@ -84,7 +84,7 @@ export default {
     }
     .card-inner footer span, .card-inner footer .card-addr {
         font-weight: bold;
-    }
+    } */
     .card-content {
         padding-left: 5px;
         padding-right: 5px;
