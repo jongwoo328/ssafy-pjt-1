@@ -13,6 +13,7 @@ import ServiceAdd from '@/views/services/ServiceAdd.vue'
 import QnaDetail from '@/views/qna/QnaDetail.vue'
 import QnaCreate from '@/views/qna/QnaCreate.vue'
 import MessageList from '@/views/message/MessageList.vue'
+import Follow from '@/views/accounts/Follow.vue'
 
 Vue.use(VueRouter)
 
@@ -46,6 +47,11 @@ Vue.use(VueRouter)
     path: '/services/:service_id',
     name: 'ServiceDetail',
     component: ServiceDetail
+  },
+  {
+    path: '/accounts/:username/follow',
+    name: 'Follow',
+    component: Follow
   },
   {
     path: '/accounts/:username/:type',
