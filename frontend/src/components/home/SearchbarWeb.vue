@@ -1,30 +1,36 @@
 <template>
   <div id="join-web" class="font-kor container">
       <h1>검색하세요!</h1>
-      <form action="" class="row search-form">
+      <!-- <form class="row search-form"> -->
           <div class="col-12">
                 <select v-model="categoryInfo" name="category" id="category" class="col-1 search-info">
-                    <option value="none" selected disabled>분류</option>
-                    <option v-for="category in categoryList" :key="category.cateno" :value="category.cateno" v-text="category.cname" ></option>
+                    <option v-for="category in categoryList" :key="category.cname" :value="category" v-text="category.cname" ></option>
                 </select>
-                <input type="text" class="col-7 search-info">
-                <Button buttonText="검색" />
+                <input type="text" class="col-7 search-info" v-model="keyword">
+                <Button buttonText="검색" @click.native="SearchInfoemit" />
           </div>
           <div class="offset-3 col row mt-2">
+              <div v-if="isLogin">
+              <label>전체</label>
+              <input  type="checkbox" v-model="isAll" /> 
+              </div>
             <select name="si" id="si" class="col-3 search-info" v-model="siInfo">
-                <option value="none" disabled selected>시/도</option>
+                <option v-if="siInfo" :value="siInfo" v-text="siInfo.siName"></option>
+                <option v-else value="" disabled selected>시/도</option>
                 <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName"></option>
             </select>
             <select name="gu" id="gu" class="col-3 search-info" v-model="guInfo">
-                <option value="none" disabled selected>구/군</option>
+                  <option v-if="guInfo" :value="guInfo" v-text="guInfo.guName"></option>
+                    <option v-else value="" disabled selected>구/군</option>
                  <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
             </select>
             <select name="dong" id="dong" class="col-3 search-info" v-model="dongInfo">
-                <option value="none" disabled selected>동/읍/면</option>
+                 <option v-if="dongInfo" :value="dongInfo" v-text="dongInfo.dongName"></option>
+                    <option v-else value="" disabled selected>동/읍/면</option>
                 <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
             </select>
           </div>
-      </form>
+      <!-- </form> -->
   </div>
 </template>
 
@@ -44,10 +50,16 @@ export default {
             siList: [],
             guList: [],
             dongList: [],
-            categoryInfo:"none",
-            siInfo: "none",
-            guInfo: "none",
-            dongInfo: "none",
+            categoryInfo:[ 
+                
+            ],
+            siInfo: [],
+            guInfo: [],
+            dongInfo: [],
+            search:{},
+            keyword:"",
+            isLogin:false,
+            isAll:false
          }
     },
  created() {
@@ -59,6 +71,7 @@ export default {
                     "cateno" : res.data[category]["cateno"]
                 })
             }
+            this.categoryInfo = this.categoryList[0]
         })
         .catch(err => {
             console.log(err)
@@ -77,8 +90,50 @@ export default {
       .catch(err => {
         console.log(err)
       })
-     },
+    if(!this.$store.getters.isLoggedIn){
+        this.siInfo.siName ="시/도",
+        this.guInfo.guName = "구/군",
+        this.dongInfo.dongName="동"
+        this.isLogin=false
+    }else{
+    this.isLogin =true
+    this.siInfo.siName =  this.$store.getters.getUserData.addr2,
+    this.siInfo.siCode =  this.$store.getters.getUserData.addr1,
+    this.guInfo.guName =  this.$store.getters.getUserData.addr4,
+    this.guInfo.guCode =  this.$store.getters.getUserData.addr3,
+    this.dongInfo.dongName =  this.$store.getters.getUserData.addr6,
+    this.dongInfo.dongCode =  this.$store.getters.getUserData.addr5
+    
+    }
+ },
+ computed: {
+    userData() {
+        return this.$store.getters.getUserData
+    }
+ },
  watch: {
+        isAll : function(){
+            if(this.isAll){
+        this.siInfo.siName ="시/도",
+        this.siInfo.siCode=null
+        this.guInfo.guName = "구/군",
+        this.guInfo.guCode=null
+        this.dongInfo.dongName="동"
+        this.dongInfo.dongCode=null
+    
+    }else{
+        this.siInfo.siName =  this.$store.getters.getUserData.addr2,
+        this.siInfo.siCode =  this.$store.getters.getUserData.addr1,
+        this.guInfo.guName =  this.$store.getters.getUserData.addr4,
+        this.guInfo.guCode =  this.$store.getters.getUserData.addr3,
+        this.dongInfo.dongName =  this.$store.getters.getUserData.addr6,
+        this.dongInfo.dongCode =  this.$store.getters.getUserData.addr5
+    
+    }
+        },
+        userData : function(){
+            this.$router.go()
+        },
         siInfo: function() {
         this.getGuInfo()
       },
@@ -125,7 +180,14 @@ export default {
         }).catch(err => {
           console.log(err)
         })
-      }
+      },
+    SearchInfoemit(){
+        this.search.cateno = this.categoryInfo.cateno,
+        this.search.saddr5 = this.dongInfo.dongCode,
+        this.search.keyword = this.keyword
+        console.log(this.search)
+        this.$emit("child",this.search)
+    }
   },
 }
 </script>

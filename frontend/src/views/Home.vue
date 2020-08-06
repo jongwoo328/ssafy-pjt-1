@@ -1,7 +1,7 @@
 <template>
   <div id="home container">
     <div class="wrap container">
-      <SearchbarWeb/>
+      <SearchbarWeb @child="searchs"/>
       <div class="container home-inner">
         <Content/>
         <Join/>
@@ -27,8 +27,29 @@ export default {
     Join,
     SearchbarWeb,
     SearchResultCard,
-  }, 
+  },data() {
+    return {
+       services: [],
+       searchInfo:[]
+    }
+  },
+   methods:{
+    searchs(search){
+      axios.post(`${HTTP.BASE_URL}/service/search`,search, HTTP.JSON_HEADER)
+      .then(res =>{
+      console.log(res)
+      this.services=res.data
+      this.services.forEach(service => {
+              service.imgurl = `${HTTP.BASE_URL}/${service.imgurl}`
+            })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
+  },
   created(){
+      
         axios.get(`${HTTP.BASE_URL}/service/main`)
         .then(res => {
             console.log(res)
@@ -40,12 +61,8 @@ export default {
         .catch(err => {
             console.log(err)
         })
-  },
-  data() {
-    return {
-       services: [],
-    }
   }
+  
 }
 </script>
 
