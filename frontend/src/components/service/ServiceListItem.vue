@@ -3,7 +3,7 @@
       <div class="card-wrap">
         <div class="card-img">
             <img :src="getImgUrl" alt="service_image">
-            <div class="card-cover">
+            <div class="card-cover" @click="changeDetail">
                 <h3 v-text="service.servname"></h3>
             </div>
         </div>
@@ -40,6 +40,11 @@ export default {
         getImgUrl() {
             console.log(this.service)
             return `${URL.BASE_URL}/${this.service.imgurl}`
+        }
+    },methods:{
+        changeDetail(){
+            console.log(1)
+            this.$router.push(`/services/${this.service.servno}`)
         }
     }
     

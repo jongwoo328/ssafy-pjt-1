@@ -1,8 +1,7 @@
 <template>
   <div id="review-list">
-      <ReviewListItem/>
-      <ReviewListItem/>
-      <ReviewListItem/>
+      
+      <ReviewListItem v-for="review in reviews" :key="review.revno" :review="review" />
   </div>
 </template>
 
@@ -13,6 +12,9 @@ export default {
     name: 'ReviewList',
     components: {
         ReviewListItem,
+    },
+    props:{
+        reviews : Array
     }
 
 }

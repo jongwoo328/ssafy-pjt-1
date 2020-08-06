@@ -1,20 +1,34 @@
 <template>
   <div class="review-list-item">
       <div class="header">
-        <h3>리뷰 제목</h3>
-        <p class="rating">★★★★★</p>
+        <h3 v-text="review.title"></h3>
+        <p class="rating" v-text="star"></p>
       </div>
       <hr>
-      <p>작성자</p>
-      <p>리뷰내용</p>
+      <p v-text="review.writer"></p>
+      <p v-text="review.content"></p>
   </div>
 </template>
 
 <script>
 export default {
     name: 'ReviewListItem',
+    props:{
+        review: Object
+    },
+    computed:{
+        star(){
+            let result = ''
+                for (let i=0; i<this.review.point; i++) {
+                    result += '★'
+                }
+            for (let i=0; i<(5 - this.review.point); i++) {
+                result += '☆'
+            }
+                return result
+        }
 
-
+    },
 }
 </script>
 
