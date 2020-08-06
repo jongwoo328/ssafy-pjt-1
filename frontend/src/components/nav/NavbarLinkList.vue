@@ -1,8 +1,7 @@
 <template>
   <div class="navbar-nav"> 
-      <NoticeIcon/> 
-      <!-- <NavbarLinkListItem v-if="isPro" value="My Services" @click.native="toserviceUp" /> -->
-      <NavbarLinkListItem v-if="!isLoggedIn" value="SignUp" @click.native="toSignUp" />
+      <NoticeIcon v-if="isLoggedIn" /> 
+      <NavbarLinkListItem v-if="!isLoggedIn" value="SignUp" class="signup" @click.native="toSignUp" />
       <NavbarLinkListItem v-if="!isLoggedIn" value="Login" @click.native="changeLogin"/>
       <NavbarLinkListItem v-if="isLoggedIn" value="Logout" @click.native="logout"/>
       <LoginModal v-if="loginModal" @close="changeLogin" @change="changeModal">
@@ -65,14 +64,17 @@ export default {
     },
     isPro() {
       return this.$store.getters.isPro
-    }
+    },
   }
 }
 </script>
 
 <style>
   .navbar-nav {
+    position: absolute;
+    right: 0;
     display: flex;
     flex-direction: row;
+    margin-right: 10px;
   }
 </style>
