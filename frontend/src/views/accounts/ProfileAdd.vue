@@ -109,8 +109,11 @@ export default {
             }
           }).then(res => {
             console.log(res)
-            this.$router.push({ name : 'Profile' })
-            this.$router.go()
+            
+            setTimeout(() => {
+              alert('수정되었습니다.')
+              this.$router.push({ name : 'Profile' })
+            },1000)
           }).catch(err => {
             console.log(err)
           })
@@ -124,7 +127,10 @@ export default {
               }
             }).then(res => {
               console.log(res)
+            setTimeout(() => {
+              alert('등록되었습니다.')
               this.$router.push({ name : 'Profile' })
+            },1000)
             }).catch(err => {
               console.log(err)
             })
