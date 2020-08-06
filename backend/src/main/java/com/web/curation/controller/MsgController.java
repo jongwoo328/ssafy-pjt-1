@@ -35,9 +35,25 @@ public class MsgController {
 	UserService user;
 	
 	@ApiOperation(value = "받은 쪽지 리스트 반환", response = List.class)
-	@GetMapping("/{userno}")
-	public ResponseEntity<List<Msg>> msgList(@PathVariable int userno) throws Exception {
-		List<Msg> list = msg.selectMsg(userno);
+	@GetMapping("/rec/{userno}")
+	public ResponseEntity<List<Msg>> recMsgList(@PathVariable int userno) throws Exception {
+		List<Msg> list = msg.selectRecMsg(userno);
+		User reciver = user.getUserByUserno(userno);
+		
+		for(Msg m : list) {
+			User sender = user.getUserByUserno(m.getWriterno());
+			m.setWritername(sender.getName());
+			m.setRecivername(reciver.getName());
+		}
+		
+		
+		return new ResponseEntity<List<Msg>>(list, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "보낸 쪽지 리스트 반환", response = List.class)
+	@GetMapping("/send/{userno}")
+	public ResponseEntity<List<Msg>> sendMsgList(@PathVariable int userno) throws Exception {
+		List<Msg> list = msg.selectSendMsg(userno);
 		User reciver = user.getUserByUserno(userno);
 		
 		for(Msg m : list) {
@@ -67,6 +83,7 @@ public class MsgController {
 			msg.readMsg(detailMsg);
 			detailMsg.setReadcheck(true);
 		}
+		detailMsg.setWritername(user.getUserByUserno(detailMsg.getWriterno()).getName());
 		
 		return new ResponseEntity<Msg>(detailMsg,HttpStatus.OK);
 	}
@@ -90,12 +107,25 @@ public class MsgController {
 		
 	}
 	
-	@ApiOperation(value = "쪽지 삭제", response = String.class)
-	@DeleteMapping("/{msgno}")
-	public ResponseEntity<String> deleteMsg(@PathVariable int msgno){
-		System.out.println(msgno + " 번 쪽지 삭제 합니다.");
+	@ApiOperation(value="받은 쪽지 삭제", response = String.class)
+	@DeleteMapping("/rec")
+	public ResponseEntity<String> deleteRecMsg(@RequestBody List<Integer> msgnoList){
 		
-		if(msg.deleteMsg(msgno)) {
+		System.out.println(msgnoList);
+		
+		if(msg.deleteRecMsg(msgnoList)) {
+			return new ResponseEntity<String> (SUCCESS, HttpStatus.OK);
+		}
+		
+		
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "보낸 쪽지 삭제", response = String.class)
+	@DeleteMapping("/send")
+	public ResponseEntity<String> deleteSendMsg(@RequestBody List<Integer> msgnoList){
+		
+		if(msg.deleteSendMsg(msgnoList)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		

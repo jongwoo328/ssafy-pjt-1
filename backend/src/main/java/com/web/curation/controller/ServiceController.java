@@ -54,7 +54,7 @@ public class ServiceController {
 	ReviewService rev;
 	
 	@ApiOperation(value = "서비스 정보 반환", response = ConnectorService.class)
-	@GetMapping("{userno}")
+	@GetMapping("/{userno}")
 	public Object selectServiceByUserno(@PathVariable int userno) {
 		List<ConnectorService> servList = svc.selectServiceByUserno(userno);
 		
@@ -78,6 +78,8 @@ public class ServiceController {
 				}
 				s.setAvgpoint(Math.round((sum) * 10) / 10.0);
 				s.setImgurl("img/service/" + s.getImgurl());
+				s.setPayCount(pay.payCount(s.getServno()));
+				
 			}
 			return new ResponseEntity<List<ConnectorService>>(servList, HttpStatus.OK);
 		} else {
@@ -94,7 +96,7 @@ public class ServiceController {
 		ConnectorService serv = svc.detailService(servno);
 		
 		
-		Pay p = pay.searchPayed(userno, servno);
+		Pay p = pay.searchPayed(new Pay(servno, userno));
 		
 		if(serv != null) {
 			List<Review> revList = rev.retrieveReview(servno);
@@ -121,7 +123,7 @@ public class ServiceController {
 				serv.setRevcheck(false);
 				System.out.println("결제 내역 없음");
 			}
-			
+			serv.setPayCount(pay.payCount(serv.getServno()));
 			return new ResponseEntity<ConnectorService>(serv, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>(FAIL, HttpStatus.OK);
@@ -169,6 +171,7 @@ public class ServiceController {
 			
 			int c = 0;
 			for(ConnectorService s : servList) {
+				s.setPayCount(pay.payCount(s.getServno()));
 				resultList.add(s);
 				c++;
 				
@@ -230,6 +233,7 @@ public class ServiceController {
 					serv.setAvgpoint(Math.round((sum/count) * 10) / 10.0);
 				}
 				System.out.println(serv.getAvgpoint());
+				serv.setPayCount(serv.getServno());
 			}
 			
 			
@@ -293,14 +297,15 @@ public class ServiceController {
 	public ResponseEntity<String> updateProfile(HttpServletRequest request) throws JsonMappingException, JsonProcessingException{
 		MultipartHttpServletRequest mrequest = (MultipartHttpServletRequest)request;
 		MultipartFile imgFiles = mrequest.getFile("serviceImage");
-		ConnectorService pre = new ConnectorService();
-//				svc.detailService(Integer.parseInt(request.getParameter("servno")));
+		ConnectorService pre =
+        svc.detailService(Integer.parseInt(request.getParameter("servno")));
 		
 		ConnectorService service = new ConnectorService();
 		
 		service.setUserno(Integer.parseInt(request.getParameter("userno")));
 		service.setCateno(Integer.parseInt(request.getParameter("cateno")));
 		service.setServname(request.getParameter("servname"));
+		service.setServno(Integer.parseInt(request.getParameter("servno")));
 		service.setPrice(Integer.parseInt(request.getParameter("price")));
 		service.setDescription(request.getParameter("description"));
 		service.setSaddr1(request.getParameter("saddr1"));
@@ -336,6 +341,7 @@ public class ServiceController {
 		}
 		
 		
+		System.out.println(service);
 		
 		if(svc.updateService(service)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
@@ -345,26 +351,27 @@ public class ServiceController {
 				
 	}
 	
-//	@ApiOperation(value = "서비스 정보 삭제")
-//	@DeleteMapping("{servno}")
-//	public ResponseEntity<String> deleteService(@RequestBody ConnectorService service){
-//		System.out.println("삭제");
-//		
-//		if(service.getImgurl().equals("null.png")) {
-//			
-//		} else {
-//			File file = new File(SAVE_PATH + service.getImgurl());
-//			if(file.exists() == true) {
-//				file.delete();
-//			}			
-//		}
-//		
-//		
-//		if(svc.deleteService(service.getServno())) {
-//			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
-//		}
-//		
-//		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
-//	}
+	@ApiOperation(value = "서비스 정보 삭제", response = String.class)
+	@DeleteMapping("/{servno}")
+	public ResponseEntity<String> deleteService(@PathVariable int servno){
+		System.out.println("서비스 삭제");
+		
+		ConnectorService service = svc.detailService(servno);
+		if(service.getImgurl().equals("null.png")) {
+			
+		} else {
+			File file = new File(SAVE_PATH + service.getImgurl());
+			if(file.exists() == true) {
+				file.delete();
+			}			
+		}
+		
+		
+		if(svc.deleteService(service.getServno())) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+	}
 
 }

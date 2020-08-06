@@ -34,10 +34,24 @@ public class User {
 	private String addr6;
 	private boolean ispro;
 	private int msgcount;
+	private int folcount;
 	private boolean checkadmin;
+	private boolean checkfollow;
 	
 	
 	
+	public boolean isCheckfollow() {
+		return checkfollow;
+	}
+	public void setCheckfollow(boolean checkfollow) {
+		this.checkfollow = checkfollow;
+	}
+	public int getFolcount() {
+		return folcount;
+	}
+	public void setFolcount(int folcount) {
+		this.folcount = folcount;
+	}
 	public boolean isCheckadmin() {
 		return checkadmin;
 	}

@@ -5,12 +5,38 @@
 
 <mapper namespace="com.web.curation.dao.FollowDAO">
 	
-	<!-- 
-	<select id ="selectAll" resultType="Follow">
+	
+	<select id ="selectFollowingList" resultType="Follow">
 		select *
-		from
-	</select> -->
+		from follow
+		where userno = #{userno}
+	</select>
+	
+	<select id ="selectFollowerList" resultType="Follow">
+		select *
+		from follow
+		where prono = #{userno}
+	</select>
+	
+	<select id="followCount" resultType="Integer">
+		select count(*) as count
+		from follow
+		where prono = #{prono}
+	</select> 
+	
+	<select id="selectFollow" resultType="Follow">
+		select * 
+		from follow
+		where userno = #{userno} and prono = #{prono}
+	</select>
+	
+	<insert id="insertFollow">
+		insert into follow (userno, prono) values (#{userno}, #{prono})
+	</insert> 
 
-
+	<delete id="deleteFollow">
+		delete from follow
+		where userno = #{userno} and prono = #{prono}
+	</delete>
 
 </mapper>
