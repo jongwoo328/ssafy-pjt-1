@@ -30,6 +30,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.web.curation.model.ConnectorService;
 import com.web.curation.model.Pay;
 import com.web.curation.model.Review;
+import com.web.curation.model.Search;
 import com.web.curation.service.PayService;
 import com.web.curation.service.ReviewService;
 import com.web.curation.service.ServiceService;
@@ -186,10 +187,13 @@ public class ServiceController {
 	}
 	
 	@ApiOperation(value = "서비스 검색", response = List.class)
-	@PostMapping("/search/{word}")
-	public Object selectServiceByDongcode(HttpServletRequest request) {
-		String dongcode = request.getParameter("dongcode");
-		String keyword = request.getParameter("word");
+	@PostMapping("/search")
+	public Object selectServiceByDongcode(@RequestBody Search s) {
+		String dongcode = s.getSaddr5();
+		String keyword = s.getKeyword();
+		if(keyword.equals("")) {
+			keyword = null;
+		}
 		System.out.println(keyword);
 		System.out.println(dongcode);
 		List<String> word = new ArrayList<String>();
@@ -199,12 +203,11 @@ public class ServiceController {
 			StringTokenizer st = new StringTokenizer(keyword);
 			while(st.hasMoreTokens()) {
 				word.add(st.nextToken());
-			}
-			
+			}	
 		}
 		
 		
-		int cateno = Integer.parseInt(request.getParameter("cateno"));
+		int cateno = s.getCateno();
 		System.out.println(cateno);
 		List<ConnectorService> servList; 
 		if(keyword != null) {
@@ -233,7 +236,7 @@ public class ServiceController {
 					serv.setAvgpoint(Math.round((sum/count) * 10) / 10.0);
 				}
 				System.out.println(serv.getAvgpoint());
-				serv.setPayCount(serv.getServno());
+				serv.setPayCount(pay.payCount(serv.getServno()));
 			}
 			
 			

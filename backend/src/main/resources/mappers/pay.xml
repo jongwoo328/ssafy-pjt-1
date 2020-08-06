@@ -42,6 +42,6 @@
 	<!-- 결제 취소 -->
 	<delete id="cancelPay" parameterType="Pay">
 		delete from pay
-		where userno = #{userno} and servno = #{serno}
+		where payno = #{payno}
 	</delete>
 </mapper>

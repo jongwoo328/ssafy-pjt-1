@@ -80,7 +80,7 @@ CREATE TABLE `category` (
   `cateno` int NOT NULL AUTO_INCREMENT,
   `cname` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`cateno`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -89,7 +89,7 @@ CREATE TABLE `category` (
 
 LOCK TABLES `category` WRITE;
 /*!40000 ALTER TABLE `category` DISABLE KEYS */;
-INSERT INTO `category` VALUES (1,'교육'),(2,'개인PT'),(3,'음악'),(4,'미술'),(5,'홈/리빙'),(6,'건강'),(7,'미용'),(8,'스포츠'),(9,'management'),(10,'IT개발'),(11,'사진'),(12,'웨딩'),(13,'소송'),(14,'대여'),(15,'금융');
+INSERT INTO `category` VALUES (0,'전체'),(1,'교육'),(2,'개인PT'),(3,'음악'),(4,'미술'),(5,'홈/리빙'),(6,'건강'),(7,'미용'),(8,'스포츠'),(9,'management'),(10,'IT개발'),(11,'사진'),(12,'웨딩'),(13,'소송'),(14,'대여'),(15,'금융');
 /*!40000 ALTER TABLE `category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -169,7 +169,7 @@ CREATE TABLE `follow` (
   KEY `FK_USER_TO_FOLLOW_2` (`prono`),
   CONSTRAINT `FK_USER_TO_FOLLOW_1` FOREIGN KEY (`userno`) REFERENCES `user` (`userno`),
   CONSTRAINT `FK_USER_TO_FOLLOW_2` FOREIGN KEY (`prono`) REFERENCES `user` (`userno`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -178,7 +178,7 @@ CREATE TABLE `follow` (
 
 LOCK TABLES `follow` WRITE;
 /*!40000 ALTER TABLE `follow` DISABLE KEYS */;
-INSERT INTO `follow` VALUES (1,15,16),(2,15,1),(3,15,4),(4,15,17),(5,4,15),(6,5,15),(7,6,15),(8,7,15),(9,8,15),(10,9,15),(11,10,15);
+INSERT INTO `follow` VALUES (5,4,15),(6,5,15),(7,6,15),(8,7,15),(9,8,15),(10,9,15),(11,10,15),(15,15,1),(22,15,6),(28,15,4),(29,15,5),(30,15,7),(31,15,8),(32,15,9),(33,1,6),(34,2,6),(35,3,6),(36,4,6),(37,5,6);
 /*!40000 ALTER TABLE `follow` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -237,7 +237,7 @@ CREATE TABLE `msg` (
 
 LOCK TABLES `msg` WRITE;
 /*!40000 ALTER TABLE `msg` DISABLE KEYS */;
-INSERT INTO `msg` VALUES (1,6,16,'이번엔','제대로?','2020-08-04 11:55:19',1,0,1),(2,6,16,'이번엔','제대로?','2020-08-04 11:56:51',0,0,0),(3,6,16,'이번엔','제대로?','2020-08-04 11:57:30',0,0,0),(5,6,16,'ㅁㄴㅇㄻㄴㅇ','ㅁㄴㅇㄹ','2020-08-04 11:58:13',0,0,1),(6,6,16,'할로','ㄴㅁㄴㅇㄹ','2020-08-04 11:58:37',0,0,0),(7,1,2,'send msg test','테스트 하겠습니다.','2020-08-04 20:40:34',0,0,0),(8,7,16,'피곤하다','테스트 하합니다.','2020-08-04 20:58:53',0,0,0),(9,6,1,'진기야','쪽지간다 입벌려~~','2020-08-04 21:01:30',1,0,0),(10,16,1,'쪽지1','테스트 합니다','2020-08-04 21:05:03',0,0,0),(11,16,1,'쪽지2','테스트 합니다','2020-08-04 21:05:08',0,0,0),(12,16,1,'쪽지3','테스트 합니다','2020-08-04 21:05:11',0,0,0),(13,16,1,'쪽지4','테스트 합니다','2020-08-04 21:05:15',0,0,0),(14,16,1,'쪽지5','테스트 합니다','2020-08-04 21:05:19',0,0,0),(15,6,16,'에러','좀 아쉽네','2020-08-05 13:07:51',0,0,1),(16,16,6,'아쉽나?','서열가리자','2020-08-05 13:09:57',1,0,0),(17,16,6,'안녕하세요','하하하하하','2020-08-05 20:22:37',1,0,0);
+INSERT INTO `msg` VALUES (1,6,16,'이번엔','제대로?','2020-08-04 11:55:19',1,0,0),(2,6,16,'이번엔','제대로?','2020-08-04 11:56:51',0,0,0),(3,6,16,'이번엔','제대로?','2020-08-04 11:57:30',0,0,0),(5,6,16,'ㅁㄴㅇㄻㄴㅇ','ㅁㄴㅇㄹ','2020-08-04 11:58:13',1,0,1),(6,6,16,'할로','ㄴㅁㄴㅇㄹ','2020-08-04 11:58:37',1,0,0),(7,1,2,'send msg test','테스트 하겠습니다.','2020-08-04 20:40:34',0,0,0),(8,7,16,'피곤하다','테스트 하합니다.','2020-08-04 20:58:53',0,0,0),(9,6,1,'진기야','쪽지간다 입벌려~~','2020-08-04 21:01:30',1,0,0),(10,16,1,'쪽지1','테스트 합니다','2020-08-04 21:05:03',0,0,0),(11,16,1,'쪽지2','테스트 합니다','2020-08-04 21:05:08',0,0,0),(12,16,1,'쪽지3','테스트 합니다','2020-08-04 21:05:11',0,0,0),(13,16,1,'쪽지4','테스트 합니다','2020-08-04 21:05:15',0,0,0),(14,16,1,'쪽지5','테스트 합니다','2020-08-04 21:05:19',0,0,0),(15,6,16,'에러','좀 아쉽네','2020-08-05 13:07:51',0,0,1),(16,16,6,'아쉽나?','서열가리자','2020-08-05 13:09:57',1,0,0),(17,16,6,'안녕하세요','하하하하하','2020-08-05 20:22:37',1,0,1);
 /*!40000 ALTER TABLE `msg` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -258,7 +258,7 @@ CREATE TABLE `pay` (
   KEY `FK_SERVICE_TO_PAY_1` (`servno`),
   CONSTRAINT `FK_SERVICE_TO_PAY_1` FOREIGN KEY (`servno`) REFERENCES `service` (`servno`) ON DELETE CASCADE,
   CONSTRAINT `FK_USER_TO_PAY_1` FOREIGN KEY (`userno`) REFERENCES `user` (`userno`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -267,6 +267,7 @@ CREATE TABLE `pay` (
 
 LOCK TABLES `pay` WRITE;
 /*!40000 ALTER TABLE `pay` DISABLE KEYS */;
+INSERT INTO `pay` VALUES (6,17,4,'2020-08-06 15:27:12'),(7,17,15,'2020-08-06 15:27:13'),(8,15,1,'2020-08-06 15:27:20'),(9,15,2,'2020-08-06 15:27:21'),(10,15,3,'2020-08-06 15:27:22'),(11,15,4,'2020-08-06 15:27:23'),(12,18,1,'2020-07-30 15:00:00'),(13,11,1,'2020-07-30 16:00:00');
 /*!40000 ALTER TABLE `pay` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -294,40 +295,8 @@ CREATE TABLE `profile` (
 
 LOCK TABLES `profile` WRITE;
 /*!40000 ALTER TABLE `profile` DISABLE KEYS */;
-INSERT INTO `profile` VALUES (4,1,'tsetsetse','1595925053807main1.jpg'),(9,14,'안녕하세요.\n(구) CONNECTOR LOGO 입니다.','1596165913265logo_mini.jpg'),(10,13,'asdf','1596176219142main1.jpg'),(12,6,'<p>kkkkk</p><p>serq</p>','1596540508309logo_mini.jpg'),(13,16,'<p>fsdafsdafsdafsdfdsafsafsdaf</p><p>asdfa</p><p>jihoon</p><p>good</p>','1596628363116반명함.jpg'),(14,15,'<p>소개</p><p>입니다</p><p>소개</p><p>입니다</p><p>소개</p><p>입니다</p><p>소개</p><p>입니다</p><p>소개</p><h1>입니다</h1><h1>소개</h1><h1>입니다</h1>','1596500489834LogoMakr.png');
+INSERT INTO `profile` VALUES (4,1,'tsetsetse','1595925053807main1.jpg'),(9,14,'안녕하세요.\n(구) CONNECTOR LOGO 입니다.','1596165913265logo_mini.jpg'),(10,13,'asdf','1596176219142main1.jpg'),(12,6,'<p>kkkkk</p><p>serq</p>','1596687865223main1.jpg'),(13,16,'<p>fsdafsdafsdafsdfdsafsafsdaf</p><p>asdfa</p><p>jihoon</p><p>good</p>','1596628363116반명함.jpg'),(14,15,'<p>소개</p><p>입니다</p><p>소개</p><p>입니다</p><p>소개</p><p>입니다</p><p>소개</p><p>입니다</p><p>소개</p><h1>입니다</h1><h1>소개</h1><h1>입니다</h1>','1596500489834LogoMakr.png');
 /*!40000 ALTER TABLE `profile` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `qna`
---
-
-DROP TABLE IF EXISTS `qna`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `qna` (
-  `qnano` int NOT NULL AUTO_INCREMENT,
-  `userno` int NOT NULL,
-  `qtitle` varchar(1000) DEFAULT NULL,
-  `qcontent` varchar(5000) DEFAULT NULL,
-  `awriter` varchar(20) DEFAULT NULL,
-  `acontent` varchar(5000) DEFAULT NULL,
-  `qdate` datetime DEFAULT NULL,
-  `adate` datetime DEFAULT NULL,
-  PRIMARY KEY (`qnano`),
-  KEY `FK_USER_TO_QNA_1` (`userno`),
-  CONSTRAINT `FK_USER_TO_QNA_1` FOREIGN KEY (`userno`) REFERENCES `user` (`userno`)
-) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `qna`
---
-
-LOCK TABLES `qna` WRITE;
-/*!40000 ALTER TABLE `qna` DISABLE KEYS */;
-INSERT INTO `qna` VALUES (1,15,'제목입니다','내용입니다','string','string','2020-08-03 16:24:58','2020-08-04 22:03:03'),(2,15,'update','update 확인합니다.',NULL,NULL,'2020-08-03 16:24:59',NULL),(3,15,'제목입니다','내용입니다',NULL,'string','2020-08-03 16:24:59','2020-08-04 22:01:18'),(4,15,'제목','내용','jongwoo','<p>수정2</p>','2020-08-02 16:24:58','2020-08-04 15:36:33'),(5,15,'테스트입니다','<p>테스트 내용</p><p><br></p><p>아래는 테스트 이미지</p><p><img src=\"data:image/jpeg;base64,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\"></p><p><br></p><p><strong>테스트 글 속성</strong></p>','string','<p>test</p>','2020-08-03 16:48:51','2020-08-04 15:13:56'),(6,15,'test','<p>&lt;div onload=\"alert(\'test\')\"&gt;&lt;/div&gt;</p>','jongwoo','<p>테스트에요</p>','2020-08-03 16:58:18','2020-08-04 15:16:15'),(7,15,'질문질문','<p>질문질문</p>',NULL,NULL,'2020-08-04 16:00:38',NULL),(8,15,'질문있다 질문','<p>ㅁㄴㅇㄹ</p>',NULL,NULL,'2020-08-04 16:01:44',NULL),(9,15,'안녕','<p>안녕</p>',NULL,NULL,'2020-08-04 16:01:56',NULL),(10,15,'안녕','<p>안녕</p>',NULL,NULL,'2020-08-04 16:02:03',NULL),(11,15,'test','<p>testsadfasfㅁㄴㅇㄹ</p>','jongwoo','<p>sdFASDFA</p>','2020-08-04 16:02:09','2020-08-04 21:42:53');
-/*!40000 ALTER TABLE `qna` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -359,7 +328,7 @@ CREATE TABLE `review` (
 
 LOCK TABLES `review` WRITE;
 /*!40000 ALTER TABLE `review` DISABLE KEYS */;
-INSERT INTO `review` VALUES (12,14,6,'aaaa','aaaaaa',5,'2020-08-04 21:50:56'),(13,14,7,'aaaa','aaaaaa',4,'2020-08-04 21:51:08'),(14,14,8,'aaaa','aaaaaa',2,'2020-08-04 21:51:15'),(15,14,9,'aaaa','aaaaaa',1,'2020-08-04 21:51:21');
+INSERT INTO `review` VALUES (14,14,8,'aaaa','aaaaaa',2,'2020-08-04 21:51:15'),(15,14,9,'aaaa','aaaaaa',1,'2020-08-04 21:51:21');
 /*!40000 ALTER TABLE `review` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -389,7 +358,7 @@ CREATE TABLE `service` (
   KEY `FK_USER_TO_SERVICE_1` (`userno`),
   CONSTRAINT `FK_CATEGORY_TO_SERVICE_1` FOREIGN KEY (`cateno`) REFERENCES `category` (`cateno`),
   CONSTRAINT `FK_USER_TO_SERVICE_1` FOREIGN KEY (`userno`) REFERENCES `user` (`userno`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -398,7 +367,7 @@ CREATE TABLE `service` (
 
 LOCK TABLES `service` WRITE;
 /*!40000 ALTER TABLE `service` DISABLE KEYS */;
-INSERT INTO `service` VALUES (5,1,1,'fasdfsda',321321312,'<p>testset</p>','11','서울특별시','11110','종로구','1111014600','가회동','1596517084081구미_1반_주재성.PNG'),(6,16,1,'스프링',100000,'<p>스프링좀 배우세요 시작하세요!432</p>','41','경기도','41135','성남시 분당구','4113510500','서현동','1596628289654반명함 (1).jpg'),(7,16,1,'Vue.js',25000,'<p>fsdfaf</p>','11','서울특별시','11110','종로구','1111014600','가회동','null.png'),(8,16,1,'test',1111,'<p>1111</p>','42','강원도','42770','정선군','4277034022','북평면','null.png'),(9,16,1,'432423',423432,'<p>3131312</p>','41','경기도','41133','성남시 중원구','4113310300','금광동','null.png'),(11,2,1,'수학 과외',300000,'수학 일타 강사 과외 하실 분','11','서울특별시','11110','종로구','1111014600','가회동','null.png'),(12,2,1,'과학 과외',200000,'과학 일타 강사 과외 하실 분','11','서울특별시','11110','종로구','1111014600','가회동','null.png'),(13,4,1,'영어 과외',350000,'하버드 대학 출신 영어 강사 과외 합니다','11','서울특별시','11110','종로구','1111014600','가회동','null.png'),(14,4,1,'Spring 강의',70000,'Spring 고수가 될 준비 되셨습니까','11','서울특별시','11110','종로구','1111014600','가회동','null.png'),(15,16,1,'재성이의 엎어치기 한판',120000,'<p>재성이의 어 어치기한판 유도</p>','27','대구광역시','27230','북구','2723012200','국우동','null.png'),(16,16,1,'재성이의 필라테스',300000,'<p>유연해지세요</p>','11','서울특별시','11110','종로구','1111014600','가회동','1596627502000IMG_0204[1].JPG');
+INSERT INTO `service` VALUES (5,1,1,'fasdfsda',321321312,'<p>testset</p>','11','서울특별시','11110','종로구','1111014600','가회동','1596517084081구미_1반_주재성.PNG'),(8,16,1,'test',1111,'<p>1111</p>','42','강원도','42770','정선군','4277034022','북평면','null.png'),(9,16,1,'432423',423432,'<p>3131312</p>','41','경기도','41133','성남시 중원구','4113310300','금광동','null.png'),(11,2,1,'수학 과외',300000,'수학 일타 강사 과외 하실 분','11','서울특별시','11110','종로구','1111014600','가회동','null.png'),(12,2,1,'과학 과외',200000,'과학 일타 강사 과외 하실 분','11','서울특별시','11110','종로구','1111014600','가회동','null.png'),(13,4,1,'영어 과외',350000,'하버드 대학 출신 영어 강사 과외 합니다','11','서울특별시','11110','종로구','1111014600','가회동','null.png'),(14,4,1,'Spring 강의',70000,'Spring 고수가 될 준비 되셨습니까','11','서울특별시','11110','종로구','1111014600','가회동','null.png'),(15,16,1,'재성이의 엎어치기 한판',120000,'<p>재성이의 어 어치기한판 유도</p>','27','대구광역시','27230','북구','2723012200','국우동','null.png'),(17,6,1,'내가 바로 재성이다',300000,'<p>ㄹㅇㅁㄴㄹㄴㅇㅁ</p>','11','서울특별시','11110','종로구','1111014600','가회동','1596691775007logo_mini.jpg'),(18,4,5,'Spring 강의',70000,'Spring 고수가 될 준비 되셨습니까','11','서울특별시','11110','종로구','1111014600','가회동','null.png');
 /*!40000 ALTER TABLE `service` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -469,4 +438,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-08-05 20:58:39
+-- Dump completed on 2020-08-06 16:19:58
