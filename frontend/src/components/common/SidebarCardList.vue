@@ -3,8 +3,7 @@
     <div class="sidebar-event-title">
         <h3>진행중인 이벤트</h3>
     </div>
-    <SidebarCardListItem/>
-    <SidebarCardListItem/> 
+    <SidebarCardListItem v-for="event in eventList" :key="event.eventno" :event="event" />
   </div>
 </template>
 
@@ -15,6 +14,9 @@ export default {
     name: 'SidebarCardList',
     components: {
         SidebarCardListItem
+    },
+    props: {
+        eventList: Array,
     }
 
 }
