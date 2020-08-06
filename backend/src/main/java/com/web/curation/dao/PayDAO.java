@@ -1,5 +1,7 @@
 package com.web.curation.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.web.curation.model.Pay;
@@ -7,5 +9,8 @@ import com.web.curation.model.Pay;
 @Mapper
 public interface PayDAO {
 	public int insert(Pay pay);
-	public Pay selectPay(int userno, int servno);
+	public Pay selectPay(Pay pay);
+	public int payCount(int servno);
+	public List<Pay> userPay(int userno);
+	public int cancelPay(Pay pay);
 }

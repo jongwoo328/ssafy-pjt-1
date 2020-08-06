@@ -1,5 +1,7 @@
 package com.web.curation.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +20,23 @@ public class PayServiceImpl implements PayService{
 	}
 
 	@Override
-	public Pay serchPayed(int userno, int servno) {
-		return dao.selectPay(userno, servno);
+	public Pay searchPayed(Pay pay) {
+		return dao.selectPay(pay);
+	}
+
+	@Override
+	public int payCount(int servno) {
+		return dao.payCount(servno);
+	}
+
+	@Override
+	public List<Pay> userPay(int userno) {
+		return dao.userPay(userno);
+	}
+
+	@Override
+	public boolean cancelPay(Pay pay) {
+		return dao.cancelPay(pay) == 1;
 	}
 	
 }

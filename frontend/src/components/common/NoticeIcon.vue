@@ -22,7 +22,7 @@ export default {
     .notice-icon {
         position: relative;
         margin-left: 10px;
-        margin-right: 10px;
+        margin-right: 30px;
         font-size: 1.1rem;
     }
     .notice-count {

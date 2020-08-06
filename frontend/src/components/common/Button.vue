@@ -1,5 +1,5 @@
 <template>
-  <button :id="id" class="custom-button" v-text="buttonText">
+  <button :id="id" class="custom-button" v-text="buttonText" :style="color">
   </button>
 </template>
 
@@ -8,7 +8,16 @@ export default {
     name: 'Button',
     props: {
         buttonText: String,
-        id: String
+        id: String,
+        buttonColor: {
+            type: String,
+            default: 'rgb(236,128,116)'
+        },
+    },
+    computed: {
+        color() {
+            return `background-color: ${this.buttonColor};`
+        }
     }
 }
 </script>
@@ -18,7 +27,7 @@ export default {
         background-color: rgb(236,128,116);
         border: 0;
         color: white;
-        padding: 10px 15px 10px 15px;
+        padding: 5px 15px 5px 15px;
         font-size: 1.25rem;
         border-radius: 3px;
     }

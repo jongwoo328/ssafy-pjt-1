@@ -6,6 +6,8 @@
       	<package name="com.web.curation.model"/>
    	</typeAliases>
 	<mappers>
+	<mapper resource="mappers/review.xml" />
+	<mapper resource="mappers/service.xml" />
 		<mapper resource="mappers/user.xml" />
 		<mapper resource="mappers/fselect.xml" />
 		<mapper resource="mappers/pay.xml" />
@@ -14,8 +16,8 @@
 		<mapper resource="mappers/msg.xml" />
 		<mapper resource="mappers/board.xml" />
 		<mapper resource="mappers/comment.xml" />
-	<!-- 	<mapper resource="mappers/service.xml" />
-	 -->
+	    <mapper resource="mappers/follow.xml" />
+	
 	</mappers>
 </configuration>
 

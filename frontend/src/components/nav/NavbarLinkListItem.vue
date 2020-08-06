@@ -15,8 +15,8 @@ export default {
 
 <style>
     .nav-item {
-        margin-left: 10px;
-        margin-right: 10px;
+        margin-left: 5px;
+        margin-right: 5px;
     }
     .nav-item a {
         text-decoration: none;

@@ -7953,6 +7953,18 @@ vue-loader@^15.9.2:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
+vue-msgbox@^0.2.14:
+  version "0.2.14"
+  resolved "https://registry.yarnpkg.com/vue-msgbox/-/vue-msgbox-0.2.14.tgz#daf027faf2eeca798de3248e85ae802c87c38540"
+  integrity sha1-2vAn+vLuynmN4ySOha6ALIfDhUA=
+  dependencies:
+    vue-popup "^0.1.13"
+
+vue-popup@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/vue-popup/-/vue-popup-0.1.13.tgz#fc03251ec17751b520c79c41ad4c69f8889833db"
+  integrity sha1-/AMlHsF3UbUgx5xBrUxp+IiYM9s=
+
 vue-quill-editor@^3.0.6:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/vue-quill-editor/-/vue-quill-editor-3.0.6.tgz#1f85646211d68a31a80a72cb7f45bb2f119bc8fb"
@@ -7983,6 +7995,11 @@ vue-style-loader@^4.1.0, vue-style-loader@^4.1.2:
   dependencies:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
+
+vue-suggestion@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/vue-suggestion/-/vue-suggestion-1.1.0.tgz#b4ead658700b12c32e5f67f1a152c500a33551b9"
+  integrity sha512-l5NE8kyQj5p7nDzCuXTJLXXrz8WLfw92Ks+YY6ei4yhqQ0+fm+ok2wMDg1JqfapITVz3iq1sOxXpyv5XNVDOpw==
 
 vue-template-compiler@^2.6.11:
   version "2.6.11"
