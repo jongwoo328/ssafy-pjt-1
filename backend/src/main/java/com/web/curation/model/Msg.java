@@ -102,8 +102,10 @@ public class Msg {
 	public String toString() {
 		return "Msg [msgno=" + msgno + ", writerno=" + writerno + ", reciverno=" + reciverno + ", title=" + title
 				+ ", content=" + content + ", senddate=" + senddate + ", writername=" + writername + ", recivername="
-				+ recivername + ", readcheck=" + readcheck + "]";
+				+ recivername + ", readcheck=" + readcheck + ", sendcheck=" + sendcheck + ", recivcheck=" + recivcheck
+				+ "]";
 	}
-	
+
+
 	
 }
