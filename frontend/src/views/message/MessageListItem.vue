@@ -2,10 +2,11 @@
     <div class="container msg-box" :data-msgNum="message.msgno">
         <MsgModal v-if="msgModal" :msgno="message.msgno" @close="msg" />
         <input type="checkbox" class="check-box" :value="value" :data-msgno="message.msgno" @click="toggle">
-        <p>발신자 : {{message.writername}}</p>
-        <p @click="msg">제목 : {{message.title}}</p>
-        <p>읽음표시 : {{message.readcheck}}</p>
-        <p>{{message.senddate}}</p>
+        <p v-if="this.$route.params.msgtype=='send'">받는사람 : {{ message.recivername }}</p>
+        <p v-else>보내는사람 : {{ message.writername }}</p>
+        <p @click="msg">제목 : {{ message.title }}</p>
+        <p>읽음표시 : {{ message.readcheck }}</p>
+        <p>{{ message.senddate }}</p>
         <hr>
     </div>
 </template>

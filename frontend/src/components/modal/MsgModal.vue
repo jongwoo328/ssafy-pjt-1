@@ -9,15 +9,20 @@
                   <button type="button" class="close" data-dismiss="modal" @click="modalclose">×</button>
                 </div>
                 <div class="modal-body">
-                    <MessageModal v-if="messageModal" :recivername="writername" @close="reply" />
+                    <MessageModal v-if="messageModal" :recivername="writer" :Title="title" :Content="content" :Sendtype="sendno" @close="reply" />
                     <slot name="body">
-                      <p>{{ writername }}</p>
+                      <p v-if="this.$route.params.msgtype=='rec'">{{ writer }}</p>
+                      <p v-else>{{ reciver }}</p>
                       <p>{{ title }}</p>
                       <p>{{ content }}</p>
                       <p>{{ date }}</p>
                       <p>{{ senddate }}</p>
                     </slot>
-                    <Button @click.native="reply" button-text="답장" />
+                    <Button v-if="this.$route.params.msgtype=='rec'" @click.native="reply" button-text="답장" />
+                    <div class="Button-box">
+                      <Button v-if="this.$route.params.msgtype=='send'" @click.native="relay" button-text="전달" />
+                      <Button v-if="this.$route.params.msgtype=='send'" @click.native="resend" button-text="다시보내기" />
+                    </div>                
                 </div>
                 <hr>
               </div>
@@ -43,22 +48,28 @@ export default {
   props: {
       msgno: Number,
       recivername: String,
+      Title: String,
+      Content: String,
+      Sendtype: Number,
   },
   data() {
     return {
         msgNo: this.msgno,
-        writername: "",
+        writer: "",
+        reciver: "",
         title: "",
         content: "",
         date: "",
         messageModal: false,
+        sendno: "",
     }
   },
   created() {
-      axios.get(`${URL.BASE_URL}/msg/detail/${this.msgNo}`)
+      axios.get(`${URL.BASE_URL}/msg/detail/msgNo=${this.msgNo}&msgtype=${this.$route.params.msgtype}`)
       .then(res => {
           console.log(res)
-          this.writername = res.data.writername
+          this.reciver = res.data.recivername
+          this.writer = res.data.writername
           this.title = res.data.title
           this.content = res.data.content
           this.date = res.data.senddate
@@ -70,6 +81,15 @@ export default {
   methods: {
     reply () {
      this.messageModal = !this.messageModal
+     this.sendno = 1
+    },
+    relay () {
+      this.messageModal = !this.messageModal
+      this.sendno = 2
+    },
+    resend () {
+      this.messageModal = !this.messageModal
+      this.sendno = 3
     },
     modalclose () {
       this.$emit('close')
@@ -159,6 +179,13 @@ export default {
   }
   #msgModal .modal-default-button {
     float: right;
+  }
+  #msgModal .Button-box {
+    display: flex;
+    justify-content: flex-end;
+  }
+  #msgModal .Button-box Button{
+    margin-left: 20px;
   }
 
   /*
