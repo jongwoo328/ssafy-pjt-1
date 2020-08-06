@@ -8,7 +8,7 @@
         <router-link v-if="isLoggedIn" :to="toMyFollow" class="sidebar-link font-kor"><p>팔로우</p></router-link>
         <router-link v-if="isLoggedIn" to='/qna' class="sidebar-link font-kor"><p>Q&A</p></router-link>
         <div v-if="!isLoggedIn" class="sidebar-anonymous font-kor">
-            <SidebarCardList/>    
+            <SidebarCardList :eventList="eventList" />    
         </div>
       </div>
   </div>
@@ -19,6 +19,22 @@ import SidebarCardList from './SidebarCardList.vue'
 
 export default {
     name: 'Sidebar',
+    data() {
+        return {
+            eventList: [
+                {
+                    eventno: 1,
+                    etitle: 'Spring 선착순 할인',
+                    econtent: '선착순 10명에게 30% 할인이 제공중입니다.'
+                },
+                {
+                    eventno: 2,
+                    etitle: 'Vue.js 리뷰이벤트',
+                    econtent: '주재성의 Vue 강의를 들으신 분 중 우수리뷰어에게 쿠폰을 드립니다.'
+                }
+            ]
+        }
+    },
     computed: {
         toMyProfile(){
             return `/accounts/${this.$store.getters.getUserData.name}`

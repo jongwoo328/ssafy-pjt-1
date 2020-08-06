@@ -1,9 +1,9 @@
 <template>
-  <div class="sidebar-card">
-      <p class="sidebar-card-main">Spring 선착순 할인</p>
+  <div class="sidebar-card font-kor">
+      <p class="sidebar-card-main" v-text="event.etitle"></p>
       <hr>
       <div class="sidebar-card-sub">
-          <p>ksadjhflaksjdhflaksjdhfflaksjdhfflaksjdhfflaksjdhfflaksjdhfflaksjdhflaasdfasdfasdfasdfasdfasdfasdfasdfasdfasfsaksjhdflaksjdhflaksjh</p>
+          <p v-text="event.econtent"></p>
       </div>
   </div>
 </template>
@@ -11,6 +11,9 @@
 <script>
 export default {
     name: 'SidebarCardListItem',
+    props: {
+        event: Object
+    }
 }
 </script>
 
@@ -36,5 +39,8 @@ export default {
     .sidebar-card .sidebar-card-sub {
         min-height: 50px;
         word-break: break-all;
+    }
+    .sidebar-card .sidebar-card-main {
+        font-weight: bold;
     }
 </style>
