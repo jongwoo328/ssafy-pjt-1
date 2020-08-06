@@ -2,11 +2,15 @@
   <div id="home container">
     <div class="wrap container">
       <SearchbarWeb/>
-      <div class="container home-inner">
+      <div v-if="!$store.getters.isLoggedIn" class="container home-inner">
         <Content/>
         <Join/>
       </div>
       <div id="search-result-wrap row">
+        <div class="mobile">
+          <h2>인기있는 서비스들</h2>
+          <hr>
+        </div>
         <SearchResultCard :services="services"/>
       </div>
     </div>
@@ -45,11 +49,16 @@ export default {
     return {
        services: [],
     }
-  }
+  },
 }
 </script>
 
 <style>
+  @media (min-width: 768px) {
+    .mobile {
+      display: none;
+    }
+  }
   @media (min-width: 768px) and (max-width: 999px) {
     #home .wrap {
       margin-left: 200px;
