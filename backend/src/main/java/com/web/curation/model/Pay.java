@@ -7,7 +7,18 @@ public class Pay {
 	private String pdate;
 	private String servname;
 	private int price;
+	private boolean cancelcheck;
 	
+	
+	
+	public boolean isCancelcheck() {
+		return cancelcheck;
+	}
+
+	public void setCancelcheck(boolean cancelcheck) {
+		this.cancelcheck = cancelcheck;
+	}
+
 	public String getServname() {
 		return servname;
 	}

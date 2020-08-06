@@ -1,5 +1,8 @@
 package com.web.curation.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -53,11 +56,23 @@ public class PayController {
 	@GetMapping("/{userno}")
 	public Object payList(@PathVariable int userno) {
 		List<Pay> payList = service.userPay(userno);
+		SimpleDateFormat format1 = new SimpleDateFormat ( "yyyy-MM-dd HH:mm:ss");
+		
+		Calendar calendar = Calendar.getInstance();
+		calendar.add(Calendar.DAY_OF_MONTH, -7);
+		Date date = calendar.getTime();
+		String time1 = format1.format(date);
 		if(payList != null) {
 			for(Pay p : payList) {
+//				System.out.println(time1);
 				ConnectorService c = serv.detailService(p.getServno());
 				p.setPrice(c.getPrice());
 				p.setServname(c.getServname());
+				if(p.getPdate().compareTo(time1) > 0) {
+					p.setCancelcheck(true);
+				} else {
+					p.setCancelcheck(false);
+				}
 			}
 			
 			return new ResponseEntity<List<Pay>>(payList, HttpStatus.OK);

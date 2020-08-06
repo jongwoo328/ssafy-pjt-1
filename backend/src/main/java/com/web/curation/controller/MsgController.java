@@ -54,10 +54,12 @@ public class MsgController {
 	@GetMapping("/send/{userno}")
 	public ResponseEntity<List<Msg>> sendMsgList(@PathVariable int userno) throws Exception {
 		List<Msg> list = msg.selectSendMsg(userno);
-		User reciver = user.getUserByUserno(userno);
+		User sender = user.getUserByUserno(userno);
 		
 		for(Msg m : list) {
-			User sender = user.getUserByUserno(m.getWriterno());
+			
+			System.out.println(m);
+			User reciver = user.getUserByUserno(m.getReciverno());
 			m.setWritername(sender.getName());
 			m.setRecivername(reciver.getName());
 		}
@@ -74,19 +76,33 @@ public class MsgController {
 	}
 	
 	
-	@ApiOperation(value = "쪽지 세부 정보 전달", response = Msg.class)
-	@GetMapping("/detail/{msgno}")
-	public ResponseEntity<Msg> detailMsg(@PathVariable int msgno) throws Exception {
+	@ApiOperation(value = "받은 쪽지 세부 정보 전달", response = Msg.class)
+	@GetMapping("/detail/msgNo={msgno}&msgtype={msgtype}")
+	public ResponseEntity<Msg> detailRecMsg(@PathVariable int msgno, @PathVariable String msgtype) throws Exception {
 		System.out.println(msgno + " msgno 세부정보 전달");
 		Msg detailMsg = msg.detailMsg(msgno);
-		if(!detailMsg.isReadcheck()) {
-			msg.readMsg(detailMsg);
-			detailMsg.setReadcheck(true);
-		}
-		detailMsg.setWritername(user.getUserByUserno(detailMsg.getWriterno()).getName());
+		if(msgtype.equals("rec")) {
+			if(!detailMsg.isReadcheck()) {
+				msg.readMsg(detailMsg);
+				detailMsg.setReadcheck(true);
+			}		
+		} 
 		
+		detailMsg.setWritername(user.getUserByUserno(detailMsg.getWriterno()).getName());
+		detailMsg.setRecivername(user.getUserByUserno(detailMsg.getReciverno()).getName());
 		return new ResponseEntity<Msg>(detailMsg,HttpStatus.OK);
 	}
+	
+//	@ApiOperation(value = "보낸 쪽지 세부 정보 전달", response = Msg.class)
+//	@GetMapping("/detail/send/{msgno}")
+//	public ResponseEntity<Msg> detailSendMsg(@PathVariable int msgno) throws Exception {
+//		System.out.println(msgno + " msgno 세부정보 전달");
+//		Msg detailMsg = msg.detailMsg(msgno);
+//		
+//		detailMsg.setWritername(user.getUserByUserno(detailMsg.getWriterno()).getName());
+//		
+//		return new ResponseEntity<Msg>(detailMsg,HttpStatus.OK);
+//	}
 	
 	@ApiOperation(value = "쪽지 전달", response = String.class)
 	@PostMapping

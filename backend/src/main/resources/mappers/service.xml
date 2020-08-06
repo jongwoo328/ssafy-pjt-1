@@ -72,7 +72,7 @@
 		 </foreach>
 		 </if>
 		 <if test= "cateno == 0 and saddr5 != null and word == null">
-		 where saddr = #{saddr}
+		 where saddr5 = #{saddr5}
 		 </if>
 		 <if test= "cateno != 0 and saddr5 == null and word == null">
 		 where cateno = #{cateno}
