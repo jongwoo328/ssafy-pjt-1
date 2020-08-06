@@ -70,6 +70,7 @@ export default {
     console.log(this.Sendtype)
     if (this.Sendtype==1) {
       this.toUsername = this.recivername
+      console.log(11)
     } else if (this.Sendtype==2) {
       this.title = this.Title
       this.comment = this.Content
