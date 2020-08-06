@@ -1,5 +1,6 @@
 <template>
   <div id="service-detail" class="container font-kor">
+      <MessageModal v-if="messageModal" :recivername="proname" :Sendtype="sendtype" @close ="msgShow" />
       <div class="service-info section">
           <div class="image-join">
               <img :src="serviceData.imgUrl" alt="">
@@ -26,7 +27,7 @@
               </div>
             <div v-if="!isOwner">
             <div class="buttons">
-              <Button buttonText="문의하기" />
+              <Button @click.native="msgShow" buttonText="문의하기" />
               <Button buttonText="신청하기" />
             </div>
             </div>
@@ -54,12 +55,20 @@ import Button from '@/components/common/Button.vue'
 import ReviewList from '@/components/service/ReviewList.vue'
 import HTTP from "@/util/http-common.js"
 import axios from 'axios'
+import MessageModal from '@/components/modal/MessageModal.vue'
 
 export default {
     name: 'ServiceDetail',
+    props: {
+        recivername: String,
+        Sendtype: Number,
+    },
     data() {
         return {
+            messageModal: false,
             isOwner:false,
+            proname: "",
+            sendtype: "",
             userno: "",
             serviceId: 0,
             serviceData: {
@@ -83,10 +92,15 @@ export default {
     components: {
         Button,
         ReviewList,
+        MessageModal,
     },
     methods:{
+        msgShow(){
+            this.messageModal = !this.messageModal
+            this.sendtype = 1
+        },
         onchangePage(){
-              this.$router.push(`/services/${this.$route.params.service_id}/modify`)
+            this.$router.push(`/services/${this.$route.params.service_id}/modify`)
         },
         removeService(){
             axios.delete(`${HTTP.BASE_URL}/service/${this.$route.params.service_id}`)
@@ -109,6 +123,7 @@ export default {
         axios.get(`${HTTP.BASE_URL}/service/detail/servno=${this.$route.params.service_id}&userno=${this.userno}`)
         .then(res =>{
             console.log(res)
+            this.proname = res.data.proname,
             this.serviceData ={
                 imgUrl:`${HTTP.BASE_URL}/` + res.data.imgurl,
                 servname : res.data.servname,
@@ -185,7 +200,7 @@ export default {
         margin: 30px 0 30px 0;
         font-size: 2rem;
     } */
-    #service-detail button {
+    #service-detail .info button {
         width: 100%;
     }
     #service-detail .web {
@@ -224,7 +239,7 @@ export default {
         #service-detail .buttons {
             padding: 10px;
         }
-        #service-detail button { 
+        #service-detail .info button { 
             display: block;                                                                                                                                                                                            
             width: 100%;
             margin: 20px auto 20px auto;
@@ -238,7 +253,7 @@ export default {
         }
     }
     @media (min-width: 992px) {
-        #service-detail button {
+        #service-detail .info button {
             width: 50%;
         }
         #service-detail h1, #service-detail h2 {
