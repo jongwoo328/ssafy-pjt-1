@@ -52,15 +52,32 @@ export default {
   },
   props: {
     recivername: String,
+    Title: String,
+    Content: String,
+    Sendtype: Number,
   },
   data() {
     return {
-      toUsername: this.recivername,
+      toUsername: "",
       fromUsername: this.$store.getters.getUserData.name,
       title: "",
       comment: "",
       filters: null,
       isActive: false
+    }
+  },
+  created() {
+    console.log(this.Sendtype)
+    if (this.Sendtype==1) {
+      this.toUsername = this.recivername
+    } else if (this.Sendtype==2) {
+      this.title = this.Title
+      this.comment = this.Content
+    }
+    else {
+      this.toUsername = this.recivername
+      this.title = this.Title
+      this.comment = this.Content
     }
   },
   methods: {
