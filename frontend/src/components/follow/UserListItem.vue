@@ -1,5 +1,5 @@
 <template>
-  <div class="user-list-item font-kor" :data-userno="user.userno">
+  <div class="user-list-item font-kor" :data-userno="user.userno" :data-follower="user.follower">
     <div class="image">
         <img :src="getImgUrl" alt="">
     </div>
@@ -33,6 +33,9 @@ export default {
             messageModal: false,
             sendno: "",
         }
+    },
+    created() {
+        console.log(this.user)
     },
     components: {
         MessageModal,
@@ -72,7 +75,7 @@ export default {
                 const userList = document.querySelectorAll('.user-list-item')
                 userList.forEach(user => {
                     console.log(user.dataset)
-                    if (user.dataset.userno == this.user.userno) {
+                    if (user.dataset.userno == this.user.userno && user.dataset.follower === true) {
                         console.log(user)
                         user.style.display = "none"
                     }
@@ -107,6 +110,9 @@ export default {
         flex-direction: row;
 
     }
+    .user-list-item .fa-heart {
+        color: crimson;
+    }
     .user-list-item .uinfo {
         width: 100%
     }
@@ -118,7 +124,7 @@ export default {
         align-items: center;
     }
     .user-list-item .image img {
-        object-fit: cover;
+        object-fit:cover;
     }
     .user-list-item .name {
         width: 50%;
@@ -150,5 +156,10 @@ export default {
     }
     .user-list-item .fa-envelope:hover {
         cursor: pointer;
+    }
+    @media (min-width: 768px) {
+        .user-list-item {
+            width: 50%;
+        }
     }
 </style>

@@ -94,6 +94,9 @@ export default {
         border-right: 1px solid gray;
         border-bottom: 1px solid gray;
     }
+    .card-desc:hover {
+        cursor: pointer;
+    }
     .card-desc .badges {
         display: flex;
         flex-direction: row;

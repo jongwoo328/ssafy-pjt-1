@@ -61,7 +61,7 @@ export default {
         })
     },
     onChangePage() {
-      this.$router.push("/Home");
+      this.$router.push(`/services/${this.$route.params.service_id}`);
     }
   }
 };

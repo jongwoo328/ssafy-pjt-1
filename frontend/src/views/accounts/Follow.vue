@@ -86,8 +86,14 @@ export default {
             axios.get(`${URL.BASE_URL}/follow/follower/${this.$store.getters.getUserData.userno}`)
             .then(res => {
                 console.log(res)
+                const data = []
+                res.data.forEach(d => {
+                    d['follower'] = true
+                    data.push(d)
+                })
                 this.followerCount = res.data.length
-                this.followUserList = res.data
+                this.followUserList = data
+                console.log(data)
             })
             .catch(err => {
                 console.log(err)

@@ -101,6 +101,7 @@ export default {
         }
     },
     created() {
+        document.querySelector('#sidebar').style.height = document.querySelector('#view').style.height
         if(this.$store.getters.getUserData === null){
             this.userno = 0;    
         } else{
@@ -134,16 +135,7 @@ export default {
         axios.get(`${HTTP.BASE_URL}/review/${this.$route.params.service_id}`,HTTP.JSON_HEADER)
         .then(res => {
             console.log(res);
-            this.review = res.data
-            // for(let review in res.data){
-            //     this.review.push({
-            //        "title" : res.data[review]["title"],
-            //        "content" : res.data[review]["content"],
-            //        "point" : res.data[review]["point"],
-            //        "writer" : res.data[review]["writer"]
-            //     })
-                
-            
+            this.review = res.data 
         })
         .catch(err => {
                 console.log(err)
@@ -178,14 +170,15 @@ export default {
     #service-detail .image-join{
         display: block;
         text-align: center;
-        padding: 30px
+        padding: 30px;
+        border: 1px solid gray;
     }
     /* #service-detail .price {
         text-align: center;
         margin: 30px 0 30px 0;
         font-size: 2rem;
     } */
-    #service-detail button {
+    #service-detail .info button {
         width: 100%;
     }
     #service-detail .web {
@@ -208,13 +201,13 @@ export default {
         #service-detail .mobile {
             display: none;
         }
-        .service-info {
+        #service-detail .service-info {
             display: flex;
         }
-        .image-join {
+        #service-detail .image-join {
             width: 50%;
         }
-        .info {
+        #service-detail .info {
             padding: 30px 60px 30px 60px;
             width: 50%;
             display: flex;
@@ -230,10 +223,10 @@ export default {
             margin: 20px auto 20px auto;
             text-align: center;
         }
-        span.label {
+        #service-detail span.label {
             float: left;
         }
-        .web p {
+        #service-detail .web p {
             text-align: right;
         }
     }

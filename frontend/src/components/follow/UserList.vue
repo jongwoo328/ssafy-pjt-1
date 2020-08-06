@@ -21,7 +21,15 @@ export default {
 
 <style>
     .user-list {
+        display: flex;
+        flex-direction: column;
         max-height: 400px;
         overflow:scroll;
+    }
+    @media (min-width: 768px) {
+        .user-list {
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
     }
 </style>

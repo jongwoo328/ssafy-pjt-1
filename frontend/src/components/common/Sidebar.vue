@@ -35,6 +35,9 @@ export default {
             ]
         }
     },
+    created() {
+        document.querySelector('#sidebar').style.height = document.querySelector('#view').style.height
+    },
     computed: {
         toMyProfile(){
             return `/accounts/${this.$store.getters.getUserData.name}`
@@ -64,7 +67,7 @@ export default {
             box-shadow: 2px 5px 3px gray;
             position: absolute;
             left: 0;
-            height: 150vh;
+            height: 100vh;
             /* width: 20%; */
             min-width: 200px;
             /* background-color: white; */
