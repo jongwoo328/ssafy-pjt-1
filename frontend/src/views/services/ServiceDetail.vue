@@ -42,7 +42,7 @@
       <div class="review section">
           <h2>리뷰</h2>
           <hr>
-          <ReviewList/>
+          <ReviewList :reviews="review"/>
       </div>
   </div>
 </template>
@@ -132,15 +132,16 @@ export default {
         axios.get(`${HTTP.BASE_URL}/review/${this.$route.params.service_id}`,HTTP.JSON_HEADER)
         .then(res => {
             console.log(res);
-            for(let review in res.data){
-                this.review.push({
-                   "title" : res.data[review]["title"],
-                   "content" : res.data[review]["content"],
-                   "point" : res.data[review]["point"],
-                   "writer" : res.data[review]["writer"]
-                })
-          
-            }
+            this.review = res.data
+            // for(let review in res.data){
+            //     this.review.push({
+            //        "title" : res.data[review]["title"],
+            //        "content" : res.data[review]["content"],
+            //        "point" : res.data[review]["point"],
+            //        "writer" : res.data[review]["writer"]
+            //     })
+                
+            
         })
         .catch(err => {
                 console.log(err)
