@@ -297,14 +297,15 @@ public class ServiceController {
 	public ResponseEntity<String> updateProfile(HttpServletRequest request) throws JsonMappingException, JsonProcessingException{
 		MultipartHttpServletRequest mrequest = (MultipartHttpServletRequest)request;
 		MultipartFile imgFiles = mrequest.getFile("serviceImage");
-		ConnectorService pre = new ConnectorService();
-//				svc.detailService(Integer.parseInt(request.getParameter("servno")));
+		ConnectorService pre =
+        svc.detailService(Integer.parseInt(request.getParameter("servno")));
 		
 		ConnectorService service = new ConnectorService();
 		
 		service.setUserno(Integer.parseInt(request.getParameter("userno")));
 		service.setCateno(Integer.parseInt(request.getParameter("cateno")));
 		service.setServname(request.getParameter("servname"));
+		service.setServno(Integer.parseInt(request.getParameter("servno")));
 		service.setPrice(Integer.parseInt(request.getParameter("price")));
 		service.setDescription(request.getParameter("description"));
 		service.setSaddr1(request.getParameter("saddr1"));
@@ -340,6 +341,7 @@ public class ServiceController {
 		}
 		
 		
+		System.out.println(service);
 		
 		if(svc.updateService(service)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
@@ -350,10 +352,11 @@ public class ServiceController {
 	}
 	
 	@ApiOperation(value = "서비스 정보 삭제", response = String.class)
-	@DeleteMapping
-	public ResponseEntity<String> deleteService(@RequestBody ConnectorService service){
-		System.out.println("삭제");
+	@DeleteMapping("/{servno}")
+	public ResponseEntity<String> deleteService(@PathVariable int servno){
+		System.out.println("서비스 삭제");
 		
+		ConnectorService service = svc.detailService(servno);
 		if(service.getImgurl().equals("null.png")) {
 			
 		} else {

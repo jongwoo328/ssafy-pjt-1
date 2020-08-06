@@ -19,10 +19,7 @@ public class MsgServiceImpl implements MsgService {
 		return dao.msgCount(userno);
 	}
 
-	@Override
-	public List<Msg> selectMsg(int userno) {
-		return dao.selectMsg(userno);
-	}
+
 
 	@Override
 	public Msg detailMsg(int msgno) {
@@ -34,14 +31,34 @@ public class MsgServiceImpl implements MsgService {
 		return dao.insertMsg(msg) == 1;
 	}
 
-	@Override
-	public boolean deleteMsg(int msgno) {
-		return dao.deleteMsg(msgno) == 1;
-	}
-
+	
 	@Override
 	public boolean readMsg(Msg msg) {
 		return dao.updateMsg(msg) == 1;
+	}
+
+	@Override
+	public boolean deleteSendMsg(List<Integer> msgnoList) {
+		return dao.deleteSendMsg(msgnoList) == 1;
+	}
+
+	@Override
+	public boolean deleteRecMsg(List<Integer> msgnoList) {
+		return dao.deleteRecMsg(msgnoList) == 1;
+	}
+
+
+
+	@Override
+	public List<Msg> selectSendMsg(int userno) {
+		return dao.selectSendMsg(userno);
+	}
+
+
+
+	@Override
+	public List<Msg> selectRecMsg(int userno) {
+		return dao.selectRecMsg(userno);
 	}
 	
 	

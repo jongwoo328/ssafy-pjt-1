@@ -11,10 +11,16 @@
 	where reciverno=#{userno} and readcheck = false
 	</select>
 	
-	<select id="selectMsg" resultType="Msg">
+	<select id="selectSendMsg" resultType="Msg">
 		select *
 		from msg
-		where reciverno= #{userno}
+		where writerno = #{userno} and sendcheck = false
+	</select>
+	
+	<select id="selectRecMsg" resultType="Msg">
+		select *
+		from msg
+		where reciverno= #{userno} and recivcheck = false
 	</select>
 	
 	<select id="selectMsgByMsgno" resultType="Msg">
@@ -34,9 +40,20 @@
     	values(#{writerno}, #{reciverno}, #{title}, #{content}, now(), false)    
     </insert>
     
-    <delete id="deleteMsg">
-    	delete from msg
-    	where msgno = #{msgno}
-    </delete>
+    <update id="deleteSendMsg" parameterType="map">
+    	update msg
+    	set sendcheck = true
+    	<foreach collection="list" item="msgno" index="index" separator=" or " open ="where ">
+		 msgno = #{msgno}
+		 </foreach>
+    </update>
+    
+    <update id="deleteRecMsg" parameterType="map">
+    	update msg
+    	set recivcheck = true
+    	<foreach collection="list" item="msgno" index="index" separator=" or " open ="where ">
+		 msgno = #{msgno}
+		 </foreach>
+    </update>
     
 </mapper>

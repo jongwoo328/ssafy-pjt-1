@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.web.curation.model.Follow;
+import com.web.curation.model.Profile;
 import com.web.curation.model.User;
 import com.web.curation.service.FollowService;
+import com.web.curation.service.ProfileService;
 import com.web.curation.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -35,6 +37,9 @@ public class FollowController {
 	@Autowired
 	UserService user;
 	
+	@Autowired
+	ProfileService profile;
+	
 	@ApiOperation(value = "팔로우한 유저 정보 반환" , response = List.class)
 	@GetMapping("/following/{userno}")
 	public ResponseEntity<List<User>> followList (@PathVariable int userno){
@@ -43,7 +48,16 @@ public class FollowController {
 		for(Follow fol : f) {
 			User u = user.getUserByUserno(fol.getProno());
 			u.setPw("");
+			Profile p = profile.detailProfile(fol.getProno());
+			if(p != null) {
+				u.setAddr1("img/profile/" + p.getImgurl());
+			} else {
+				u.setAddr1("img/profile/null.png");
+			}
+			u.setFolcount(folService.followCount(u.getUserno()));
+			u.setCheckfollow(true);
 			followingList.add(u);
+			
 		}
 		
 		return new ResponseEntity<List<User>>(followingList, HttpStatus.OK);
@@ -58,6 +72,23 @@ public class FollowController {
 		for(Follow fol : f) {
 			User u = user.getUserByUserno(fol.getUserno());
 			u.setPw("");
+			Profile p = profile.detailProfile(fol.getUserno());
+			if(p != null) {
+				u.setAddr1("img/profile/" + p.getImgurl());
+			} else {
+				u.setAddr1("img/profile/null.png");
+			}
+			u.setFolcount(folService.followCount(u.getUserno()));
+			
+			Follow abc = new Follow();
+			abc.setUserno(userno);
+			abc.setProno(u.getUserno());
+			if(folService.selectFollow(abc) != null) {
+				u.setCheckfollow(true);
+			} else {
+				u.setCheckfollow(false);
+			}
+			
 			followerList.add(u);
 		}
 		
@@ -67,18 +98,26 @@ public class FollowController {
 	
 	@ApiOperation(value= "팔로우 하기", response = String.class)
 	@PostMapping
-	public ResponseEntity<String> following (@RequestBody Follow follow){
-		if(folService.insertFollow(follow)) {
-			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+	public Object following (@RequestBody Follow follow){
+		System.out.println(follow);
+		
+		if(folService.selectFollow(follow) != null) {
+			return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+		} else {
+			if(folService.insertFollow(follow)) {
+				return new ResponseEntity<Integer>(folService.followCount(follow.getProno()), HttpStatus.OK);
+			}
+			return new ResponseEntity<String>(FAIL, HttpStatus.OK);			
 		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+		
 	}
 	
 	@ApiOperation(value = "언팔 하기", response = String.class)
 	@DeleteMapping
-	public ResponseEntity<String> unfollow(@RequestBody Follow follow){
+	public Object unfollow(@RequestBody Follow follow){
+		System.out.println(follow);
 		if(folService.deleteFollow(follow)) {
-			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+			return new ResponseEntity<Integer>(folService.followCount(follow.getProno()), HttpStatus.OK);
 		} 
 		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}

@@ -9,7 +9,26 @@ public class Msg {
 	private String writername;
 	private String recivername;
 	private boolean readcheck;
+	private boolean sendcheck;
+	private boolean recivcheck;
 	
+	
+	public boolean isSendcheck() {
+		return sendcheck;
+	}
+
+	public void setSendcheck(boolean sendcheck) {
+		this.sendcheck = sendcheck;
+	}
+
+	public boolean isRecivcheck() {
+		return recivcheck;
+	}
+
+	public void setRecivcheck(boolean recivcheck) {
+		this.recivcheck = recivcheck;
+	}
+
 	public Msg() {
 		
 	}
