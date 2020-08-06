@@ -25,8 +25,10 @@
                 </div>
               </div>
             <div v-if="!isOwner">
+            <div class="buttons">
               <Button buttonText="문의하기" />
               <Button buttonText="신청하기" />
+            </div>
             </div>
             <div v-else>
                 <Button buttonText="수정" @click.native="onchangePage" />
@@ -162,7 +164,7 @@ export default {
         display: block;
     }
     #service-detail img {
-        object-fit: contain;
+        object-fit: cover;
         max-width: 100%;
         min-height: 200px;
         display: block;
@@ -176,7 +178,7 @@ export default {
     #service-detail .image-join{
         display: block;
         text-align: center;
-        padding: 30px 0 30px 0;
+        padding: 30px
     }
     /* #service-detail .price {
         text-align: center;
@@ -189,13 +191,14 @@ export default {
     #service-detail .web {
         display: none;
     }
-    .info h1 {
+    #service-detail .info h1 {
         text-align: center;
     }
-    .section {
+    #service-detail .section {
         margin-bottom: 50px;
     }
-    .info i {
+
+    #service-detail .info i {
         width: 30px;
     }
     @media (min-width: 768px) {
@@ -212,15 +215,19 @@ export default {
             width: 50%;
         }
         .info {
+            padding: 30px 60px 30px 60px;
             width: 50%;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
+        #service-detail .buttons {
+            padding: 10px;
+        }
         #service-detail button { 
             display: block;                                                                                                                                                                                            
             width: 100%;
-            margin: 0 auto 0 auto;
+            margin: 20px auto 20px auto;
             text-align: center;
         }
         span.label {
