@@ -11,7 +11,8 @@
                 <i v-else class="far fa-heart" @click="follow"></i>
                 <span class="folcount" v-text="user.folcount">10</span>
             </div>
-            <i class="fas fa-envelope"></i>
+            <i class="fas fa-envelope" @click="showMsg"></i>
+            <MessageModal v-if="messageModal" :Sendtype="sendno" :recivername="user.name" @close="showMsg" />
             <a :href="mailTo">
                 <i class="fas fa-at"></i>
             </a>
@@ -23,11 +24,23 @@
 <script>
 import URL from '@/util/http-common.js'
 import axios from 'axios'
+import MessageModal from '@/components/modal/MessageModal.vue'
 
 export default {
     name: 'UserListItem',
+    data() {
+        return {
+            messageModal: false,
+            sendno: "",
+        }
+    },
+    components: {
+        MessageModal,
+    },
     props: {
-        user: Object
+        user: Object,
+        Sendtype: Number,
+        recivername: String,
     },
     computed: {
         getImgUrl() {
@@ -41,6 +54,10 @@ export default {
         }
     },
     methods: {
+        showMsg() {
+            this.messageModal = !this.messageModal
+            this.sendno = 1
+        },
         deleteFollow() {
             const data = {
                 userno: this.$store.getters.getUserData.userno,
@@ -129,6 +146,9 @@ export default {
         margin-left: 5px;
     }
     .user-list-item .fa-heart:hover {
+        cursor: pointer;
+    }
+    .user-list-item .fa-envelope:hover {
         cursor: pointer;
     }
 </style>
