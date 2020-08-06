@@ -65,17 +65,7 @@ export default {
         .catch(err => {
             console.log(err)
         })
-<<<<<<< frontend/src/views/Home.vue
-  }
-  
-=======
   },
-  data() {
-    return {
-       services: [],
-    }
-  },
->>>>>>> frontend/src/views/Home.vue
 }
 </script>
 

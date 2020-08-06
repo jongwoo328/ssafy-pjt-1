@@ -15,7 +15,6 @@ import QnaCreate from '@/views/qna/QnaCreate.vue'
 import MessageList from '@/views/message/MessageList.vue'
 import ServiceModify from '@/views/services/ServiceModify.vue'
 import Follow from '@/views/accounts/Follow.vue'
-import Error from '@/views/error/Error.vue'
 
 Vue.use(VueRouter)
 
