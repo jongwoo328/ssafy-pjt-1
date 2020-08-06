@@ -90,7 +90,7 @@ Vue.use(VueRouter)
     component: QnaDetail
   },
   {
-    path: '/message',
+    path: '/message/:msgtype',
     name: 'MessageList',
     component: MessageList
   },

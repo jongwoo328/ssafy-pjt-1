@@ -25,20 +25,36 @@ export default {
             messagemodal: false,
             messagedata: "",
             deleteno: [],
+            type: "",
         }
     },
     props: {
         message: Array,
     },
     created() {
-        axios.get(`${URL.BASE_URL}/msg/rec/${this.$store.getters.getUserData.userno}`)
-        .then(res => {
-            console.log(res.data)
-            this.messagedata = res.data
-        })
-        .catch(err =>{
-            console.log(err)
-        })
+        if (this.$route.params.msgtype === "rec") this.urltype = true
+        else this.urltype = false
+
+        if (this.urltype) {
+            axios.get(`${URL.BASE_URL}/msg/rec/${this.$store.getters.getUserData.userno}`)
+            .then(res => {
+                console.log(res.data)
+                this.messagedata = res.data
+            })
+            .catch(err =>{
+                console.log(err)
+            })
+        }
+        else {
+            axios.get(`${URL.BASE_URL}/msg/send/${this.$store.getters.getUserData.userno}`)
+            .then(res => {
+                console.log(res.data)
+                this.messagedata = res.data
+            })
+            .catch(err =>{
+                console.log(err)
+            })
+        }
     },
     components: {
         messageModal,
@@ -66,7 +82,6 @@ export default {
                 console.log(deleteMsg)
                 deleteMsg.forEach(msg => {
                     console.log(msg.dataset.msgnum)
-                    // js containment test 문법 확인중.
                     if (this.deleteno.includes(msg.dataset.msgnum)) {
                         msg.style.display = "none"
                     }
