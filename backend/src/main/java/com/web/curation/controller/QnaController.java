@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.web.curation.model.Qna;
+import com.web.curation.model.User;
 import com.web.curation.service.QnaService;
+import com.web.curation.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -33,19 +35,40 @@ public class QnaController {
 	@Autowired
 	private QnaService service;
 	
+	@Autowired
+	private UserService user;
+	
 	@ApiOperation(value = "모든 게시글의 정보를 반환", response = List.class)
 	@GetMapping
 	public ResponseEntity<List<Qna>> retrieveQna() throws Exception {
 		logger.debug("retrieveQna - 호출");
-		return new ResponseEntity<List<Qna>>(service.retrieveQna(), HttpStatus.OK);
+		List<Qna> list = service.retrieveQna();
+		
+		for(Qna q : list) {
+			User u = user.getUserByUserno(q.getUserno());
+			q.setQwriter(u.getName());
+		}
+		
+		
+		return new ResponseEntity<List<Qna>>(list, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "유저의 qna 정보를 반환", response = List.class)
+	@GetMapping("{userno}")
+	public ResponseEntity<List<Qna>> userQna(@PathVariable int userno) throws Exception {
+		
+		System.out.println(userno + " 가 정보 요청" );
+		return new ResponseEntity<List<Qna>>(service.selectQnaByUserno(userno), HttpStatus.OK);
 	}
 	
 	
 	@ApiOperation(value = "글번호에 해당하는 게시글의 정보를 반환한다.", response = Qna.class)    
-	@GetMapping("{no}")
+	@GetMapping("/detail/{qnano}")
 	public ResponseEntity<Qna> detailQna(@PathVariable int qnano) {
-		logger.debug("writeQna - 호출");
-		return new ResponseEntity<Qna>(service.detailQna(qnano), HttpStatus.OK);
+		Qna q = service.detailQna(qnano);
+		User u = user.getUserByUserno(q.getUserno());
+		q.setQwriter(u.getName());
+		return new ResponseEntity<Qna>(q, HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "새로운 게시글 정보를 입력한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
@@ -54,10 +77,15 @@ public class QnaController {
 		logger.debug("writeQna - 호출");
 		System.out.println("qna 작성");
 		System.out.println(qna);
+		User u = user.getUserByUserno(qna.getUserno());
+		qna.setQwriter(u.getName());
+		
+		
+		
 		if(service.writeQna(qna)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "글번호에 해당하는 게시글의 정보를 수정한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
@@ -70,16 +98,42 @@ public class QnaController {
 		if(service.updateQna(qna)) {
 			return new ResponseEntity<String> (SUCCESS, HttpStatus.OK);
 		}
-		return new ResponseEntity<String> (FAIL, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<String> (FAIL, HttpStatus.OK);
 	}
+	
+	@ApiOperation(value = "글번호에 해당하는 게시글의 정보를 수정한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@PutMapping("answer/{qnano}")
+	public ResponseEntity<String> resistAnswerQna(@RequestBody Qna qna){
+		System.out.println("qna 답변 등록");
+		System.out.println(qna);
+
+		if(service.resistAnswerQna(qna)) {
+			return new ResponseEntity<String> (SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String> (FAIL, HttpStatus.OK);
+	}
+	
+	@ApiOperation(value = "글번호에 해당하는 게시글의 정보를 수정한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
+	@PutMapping("answer/update/{qnano}")
+	public ResponseEntity<String> updateAnswerQna(@RequestBody Qna qna){
+		System.out.println("qna 답변 수정");
+		System.out.println(qna);
+
+		if(service.updateAnswerQna(qna)) {
+			return new ResponseEntity<String> (SUCCESS, HttpStatus.OK);
+		}
+		return new ResponseEntity<String> (FAIL, HttpStatus.OK);
+	}
+	
+	
 	@ApiOperation(value = "글번호에 해당하는 게시글의 정보를 삭제한다. 그리고 DB삭제 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
-	@DeleteMapping("{qnano}")
+	@DeleteMapping("/{qnano}")
 	public ResponseEntity<String> deleteQna(@PathVariable int qnano) {
 		logger.debug("deleteQna - 호출");
 		System.out.println("삭제");
 		if (service.deleteQna(qnano)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
-		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}
 }

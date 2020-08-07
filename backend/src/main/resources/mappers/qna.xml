@@ -18,6 +18,21 @@
 		  order by qnano desc
 	</select>
 	
+	<!-- 게시글 유저 조회 -->
+	<select id="selectQnaByUserno" resultType="Qna">
+		select qnano,
+			   userno,
+			   qtitle,
+			   qcontent,
+			   awriter,
+			   acontent,
+			   qdate,
+			   adate
+		  from qna
+		  where userno = #{userno}
+		  order by qnano desc
+	</select>
+	
 	<!-- 게시글 상세 조회 -->
 	<select id="selectQnaByNo" resultType="Qna">
 		select 
@@ -36,19 +51,38 @@
 	<!-- 게시글 등록 -->
 	<insert id="insertQna" parameterType="Qna">
 		insert into qna (
-			qtitle,qcontent,userno
-		) values (#{qtitle}, #{qcontent},#{userno})
+			qtitle,qcontent,userno, qdate
+		) values (#{qtitle}, #{qcontent},#{userno}, now())
 	</insert>
 	
 	<!-- 게시글 수정 -->
 	<update id="updateQna" parameterType="Qna">
 		update qna
 		   set
-		   		qtitle = #{qtitle}, 
-		   	   qcontent = #{qcontent} 
+		   	   qtitle = #{qtitle}, 
+		   	   qcontent = #{qcontent}
 		 where qnano = #{qnano};
 	</update>
 
+	<!-- 답변 등록 -->
+	<update id="resistAnswerQna" parameterType="Qna">
+		update qna
+		   set	
+		   	   awriter = #{awriter}, 
+		   	   acontent = #{acontent},
+		   	   adate = now()
+		 where qnano = #{qnano};
+	</update>
+
+	<!-- 답변 수정 -->
+	<update id="updateAnswerQna" parameterType="Qna">
+		update qna
+		   set
+		   	   acontent = #{acontent},
+		   	   adate = now()
+		 where qnano = #{qnano};
+	</update>
+	
 	<!-- 게시글 삭제 -->
 	<delete id="deleteQna" parameterType="int">
 		delete 

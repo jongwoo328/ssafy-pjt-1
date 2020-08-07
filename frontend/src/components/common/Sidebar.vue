@@ -1,29 +1,63 @@
 <template>
   <div id="sidebar">
       <div class="sidebar-link-list">
-        <router-link to='/accounts/userinfo' class="sidebar-link font-kor"><p>내 정보</p></router-link>
-        <router-link v-if="$store.getters.isLoggedIn" :to="toMyProfile" class="sidebar-link font-kor"><p>내 프로필</p></router-link>
-        <router-link to='/test' class="sidebar-link font-kor"><p>결제내역</p></router-link>
-        <router-link to='/test' class="sidebar-link font-kor"><p>팔로우</p></router-link>
-        <router-link to='/qna' class="sidebar-link font-kor"><p>Q&A</p></router-link>
+        <router-link v-if="isLoggedIn" to='/accounts/userinfo' class="sidebar-link font-kor"><p>내 정보</p></router-link>
+        <router-link v-if="$store.getters.isPro" to='/myservice' class="sidebar-link font-kor"><p>내 서비스</p></router-link>
+        <router-link v-if="isLoggedIn" :to="toMyProfile" class="sidebar-link font-kor"><p>내 프로필</p></router-link>
+        <router-link v-if="isLoggedIn" to='/test' class="sidebar-link font-kor"><p>결제내역</p></router-link>
+        <router-link v-if="isLoggedIn" :to="toMyFollow" class="sidebar-link font-kor"><p>팔로우</p></router-link>
+        <router-link v-if="isLoggedIn" to='/qna' class="sidebar-link font-kor"><p>Q&A</p></router-link>
+        <div v-if="!isLoggedIn" class="sidebar-anonymous font-kor">
+            <SidebarCardList :eventList="eventList" />    
+        </div>
       </div>
   </div>
 </template>
 
 <script>
+import SidebarCardList from './SidebarCardList.vue'
+
 export default {
     name: 'Sidebar',
+    data() {
+        return {
+            eventList: [
+                {
+                    eventno: 1,
+                    etitle: 'Spring 선착순 할인',
+                    econtent: '선착순 10명에게 30% 할인이 제공중입니다.'
+                },
+                {
+                    eventno: 2,
+                    etitle: 'Vue.js 리뷰이벤트',
+                    econtent: '주재성의 Vue 강의를 들으신 분 중 우수리뷰어에게 쿠폰을 드립니다.'
+                }
+            ]
+        }
+    },
+    created() {
+        document.querySelector('#sidebar').style.height = document.querySelector('#view').style.height
+    },
     computed: {
         toMyProfile(){
             return `/accounts/${this.$store.getters.getUserData.name}`
-        } 
+        },
+        isLoggedIn() {
+            return this.$store.getters.isLoggedIn
+        },
+        toMyFollow() {
+            return this.toMyProfile + '/follow'
+        }
     },
+    components: {
+        SidebarCardList
+    }
 
 }
 </script>
 
 <style>
-    .sidebar-link-list {
+    #sidebar .sidebar-link-list {
         display: none;
     }
     @media (min-width: 768px) {
@@ -33,32 +67,33 @@ export default {
             box-shadow: 2px 5px 3px gray;
             position: absolute;
             left: 0;
-            height: 150vh;
+            height: 100vh;
             /* width: 20%; */
-            min-width: 250px;
+            min-width: 200px;
             /* background-color: white; */
         }
-        .sidebar-link-list {
+        #sidebar .sidebar-link-list {
             display: flex;
             flex-direction: column;
-            margin-top: 50px;
+            margin: 50px 10px 0 10px;
         }
-        .sidebar-link {
+        #sidebar .sidebar-link {
             display: inline-block;
             margin-left: 50px;
             margin-bottom: 20px;
             font-size: 1.5rem;
             color: black;
         }
-        .sidebar-link:hover {
+        #sidebar .sidebar-link:hover {
             text-decoration: none;
             color: black;
         }
-        .sidebar-link p:hover {
+        #sidebar .sidebar-link p:hover {
             display: inline-block;
             color: rgb(236,128,116);
             border-bottom: 2px solid rgb(236,128,116);
         }
+
     }
 
 </style>

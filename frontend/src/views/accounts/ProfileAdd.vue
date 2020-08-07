@@ -11,7 +11,8 @@
         <input ref="profileImage" type="file" id="file" accept="image/*" @change="fileSelect">
         <br>
         <label for="description">소개</label>
-        <textarea name ="description" id="description" v-model="comment"></textarea>
+     <Editor/>
+        <!-- <textarea name ="description" id="description" v-model="comment"></textarea> -->
       </div>
       <Button class="ml-auto" type="submit" button-text="등록" @click.native="submit" />
     </div>
@@ -26,7 +27,8 @@
         <input ref="profileImage" type="file" id="file" accept="image/*" @change="fileSelect">
         <br>
         <label for="description">소개</label>
-        <textarea name ="description" id="description" v-model="comment"></textarea>
+        <Editor/>
+        <!-- <textarea name ="description" id="description" v-model="comment"></textarea> -->
       </div>
       <Button class="ml-auto" type="submit" button-text="수정" @click.native="submit" />
    </div>
@@ -38,7 +40,7 @@ import axios from 'axios'
 import Button from '@/components/common/Button.vue'
 import ProfileFrame from '@/components/common/ProfileFrame.vue'
 import HTTP from "@/util/http-common.js"
-
+import Editor from '@/components/common/Editor.vue'
 export default {
     name: 'ProfileAdd',
     data() {
@@ -51,6 +53,7 @@ export default {
         }
     },
     components: {
+      Editor,
       Button,
       ProfileFrame
     },
@@ -59,12 +62,15 @@ export default {
         else this.urltype = false
 
         if (this.urltype) {
+          console.log('test')
           axios.get(`${HTTP.BASE_URL}/profile/${this.$store.getters.getUserData.userno}`)
           .then(res => {
               this.profileframe = false
               console.log(res)  
-              this.profileImageUrl = `${HTTP.BASE_URL}/` + res.data.imgurl,
-              this.comment = res.data.comment
+              this.profileImageUrl = `${HTTP.BASE_URL}/` + res.data.imgurl
+              const fsda = document.querySelector('.ql-editor')
+              fsda.innerHTML = res.data.comment
+              this.comment = res.data.comment.innerHTML
               console.log(this.profileData.imgUrl)
               console.log(this.profileData.comment)
           })
@@ -81,6 +87,10 @@ export default {
             this.profileframe = false
         },
         submit() {
+          const temp = document.getElementsByClassName('ql-editor')[0]
+          this.comment = temp.innerHTML
+          console.log(temp.innerHTML)
+          console.log(this.comment)
           const formData = new FormData()
           formData.append('profileImage', this.profileImage)
           formData.append('Comment', this.comment)
@@ -99,7 +109,11 @@ export default {
             }
           }).then(res => {
             console.log(res)
-            this.$router.push({ name : 'Profile' })
+            
+            setTimeout(() => {
+              alert('수정되었습니다.')
+              this.$router.push({ name : 'Profile' })
+            },1000)
           }).catch(err => {
             console.log(err)
           })
@@ -113,7 +127,10 @@ export default {
               }
             }).then(res => {
               console.log(res)
+            setTimeout(() => {
+              alert('등록되었습니다.')
               this.$router.push({ name : 'Profile' })
+            },1000)
             }).catch(err => {
               console.log(err)
             })

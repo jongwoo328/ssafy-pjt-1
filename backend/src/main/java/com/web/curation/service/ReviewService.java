@@ -5,7 +5,8 @@ import java.util.List;
 import com.web.curation.model.Review;
 
 public interface ReviewService {
-	public List<Review> retrieveReview();
+	public List<Review> totalReview();
+	public List<Review> retrieveReview(int servno);
 	public Review detailReview(int revno);
 	public boolean writeReview(Review review);
 	public boolean updateReview(Review review);

@@ -12,6 +12,9 @@ import Qna from '@/views/qna/Qna.vue'
 import ServiceAdd from '@/views/services/ServiceAdd.vue'
 import QnaDetail from '@/views/qna/QnaDetail.vue'
 import QnaCreate from '@/views/qna/QnaCreate.vue'
+import MessageList from '@/views/message/MessageList.vue'
+import ServiceModify from '@/views/services/ServiceModify.vue'
+import Follow from '@/views/accounts/Follow.vue'
 
 Vue.use(VueRouter)
 
@@ -42,9 +45,19 @@ Vue.use(VueRouter)
     component: UserInfo
   },
   {
+    path: '/services/:service_id/modify',
+    name: 'ServiceModify',
+    component: ServiceModify
+  },
+  {
     path: '/services/:service_id',
     name: 'ServiceDetail',
     component: ServiceDetail
+  },
+  {
+    path: '/accounts/:username/follow',
+    name: 'Follow',
+    component: Follow
   },
   {
     path: '/accounts/:username/:type',
@@ -62,12 +75,11 @@ Vue.use(VueRouter)
     component: Qna
   },
   {
-<<<<<<< frontend/src/router/index.js
     path: '/service/create',
     name: 'ServiceAdd',
     component : ServiceAdd
-  }
-=======
+  },
+  {
     path: '/qna/create',
     name: 'QnaCreate',
     component: QnaCreate
@@ -77,8 +89,11 @@ Vue.use(VueRouter)
     name: 'QnaDetail',
     component: QnaDetail
   },
-
->>>>>>> frontend/src/router/index.js
+  {
+    path: '/message/:msgtype',
+    name: 'MessageList',
+    component: MessageList
+  },
 ]
 
 const router = new VueRouter({

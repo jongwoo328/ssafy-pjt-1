@@ -1,13 +1,17 @@
 <template>
   <div id="home container">
     <div class="wrap container">
-      <SearchbarWeb/>
-      <div class="container home-inner">
+      <SearchbarWeb @child="searchs"/>
+      <div v-if="!$store.getters.isLoggedIn" class="container home-inner">
         <Content/>
         <Join/>
       </div>
       <div id="search-result-wrap row">
-        <SearchResultCard :services="serviceResult"/>
+        <div class="mobile">
+          <h2>인기있는 서비스들</h2>
+          <hr>
+        </div>
+        <SearchResultCard :services="services"/>
       </div>
     </div>
   </div>
@@ -18,7 +22,8 @@ import Content from '@/components/home/Content.vue'
 import Join from '@/components/home/Join.vue'
 import SearchbarWeb from '@/components/home/SearchbarWeb.vue'
 import SearchResultCard from '@/components/search/SearchResultCard.vue'
-
+import axios from 'axios'
+import HTTP from '@/util/http-common.js'
 export default {
   name: 'Home',
   components: {
@@ -26,33 +31,53 @@ export default {
     Join,
     SearchbarWeb,
     SearchResultCard,
-  },
-  data() {
+  },data() {
     return {
-      serviceResult: [
-        // 예시 표시용
-        {
-          imgUrl: 'https://grepp-programmers.s3.amazonaws.com/production/company/logo/2640/_nolbal_bi_logo_%E1%84%89%E1%85%A6%E1%84%85%E1%85%A9.png',
-          s_no: 1
-        },
-        {
-          imgUrl: 'https://grepp-programmers.s3.amazonaws.com/production/company/logo/2640/_nolbal_bi_logo_%E1%84%89%E1%85%A6%E1%84%85%E1%85%A9.png',
-          s_no: 2
-        },
-        {
-          imgUrl: 'https://grepp-programmers.s3.amazonaws.com/production/company/logo/2640/_nolbal_bi_logo_%E1%84%89%E1%85%A6%E1%84%85%E1%85%A9.png',
-          s_no: 3
-        },
-      ]
+       services: [],
+       searchInfo:[]
     }
-  }
+  },
+   methods:{
+    searchs(search){
+      axios.post(`${HTTP.BASE_URL}/service/search`,search, HTTP.JSON_HEADER)
+      .then(res =>{
+      console.log(res)
+      this.services=res.data
+      this.services.forEach(service => {
+              service.imgurl = `${HTTP.BASE_URL}/${service.imgurl}`
+            })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+    }
+  },
+  created(){
+      
+        axios.get(`${HTTP.BASE_URL}/service/main`)
+        .then(res => {
+            console.log(res)
+            this.services = res.data
+            this.services.forEach(service => {
+              service.imgurl = `${HTTP.BASE_URL}/${service.imgurl}`
+            })
+        })
+        .catch(err => {
+            console.log(err)
+        })
+  },
 }
 </script>
 
 <style>
+  @media (min-width: 768px) {
+    .mobile {
+      display: none;
+    }
+  }
   @media (min-width: 768px) and (max-width: 999px) {
     #home .wrap {
-      margin-left: 250px;
+      margin-left: 200px;
     }
   }
   @media (min-width: 1000px) {

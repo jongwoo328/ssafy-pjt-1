@@ -5,33 +5,62 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.web.curation.dao.MsgDao;
+import com.web.curation.dao.MsgDAO;
 import com.web.curation.model.Msg;
 
 @Service
 public class MsgServiceImpl implements MsgService {
 
 	@Autowired
-	MsgDao msgDao;
+	MsgDAO dao;
+
+	@Override
+	public int msgCount(int userno) {
+		return dao.msgCount(userno);
+	}
+
+
+
+	@Override
+	public Msg detailMsg(int msgno) {
+		return dao.selectMsgByMsgno(msgno);
+	}
+
+	@Override
+	public boolean senedMsg(Msg msg) {
+		return dao.insertMsg(msg) == 1;
+	}
+
 	
 	@Override
-	public boolean sendMsg(Msg msg) {
-		return msgDao.sendMsg(msg) == 1;
+	public boolean readMsg(Msg msg) {
+		return dao.updateMsg(msg) == 1;
 	}
 
 	@Override
-	public Msg getMsgByNo(int msgno) {
-		return msgDao.getMsgByNo(msgno);
+	public boolean deleteSendMsg(List<Integer> msgnoList) {
+		return dao.deleteSendMsg(msgnoList) == 1;
 	}
 
 	@Override
-	public List<Msg> getReceiveMsg(int userno) {
-		return msgDao.getReceiveMsg(userno);
+	public boolean deleteRecMsg(List<Integer> msgnoList) {
+		return dao.deleteRecMsg(msgnoList) == 1;
 	}
 
+
+
 	@Override
-	public List<Msg> getSendMsg(int userno) {
-		return msgDao.getSendMsg(userno);
+	public List<Msg> selectSendMsg(int userno) {
+		return dao.selectSendMsg(userno);
 	}
+
+
+
+	@Override
+	public List<Msg> selectRecMsg(int userno) {
+		return dao.selectRecMsg(userno);
+	}
+	
+	
 
 }

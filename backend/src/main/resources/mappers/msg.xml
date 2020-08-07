@@ -3,43 +3,57 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.web.curation.dao.MsgDao">
+<mapper namespace="com.web.curation.dao.MsgDAO">
 
-	<insert id = "sendMsg">
-        insert into msg (writerno, receiverno, title, content, senddate) values (#{writerno},#{receiverno},#{title},#{content},now())
+	<select id="msgCount" resultType="Integer">
+	select count(*) as count
+	from msg
+	where reciverno=#{userno} and readcheck = false
+	</select>
+	
+	<select id="selectSendMsg" resultType="Msg">
+		select *
+		from msg
+		where writerno = #{userno} and sendcheck = false
+	</select>
+	
+	<select id="selectRecMsg" resultType="Msg">
+		select *
+		from msg
+		where reciverno= #{userno} and recivcheck = false
+	</select>
+	
+	<select id="selectMsgByMsgno" resultType="Msg">
+		select *
+		from msg
+		where msgno = #{msgno}
+	</select>
+    
+    <update id="updateMsg" parameterType="Msg">
+    	update msg
+    	set readcheck = true
+    	where msgno = #{msgno}
+    </update>
+    
+    <insert id="insertMsg">
+    	insert into msg(writerno, reciverno, title, content, senddate, readcheck)
+    	values(#{writerno}, #{reciverno}, #{title}, #{content}, now(), false)    
     </insert>
     
-    <select id="getMsgByNo" resultType="Msg">
-        select msgno,
-        writerno,
-        receiverno,
-        title,
-        content,
-        senddate
-        from msg
-        where msgno = #{msgno}
-    </select>
+    <update id="deleteSendMsg" parameterType="map">
+    	update msg
+    	set sendcheck = true
+    	<foreach collection="list" item="msgno" index="index" separator=" or " open ="where ">
+		 msgno = #{msgno}
+		 </foreach>
+    </update>
     
-    <select id="getSendMsg" resultType="Msg">
-        select msgno,
-        writerno,
-        receiverno,
-        title,
-        content,
-        senddate
-        from msg
-        where writerno = #{userno}
-    </select>
-    
-    <select id="getReceiveMsg" resultType="Msg">
-        select msgno,
-        writerno,
-        receiverno,
-        title,
-        content,
-        senddate
-        from msg
-        where receiverno = #{userno}
-    </select>
+    <update id="deleteRecMsg" parameterType="map">
+    	update msg
+    	set recivcheck = true
+    	<foreach collection="list" item="msgno" index="index" separator=" or " open ="where ">
+		 msgno = #{msgno}
+		 </foreach>
+    </update>
     
 </mapper>

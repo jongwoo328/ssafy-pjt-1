@@ -1,46 +1,51 @@
 <template>
   <div id="service-detail" class="container font-kor">
+      <MessageModal v-if="messageModal" :recivername="proname" :Sendtype="sendtype" @close ="msgShow" />
       <div class="service-info section">
           <div class="image-join">
-              <img src="@/assets/logo_mini.png" alt="">
+              <img :src="serviceData.imgUrl" alt="">
           </div>
           <div class="info">
               <div>
                 <p class="mobile"><i class="fas fa-won-sign"></i>가격</p>
                 <p class="mobile"><i class="far fa-smile"></i>평점</p>
                 <p class="mobile"><i class="fas fa-map-marker-alt"></i>위치</p>
-                <h1>서비스 이름</h1>
+                <h1>{{serviceData.servname}}</h1>
                 <hr>
                 <div class="web price">
                     <span class="label"><i class="fas fa-won-sign"></i> 가격</span>
-                    <p><span>1000</span>원</p>
+                    <p><span>{{serviceData.price}}</span>원</p>
                 </div>
                 <div class="web rating">
                     <span class="label"><i class="far fa-smile"></i> 평점</span>
-                    <p><span>5</span>점</p>
+                    <p><span>{{point}}</span>점</p>
                 </div>
                 <div class="web addr">
                     <span class="label"><i class="fas fa-map-marker-alt"></i> 위치</span>
-                    <p>주소 주소 주소</p>
+                    <p>{{addr}}</p>
                 </div>
               </div>
+            <div v-if="!isOwner">
+            <div class="buttons">
+              <Button @click.native="msgShow" buttonText="문의하기" />
               <Button buttonText="신청하기" />
+            </div>
+            </div>
+            <div v-else>
+                <Button buttonText="수정" @click.native="onchangePage" />
+              <Button buttonText="삭제" @click.native=" removeService "/>
+            </div>
           </div>
       </div>
       <div class="service-desc section">
           <h2>설명</h2>
           <hr>
-          <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda fugiat ex modi sed totam repellendus corporis voluptates possimus. Animi magni non, omnis maiores iure fugit temporibus necessitatibus debitis adipisci expedita!
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quaerat tempora odit facere laborum maiores veritatis. Dicta itaque molestiae nobis sequi consequatur? Autem aliquam quaerat dolorem iusto quis, ipsam a at!
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quam delectus recusandae dolorum sapiente, fugit optio. Quod, numquam molestiae enim fugit officia quidem veniam tempore dolor tenetur laborum vel, iste fuga.
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, necessitatibus quo quod aspernatur error modi maiores soluta accusantium nesciunt tempora dolorem debitis natus iure, perferendis ipsa iusto! Odit, deserunt reprehenderit.
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti velit blanditiis veniam vero porro eius recusandae quos est tempore, consectetur molestiae, commodi, cupiditate beatae ea. Rerum saepe quasi repudiandae labore?
-          </p>
+          <p v-html="serviceData.description"> </p>
       </div>
       <div class="review section">
           <h2>리뷰</h2>
           <hr>
-          <ReviewList/>
+          <ReviewList :reviews="review"/>
       </div>
   </div>
 </template>
@@ -48,22 +53,108 @@
 <script>
 import Button from '@/components/common/Button.vue'
 import ReviewList from '@/components/service/ReviewList.vue'
+import HTTP from "@/util/http-common.js"
+import axios from 'axios'
+import MessageModal from '@/components/modal/MessageModal.vue'
 
 export default {
     name: 'ServiceDetail',
+    props: {
+        recivername: String,
+        Sendtype: Number,
+    },
     data() {
         return {
+            messageModal: false,
+            isOwner:false,
+            proname: "",
+            sendtype: "",
+            userno: "",
             serviceId: 0,
-            serviceData: {},
-
+            serviceData: {
+                 servname :"",
+                price : "",
+                saddr1 : "",
+                saddr2 : "",
+                saddr3 : "",
+                saddr4 : "",
+                saddr5 : "",
+                saddr6 : "",
+                imgUrl : "",
+                description : "",
+                payed :"",
+            },
+            addr: "",
+            review: [],
+            point : "",
         }
     },
     components: {
         Button,
         ReviewList,
+        MessageModal,
+    },
+    methods:{
+        msgShow(){
+            this.messageModal = !this.messageModal
+            this.sendtype = 1
+        },
+        onchangePage(){
+            this.$router.push(`/services/${this.$route.params.service_id}/modify`)
+        },
+        removeService(){
+            axios.delete(`${HTTP.BASE_URL}/service/${this.$route.params.service_id}`)
+            .then(res =>{
+                console.log(res)
+                console.log("삭제성공")
+                this.$router.push(`/myservice`)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
     },
     created() {
-        
+        document.querySelector('#sidebar').style.height = document.querySelector('#view').style.height
+        if(this.$store.getters.getUserData === null){
+            this.userno = 0;    
+        } else{
+            this.userno = `${this.$store.getters.getUserData.userno}`
+        }       
+        axios.get(`${HTTP.BASE_URL}/service/detail/servno=${this.$route.params.service_id}&userno=${this.userno}`)
+        .then(res =>{
+            console.log(res)
+            this.proname = res.data.proname,
+            this.serviceData ={
+                imgUrl:`${HTTP.BASE_URL}/` + res.data.imgurl,
+                servname : res.data.servname,
+                price : res.data.price,
+                saddr1 : res.data.saddr1,
+                saddr2 : res.data.saddr2,
+                saddr3 : res.data.saddr3,
+                saddr4 : res.data.saddr4,
+                saddr5 : res.data.saddr5,
+                saddr6 : res.data.saddr6,
+                description : res.data.description,
+                payed : res.data.revcheck
+            }
+            this.point = res.data.avgpoint,
+            this.addr = this.serviceData.saddr2+" "+this.serviceData.saddr4+" "+this.serviceData.saddr6
+            if(this.userno==res.data.userno){
+                this.isOwner=true;
+            }
+        })
+        .catch(err => {
+                console.log(err)
+        })
+        axios.get(`${HTTP.BASE_URL}/review/${this.$route.params.service_id}`,HTTP.JSON_HEADER)
+        .then(res => {
+            console.log(res);
+            this.review = res.data 
+        })
+        .catch(err => {
+                console.log(err)
+        })
     }
 }
 </script>
@@ -80,7 +171,7 @@ export default {
         display: block;
     }
     #service-detail img {
-        object-fit: contain;
+        object-fit: cover;
         max-width: 100%;
         min-height: 200px;
         display: block;
@@ -94,26 +185,28 @@ export default {
     #service-detail .image-join{
         display: block;
         text-align: center;
-        padding: 30px 0 30px 0;
+        padding: 30px;
+        border: 1px solid gray;
     }
     /* #service-detail .price {
         text-align: center;
         margin: 30px 0 30px 0;
         font-size: 2rem;
     } */
-    #service-detail button {
+    #service-detail .info button {
         width: 100%;
     }
     #service-detail .web {
         display: none;
     }
-    .info h1 {
+    #service-detail .info h1 {
         text-align: center;
     }
-    .section {
+    #service-detail .section {
         margin-bottom: 50px;
     }
-    .info i {
+
+    #service-detail .info i {
         width: 30px;
     }
     @media (min-width: 768px) {
@@ -123,33 +216,37 @@ export default {
         #service-detail .mobile {
             display: none;
         }
-        .service-info {
+        #service-detail .service-info {
             display: flex;
         }
-        .image-join {
+        #service-detail .image-join {
             width: 50%;
         }
-        .info {
+        #service-detail .info {
+            padding: 30px 60px 30px 60px;
             width: 50%;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
         }
-        #service-detail button { 
+        #service-detail .buttons {
+            padding: 10px;
+        }
+        #service-detail .info button { 
             display: block;                                                                                                                                                                                            
             width: 100%;
-            margin: 0 auto 0 auto;
+            margin: 20px auto 20px auto;
             text-align: center;
         }
-        span.label {
+        #service-detail span.label {
             float: left;
         }
-        .web p {
+        #service-detail .web p {
             text-align: right;
         }
     }
     @media (min-width: 992px) {
-        #service-detail button {
+        #service-detail .info button {
             width: 50%;
         }
         #service-detail h1, #service-detail h2 {
