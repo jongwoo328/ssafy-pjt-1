@@ -185,7 +185,7 @@ export default {
     #service-detail .service-info {
         display: block;
     }
-    #service-detail img {
+    #service-detail .image-join img {
         object-fit: cover;
         max-width: 100%;
         max-height: 200px;
@@ -198,7 +198,7 @@ export default {
         font-size: 1.5rem;
     }
     #service-detail .image-join{
-        display: block;
+        display: flex;
         text-align: center;
         border: 1px solid gray;
         max-height: 200px;
@@ -234,7 +234,7 @@ export default {
     #service-detail .mobile > div {
         text-align: center;
     }
-    #service-detail .buttons button {
+    #service-detail .info .buttons button {
         margin: 10px 0 10px 0;
     }
     #service-detail h1 {
