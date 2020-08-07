@@ -21,13 +21,7 @@ export default {
     sidebar() {
       const sidebar = document.querySelector('div#sidebar')
         if (sidebar) {
-          console.log(sidebar)
-          console.log('test')
-          console.log(window.screen.availHeight)
-          console.log(document.querySelector('div#view').scrollHeight)
           sidebar.setAttribute('style', `height: ${document.querySelector('div#view').scrollHeight}px`)
-          // sidebar.style.height = window.screen.availHeight + 100
-          // sidebar.setAttribute('style', `height: ${window.screen.availHeight + 200}px;`)
         }
     }
   }
