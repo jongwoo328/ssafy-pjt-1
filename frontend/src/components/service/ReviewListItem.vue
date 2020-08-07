@@ -57,7 +57,7 @@ export default {
             this.deleteCheck = false
         },
         deleteYes() {
-            // tdjkflsdj
+            // 
         }
     },
     computed:{
