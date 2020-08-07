@@ -23,6 +23,9 @@ export default {
             value: false,
         }
     },
+    created() {
+        this.$emit('sidebar')
+    },
     props: {
         message: Object,
     },

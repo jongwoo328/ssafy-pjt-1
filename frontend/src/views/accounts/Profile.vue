@@ -87,7 +87,19 @@ export default {
             this.isLoaded = true
         }
     },
-    created() {
+    created(){
+        this.$emit('sidebar')
+          axios.get(`${HTTP.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
+        .then(res => {
+            console.log(res)
+            this.services = res.data
+            this.isProfile=true
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    },
+    mounted() {
         setTimeout(() => {
             console.log('test')
             axios.get(`${HTTP.BASE_URL}/profile/${this.$route.params.username}`)

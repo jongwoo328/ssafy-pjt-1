@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.web.curation.model.Review;
 import com.web.curation.model.User;
+import com.web.curation.service.ProfileService;
 import com.web.curation.service.ReviewService;
 import com.web.curation.service.UserService;
 
@@ -35,6 +36,9 @@ public class ReviewController {
 	@Autowired
 	private UserService user;
 	
+	@Autowired
+	private ProfileService profile;
+	
 	@ApiOperation(value = "전체 리뷰 목록을 가져온다.", response = String.class)
 	@GetMapping("/{servno}")
 	public Object retrieveReview(@PathVariable int servno) {
@@ -46,6 +50,7 @@ public class ReviewController {
 		for(Review rev : list) {
 			User u = user.getUserByUserno(rev.getUserno());
 			rev.setWriter(u.getName());
+			rev.setImgurl("img/profile/"+ profile.detailProfile(rev.getUserno()).getImgurl());
 		}
 		
 		
@@ -56,13 +61,14 @@ public class ReviewController {
 	@GetMapping("/detail/{revno}")
 	public Object detailReview(@PathVariable int revno) {
 		Review review = revService.detailReview(revno);
+		
 		if (review == null) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 		}
 		
 		User u = user.getUserByUserno(review.getUserno());
 		review.setWriter(u.getName());
-		
+		review.setImgurl("img/profile/"+ profile.detailProfile(review.getUserno()).getImgurl());
 		return new ResponseEntity<Review>(review, HttpStatus.OK);
 	}
 	

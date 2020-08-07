@@ -163,6 +163,7 @@ export default {
     }
   },
   created() {
+    this.$emit('sidebar')
     // console.log(this.User)
     axios.get(`${URL.BASE_URL}/fselect`, URL.JSON_HEADER)
     .then(res => {

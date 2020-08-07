@@ -20,8 +20,20 @@ public class ConnectorService {
 	private double avgpoint;
 	private List<Review> rev;
 	private int payCount;
+	private String proname;
 	
-	
+	public String getProname() {
+		return proname;
+	}
+
+
+
+	public void setProname(String proname) {
+		this.proname = proname;
+	}
+
+
+
 	public int getPayCount() {
 		return payCount;
 	}

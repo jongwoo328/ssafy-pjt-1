@@ -1,16 +1,32 @@
 <template>
   <div id="service-detail" class="container font-kor">
       <MessageModal v-if="messageModal" :recivername="proname" :Sendtype="sendtype" @close ="msgShow" />
+      <PayModal v-if="payModal" :servicedataModal="serviceData" @close="payShow"/>
       <div class="service-info section">
           <div class="image-join">
               <img :src="serviceData.imgUrl" alt="">
           </div>
           <div class="info">
-              <div>
-                <p class="mobile"><i class="fas fa-won-sign"></i>가격</p>
-                <p class="mobile"><i class="far fa-smile"></i>평점</p>
-                <p class="mobile"><i class="fas fa-map-marker-alt"></i>위치</p>
-                <h1>{{serviceData.servname}}</h1>
+              <div class="sinfo">
+                <div class="mobile">
+                    <i class="fas fa-won-sign"></i>
+                    <div class="container-fluid">
+                        <span v-text="serviceData.price"></span>원
+                    </div>
+                </div>
+                <div class="mobile">
+                    <i class="far fa-smile"></i>
+                    <div class="container-fluid">
+                        <span v-text="point"></span>점
+                    </div>
+                </div>
+                <div class="mobile">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div class="container-fluid">
+                        <span v-text="addr"></span>
+                    </div>
+                </div>
+                <h1 class="title">{{serviceData.servname}}</h1>
                 <hr>
                 <div class="web price">
                     <span class="label"><i class="fas fa-won-sign"></i> 가격</span>
@@ -28,7 +44,7 @@
             <div v-if="!isOwner">
             <div class="buttons">
               <Button @click.native="msgShow" buttonText="문의하기" />
-              <Button buttonText="신청하기" />
+              <Button @click.native="payShow" buttonText="신청하기" />
             </div>
             </div>
             <div v-else>
@@ -42,6 +58,9 @@
           <hr>
           <p v-html="serviceData.description"> </p>
       </div>
+      <!-- <div v-if="serviceData.payed">
+          <Button buttonText="작성" @click.native="onchangeReview"/>
+      </div> -->
       <div class="review section">
           <h2>리뷰</h2>
           <hr>
@@ -56,23 +75,25 @@ import ReviewList from '@/components/service/ReviewList.vue'
 import HTTP from "@/util/http-common.js"
 import axios from 'axios'
 import MessageModal from '@/components/modal/MessageModal.vue'
-
+import PayModal from '@/components/modal/PayModal.vue'
 export default {
     name: 'ServiceDetail',
     props: {
         recivername: String,
         Sendtype: Number,
+        servicedataModal: Object
     },
     data() {
         return {
             messageModal: false,
+            payModal:false,
             isOwner:false,
             proname: "",
             sendtype: "",
             userno: "",
             serviceId: 0,
             serviceData: {
-                 servname :"",
+                servname :"",
                 price : "",
                 saddr1 : "",
                 saddr2 : "",
@@ -93,11 +114,16 @@ export default {
         Button,
         ReviewList,
         MessageModal,
+        PayModal,
     },
     methods:{
+       payShow(){
+            this.payModal = !this.payModal
+
+       },
         msgShow(){
             this.messageModal = !this.messageModal
-            this.sendtype = 1
+            this.sendtype = 1   
         },
         onchangePage(){
             this.$router.push(`/services/${this.$route.params.service_id}/modify`)
@@ -115,7 +141,7 @@ export default {
         }
     },
     created() {
-        document.querySelector('#sidebar').style.height = document.querySelector('#view').style.height
+        this.$emit('sidebar')
         if(this.$store.getters.getUserData === null){
             this.userno = 0;    
         } else{
@@ -167,13 +193,13 @@ export default {
         padding: 20px;
         /* border: 1px solid black; */
     }
-    .service-info {
+    #service-detail .service-info {
         display: block;
     }
-    #service-detail img {
+    #service-detail .image-join img {
         object-fit: cover;
         max-width: 100%;
-        min-height: 200px;
+        max-height: 200px;
         display: block;
         margin: auto;
         /* width: 350px;
@@ -183,10 +209,10 @@ export default {
         font-size: 1.5rem;
     }
     #service-detail .image-join{
-        display: block;
+        display: flex;
         text-align: center;
-        padding: 30px;
         border: 1px solid gray;
+        max-height: 200px;
     }
     /* #service-detail .price {
         text-align: center;
@@ -199,13 +225,32 @@ export default {
     #service-detail .web {
         display: none;
     }
+    #service-detail .info {
+        margin-top: 30px;
+    }
     #service-detail .info h1 {
         text-align: center;
     }
     #service-detail .section {
         margin-bottom: 50px;
     }
-
+    #service-detail .mobile {
+        margin: 10px 0 10px 0;
+        padding: 0 50px 0 50px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    #service-detail .mobile > div {
+        text-align: center;
+    }
+    #service-detail .info .buttons button {
+        margin: 10px 0 10px 0;
+    }
+    #service-detail h1 {
+        margin-top: 40px;
+    }
     #service-detail .info i {
         width: 30px;
     }
@@ -216,11 +261,16 @@ export default {
         #service-detail .mobile {
             display: none;
         }
+        
         #service-detail .service-info {
             display: flex;
         }
         #service-detail .image-join {
             width: 50%;
+            max-height: 450px;
+        }
+        #service-detail .image-join img {
+            max-height: 100%;
         }
         #service-detail .info {
             padding: 30px 60px 30px 60px;

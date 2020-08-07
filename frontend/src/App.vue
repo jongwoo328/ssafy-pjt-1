@@ -3,7 +3,7 @@
     <Navbar/>
     <Sidebar/>
     <div id="view">
-      <router-view/>
+      <router-view @sidebar="sidebar" />
     </div>
   </div>
 </template>
@@ -16,6 +16,14 @@ export default {
   components: {
     Navbar,
     Sidebar
+  },
+  methods: {
+    sidebar() {
+      const sidebar = document.querySelector('div#sidebar')
+        if (sidebar) {
+          sidebar.setAttribute('style', `height: ${document.querySelector('div#view').scrollHeight}px`)
+        }
+    }
   }
 }
 </script>

@@ -53,7 +53,7 @@ export default {
     }
   },
   created(){
-      
+        this.$emit('sidebar')
         axios.get(`${HTTP.BASE_URL}/service/main`)
         .then(res => {
             console.log(res)
