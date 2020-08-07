@@ -34,6 +34,7 @@ import com.web.curation.model.Search;
 import com.web.curation.service.PayService;
 import com.web.curation.service.ReviewService;
 import com.web.curation.service.ServiceService;
+import com.web.curation.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -53,6 +54,9 @@ public class ServiceController {
 	
 	@Autowired
 	ReviewService rev;
+	
+	@Autowired
+	UserService userService;
 	
 	@ApiOperation(value = "서비스 정보 반환", response = ConnectorService.class)
 	@GetMapping("/{userno}")
@@ -125,6 +129,7 @@ public class ServiceController {
 				System.out.println("결제 내역 없음");
 			}
 			serv.setPayCount(pay.payCount(serv.getServno()));
+			serv.setProname(userService.getUserByUserno(serv.getUserno()).getName());
 			return new ResponseEntity<ConnectorService>(serv, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>(FAIL, HttpStatus.OK);

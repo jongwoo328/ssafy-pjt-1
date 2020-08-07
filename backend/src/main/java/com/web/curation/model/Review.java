@@ -9,7 +9,16 @@ public class Review {
 	private String content;
 	private int point;
 	private String cdate;
+	private String imgurl;
 	
+	public String getImgurl() {
+		return imgurl;
+	}
+
+	public void setImgurl(String imgurl) {
+		this.imgurl = imgurl;
+	}
+
 	public Review() {
 		
 	}

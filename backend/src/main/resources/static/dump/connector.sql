@@ -267,7 +267,7 @@ CREATE TABLE `pay` (
 
 LOCK TABLES `pay` WRITE;
 /*!40000 ALTER TABLE `pay` DISABLE KEYS */;
-INSERT INTO `pay` VALUES (6,17,4,'2020-08-06 15:27:12'),(7,17,15,'2020-08-06 15:27:13'),(8,15,1,'2020-08-06 15:27:20'),(9,15,2,'2020-08-06 15:27:21'),(10,15,3,'2020-08-06 15:27:22'),(11,15,4,'2020-08-06 15:27:23'),(12,18,1,'2020-07-30 15:00:00'),(13,11,1,'2020-07-30 16:00:00');
+INSERT INTO `pay` VALUES (6,17,4,'2020-08-06 15:27:12'),(7,17,15,'2020-08-06 15:27:13'),(12,18,1,'2020-07-30 15:00:00'),(13,11,1,'2020-07-30 16:00:00');
 /*!40000 ALTER TABLE `pay` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -286,7 +286,7 @@ CREATE TABLE `profile` (
   PRIMARY KEY (`pno`),
   KEY `userno` (`userno`),
   CONSTRAINT `profile_ibfk_1` FOREIGN KEY (`userno`) REFERENCES `user` (`userno`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -295,8 +295,40 @@ CREATE TABLE `profile` (
 
 LOCK TABLES `profile` WRITE;
 /*!40000 ALTER TABLE `profile` DISABLE KEYS */;
-INSERT INTO `profile` VALUES (4,1,'tsetsetse','1595925053807main1.jpg'),(9,14,'안녕하세요.\n(구) CONNECTOR LOGO 입니다.','1596165913265logo_mini.jpg'),(10,13,'asdf','1596176219142main1.jpg'),(12,6,'<p>kkkkk</p><p>serq</p>','1596687865223main1.jpg'),(13,16,'<p>fsdafsdafsdafsdfdsafsafsdaf</p><p>asdfa</p><p>jihoon</p><p>good</p>','1596628363116반명함.jpg'),(14,15,'<p>소개</p><p>입니다</p><p>소개</p><p>입니다</p><p>소개</p><p>입니다</p><p>소개</p><p>입니다</p><p>소개</p><h1>입니다</h1><h1>소개</h1><h1>입니다</h1>','1596500489834LogoMakr.png');
+INSERT INTO `profile` VALUES (4,1,'tsetsetse','1595925053807main1.jpg'),(9,14,'안녕하세요.\n(구) CONNECTOR LOGO 입니다.','1596165913265logo_mini.jpg'),(10,13,'<p>asde</p>','15967067788338DB442E8-D441-4562-AD2D-BA58F8BA27F6.jpeg'),(12,6,'<p>kkkkk</p><p>serq</p>','1596687865223main1.jpg'),(13,16,'<p>fsdafsdafsdafsdfdsafsafsdaf</p><p>asdfa</p><p>jihoon</p><p>good</p>','1596628363116반명함.jpg'),(14,15,'<p>소개</p><p>입니다</p><p>소개</p><p>입니다</p><p>소개</p><p>입니다</p><p>소개</p><p>입니다</p><p>소개</p><h1>입니다</h1><h1>소개</h1><h1>입니다</h1>','1596500489834LogoMakr.png'),(15,19,'<p>양산 사람 입니다.</p>','1596707431909profile_default.png');
 /*!40000 ALTER TABLE `profile` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `qna`
+--
+
+DROP TABLE IF EXISTS `qna`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `qna` (
+  `qnano` int NOT NULL AUTO_INCREMENT,
+  `userno` int NOT NULL,
+  `qtitle` varchar(100) DEFAULT NULL,
+  `qcontent` varchar(8000) DEFAULT NULL,
+  `awriter` varchar(20) DEFAULT NULL,
+  `acontent` varchar(7000) DEFAULT NULL,
+  `qdate` datetime DEFAULT NULL,
+  `adate` datetime DEFAULT NULL,
+  PRIMARY KEY (`qnano`),
+  KEY `FK_USER_TO_QNA_1` (`userno`),
+  CONSTRAINT `FK_USER_TO_QNA_1` FOREIGN KEY (`userno`) REFERENCES `user` (`userno`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `qna`
+--
+
+LOCK TABLES `qna` WRITE;
+/*!40000 ALTER TABLE `qna` DISABLE KEYS */;
+INSERT INTO `qna` VALUES (1,15,'qna','<p>testasdfasdf</p>',NULL,NULL,'2020-08-06 19:38:11',NULL);
+/*!40000 ALTER TABLE `qna` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -319,7 +351,7 @@ CREATE TABLE `review` (
   KEY `FK_SERVICE_TO_REVIEW_1` (`servno`),
   CONSTRAINT `FK_SERVICE_TO_REVIEW_1` FOREIGN KEY (`servno`) REFERENCES `service` (`servno`) ON DELETE CASCADE,
   CONSTRAINT `FK_USER_TO_REVIEW_1` FOREIGN KEY (`userno`) REFERENCES `user` (`userno`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -328,7 +360,7 @@ CREATE TABLE `review` (
 
 LOCK TABLES `review` WRITE;
 /*!40000 ALTER TABLE `review` DISABLE KEYS */;
-INSERT INTO `review` VALUES (14,14,8,'aaaa','aaaaaa',2,'2020-08-04 21:51:15'),(15,14,9,'aaaa','aaaaaa',1,'2020-08-04 21:51:21');
+INSERT INTO `review` VALUES (14,14,8,'aaaa','aaaaaa',2,'2020-08-04 21:51:15'),(15,14,9,'aaaa','aaaaaa',1,'2020-08-04 21:51:21'),(18,16,9,'하하하하하하','하하하하',5,'2020-08-06 18:36:39');
 /*!40000 ALTER TABLE `review` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -367,7 +399,7 @@ CREATE TABLE `service` (
 
 LOCK TABLES `service` WRITE;
 /*!40000 ALTER TABLE `service` DISABLE KEYS */;
-INSERT INTO `service` VALUES (5,1,1,'fasdfsda',321321312,'<p>testset</p>','11','서울특별시','11110','종로구','1111014600','가회동','1596517084081구미_1반_주재성.PNG'),(8,16,1,'test',1111,'<p>1111</p>','42','강원도','42770','정선군','4277034022','북평면','null.png'),(9,16,1,'432423',423432,'<p>3131312</p>','41','경기도','41133','성남시 중원구','4113310300','금광동','null.png'),(11,2,1,'수학 과외',300000,'수학 일타 강사 과외 하실 분','11','서울특별시','11110','종로구','1111014600','가회동','null.png'),(12,2,1,'과학 과외',200000,'과학 일타 강사 과외 하실 분','11','서울특별시','11110','종로구','1111014600','가회동','null.png'),(13,4,1,'영어 과외',350000,'하버드 대학 출신 영어 강사 과외 합니다','11','서울특별시','11110','종로구','1111014600','가회동','null.png'),(14,4,1,'Spring 강의',70000,'Spring 고수가 될 준비 되셨습니까','11','서울특별시','11110','종로구','1111014600','가회동','null.png'),(15,16,1,'재성이의 엎어치기 한판',120000,'<p>재성이의 어 어치기한판 유도</p>','27','대구광역시','27230','북구','2723012200','국우동','null.png'),(17,6,1,'내가 바로 재성이다',300000,'<p>ㄹㅇㅁㄴㄹㄴㅇㅁ</p>','11','서울특별시','11110','종로구','1111014600','가회동','1596691775007logo_mini.jpg'),(18,4,5,'Spring 강의',70000,'Spring 고수가 될 준비 되셨습니까','11','서울특별시','11110','종로구','1111014600','가회동','null.png');
+INSERT INTO `service` VALUES (5,1,1,'fasdfsda',321321312,'<p>testset</p>','11','서울특별시','11110','종로구','1111014600','가회동','1596517084081구미_1반_주재성.PNG'),(8,16,1,'test',1111,'<p>1111</p>','42','강원도','42770','정선군','4277034022','북평면','null.png'),(9,16,1,'432423',423432,'<p>3131312</p>','41','경기도','41133','성남시 중원구','4113310300','금광동','null.png'),(11,2,1,'수학 과외',300000,'수학 일타 강사 과외 하실 분','11','서울특별시','11110','종로구','1111014600','가회동','null.png'),(12,2,1,'과학 과외',200000,'과학 일타 강사 과외 하실 분','11','서울특별시','11110','종로구','1111014600','가회동','null.png'),(13,4,1,'영어 과외',350000,'하버드 대학 출신 영어 강사 과외 합니다','11','서울특별시','11110','종로구','1111014600','가회동','null.png'),(14,4,1,'Spring 강의',70000,'Spring 고수가 될 준비 되셨습니까','11','서울특별시','11110','종로구','1111014600','가회동','null.png'),(17,6,1,'내가 바로 재성이다',300000,'<p>ㄹㅇㅁㄴㄹㄴㅇㅁ</p>','11','서울특별시','11110','종로구','1111014600','가회동','1596691775007logo_mini.jpg'),(18,4,5,'Spring 강의',70000,'Spring 고수가 될 준비 되셨습니까','11','서울특별시','11110','종로구','1111014600','가회동','null.png');
 /*!40000 ALTER TABLE `service` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -416,7 +448,7 @@ CREATE TABLE `user` (
   `addr6` varchar(20) DEFAULT NULL,
   `ispro` tinyint(1) DEFAULT NULL,
   PRIMARY KEY (`userno`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -425,7 +457,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'jljh6619@naver.com','GGRCSGWI','hellos','01029345344','11','서울특별시','11290','성북구','11','동소문동5가',0),(2,'asdfdsf@naver.com','@qhdks123','hellos1s','01029345344','11','서울특별시','11290','성북구','11','동소문동5가',0),(3,'vqsc@naver.com','@qhdks123','dncldk','10234823489','11','서울특별시','11320','도봉구','11','방학동',1),(4,'hi@naver.com','@qhdks123','hihihi','asdsad@naver.com','11','서울특별시','11470','양천구',NULL,NULL,0),(5,'qweasdzxc@naver.com','@qhdks123','vnsdfl','01012341234','11','서울특별시','11530','구로구',NULL,'개봉동',0),(6,'hello@naver.com','@qhdks123','hellow','12312331233','11','서울특별시','11170','용산구',NULL,'동자동',0),(7,'zse@naver.com','@qhdks123','zsescqs','12312312323123','11','서울특별시','11215','광진구',NULL,'군자동',0),(8,'asd@naver.com','@qhdks123','asdaqwe','00000000000','26','부산광역시','26230','부산진구',NULL,'범천동',0),(9,'mypage@naver.com','@qhdks123','stebiaaa','01012341234','11','서울특별시','11320','도봉구','11','도봉동',0),(10,'azzz@naver.com','@qhdks123','stebiaab','01012341234','11','서울특별시','11350','노원구','1135010500','상계동',0),(11,'asdasd@naver.com','@qhdks123','ansk','01012341234','50','제주특별자치도','50110','제주시','5011012700','도두일동',0),(12,'qweqwe@naver.com','@qhdks123','stebia','10123123123','28','인천광역시','28260','서구','2826010600','연희동',0),(13,'cjs1216@gmail.com','wnwotjd123','jays','01067588577','27','대구광역시','27230','북구','2723011100','산격동',0),(14,'wotjd384@naver.com','LRYI7O2R','test123','01067588577','47','경상북도','47190','구미시','4719012300','진평동',1),(15,'jongwoo328@gmail.com','testuser123','jongwoo','01041638662','47','경상북도','47190','구미시','4719012300','진평동',1),(16,'pjh5884@naver.com','jh050305','박지훈','01099564512','41','경기도','41135','성남시 분당구','4113510500','서현동',0),(17,'pjh451200@gmail.com','jh050305','박지훈1','01099564512','11','서울특별시','11110','종로구','1111014600','가회동',1),(18,'admin@gmail.com','admin123','관리자','000-0000-0000','11','서울특별시','11110','종로구','1111014600','가회동',0);
+INSERT INTO `user` VALUES (1,'jljh6619@naver.com','GGRCSGWI','hellos','01029345344','11','서울특별시','11290','성북구','11','동소문동5가',0),(2,'asdfdsf@naver.com','@qhdks123','hellos1s','01029345344','11','서울특별시','11290','성북구','11','동소문동5가',0),(3,'vqsc@naver.com','@qhdks123','dncldk','10234823489','11','서울특별시','11320','도봉구','11','방학동',1),(4,'hi@naver.com','@qhdks123','hihihi','asdsad@naver.com','11','서울특별시','11470','양천구',NULL,NULL,0),(5,'qweasdzxc@naver.com','@qhdks123','vnsdfl','01012341234','11','서울특별시','11530','구로구',NULL,'개봉동',0),(6,'hello@naver.com','@qhdks123','hellow','12312331233','11','서울특별시','11170','용산구',NULL,'동자동',0),(7,'zse@naver.com','@qhdks123','zsescqs','12312312323123','11','서울특별시','11215','광진구',NULL,'군자동',0),(8,'asd@naver.com','@qhdks123','asdaqwe','00000000000','26','부산광역시','26230','부산진구',NULL,'범천동',0),(9,'mypage@naver.com','@qhdks123','stebiaaa','01012341234','11','서울특별시','11320','도봉구','11','도봉동',0),(10,'azzz@naver.com','@qhdks123','stebiaab','01012341234','11','서울특별시','11350','노원구','1135010500','상계동',0),(11,'asdasd@naver.com','@qhdks123','ansk','01012341234','50','제주특별자치도','50110','제주시','5011012700','도두일동',0),(12,'qweqwe@naver.com','@qhdks123','stebia','10123123123','28','인천광역시','28260','서구','2826010600','연희동',0),(13,'cjs1216@gmail.com','wnwotjd123','jays','01067588577','27','대구광역시','27230','북구','2723011100','산격동',0),(14,'wotjd384@naver.com','LRYI7O2R','test123','01067588577','47','경상북도','47190','구미시','4719012300','진평동',1),(15,'jongwoo328@gmail.com','testuser123','jongwoo','01041638662','47','경상북도','47190','구미시','4719012300','진평동',1),(16,'pjh5884@naver.com','jh050305','박지훈','01099564512','41','경기도','41135','성남시 분당구','4113510500','서현동',0),(17,'pjh451200@gmail.com','jh050305','박지훈1','01099564512','11','서울특별시','11110','종로구','1111014600','가회동',1),(18,'admin@gmail.com','admin123','관리자','000-0000-0000','11','서울특별시','11110','종로구','1111014600','가회동',0),(19,'god85a@naver.com','489489awe','허진기','01022673635','47','경상북도','47190','구미시','4719012300','진평동',0);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -438,4 +470,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-08-06 16:19:58
+-- Dump completed on 2020-08-06 19:47:43
