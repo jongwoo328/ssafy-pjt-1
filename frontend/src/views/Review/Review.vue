@@ -40,7 +40,11 @@ export default {
       temp:false,
       starsize : 50
     };
-},methods: {
+},
+created() {
+  this.$emit('sidebar')
+},
+methods: {
     onCreate() {
       let reviewData ={
         'servno' : `${this.$route.params.service_id}`,

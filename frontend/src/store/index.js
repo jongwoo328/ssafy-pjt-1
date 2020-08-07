@@ -12,6 +12,7 @@ export default new Vuex.Store({
   state: {
     isLoggedIn: false,
     userData: null,
+    sidebar: false,
   },
   mutations: {
     login(state, userData) {
@@ -21,6 +22,9 @@ export default new Vuex.Store({
     logout(state) {
       state.isLoggedIn = false
       state.userData = null
+    },
+    switchSidebar(state) {
+      state.sidebar = !state.sidebar
     }
   },
   actions: {
@@ -43,6 +47,9 @@ export default new Vuex.Store({
     },
     isAdmin(state) {
       return state.userData.checkadmin
+    },
+    sidebarState(state) {
+      return state.sidebar
     }
   }
 })

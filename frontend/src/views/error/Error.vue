@@ -19,6 +19,9 @@ export default {
             default: "unknown"
         }
     },
+    created() {
+        this.$emit('sidebar')
+    },
     data() {
         return {
             httpStatus: {

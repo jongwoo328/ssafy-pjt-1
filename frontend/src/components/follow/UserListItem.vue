@@ -75,7 +75,7 @@ export default {
                 const userList = document.querySelectorAll('.user-list-item')
                 userList.forEach(user => {
                     console.log(user.dataset)
-                    if (user.dataset.userno == this.user.userno && user.dataset.follower === true) {
+                    if (user.dataset.userno == this.user.userno && user.dataset.follower === undefined) {
                         console.log(user)
                         user.style.display = "none"
                     }
