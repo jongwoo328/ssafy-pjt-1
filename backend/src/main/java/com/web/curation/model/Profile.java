@@ -1,15 +1,19 @@
 package com.web.curation.model;
 
+import java.util.List;
+
 public class Profile {
 	private int pno;
 	private int userno;
 	private String comment;
 	private String imgurl;
-	
+	private List<ConnectorService> servList;
 	
 	public Profile() {
 		
 	}
+	
+	
 	
 	public Profile(int pno, int userno, String comment ,String imgurl) {
 		this.pno = pno;
@@ -43,6 +47,22 @@ public class Profile {
 	public void setImgurl(String imgurl) {
 		this.imgurl = imgurl;
 	}
+
+	
+
+
+
+	public List<ConnectorService> getServList() {
+		return servList;
+	}
+
+
+
+	public void setServList(List<ConnectorService> servList) {
+		this.servList = servList;
+	}
+
+
 
 	@Override
 	public String toString() {
