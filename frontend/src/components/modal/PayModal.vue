@@ -5,35 +5,19 @@
         <div class="modal-wrapper">
             <div class="modal-container">
 
-            <div class="modal-header">
-                <slot name="header">
-                    <p>결제서비스</p>
-                </slot>
+            <div class="modal-header"> 
+                <h3>Payment</h3>
+                <button type="button" class="close" data-dismiss="modal" @click="modalclose">×</button>
             </div>
-
             <div class="modal-body">
                 <slot name="body">
-                <label>서비스명 : </label>
-                <p>{{service.servname}}</p>
-                <label>가격 : </label>
-                <p>{{service.price}}</p>
-      
-
-
+                <p><span>서비스명 : </span><span>{{service.servname}}</span></p>
+                <p><span>결제금액 : </span><span>{{service.price}}</span></p>
                 </slot>
             </div>
-
             <div class="modal-footer">
                 <slot name="footer">
-                <Button class="btn_1" type="submit" button-text="결제하기" @click.native="payed"/>
-                <Button @click="$emit('close')"/>
-                default footer
-                <button @click.native ="payed" >
-                    확인
-                </button>
-                <button class="modal-default-button" @click="$emit('close')">
-                    취소
-                </button>
+                  <Button class="btn_1" type="submit" button-text="결제" @click.native="payed"/>
                 </slot>
             </div>
             </div>
@@ -46,14 +30,17 @@
 <script>
 
 import Button from '@/components/common/Button.vue'
-// import HTTP from "@/util/http-common.js"
+import HTTP from "@/util/http-common.js"
+import axios from 'axios'
+
 export default {
     components:{
         Button
     },
     data(){
         return {
-            service:[]
+            service:[],
+            payData:[]
         }
     },
     props:{
@@ -64,6 +51,24 @@ export default {
        console.log(this.service) 
     },
     methods:{
+      payed(){
+        this.payData={
+          'userno' : `${this.$store.getters.getUserData.userno}`,
+          'servno' : `${this.$route.params.service_id}`
+        }
+        console.log(this.payData)
+        axios.post(`${HTTP.BASE_URL}/pay`,this.payData)
+        .then(res=>{
+          console.log(res)
+          
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+      },
+      modalclose () {
+      this.$emit('close')
+    }
         // axios.post()    
     }
 
@@ -71,6 +76,14 @@ export default {
 </script>
 
 <style scoped>
+  #PayModal hr {
+    margin-top: 0;
+  }
+  span{
+    font-size : 14px;
+    text-align : right;
+    font-weight : bolder
+  }
     /* model */
   .modal-mask {
     position: fixed;
