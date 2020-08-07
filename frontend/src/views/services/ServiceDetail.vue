@@ -4,7 +4,10 @@
       <PayModal v-if="payModal" :servicedataModal="serviceData" @close="payShow"/>
       <div class="service-info section">
           <div class="image-join">
-              <img :src="serviceData.imgUrl" alt="">
+              <transition>
+                <img v-show="isLoaded" :src="serviceData.imgUrl" alt="" @load="onImgLoad">
+              </transition>
+              <img v-show="!isLoaded" src="@/assets/loading2.gif" alt="loading...">
           </div>
           <div class="info">
               <div class="sinfo">
@@ -88,6 +91,7 @@ export default {
             messageModal: false,
             payModal:false,
             isOwner:false,
+            isLoaded: false,
             proname: "",
             sendtype: "",
             userno: "",
@@ -117,7 +121,10 @@ export default {
         PayModal,
     },
     methods:{
-       payShow(){
+        onImgLoad(){
+            this.isLoaded = true
+        },
+        payShow(){
             this.payModal = !this.payModal
 
        },
