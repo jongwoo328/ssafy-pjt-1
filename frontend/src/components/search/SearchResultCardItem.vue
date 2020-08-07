@@ -17,7 +17,7 @@
                  <Badge 
                 badgeColor="blueviolet"
                 badgeText="USER"
-                :badgeCount="0" />
+                :badgeCount="service.payCount" />
             </div>
         </div>
       </div>

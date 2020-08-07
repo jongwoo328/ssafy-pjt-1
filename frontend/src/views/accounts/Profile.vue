@@ -102,13 +102,23 @@ export default {
     mounted() {
         setTimeout(() => {
             console.log('test')
-            axios.get(`${HTTP.BASE_URL}/profile/${this.$store.getters.getUserData.userno}`)
+            axios.get(`${HTTP.BASE_URL}/profile/${this.$route.params.username}`)
             .then(res => {
                 console.log(res)
                 this.profileData = {
                     imgUrl: `${HTTP.BASE_URL}/` + res.data.imgurl,
                     comment: res.data.comment
                 }
+                this.services = res.data.servList
+                console.log(this.services.imgurl)
+                if (res.data.pno == 0) {
+                    this.isProfile=false
+                }
+                else {
+                    this.isProfile=true
+                }
+                console.log(1)
+                console.log(this.services[0].payCount)
                 console.log(this.profileData.imgUrl)
                 console.log(this.profileData.comment)
                 if (res.data === 'fail') {

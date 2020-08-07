@@ -64,7 +64,7 @@ export default {
 
         if (this.urltype) {
           console.log('test')
-          axios.get(`${HTTP.BASE_URL}/profile/${this.$store.getters.getUserData.userno}`)
+          axios.get(`${HTTP.BASE_URL}/profile/${this.$store.getters.getUserData.name}`)
           .then(res => {
               this.profileframe = false
               console.log(res)  
