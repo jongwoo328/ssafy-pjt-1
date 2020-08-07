@@ -61,6 +61,7 @@ export default {
         }
     },
     created() {
+        this.$emit('sidebar')
         axios.get(`${URL.BASE_URL}/follow/following/${this.$store.getters.getUserData.userno}`)
         .then(res => {
             console.log(res)

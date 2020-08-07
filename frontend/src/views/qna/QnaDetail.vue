@@ -85,6 +85,7 @@ export default {
       }
     },
     created() {
+      this.$emit('sidebar')
       axios.get(`${URL.BASE_URL}/qna/detail/${this.qnaNumber}`)
       .then(res => {
         console.log(res)

@@ -45,6 +45,7 @@ export default {
     };
 },
     created() {
+      this.$emit('sidebar')
     axios
       .get(`${URL.BASE_URL}/review/${this.no}`)
       .then(({ data }) => {

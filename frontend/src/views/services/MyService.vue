@@ -32,6 +32,7 @@ export default {
 
     },
     created() {
+        this.$emit('sidebar')
         axios.get(`${HTTP.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
         .then(res => {
             console.log(res)

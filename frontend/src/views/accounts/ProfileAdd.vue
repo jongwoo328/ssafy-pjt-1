@@ -58,6 +58,7 @@ export default {
       ProfileFrame
     },
     created() {
+      this.$emit('sidebar')
         if (this.$route.params.type === "update") this.urltype = true
         else this.urltype = false
 

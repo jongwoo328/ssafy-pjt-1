@@ -19,6 +19,14 @@ import SidebarCardList from './SidebarCardList.vue'
 
 export default {
     name: 'Sidebar',
+    watch: {
+        getSidebar() {
+            const sidebar = document.querySelector('div#sidebar')
+            if (sidebar) {
+                sidebar.style.height = window.screen.availHeight
+            }
+        }
+    },
     data() {
         return {
             eventList: [
@@ -35,12 +43,6 @@ export default {
             ]
         }
     },
-    created() {
-        const sidebar = document.querySelector('#sidebar')
-        if (sidebar) {
-            sidebar.style.height = document.querySelector('#view').style.height
-        }
-    },
     computed: {
         toMyProfile(){
             return `/accounts/${this.$store.getters.getUserData.name}`
@@ -50,6 +52,9 @@ export default {
         },
         toMyFollow() {
             return this.toMyProfile + '/follow'
+        },
+        getSidebar() {
+            return this.$store.getters.getSidebar
         }
     },
     components: {

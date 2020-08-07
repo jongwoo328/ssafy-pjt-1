@@ -129,6 +129,7 @@ export default {
     }
   },
      created() {
+         this.$emit('sidebar')
          axios.get(`${HTTP.BASE_URL}/fselect/cate`,HTTP.JSON_HEADER) 
           .then(res => {
             for(let category in res.data){

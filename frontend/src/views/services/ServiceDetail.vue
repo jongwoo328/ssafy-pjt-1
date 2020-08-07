@@ -130,10 +130,7 @@ export default {
         }
     },
     created() {
-        const sidebar = document.querySelector('#sidebar')
-        if (sidebar) {
-            sidebar.style.height = document.querySelector('#view').style.height
-        }
+        this.$emit('sidebar')
         if(this.$store.getters.getUserData === null){
             this.userno = 0;    
         } else{

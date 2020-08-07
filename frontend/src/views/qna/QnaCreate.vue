@@ -29,6 +29,9 @@ export default {
             qtitle: "",
         }
     },
+    created() {
+        this.$emit('sidebar')
+    },
     methods: {
         postQna() {
             const qnaData = {
