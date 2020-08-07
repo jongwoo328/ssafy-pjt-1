@@ -7,7 +7,7 @@
 
                     <select  class="form-control col-6" name ="category"  v-model="categoryInfo">
                         <option value="" disabled selected>분류</option>
-                        <option v-for="category in categoryList" :key="category.cateno" :value="category_obj" v-text="category.cname" ></option>
+                        <option v-for="category in categoryList" :key="category.cateno" :value="category" v-text="category.cname" ></option>
                     </select>
                 
             </div>
@@ -106,7 +106,7 @@ export default {
             },
             serviceImage:"",
             serviceImageUrl: "",
-            cateno: "1",
+            cateno: "",
             servname:"",
             price:"",
             description:"",
@@ -131,6 +131,9 @@ export default {
          axios.get(`${HTTP.BASE_URL}/fselect/cate`,HTTP.JSON_HEADER) 
           .then(res => {
             for(let category in res.data){
+                if(category==0){
+                    continue;
+                }
                 this.categoryList.push({
                     "cname" : res.data[category]["cname"],
                     "cateno" : res.data[category]["cateno"]
@@ -167,7 +170,7 @@ export default {
              const temp = document.getElementsByClassName('ql-editor')[0]
              this.description = temp.innerHTML
             formData.append('serviceImage', this.serviceImage)
-            formData.append('cateno', this.cateno)
+            formData.append('cateno', this.categoryInfo.cateno)
             formData.append('userno', this.$store.getters.getUserData.userno)
             formData.append('servname', this.servname)
             formData.append('price', this.price)

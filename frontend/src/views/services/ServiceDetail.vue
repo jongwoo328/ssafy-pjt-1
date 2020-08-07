@@ -1,6 +1,7 @@
 <template>
   <div id="service-detail" class="container font-kor">
       <MessageModal v-if="messageModal" :recivername="proname" :Sendtype="sendtype" @close ="msgShow" />
+      <PayModal v-if="payModal" :servicedataModal="serviceData" @close="payShow"/>
       <div class="service-info section">
           <div class="image-join">
               <img :src="serviceData.imgUrl" alt="">
@@ -28,7 +29,7 @@
             <div v-if="!isOwner">
             <div class="buttons">
               <Button @click.native="msgShow" buttonText="문의하기" />
-              <Button buttonText="신청하기" />
+              <Button @click.native="payShow" buttonText="신청하기" />
             </div>
             </div>
             <div v-else>
@@ -42,6 +43,9 @@
           <hr>
           <p v-html="serviceData.description"> </p>
       </div>
+      <!-- <div v-if="serviceData.payed">
+          <Button buttonText="작성" @click.native="onchangeReview"/>
+      </div> -->
       <div class="review section">
           <h2>리뷰</h2>
           <hr>
@@ -56,23 +60,25 @@ import ReviewList from '@/components/service/ReviewList.vue'
 import HTTP from "@/util/http-common.js"
 import axios from 'axios'
 import MessageModal from '@/components/modal/MessageModal.vue'
-
+import PayModal from '@/components/modal/PayModal.vue'
 export default {
     name: 'ServiceDetail',
     props: {
         recivername: String,
         Sendtype: Number,
+        servicedataModal: Object
     },
     data() {
         return {
             messageModal: false,
+            payModal:false,
             isOwner:false,
             proname: "",
             sendtype: "",
             userno: "",
             serviceId: 0,
             serviceData: {
-                 servname :"",
+                servname :"",
                 price : "",
                 saddr1 : "",
                 saddr2 : "",
@@ -93,11 +99,16 @@ export default {
         Button,
         ReviewList,
         MessageModal,
+        PayModal,
     },
     methods:{
+       payShow(){
+            this.payModal = !this.payModal
+
+       },
         msgShow(){
             this.messageModal = !this.messageModal
-            this.sendtype = 1
+            this.sendtype = 1   
         },
         onchangePage(){
             this.$router.push(`/services/${this.$route.params.service_id}/modify`)
