@@ -2,6 +2,7 @@ package com.web.curation.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -130,6 +131,12 @@ public class ServiceController {
 			}
 			serv.setPayCount(pay.payCount(serv.getServno()));
 			serv.setProname(userService.getUserByUserno(serv.getUserno()).getName());
+			if(rev.checkReview(new Review(userno ,serv.getServno())) != null) {
+				serv.setRevwrite(true);
+			} else {
+				serv.setRevwrite(false);
+			}
+			
 			return new ResponseEntity<ConnectorService>(serv, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>(FAIL, HttpStatus.OK);
@@ -237,15 +244,15 @@ public class ServiceController {
 				if(count == 0) {
 					serv.setAvgpoint(0.0);
 				} else {
-					
+
 					serv.setAvgpoint(Math.round((sum/count) * 10) / 10.0);
 				}
 				System.out.println(serv.getAvgpoint());
 				serv.setPayCount(pay.payCount(serv.getServno()));
 			}
-			
-			
-			
+
+
+
 			
 			return new ResponseEntity<List<ConnectorService>>(servList, HttpStatus.OK);
 		} else {
@@ -262,7 +269,9 @@ public class ServiceController {
 		serv.setUserno(Integer.parseInt(request.getParameter("userno")));
 		serv.setCateno(Integer.parseInt(request.getParameter("cateno")));
 		serv.setServname(request.getParameter("servname"));
-		serv.setPrice(Integer.parseInt(request.getParameter("price")));
+		
+		serv.setPrice(request.getParameter("price"));
+		
 		serv.setDescription(request.getParameter("description"));
 		serv.setSaddr1(request.getParameter("saddr1"));
 		serv.setSaddr2(request.getParameter("saddr2"));
@@ -314,7 +323,11 @@ public class ServiceController {
 		service.setCateno(Integer.parseInt(request.getParameter("cateno")));
 		service.setServname(request.getParameter("servname"));
 		service.setServno(Integer.parseInt(request.getParameter("servno")));
-		service.setPrice(Integer.parseInt(request.getParameter("price")));
+		
+		
+		service.setPrice(request.getParameter("price"));
+		
+		
 		service.setDescription(request.getParameter("description"));
 		service.setSaddr1(request.getParameter("saddr1"));
 		service.setSaddr2(request.getParameter("saddr2"));
