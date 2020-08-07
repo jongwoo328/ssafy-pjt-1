@@ -36,7 +36,10 @@ export default {
         }
     },
     created() {
-        document.querySelector('#sidebar').style.height = document.querySelector('#view').style.height
+        const sidebar = document.querySelector('#sidebar')
+        if (sidebar) {
+            sidebar.style.height = document.querySelector('#view').style.height
+        }
     },
     computed: {
         toMyProfile(){
