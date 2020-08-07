@@ -65,7 +65,7 @@ export default {
 </script>
 
 <style>
-    #sidebar .sidebar-link-list {
+    #sidebar, .sidebar-link-list {
         display: none;
     }
     @media (min-width: 768px) {

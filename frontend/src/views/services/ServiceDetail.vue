@@ -11,7 +11,7 @@
                 <div class="mobile">
                     <i class="fas fa-won-sign"></i>
                     <div class="container-fluid">
-                        <span v-text="serviceData.price"></span>원
+                        <span v-text="formattedPrice"></span>원
                     </div>
                 </div>
                 <div class="mobile">
@@ -47,7 +47,7 @@
               <Button @click.native="payShow" buttonText="신청하기" />
             </div>
             </div>
-            <div v-else>
+            <div class="buttons" v-else>
                 <Button buttonText="수정" @click.native="onchangePage" />
               <Button buttonText="삭제" @click.native=" removeService "/>
             </div>
@@ -62,7 +62,10 @@
           <Button buttonText="작성" @click.native="onchangeReview"/>
       </div> -->
       <div class="review section">
-          <h2>리뷰</h2>
+          <div class="review-section">
+            <h2>리뷰</h2>
+            <a @click="createReview">리뷰 작성</a>
+          </div>
           <hr>
           <ReviewList :reviews="review"/>
       </div>
@@ -76,6 +79,8 @@ import HTTP from "@/util/http-common.js"
 import axios from 'axios'
 import MessageModal from '@/components/modal/MessageModal.vue'
 import PayModal from '@/components/modal/PayModal.vue'
+import Common from '@/util/common.js'
+
 export default {
     name: 'ServiceDetail',
     props: {
@@ -91,6 +96,7 @@ export default {
             proname: "",
             sendtype: "",
             userno: "",
+            servno: "",
             serviceId: 0,
             serviceData: {
                 servname :"",
@@ -108,6 +114,12 @@ export default {
             addr: "",
             review: [],
             point : "",
+            revwrite: null,
+        }
+    },
+    computed: {
+        formattedPrice() {
+            return Common.toNumberFormat(this.serviceData.price)
         }
     },
     components: {
@@ -138,6 +150,14 @@ export default {
             .catch(err => {
                 console.log(err)
             })
+        },
+        createReview() {
+            console.log(typeof this.review.revwrite)
+            if (this.revwrite) {
+                alert('이미 작성하신 리뷰가 있습니다.')
+            } else {
+                this.$router.push(`/services/${this.$route.params.service_id}/review/create`)
+            }
         }
     },
     created() {
@@ -150,6 +170,7 @@ export default {
         axios.get(`${HTTP.BASE_URL}/service/detail/servno=${this.$route.params.service_id}&userno=${this.userno}`)
         .then(res =>{
             console.log(res)
+            this.revwrite = res.data.revwrite
             this.proname = res.data.proname,
             this.serviceData ={
                 imgUrl:`${HTTP.BASE_URL}/` + res.data.imgurl,
@@ -205,6 +226,16 @@ export default {
         /* width: 350px;
         height: 350px; */
     }
+    #service-detail .review-section {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items:flex-end;
+    }
+    #service-detail .review-section a:hover {
+        color: rgb(236,128,116);
+        cursor: pointer;
+    }
     #service-detail h1, #service-detail h2 {
         font-size: 1.5rem;
     }
@@ -224,9 +255,6 @@ export default {
     }
     #service-detail .web {
         display: none;
-    }
-    #service-detail .info {
-        margin-top: 30px;
     }
     #service-detail .info h1 {
         text-align: center;
@@ -279,8 +307,12 @@ export default {
             flex-direction: column;
             justify-content: space-between;
         }
-        #service-detail .buttons {
+        #service-detail .info .buttons {
             padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         #service-detail .info button { 
             display: block;                                                                                                                                                                                            
