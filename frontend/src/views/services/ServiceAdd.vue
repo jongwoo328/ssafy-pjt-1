@@ -20,6 +20,7 @@
                 가격 
                 </label>
                 <input class="input-text" type="number" v-model="price" id="serviceprice"/>
+                <p v-text="korNumFormat"></p>
             </div>
             <div class="form-address">
                 <label class="font-kor label-address col-3 col-md-2" >주소</label>
@@ -71,12 +72,18 @@ import HTTP from "@/util/http-common.js"
 import axios from 'axios'
 import Button from '@/components/common/Button.vue'
 import Editor from '@/components/common/Editor.vue'
+import Common from '@/util/common.js'
 
 export default {
     name : 'ServiceAdd',
     components : {
         Button,
         Editor
+    },
+    computed: {
+        korNumFormat() {
+            return Common.toKorNumberFormat(this.price)
+        }
     },
     data(){
         return {
@@ -123,7 +130,7 @@ export default {
       },
          guInfo: function() {
          this.getDongInfo()
-    }
+    },
   },
      created() {
          this.$emit('sidebar')
