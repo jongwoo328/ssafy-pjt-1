@@ -2,14 +2,12 @@
     <div id="servicecreate" class="container">
         <h3>서비스 등록</h3>
         <hr>
-            <div class=" form-group d-flex justify-content-around">
-                <label class="font-kor" >분류</label>
-
-                    <select  class="form-control col-6" name ="category"  v-model="categoryInfo">
-                        <option value="" disabled selected>분류</option>
-                        <option v-for="category in categoryList" :key="category.cateno" :value="category" v-text="category.cname" ></option>
-                    </select>
-                
+            <div class=" form-group">
+                <label class="font-kor" for="category">분류</label>
+                <select  class="form-control " id="category" name ="category"  v-model="categoryInfo">
+                    <option value="" disabled selected>분류</option>
+                    <option v-for="category in categoryList" :key="category.cateno" :value="category" v-text="category.cname" ></option>
+                </select>    
             </div>
             <div class="form-block">
                 <label class="font-kor"  for="servicename"> 
@@ -23,27 +21,27 @@
                 </label>
                 <input class="input-text" type="number" v-model="price" id="serviceprice"/>
             </div>
-            <div  class="form-block d-flex justify-content-around">
-                <label class="font-kor" >
-                주소
-                </label>
-                <select class="form-control" id="exampleFormControlSelect1" v-model="siInfo" >
-                    <option v-if="siInfo" :value="siInfo" v-text="siInfo.siName"></option>
-                    <option v-else value="" disabled selected>시/도</option>
-                    <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName"></option>
-                </select>
-                <div class="d-flex sub-address">
-                <select class="form-control col-6" id="exampleFormControlSelect2" v-model="guInfo">
-                    <option v-if="guInfo" :value="guInfo" v-text="guInfo.guName"></option>
-                    <option v-else value="" disabled selected>구/군</option>
-                    <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
-                </select>
-                <select class="form-control col-6" id="exampleFormControlSelect3" v-model="dongInfo">
-                    <option v-if="dongInfo" :value="dongInfo" v-text="dongInfo.dongName"></option>
-                    <option v-else value="" disabled selected>동/읍/면</option>
-                    <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
-                </select>
-            </div>
+            <div class="form-address">
+                <label class="font-kor label-address col-3 col-md-2" >주소</label>
+                <div class="form-block  col-8">        
+                    <select class="form-control" id="exampleFormControlSelect1" v-model="siInfo" >
+                        <option v-if="siInfo" :value="siInfo" v-text="siInfo.siName"></option>
+                        <option v-else value="" disabled selected>시/도</option>
+                        <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName"></option>
+                    </select>
+                    <div class="form-block sub-address">
+                        <select class="form-control col-6" id="exampleFormControlSelect2" v-model="guInfo">
+                            <option v-if="guInfo" :value="guInfo" v-text="guInfo.guName"></option>
+                            <option v-else value="" disabled selected>구/군</option>
+                            <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
+                        </select>
+                        <select class="form-control col-6" id="exampleFormControlSelect3" v-model="dongInfo">
+                            <option v-if="dongInfo" :value="dongInfo" v-text="dongInfo.dongName"></option>
+                            <option v-else value="" disabled selected>동/읍/면</option>
+                            <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <div class="form-block">
                 <img v-if="serviceImageUrl" :src="serviceImageUrl">
@@ -187,14 +185,18 @@ export default {
             console.log(`${key}`)
             }
             axios.post(`${HTTP.BASE_URL}/service`,formData) 
-                .then(res => {
-                 console.log(res);
-                 this.$router.push("/myservice")
+            .then(res => {
+              setTimeout(() => {
+              console.log(res)
+              alert('등록되었습니다.')
+              this.$router.push("/myservice")
+            },1000)
       })
       .catch(err => {
         console.log(err)
       })
-         },
+
+    },
          getGuInfo() {
                 let si_params = this.siInfo
                 this.guList = []
@@ -239,6 +241,21 @@ export default {
 }
 </script>
 <style scoped>
+    .form-address {
+        display: flex;
+        justify-content: space-between;
+    }
+    .form-control {
+        width: 60%;
+        height: 40px;
+        margin-left: 30px;
+        padding-left: 20px;
+    }
+    .form-group {
+        display: flex;
+        margin-bottom: 25px;
+        justify-content: flex-start;
+    }
     .input-text {
         width: 90%;
         height: 40px;
@@ -249,12 +266,14 @@ export default {
     .form-block {
         display: flex;
         margin-bottom: 25px;
-        justify-content: space-around;
+        justify-content: space-between;
+    }
+    .form-block input{
+        margin-right:30px;
     }
     Button {
         margin-left : 30px;
         margin-top : 30px;
-
     }
     #servicecreate label,textarea{
         display: block;
