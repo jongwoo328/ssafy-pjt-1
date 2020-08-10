@@ -13,10 +13,14 @@ export default {
             type: String,
             default: 'rgb(236,128,116)'
         },
+        textColor: {
+            type: String,
+            default: 'white'
+        }
     },
     computed: {
         color() {
-            return `background-color: ${this.buttonColor};`
+            return `background-color: ${this.buttonColor}; color: ${this.textColor}`
         }
     }
 }
