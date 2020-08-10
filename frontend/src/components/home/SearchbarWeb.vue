@@ -2,33 +2,35 @@
   <div id="join-web" class="font-kor container">
       <h1>검색하세요!</h1>
       <!-- <form class="row search-form"> -->
-          <div class="col-12">
-                <select v-model="categoryInfo" name="category" id="category" class="col-1 search-info">
-                    <option v-for="category in categoryList" :key="category.cname" :value="category" v-text="category.cname" ></option>
-                </select>
-                <input type="text" class="col-7 search-info" v-model="keyword">
-                <Button buttonText="검색" @click.native="SearchInfoemit" />
+          <div class="col-12 search-category">
+            <select v-model="categoryInfo" name="category" id="category" class="col-1 search-info">
+                <option v-for="category in categoryList" :key="category.cname" :value="category" v-text="category.cname" ></option>
+            </select>
+            <input type="text" class="col-5 col-md-7 search-info" v-model="keyword">
+            <Button buttonText="검색" @click.native="SearchInfoemit" />
           </div>
-          <div class="offset-3 col row mt-2">
-              <div v-if="isLogin">
-              <label>전체</label>
-              <input  type="checkbox" v-model="isAll" /> 
-              </div>
-            <select name="si" id="si" class="col-3 search-info" v-model="siInfo">
-                <option v-if="siInfo" :value="siInfo" v-text="siInfo.siName"></option>
-                <option v-else value="" disabled selected>시/도</option>
-                <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName"></option>
-            </select>
-            <select name="gu" id="gu" class="col-3 search-info" v-model="guInfo">
-                  <option v-if="guInfo" :value="guInfo" v-text="guInfo.guName"></option>
-                    <option v-else value="" disabled selected>구/군</option>
-                 <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
-            </select>
-            <select name="dong" id="dong" class="col-3 search-info" v-model="dongInfo">
-                 <option v-if="dongInfo" :value="dongInfo" v-text="dongInfo.dongName"></option>
-                    <option v-else value="" disabled selected>동/읍/면</option>
-                <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
-            </select>
+          <div class="searchaddr mt-3">
+            <div class="checkAll" v-if="isLogin">
+                <label>전체</label>
+                <input  type="checkbox" v-model="isAll" /> 
+            </div>
+            <div class="addr-input row mt-2">
+                <select name="si" id="si" class="col-4 search-info" v-model="siInfo">
+                    <option v-if="siInfo" :value="siInfo" v-text="siInfo.siName"></option>
+                    <option v-else value="" disabled selected>시/도</option>
+                    <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName"></option>
+                </select>
+                <select name="gu" id="gu" class="col-3 search-info" v-model="guInfo">
+                    <option v-if="guInfo" :value="guInfo" v-text="guInfo.guName"></option>
+                        <option v-else value="" disabled selected>구/군</option>
+                    <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
+                </select>
+                <select name="dong" id="dong" class="col-2 search-info" v-model="dongInfo">
+                    <option v-if="dongInfo" :value="dongInfo" v-text="dongInfo.dongName"></option>
+                        <option v-else value="" disabled selected>동/읍/면</option>
+                    <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
+                </select>
+            </div>
           </div>
       <!-- </form> -->
   </div>
@@ -112,35 +114,36 @@ export default {
     }
  },
  watch: {
-        isAll : function(){
-            if(this.isAll){
-        this.siInfo.siName ="시/도",
-        this.siInfo.siCode=null
-        this.guInfo.guName = "구/군",
-        this.guInfo.guCode=null
-        this.dongInfo.dongName="동"
-        this.dongInfo.dongCode=null
-    
-    }else{
-        this.siInfo.siName =  this.$store.getters.getUserData.addr2,
-        this.siInfo.siCode =  this.$store.getters.getUserData.addr1,
-        this.guInfo.guName =  this.$store.getters.getUserData.addr4,
-        this.guInfo.guCode =  this.$store.getters.getUserData.addr3,
-        this.dongInfo.dongName =  this.$store.getters.getUserData.addr6,
-        this.dongInfo.dongCode =  this.$store.getters.getUserData.addr5
-    
-    }
-        },
-        userData : function(){
-            this.$router.go()
-        },
-        siInfo: function() {
+    isAll : function(){
+        if(this.isAll){
+            this.siInfo.siName ="시/도",
+            this.siInfo.siCode=null
+            this.guInfo.guName = "구/군",
+            this.guInfo.guCode=null
+            this.dongInfo.dongName="동"
+            this.dongInfo.dongCode=null
+        
+        }else{
+            this.siInfo.siName =  this.$store.getters.getUserData.addr2,
+            this.siInfo.siCode =  this.$store.getters.getUserData.addr1,
+            this.guInfo.guName =  this.$store.getters.getUserData.addr4,
+            this.guInfo.guCode =  this.$store.getters.getUserData.addr3,
+            this.dongInfo.dongName =  this.$store.getters.getUserData.addr6,
+            this.dongInfo.dongCode =  this.$store.getters.getUserData.addr5
+        
+        }
+    },
+    userData : function(){
+        this.$router.go()
+    },
+    siInfo: function() {
         this.getGuInfo()
-      },
-         guInfo: function() {
-         this.getDongInfo()
+    },
+    guInfo: function() {
+        this.getDongInfo()
     }
-  },methods:{
+  },
+  methods:{
       getGuInfo() {
                 let si_params = this.siInfo
                 this.guList = []
@@ -193,43 +196,58 @@ export default {
 </script>
 
 <style>
+    .searchaddr {
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: flex-end;
+    }
+    .search-category {
+        width: 100%;
+    }
+    .checkAll input{
+        margin: 10px 20px 0 0 ;
+    }
+    .addr-input {
+        min-width: 280px;
+    }
     #join-web {
-        display: none;
+        display: inline-block;
+        margin: 0 0 30px 0;
+        padding-right: 0;
+    }
+    #join-web h1 {
+        display: inline-block;
+        padding-top: 30px;
+    }
+    .search-info {
+        width: 100%;
+        height: 40px;
+        border: 0.8px;
+        border-radius: 0;
+        border-style: none none solid none;
+    }
+    #join-web button {
+        margin-left: 20px;
+        padding: 5px 10px;
+    }
+    #category {
+        min-width: 84px;
+    }
+    #join-web .search-form {
+        width: 100%;
+    }
+    #dong {
+        min-width: 125px;
     }
     @media (min-width: 768px) {
-        #join-web {
+        .searchaddr {
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: center;
+            margin-right: 20%;
+        }
+        .addr-input {
             display: inline-block;
-            margin: 0 auto 30px 0;
-            padding-right: 0;
         }
-        #join-web h1 {
-            display: inline-block;
-            padding-top: 30px;
-        }
-        .search-info {
-            width: 100%;
-            height: 40px;
-            border: 0.8px;
-            border-radius: 0;
-            padding-left: 10px;
-            border-style: none none solid none;
-            /* margin: 10px 5px 10px 5px;
-            border-radius: 7px;
-            height: 50px; */
-        }
-        #join-web button {
-            margin-left: 20px;
-            padding: 5px 10px;
-        }
-        #category {
-            min-width: 84px;
-        }
-        #join-web .search-form {
-            width: 100%;
-        }
-        #dong {
-            min-width: 125px;
-        }
-        
     }
 </style>

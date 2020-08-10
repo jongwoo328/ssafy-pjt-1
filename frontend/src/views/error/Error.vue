@@ -16,7 +16,7 @@ export default {
     name: 'Error',
     props: {
         status: {
-            default: "unknown"
+            default: "404"
         }
     },
     created() {
