@@ -7,7 +7,7 @@ public class ConnectorService {
 	private int userno;
 	private int cateno;
 	private String servname;
-	private int price;
+	private String price;
 	private String description;
 	private String saddr1;
 	private String saddr2;
@@ -21,7 +21,20 @@ public class ConnectorService {
 	private List<Review> rev;
 	private int payCount;
 	private String proname;
+	private boolean revwrite;
 	
+	public boolean isRevwrite() {
+		return revwrite;
+	}
+
+
+
+	public void setRevwrite(boolean revwrite) {
+		this.revwrite = revwrite;
+	}
+
+
+
 	public String getProname() {
 		return proname;
 	}
@@ -64,7 +77,7 @@ public class ConnectorService {
 	
 	
 
-	public ConnectorService(int servno, int userno, int cateno, String servname, int price, String description,
+	public ConnectorService(int servno, int userno, int cateno, String servname, String price, String description,
 			String saddr1, String saddr2, String saddr3, String saddr4, String saddr5, String saddr6, String imgurl,
 			boolean revcheck) {
 		this.servno = servno;
@@ -129,11 +142,11 @@ public class ConnectorService {
 		this.servname = servname;
 	}
 
-	public int getPrice() {
+	public String getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(String price) {
 		this.price = price;
 	}
 

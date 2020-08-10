@@ -28,7 +28,6 @@
 </template>
 
 <script>
-
 import Button from '@/components/common/Button.vue'
 import HTTP from "@/util/http-common.js"
 import axios from 'axios'
@@ -68,13 +67,9 @@ export default {
       },
       modalclose () {
       this.$emit('close')
+      }
     }
-        // axios.post()    
-    }
-
-}
 </script>
-
 <style scoped>
   #PayModal hr {
     margin-top: 0;
@@ -125,16 +120,6 @@ export default {
   .modal-default-button {
     float: right;
   }
-
-  /*
-  * The following styles are auto-applied to elements with
-  * transition="modal" when their visibility is toggled
-  * by Vue.js.
-  *
-  * You can easily play with the modal transition by editing
-  * these styles.
-  */
-
   .modal-enter {
     opacity: 0;
   }
@@ -143,9 +128,4 @@ export default {
     opacity: 0;
   }
 
-  .modal-enter .modal-container,
-  .modal-leave-active .modal-container {
-    -webkit-transform: scale(1.1);
-    transform: scale(1.1);
-  }
 </style>

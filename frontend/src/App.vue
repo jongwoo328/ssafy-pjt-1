@@ -19,10 +19,10 @@ export default {
   },
   methods: {
     sidebar() {
-      const sidebar = document.querySelector('div#sidebar')
-        if (sidebar) {
-          sidebar.setAttribute('style', `height: ${document.querySelector('div#view').scrollHeight}px`)
-        }
+    const sidebar = document.querySelector('div#sidebar')
+      if (sidebar) {
+        sidebar.setAttribute('style', `height: ${document.querySelector('div#view').scrollHeight}px`)
+      }
     }
   }
 }
@@ -34,6 +34,7 @@ export default {
   }
   @media (min-width: 768px) {
     #view {
+      min-height: 100vh;
       margin-left: 200px;
     }
   }

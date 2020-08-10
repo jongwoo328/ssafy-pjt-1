@@ -45,7 +45,8 @@ public class PayController {
 	public ResponseEntity<String> insert(@RequestBody Pay pay){
 		logger.debug("insert - 호출");
 		System.out.println("결제 정보 저장");
-		System.out.println(pay);
+		System.out.println(pay.getServno());
+		System.out.println(pay.getUserno());
 		if(service.insert(pay)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}

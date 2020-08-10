@@ -27,6 +27,12 @@
         where revno = #{revno}
     </select>
     
+    <select id="checkReview" resultType="Review">
+    	select *
+    	from review
+    	where servno = #{servno} and userno = #{userno}
+    </select>
+    
     <update id = "updateReview">
         update review
         set title = #{title},
