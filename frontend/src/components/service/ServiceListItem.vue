@@ -21,12 +21,14 @@
                 :badgeCount="service.payCount" />
             </div>
         </div>
-        <div class="card-desc" v-else>
+        <div class="card-desc pay-card" v-else>
             <span v-text="service.servname" ></span>
             <span v-text="service.pdate"></span>
-            <button >환불</button>
+            <!-- <button id="returnpay" @click="pay">환불</button> -->
+            <Button buttonText="결제취소" v-if="service.cancelcheck" @click.native="pay"></Button>
+            <Button buttonText="취소불가" v-else disabled :buttonColor="color"></Button>
             <div>
-                <span v-text="service.price"></span>
+                <span v-text="service.price+'원'"></span>
             </div>
         </div>
       </div>
@@ -35,28 +37,47 @@
 
 <script>
 import Badge from '@/components/common/Badge.vue'
-import URL from '@/util/http-common.js'
-
+import HTTP from '@/util/http-common.js'
+import axios from 'axios'
+import Button from '@/components/common/Button.vue'
 export default {
     name: 'ServiceListItem',
     data(){
         return{
-            isPay :false
+            isPay :false,
+            color : "blue"
         }
     },
     props: {
         service: Object
     },
     components:{
-        Badge
+        Badge,
+        Button
     },
     computed: {
         getImgUrl() {
             console.log(this.service)
-            return `${URL.BASE_URL}/${this.service.imgurl}`
+            return `${HTTP.BASE_URL}/${this.service.imgurl}`
         },
    
     },methods:{
+        pay(){
+            console.log(this.service.cancelcheck)
+            if(this.service.cancelcheck==true){
+                 axios.delete(`${HTTP.BASE_URL}/pay/${this.service.payno}`)
+                 .then(res=>{
+                     console.log(res)
+                     alert('환불성공')
+                     this.$router.go()
+                 }) 
+                 .catch(err => {
+                console.log(err)
+            }) 
+            }else{
+                document.getElementById('returnpay')
+            }
+        },
         changeDetail(){
             console.log(1)
             this.$router.push(`/services/${this.service.servno}`)
