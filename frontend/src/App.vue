@@ -11,6 +11,8 @@
 <script>
 import Navbar from '@/components/nav/Navbar.vue'
 import Sidebar from '@/components/common/Sidebar.vue'
+import axios from 'axios'
+import URL from '@/util/http-common.js'
 
 export default {
   components: {
@@ -25,6 +27,15 @@ export default {
         console.log(h)
         sidebar.setAttribute('style', `height: ${h}px`)
       }
+
+      axios.get(`${URL.BASE_URL}/msg/count/${this.$store.getters.getUserData.userno}`)
+      .then(res => {
+        console.log(res)
+        this.$store.commit("setMsgCount", res.data)
+      })
+      .catch(err => {
+        console.log(err)
+      })
     }
   }
 }

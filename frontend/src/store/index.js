@@ -25,6 +25,9 @@ export default new Vuex.Store({
     },
     switchSidebar(state) {
       state.sidebar = !state.sidebar
+    },
+    setMsgCount(state, msgcount) {
+      state.userData.msgcount = msgcount
     }
   },
   actions: {

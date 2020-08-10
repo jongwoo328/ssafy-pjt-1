@@ -1,6 +1,6 @@
 <template>
   <div class="navbar-nav"> 
-      <NoticeIcon v-if="isLoggedIn" /> 
+      <NoticeIcon class="notice" v-if="isLoggedIn" @click.native="toMsg" /> 
       <NavbarLinkListItem v-if="!isLoggedIn" value="SignUp" class="signup" @click.native="toSignUp" />
       <NavbarLinkListItem v-if="!isLoggedIn" value="Login" @click.native="changeLogin"/>
       <NavbarLinkListItem v-if="isLoggedIn" value="Logout" @click.native="logout"/>
@@ -36,6 +36,9 @@ export default {
     NoticeIcon
   },
   methods: {
+    toMsg(){
+      this.$router.push({name: "MessageList", params: {msgtype: "rec"}})
+    },
     toSignUp() {
       this.$router.push({name: "SignUp"})
     },
@@ -76,5 +79,8 @@ export default {
     display: flex;
     flex-direction: row;
     margin-right: 10px;
+  }
+  .notice:hover{
+    border-bottom: 3px solid rgb(236,128,116);
   }
 </style>

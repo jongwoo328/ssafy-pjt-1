@@ -62,6 +62,7 @@ export default {
         date: "",
         messageModal: false,
         sendno: "",
+        msgcount: "",
     }
   },
   created() {
