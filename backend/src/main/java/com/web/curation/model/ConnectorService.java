@@ -18,8 +18,8 @@ public class ConnectorService {
 	private String imgurl;
 	private boolean revcheck;
 	private double avgpoint;
-	private List<Review> rev;
 	private int payCount;
+	private List<Review> rev;
 	private String proname;
 	private boolean revwrite;
 	

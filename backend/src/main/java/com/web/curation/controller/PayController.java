@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.web.curation.model.ConnectorService;
 import com.web.curation.model.Pay;
+import com.web.curation.model.Review;
 import com.web.curation.service.PayService;
+import com.web.curation.service.ReviewService;
 import com.web.curation.service.ServiceService;
 
 import io.swagger.annotations.ApiOperation;
@@ -40,6 +42,9 @@ public class PayController {
 	@Autowired
 	private ServiceService serv;
 	
+	@Autowired
+	private ReviewService rev;
+	
 	@ApiOperation(value = "새로운 결제 정보를 입력한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PostMapping
 	public ResponseEntity<String> insert(@RequestBody Pay pay){
@@ -47,6 +52,11 @@ public class PayController {
 		System.out.println("결제 정보 저장");
 		System.out.println(pay.getServno());
 		System.out.println(pay.getUserno());
+		
+		if(service.searchPayed(pay) != null) {
+			return new ResponseEntity<String> ("payed", HttpStatus.OK);
+		}
+		
 		if(service.insert(pay)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
@@ -66,14 +76,33 @@ public class PayController {
 		if(payList != null) {
 			for(Pay p : payList) {
 //				System.out.println(time1);
+				p.setImgurl("img/service/" + serv.detailService(p.getServno()).getImgurl());
+				p.setPayCount(service.payCount(p.getServno()));
 				ConnectorService c = serv.detailService(p.getServno());
 				p.setPrice(c.getPrice());
 				p.setServname(c.getServname());
 				if(p.getPdate().compareTo(time1) > 0) {
-					p.setCancelcheck(true);
-				} else {
 					p.setCancelcheck(false);
+				} else {
+					p.setCancelcheck(true);
 				}
+				
+				List<Review> revList = rev.totalReview();
+				int count = 0;
+				double sum = 0.0;
+				for(Review r : revList) {
+					if(r.getServno() == p.getServno()) {
+						sum += r.getPoint();
+						count++;
+					}
+				}
+				if(count == 0) {
+					p.setAvgpoint(0.0);
+				} else {
+
+					p.setAvgpoint(Math.round((sum/count) * 10) / 10.0);
+				}
+				
 			}
 			
 			return new ResponseEntity<List<Pay>>(payList, HttpStatus.OK);
