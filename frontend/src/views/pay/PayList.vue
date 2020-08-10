@@ -1,5 +1,5 @@
 <template>
-    <div class="container font-kor">
+    <div id="payList" class="container font-kor">
         <div>
             <h3>결제 내역</h3>
             <hr>
@@ -41,3 +41,11 @@ export default {
     },    
 }
 </script>
+<style>
+    #payList {
+        margin-top: 50px;
+    }
+    #payList h3 {
+        font-size: 2rem;
+    }
+</style>
