@@ -6,9 +6,10 @@
     </div>
     <div class="button">
         <Button button-text="쪽지 보내기" @click.native="changeModal" />
+        <Button button-text="전체 선택" @click.native="selectAll" />
     </div>
     <div class="message-list">
-        <MessageListItem v-for="message in messagedata.reverse()" :key="message.msgno" :message="message" />
+        <MessageListItem v-for="message in messagedata" :key="message.msgno" :message="message" />
     </div>
     <messageModal v-if="messagemodal" @close="changeModal"/>
     <Button @click.native="deleteMsg" button-text="삭제" />
@@ -36,12 +37,17 @@ export default {
         message: Array,
     },
     created() {
-        if (this.$route.params.msgtype === "rec") this.urltype = true
-        else this.urltype = false
+        if (this.$route.params.msgtype === "rec") {
+            this.urltype = true
+        }
+        else {
+            this.urltype = false
+        } 
 
         if (this.urltype) {
             axios.get(`${URL.BASE_URL}/msg/rec/${this.$store.getters.getUserData.userno}`)
             .then(res => {
+                console.log(2)
                 console.log(res.data)
                 this.messagedata = res.data
             })
@@ -69,18 +75,67 @@ export default {
         changeModal() {
             this.messagemodal = !this.messagemodal
         },
+        selectAll() {
+            var checkboxList = document.getElementsByClassName('check-box')
+            console.log(checkboxList)
+            checkboxList.forEach(checkbox => {
+                if (checkbox.value=='true') {
+                    if (!this.deleteno.includes(checkbox.dataset.msgno))
+                        this.deleteno.push(checkbox.dataset.msgno)
+                }
+                else {
+                    if (this.deleteno.includes(checkbox.dataset.msgno)) {
+                        const idx = this.deleteno.indexOf(checkbox.dataset.msgno)
+                        this.deleteno.splice(idx,1)
+                    }
+                }
+            })
+
+            if (this.deleteno.length == 0 || this.deleteno.length != this.messagedata.length) {
+                console.log(false)
+                console.log(this.deleteno.length)
+                console.log(this.messagedata.length)
+            }
+            else console.log(true)
+
+        },
         deleteMsg() {
             var checkboxList = document.getElementsByClassName('check-box')
             console.log(checkboxList)
             checkboxList.forEach(checkbox => {
                 if (checkbox.value=='true') {
-                    this.deleteno.push(checkbox.dataset.msgno)
+                    if (!this.deleteno.includes(checkbox.dataset.msgno))
+                        this.deleteno.push(checkbox.dataset.msgno)
+                }
+                else {
+                    if (this.deleteno.includes(checkbox.dataset.msgno)) {
+                        const idx = this.deleteno.indexOf(checkbox.dataset.msgno)
+                        this.deleteno.splice(idx,1)
+                    }
                 }
             })
             // console.log(this.deleteno)
 
-            axios.delete(`${URL.BASE_URL}/msg/rec`, {data: this.deleteno})
-            .then(res => {
+            if (this.urltype) {
+                axios.delete(`${URL.BASE_URL}/msg/rec`, {data: this.deleteno})
+                .then(res => {
+                    console.log(res)
+                    var deleteMsg = document.getElementsByClassName('msg-box')
+                    console.log(deleteMsg)
+                    deleteMsg.forEach(msg => {
+                        console.log(msg.dataset.msgnum)
+                        if (this.deleteno.includes(msg.dataset.msgnum)) {
+                            msg.style.display = "none"
+                        }
+                    })
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+            }
+            else {
+                axios.delete(`${URL.BASE_URL}/msg/send`, {data: this.deleteno})
+               .then(res => {
                 console.log(res)
                 var deleteMsg = document.getElementsByClassName('msg-box')
                 console.log(deleteMsg)
@@ -94,6 +149,7 @@ export default {
             .catch(err => {
                 console.log(err)
             })
+            }
         }
     },
 }
