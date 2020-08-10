@@ -76,16 +76,20 @@ public class PayController {
 		if(payList != null) {
 			for(Pay p : payList) {
 //				System.out.println(time1);
+			
 				p.setImgurl("img/service/" + serv.detailService(p.getServno()).getImgurl());
 				p.setPayCount(service.payCount(p.getServno()));
 				ConnectorService c = serv.detailService(p.getServno());
 				p.setPrice(c.getPrice());
 				p.setServname(c.getServname());
+				System.out.println(time1);
 				if(p.getPdate().compareTo(time1) > 0) {
-					p.setCancelcheck(false);
-				} else {
 					p.setCancelcheck(true);
+				} else {
+					p.setCancelcheck(false);
 				}
+				
+				p.setPdate(p.getPdate().substring(2,10));
 				
 				List<Review> revList = rev.totalReview();
 				int count = 0;
@@ -113,8 +117,10 @@ public class PayController {
 	}
 	
 	@ApiOperation(value = "결제를 취소한다." , response = String.class)
-	@DeleteMapping
-	public ResponseEntity<String> delete(@RequestBody Pay pay){
+	@DeleteMapping("/{payno}")
+	public ResponseEntity<String> delete(@PathVariable int payno){
+		Pay pay = new Pay();
+		pay.setPayno(payno);
 		System.out.println("결제 취소");
 		System.out.println(pay);
 		if(service.cancelPay(pay)) {
