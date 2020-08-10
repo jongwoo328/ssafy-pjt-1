@@ -37,6 +37,9 @@ public class MsgController {
 	@ApiOperation(value = "받은 쪽지 리스트 반환", response = List.class)
 	@GetMapping("/rec/{userno}")
 	public ResponseEntity<List<Msg>> recMsgList(@PathVariable int userno) throws Exception {
+		
+		System.out.println("받은쪽지 받아라");
+		System.out.println(userno);
 		List<Msg> list = msg.selectRecMsg(userno);
 		User reciver = user.getUserByUserno(userno);
 		
@@ -44,6 +47,7 @@ public class MsgController {
 			User sender = user.getUserByUserno(m.getWriterno());
 			m.setWritername(sender.getName());
 			m.setRecivername(reciver.getName());
+			System.out.println(m);
 		}
 		
 		
@@ -140,7 +144,7 @@ public class MsgController {
 	@ApiOperation(value = "보낸 쪽지 삭제", response = String.class)
 	@DeleteMapping("/send")
 	public ResponseEntity<String> deleteSendMsg(@RequestBody List<Integer> msgnoList){
-		
+		System.out.println(msgnoList);
 		if(msg.deleteSendMsg(msgnoList)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}

@@ -50,7 +50,8 @@
     
     <update id="deleteRecMsg" parameterType="map">
     	update msg
-    	set recivcheck = true
+    	set recivcheck = true,
+    		readcheck = true
     	<foreach collection="list" item="msgno" index="index" separator=" or " open ="where ">
 		 msgno = #{msgno}
 		 </foreach>
