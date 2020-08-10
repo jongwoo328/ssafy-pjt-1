@@ -1,20 +1,20 @@
 <template>
-  <div class="ReiewCreate container font-kor">
+  <div class="ReiewCreate container font-kor">      
         <div class="form-group">
             <label for="title">제목</label>
-            <input type="text" class="form-control" id="title">
+            <input type="text" class="form-control" id="title" v-model="title">
         </div>
         <div class ="form-content">
             <label for="contents" style="display:block">내용</label>
-            <textarea name ="content" form="review" id="contents" ></textarea>
+            <textarea name="content" form="review" id="contents" v-model="content" ></textarea>
         </div>
            <div class="form-group">
               <label>평점</label>
               <star-rating v-model="rating" :star-size="starsize" :show-rating="temp"></star-rating>
            </div>
     <div id="btn-group">
-      <Button  @click="onCreate" buttonText="확인"/>
-      <Button id="cancleB" @click="onChangePage" buttonText="취소" />
+      <Button  @click.native="onCreate" buttonText="확인"/>
+      <Button id="cancleB" type="reset" buttonText="취소" />
     </div>
   </div>
 </template>
@@ -23,7 +23,7 @@
 import axios from "axios"
 import Button from '@/components/common/Button.vue'
 import StarRating from 'vue-star-rating'
-import URL from "@/util/http-common.js"
+import HTTP from "@/util/http-common.js"
 
 export default {
   name: 'Review',
@@ -34,45 +34,38 @@ export default {
   },
   data: function() {
     return {
-      
-      PayInfo: [],
-      s_no: "",
       title: "",
       content: "",
       rating: null,
       temp:false,
       starsize : 50
     };
-},methods: {
-  //   created() {
-  //   axios
-  //     .get("/api/paylist")
-  //     .then(({ data }) => {
-  //       console.dir(data);
-  //       if(data==null){
-  //         alert("권한이 없습니다.");
-  //         this.onChangePage();
-  //       }
-  //     })
-  //     .catch(() => {
-  //       alert("에러가 발생했습니다.");
-  //     });
-  // },
+},
+created() {
+  this.$emit('sidebar')
+},
+methods: {
     onCreate() {
-      axios
-        .post(`${URL.BASE_URL}${URL.PORT}/api/qna`, {
-          // Userid: this.$session.get("jwt").id,
-          ReviewTitle: this.title,
-          ReviewContent: this.content
-        })
+      let reviewData ={
+        'servno' : `${this.$route.params.service_id}`,
+        'userno' : this.$store.getters.getUserData.userno,
+        'title' : this.title,
+        'content' : this.content,
+        'point' : this.rating
+      }
+      console.log(reviewData)
+      axios.post(`${HTTP.BASE_URL}/review`,reviewData)
         .then(res => {
           alert("등록 성공");
           console.log(res);
           this.onChangePage();
-        });
+        })
+        .catch(err =>{
+          console.log(err)
+        })
     },
     onChangePage() {
-      this.$router.push("/Home");
+      this.$router.push(`/services/${this.$route.params.service_id}`);
     }
   }
 };

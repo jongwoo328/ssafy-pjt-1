@@ -19,5 +19,7 @@ export default {
 </script>
 
 <style>
-
+    .card-list {
+        margin-top: 30px;
+    }
 </style>

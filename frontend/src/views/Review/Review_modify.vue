@@ -43,10 +43,11 @@ export default {
       title: "",
       content: ""
     };
-},methods: {
+},
     created() {
+      this.$emit('sidebar')
     axios
-      .get(`${URL.BASE_URL}${URL.PORT}/api/review/{no}`)
+      .get(`${URL.BASE_URL}/review/${this.no}`)
       .then(({ data }) => {
         this.no = data.no;
         this.title = data.title;
@@ -57,9 +58,10 @@ export default {
         alert("에러가 발생했습니다.");
       });
   },
+methods: {
     onCreate() {
       axios
-        .post(`${URL.BASE_URL}${URL.PORT}/api/review`, {
+        .post(`${URL.BASE_URL}/review`, {
           // Userid: this.$session.get("jwt").id,
           ReviewTitle: this.title,
           ReviewContent: this.content
@@ -71,7 +73,7 @@ export default {
         });
     },
     onChangePage() {
-      this.$router.push("/Home");
+      this.$router.push(`/services/${this.no}`);
     }
   }
 };
