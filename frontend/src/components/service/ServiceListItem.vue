@@ -5,10 +5,11 @@
             <img :src="getImgUrl" alt="service_image">
             <div class="card-cover" @click="changeDetail">
                 <h3 v-text="service.servname"></h3>
+                <h3 v-text="service.price+'원'"></h3>
             </div>
         </div>
-        <div class="card-desc">
-            <span v-text="service.servname"></span>
+        <div class="card-desc" v-if="!isPay">
+            <span v-text="service.servname" ></span>
             <div class="badges">
                 <Badge 
                 badgeColor="forestgreen"
@@ -18,6 +19,14 @@
                 badgeColor="blueviolet"
                 badgeText="USER"
                 :badgeCount="service.payCount" />
+            </div>
+        </div>
+        <div class="card-desc" v-else>
+            <span v-text="service.servname" ></span>
+            <span v-text="service.pdate"></span>
+            <button >환불</button>
+            <div>
+                <span v-text="service.price"></span>
             </div>
         </div>
       </div>
@@ -30,6 +39,11 @@ import URL from '@/util/http-common.js'
 
 export default {
     name: 'ServiceListItem',
+    data(){
+        return{
+            isPay :false
+        }
+    },
     props: {
         service: Object
     },
@@ -40,13 +54,20 @@ export default {
         getImgUrl() {
             console.log(this.service)
             return `${URL.BASE_URL}/${this.service.imgurl}`
-        }
+        },
+   
     },methods:{
         changeDetail(){
             console.log(1)
             this.$router.push(`/services/${this.service.servno}`)
         }
-    }
+    },
+    created(){
+            console.log(3)
+            console.log(this.$route.path)
+            if(this.$route.path=='/paylist')
+            this.isPay=!this.isPay
+    },
     
 }
 </script>
