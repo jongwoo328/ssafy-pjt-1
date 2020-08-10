@@ -8,9 +8,36 @@ public class Pay {
 	private String servname;
 	private String price;
 	private boolean cancelcheck;
+	private String imgurl;
+	private double avgpoint;
+	private int payCount;
 	
+	public int getPayCount() {
+		return payCount;
+	}
+
+	public void setPayCount(int payCount) {
+		this.payCount = payCount;
+	}
+
+	public String getImgurl() {
+		return imgurl;
+	}
+
+	public void setImgurl(String imgurl) {
+		this.imgurl = imgurl;
+	}
+
 	
-	
+
+	public double getAvgpoint() {
+		return avgpoint;
+	}
+
+	public void setAvgpoint(double avgpoint) {
+		this.avgpoint = avgpoint;
+	}
+
 	public boolean isCancelcheck() {
 		return cancelcheck;
 	}
