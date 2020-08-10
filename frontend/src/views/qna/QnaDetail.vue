@@ -84,8 +84,11 @@ export default {
         updateCheck: false,
       }
     },
-    created() {
+    mounted() {
       this.$emit('sidebar')
+    },
+    created() {
+      
       axios.get(`${URL.BASE_URL}/qna/detail/${this.qnaNumber}`)
       .then(res => {
         console.log(res)
