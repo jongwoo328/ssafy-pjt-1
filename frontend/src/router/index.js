@@ -15,6 +15,8 @@ import QnaCreate from '@/views/qna/QnaCreate.vue'
 import MessageList from '@/views/message/MessageList.vue'
 import ServiceModify from '@/views/services/ServiceModify.vue'
 import Follow from '@/views/accounts/Follow.vue'
+import PayList from '@/views/pay/PayList.vue'
+
 Vue.use(VueRouter)
 
   const routes = [
@@ -37,6 +39,11 @@ Vue.use(VueRouter)
     path: '/accounts/signup',
     name: 'SignUp',
     component: SignUp
+  },
+  {
+    path: '/paylist',
+    name: 'PayList',
+    component: PayList
   },
   {
     path: '/accounts/userinfo',
@@ -93,6 +100,7 @@ Vue.use(VueRouter)
     name: 'MessageList',
     component: MessageList
   },
+ 
 ]
 
 const router = new VueRouter({

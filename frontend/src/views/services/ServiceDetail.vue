@@ -47,7 +47,8 @@
             <div v-if="!isOwner">
             <div class="buttons">
               <Button @click.native="msgShow" buttonText="문의하기" />
-              <Button @click.native="payShow" buttonText="신청하기" />
+              <Button v-if="!serviceData.payed" @click.native="payShow" buttonText="신청하기" />
+              <Button v-else buttonText="리뷰작성" @click.native="createReview"/>
             </div>
             </div>
             <div class="buttons" v-else>
@@ -61,13 +62,10 @@
           <hr>
           <p v-html="serviceData.description"> </p>
       </div>
-      <!-- <div v-if="serviceData.payed">
-          <Button buttonText="작성" @click.native="onchangeReview"/>
-      </div> -->
       <div class="review section">
           <div class="review-section">
             <h2>리뷰</h2>
-            <a @click="createReview">리뷰 작성</a>
+            <a v-if="serviceData.payed" @click="createReview">리뷰 작성</a>
           </div>
           <hr>
           <ReviewList :reviews="review"/>
@@ -115,6 +113,7 @@ export default {
                 description : "",
                 payed :"",
             },
+            payed :"",
             addr: "",
             review: [],
             point : "",
@@ -138,7 +137,9 @@ export default {
         },
         payShow(){
             this.payModal = !this.payModal
-
+            if(!this.payModal){
+                this.$router.go()
+            }
        },
         msgShow(){
             this.messageModal = !this.messageModal
@@ -192,6 +193,7 @@ export default {
                 description : res.data.description,
                 payed : res.data.revcheck
             }
+           
             this.point = res.data.avgpoint,
             this.addr = this.serviceData.saddr2+" "+this.serviceData.saddr4+" "+this.serviceData.saddr6
             if(this.userno==res.data.userno){

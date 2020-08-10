@@ -58,17 +58,24 @@ export default {
         console.log(this.payData)
         axios.post(`${HTTP.BASE_URL}/pay`,this.payData)
         .then(res=>{
-          console.log(res)
+          console.log(res.data)
+          if(res.data=="payed"){
+            alert('이미 결제 되었습니다.')
+          }
+
+          this.modalclose()
           
+
         })
         .catch(err=>{
           console.log(err)
         })
       },
       modalclose () {
-      this.$emit('close')
+        this.$emit('close')
       }
     }
+}
 </script>
 <style scoped>
   #PayModal hr {

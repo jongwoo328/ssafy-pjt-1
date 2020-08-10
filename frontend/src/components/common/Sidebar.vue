@@ -55,7 +55,7 @@ export default {
         },
         getSidebar() {
             return this.$store.getters.getSidebar
-        }
+        },
     },
     components: {
         SidebarCardList
