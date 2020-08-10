@@ -2,7 +2,7 @@
     <div id="servicecreate" class="container">
         <h3>서비스 등록</h3>
         <hr>
-            <div class=" form-group">
+            <div class="form-block">
                 <label class="font-kor" for="category">분류</label>
                 <select  class="form-control " id="category" name ="category"  v-model="categoryInfo">
                     <option value="" disabled selected>분류</option>
@@ -23,20 +23,20 @@
                 <p v-text="korNumFormat"></p>
             </div>
             <div class="form-address">
-                <label class="font-kor label-address col-3 col-md-2" >주소</label>
-                <div class="form-block  col-8">        
-                    <select class="form-control" id="exampleFormControlSelect1" v-model="siInfo" >
+                <label class="font-kor label-address" >주소</label>
+                <div class="form-block container-fluid row">        
+                    <select class="form-control col-12 col-md-4" id="exampleFormControlSelect1" v-model="siInfo" >
                         <option v-if="siInfo" :value="siInfo" v-text="siInfo.siName"></option>
                         <option v-else value="" disabled selected>시/도</option>
                         <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName"></option>
                     </select>
-                    <div class="form-block sub-address">
-                        <select class="form-control col-6" id="exampleFormControlSelect2" v-model="guInfo">
+                    <div class="form-block sub-address col-12 col-md-8 row">
+                        <select class="form-control col-6 col-md-4" id="exampleFormControlSelect2" v-model="guInfo">
                             <option v-if="guInfo" :value="guInfo" v-text="guInfo.guName"></option>
                             <option v-else value="" disabled selected>구/군</option>
                             <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
                         </select>
-                        <select class="form-control col-6" id="exampleFormControlSelect3" v-model="dongInfo">
+                        <select class="form-control col-6 col-md-4" id="exampleFormControlSelect3" v-model="dongInfo">
                             <option v-if="dongInfo" :value="dongInfo" v-text="dongInfo.dongName"></option>
                             <option v-else value="" disabled selected>동/읍/면</option>
                             <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
@@ -44,21 +44,17 @@
                     </div>
                 </div>
             </div>
-            <div class="form-block">
-                <img v-if="serviceImageUrl" :src="serviceImageUrl">
-                <br>
+            <div class="form-block form-img">
                 <label class="font-kor" >
                     이미지
                 </label>
-                <br>
+                <img v-if="serviceImageUrl" :src="serviceImageUrl">
                 <input ref="serviceImage" type="file" id="file" accept="image/*" @change="fileSelect">
-                <br>
             </div>
-            <div class="form-block">
+            <div class="form-block form-content">
                 <label class="font-kor" for="servicedescription"> 
                 내용 
                 </label>
-                <br>
                 <Editor/>
             </div>
             <div>
@@ -247,56 +243,77 @@ export default {
      }
 }
 </script>
-<style scoped>
-    .form-address {
+<style>
+    #servicecreate label {
+        font-size: 1.25rem;
+    }
+    #servicecreate {
+        margin-top: 50px;
+        padding-bottom: 100px;
+    }
+    #servicecreate h3 {
+        font-size: 2rem;
+    }
+    #servicecreate .form-block,
+    #servicecreate .form-group {
+        display: block;
+        margin: 20px 0;
+    }
+    #servicecreate .form-block {
         display: flex;
-        justify-content: space-between;
+        flex-direction: row;
     }
-    .form-control {
-        width: 60%;
-        height: 40px;
-        margin-left: 30px;
-        padding-left: 20px;
+    #servicecreate .form-block label {
+        min-width: 50px;
     }
-    .form-group {
-        display: flex;
-        margin-bottom: 25px;
-        justify-content: flex-start;
+    #servicecreate #category {
+        min-width: 100px;
+        width: 300px;
     }
-    .input-text {
-        width: 90%;
-        height: 40px;
-        border: 0.8px;
-        padding-left: 10px;
+    #servicecreate input,
+    #servicecreate select {
+        border-radius: 0;
+        width: 100%;
+        border: 1px solid black;
         border-style: none none solid none;
     }
-    .form-block {
-        display: flex;
-        margin-bottom: 25px;
-        justify-content: space-between;
+    #servicecreate .form-address .form-block {
+        margin: 0;
     }
-    .form-block input{
-        margin-right:30px;
-    }
-    Button {
-        margin-left : 30px;
-        margin-top : 30px;
-    }
-    #servicecreate label,textarea{
+    #servicecreate .form-address .label-address{
+        padding: 0;
         display: block;
     }
-    #servicecreate{
-        margin-top: 40px;
+    #servicecreate .sub-address {
+        padding: 0;
     }
-    img {
-        object-fit: cover;
-        margin-top: 20px;
-        width: 150px;
-        height: 150px;
-        border-radius: 7px;
+    #servicecreate .form-img,
+    #servicecreate .form-img label,
+    #servicecreate .form-content{
+        display: block;
     }
-    .ql-container {
-        margin-top:30px;
-        height: 300px;
+    #servicecreate .form-img input {
+        margin-top: 5px;
+        border: none;
+    }
+    #servicecreate .form-img img {
+        max-width: 100px;
+        max-height: 100px;
+    }
+    #servicecreate .ql-editor {
+        min-height: 200px;
+    }
+    #servicecreate Button {
+        float: right;
+    }
+    @media (min-width: 768px) {
+        #servicecreate .form-address {
+            display: flex;
+            flex-direction: row;
+        }
+        #servicecreate .form-address label {
+            min-width: 50px;
+            display: inline-block;
+        }
     }
 </style>

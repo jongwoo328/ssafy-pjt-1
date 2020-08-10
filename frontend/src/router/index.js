@@ -16,6 +16,7 @@ import MessageList from '@/views/message/MessageList.vue'
 import ServiceModify from '@/views/services/ServiceModify.vue'
 import Follow from '@/views/accounts/Follow.vue'
 import PayList from '@/views/pay/PayList.vue'
+import Error from '@/views/error/Error.vue'
 
 Vue.use(VueRouter)
 
@@ -100,7 +101,13 @@ Vue.use(VueRouter)
     name: 'MessageList',
     component: MessageList
   },
- 
+
+
+  {
+    path: '*',
+    name: '404',
+    component: Error
+  }
 ]
 
 const router = new VueRouter({

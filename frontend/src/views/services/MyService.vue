@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div id="myservice" class="container">
         <h3>내 서비스</h3>
         <hr>
         <div class="button-box">
@@ -61,12 +61,18 @@ export default {
     },
 }
 </script>
-<style scoped>
-    .button-box {
+<style>
+    #myservice {
+        margin-top: 50px;
+    }
+    #myservice .button-box {
         display: flex;
         justify-content: flex-end;
     }
-    .service-box {
+    #myservice .service-box {
         margin-top: 30px
+    }
+    #myservice h3 {
+        font-size: 2rem;
     }
 </style>

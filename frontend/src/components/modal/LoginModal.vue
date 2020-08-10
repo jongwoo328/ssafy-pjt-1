@@ -87,7 +87,7 @@ export default {
           console.log(res.data.object)
           this.$session.set('jwstoken', res.headers.jwstoken)
           this.$store.commit('login', res.data.object)
-          this.$router.push('/')
+          // this.$router.push('/')
           this.modalclose()
         }
         else {

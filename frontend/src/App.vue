@@ -19,9 +19,11 @@ export default {
   },
   methods: {
     sidebar() {
-    const sidebar = document.querySelector('div#sidebar')
+      const sidebar = document.querySelector('div#sidebar')
       if (sidebar) {
-        sidebar.setAttribute('style', `height: ${document.querySelector('div#view').scrollHeight}px`)
+        const h = document.querySelector('div#view').scrollHeight + 200
+        console.log(h)
+        sidebar.setAttribute('style', `height: ${h}px`)
       }
     }
   }

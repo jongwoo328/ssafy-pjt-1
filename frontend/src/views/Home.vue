@@ -2,13 +2,13 @@
   <div id="home container">
     <div class="wrap container">
       <SearchbarWeb @child="searchs"/>
+      <h2>인기있는 서비스들</h2>
       <div v-if="!$store.getters.isLoggedIn" class="container home-inner">
         <Content/>
         <Join/>
       </div>
       <div id="search-result-wrap row">
         <div class="mobile">
-          <h2>인기있는 서비스들</h2>
           <hr>
         </div>
         <SearchResultCard :services="services"/>
