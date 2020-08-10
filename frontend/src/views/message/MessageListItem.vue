@@ -6,7 +6,7 @@
         <p v-else>보내는사람 : {{ message.writername }}</p>
         <p @click="msg">제목 : {{ message.title }}</p>
         <p>읽음표시 : {{ message.readcheck }}</p>
-        <p>{{ message.senddate }}</p>
+        <p class="msg-date">{{ message.senddate }}</p>
         <hr>
     </div>
 </template>
@@ -44,8 +44,13 @@ export default {
 </script>
 
 <style>
+    .msg-box {
+        margin: 0;
+    }
     .msg-box p {
         margin-bottom: 0;
     }
-
+    .msg-date {
+        text-align: end;
+    }
 </style>

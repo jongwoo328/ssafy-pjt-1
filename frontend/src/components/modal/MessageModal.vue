@@ -13,7 +13,7 @@
                       <div class="form">
                         <div class="input-box font-notojp">
                           <label class="input-label" for="inputname">TO</label>
-                          <input class="s" autocomplete="off" type="text" id="inputname" placeholder="받는사람을 입력하세요." :value="toUsername" @input="nameCheck">
+                          <input class="s" autocomplete="off" type="text" id="inputname" placeholder="받는사람을 입력하세요." v-model="toUsername" @input="nameCheck">
                           <ul class="r" v-if="isActive">
                               <li tabindex="-1" v-for="(el,index) in filters" :key="index" @click="changeValue(el)" @keyup.enter="selectValue('enter', el)"><span>{{ el }}</span></li>
                           </ul>
