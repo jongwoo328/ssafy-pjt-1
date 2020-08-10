@@ -4,7 +4,7 @@
         <router-link v-if="isLoggedIn" to='/accounts/userinfo' class="sidebar-link font-kor"><p>내 정보</p></router-link>
         <router-link v-if="$store.getters.isPro" to='/myservice' class="sidebar-link font-kor"><p>내 서비스</p></router-link>
         <a v-if="isLoggedIn" class="sidebar-link font-kor" :href="toMyProfile"><p>내 프로필</p></a>
-        <router-link v-if="isLoggedIn" to='/test' class="sidebar-link font-kor"><p>결제내역</p></router-link>
+        <router-link v-if="isLoggedIn" to='/paylist' class="sidebar-link font-kor"><p>결제내역</p></router-link>
         <router-link v-if="isLoggedIn" :to="toMyFollow" class="sidebar-link font-kor"><p>팔로우</p></router-link>
         <router-link v-if="isLoggedIn" to='/qna' class="sidebar-link font-kor"><p>Q&A</p></router-link>
         <div v-if="!isLoggedIn" class="sidebar-anonymous font-kor">
