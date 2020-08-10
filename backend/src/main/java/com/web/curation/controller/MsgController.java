@@ -71,7 +71,7 @@ public class MsgController {
 	@ApiOperation(value = "읽지 않은 쪽지 개수 반환", response = Integer.class)
 	@GetMapping("/count/{userno}")
 	public ResponseEntity<Integer> msgCount(@PathVariable int userno) throws Exception {
-		
+		System.out.println("메시지 카운트 요청");
 		return new ResponseEntity<Integer>(msg.msgCount(userno), HttpStatus.OK); 
 	}
 	
@@ -147,4 +147,5 @@ public class MsgController {
 		
 		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}
+	
 }
