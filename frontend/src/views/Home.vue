@@ -2,7 +2,6 @@
   <div id="home container">
     <div class="wrap container">
       <SearchbarWeb @child="searchs"/>
-      <h2>인기있는 서비스들</h2>
       <div v-if="!$store.getters.isLoggedIn" class="container home-inner">
         <Content/>
         <Join/>
@@ -11,6 +10,7 @@
         <div class="mobile">
           <hr>
         </div>
+      <h2>인기있는 서비스들</h2>
         <SearchResultCard :services="services"/>
       </div>
     </div>
@@ -53,7 +53,6 @@ export default {
     }
   },
   created(){
-        this.$emit('sidebar')
         axios.get(`${HTTP.BASE_URL}/service/main`)
         .then(res => {
             console.log(res)
@@ -66,6 +65,9 @@ export default {
             console.log(err)
         })
   },
+  mounted() {
+    this.$emit('sidebar')
+  }
 }
 </script>
 

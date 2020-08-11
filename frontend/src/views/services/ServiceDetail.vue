@@ -168,8 +168,11 @@ export default {
             }
         }
     },
-    created() {
+    mounted() {
         this.$emit('sidebar')
+    },
+    created() {
+        
         if(this.$store.getters.getUserData === null){
             this.userno = 0;    
         } else{

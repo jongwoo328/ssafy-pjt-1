@@ -21,12 +21,14 @@ export default {
   },
   methods: {
     sidebar() {
-      const sidebar = document.querySelector('div#sidebar')
-      if (sidebar) {
-        const h = document.querySelector('div#view').scrollHeight + 200
-        console.log(h)
-        sidebar.setAttribute('style', `height: ${h}px`)
-      }
+      setTimeout(() => {
+        const sidebar = document.querySelector('div#sidebar')
+        if (sidebar) {
+          const h = document.querySelector('div#view').scrollHeight + 200
+          console.log(h)
+          sidebar.setAttribute('style', `height: ${h}px`)
+        }
+      }, 60);
 
       axios.get(`${URL.BASE_URL}/msg/count/${this.$store.getters.getUserData.userno}`)
       .then(res => {
@@ -49,6 +51,7 @@ export default {
     #view {
       min-height: 100vh;
       margin-left: 200px;
+      padding-bottom: 150px;
     }
   }
 </style>

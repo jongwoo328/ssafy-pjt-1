@@ -89,7 +89,6 @@ export default {
         }
     },
     created(){
-        this.$emit('sidebar')
           axios.get(`${HTTP.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
         .then(res => {
             console.log(res)
@@ -102,6 +101,7 @@ export default {
     },
     mounted() {
         setTimeout(() => {
+            this.$emit('sidebar')
             console.log('test')
             axios.get(`${HTTP.BASE_URL}/profile/${this.$route.params.username}`)
             .then(res => {

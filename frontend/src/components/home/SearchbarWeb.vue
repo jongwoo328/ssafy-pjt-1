@@ -211,7 +211,7 @@ export default {
         min-width: 280px;
     }
     #join-web {
-        display: inline-block;
+        display: none;
         margin: 0 0 30px 0;
         padding-right: 0;
     }
@@ -240,6 +240,9 @@ export default {
         min-width: 125px;
     }
     @media (min-width: 768px) {
+        #join-web {
+            display: block;
+        }
         .searchaddr {
             display: flex;
             flex-direction: row-reverse;
