@@ -15,7 +15,7 @@ export default {
     },
     data() {
         return {
-            keyword: null,
+            keyword: "",
             placeHolder: '하고싶은 것을 검색하세요',
             search:{}
         }
@@ -28,6 +28,7 @@ export default {
     methods:{
         searchInfoemit(){
             this.search.keyword=this.keyword
+            console.log('Join.vue')
             console.log(this.search)
             this.$emit("child",this.search)
          }
