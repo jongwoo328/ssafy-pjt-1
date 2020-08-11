@@ -1,5 +1,5 @@
 <template>
-  <div class="search-result-card col-6 col-xl-4 font-kor">
+  <div class="search-result-card col-12 col-md-6 col-xl-4 font-kor">
       <div class="card-wrap">
         <div class="card-img">
             <img :src="getImgUrl" alt="service_image">
@@ -96,6 +96,7 @@ export default {
 </script>
 
 <style>
+
     #pdate{
         float:right;
     }
