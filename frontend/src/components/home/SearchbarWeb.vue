@@ -111,9 +111,19 @@ export default {
  computed: {
     userData() {
         return this.$store.getters.getUserData
+    },
+    searchData() {
+        return {
+            cateno: this.categoryInfo.cateno,
+            saddr5: this.dongInfo.dongCode,
+            keyword: this.keyword
+        }
     }
  },
  watch: {
+     searchData() {
+         this.$emit('searchdata')
+     },
     isAll : function(){
         if(this.isAll){
             this.siInfo.siName ="시/도",

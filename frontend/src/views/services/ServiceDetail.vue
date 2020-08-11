@@ -101,6 +101,9 @@ export default {
             servno: "",
             serviceId: 0,
             serviceData: {
+                username:"",
+                userno:"",
+                servno:"",
                 servname :"",
                 price : "",
                 saddr1 : "",
@@ -172,14 +175,6 @@ export default {
         this.$emit('sidebar')
     },
     created() {
-        if (!this.$store.getters.isLoggedIn) {
-            this.$router.push({
-                name: 'Error',
-                query: {
-                    status: 401
-                }
-            })
-        }
         if(this.$store.getters.getUserData === null){
             this.userno = 0;    
         } else{
@@ -191,6 +186,9 @@ export default {
             this.revwrite = res.data.revwrite
             this.proname = res.data.proname,
             this.serviceData ={
+                username : res.data.proname,
+                userno : res.data.userno,
+                servno : res.data.servno,
                 imgUrl:`${HTTP.BASE_URL}/` + res.data.imgurl,
                 servname : res.data.servname,
                 price : res.data.price,

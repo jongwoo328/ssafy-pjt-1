@@ -14,6 +14,12 @@
         <SearchResultCard :services="services"/>
       </div>
     </div>
+    <SeeMore 
+    :seeMoreReset="seeMoreReset" 
+    :seeMoreKeyword="seeMoreKeyword" 
+    :seeMoreFlag="seeMoreFlag" 
+    :state="state" @seemore="addService" 
+    :searchData="searchData"/>
   </div>
 </template>
 
@@ -22,8 +28,10 @@ import Content from '@/components/home/Content.vue'
 import Join from '@/components/home/Join.vue'
 import SearchbarWeb from '@/components/home/SearchbarWeb.vue'
 import SearchResultCard from '@/components/search/SearchResultCard.vue'
+import SeeMore from '@/components/home/SeeMore.vue'
 import axios from 'axios'
 import HTTP from '@/util/http-common.js'
+
 export default {
   name: 'Home',
   components: {
@@ -31,29 +39,59 @@ export default {
     Join,
     SearchbarWeb,
     SearchResultCard,
-  },data() {
+    SeeMore,
+  },
+  data() {
     return {
        services: [],
        searchInfo:[],
        search_on:false,
        text:"인기있는 서비스들",
-       flag:false
+       flag:false,
+
+       state: 'main',
+       searchData: {},
+       seeMoreFlag: true,
+       seeMoreKeyword: '',
+       seeMoreReset: false
     }
   },
-   methods:{
+  methods:{
+    searchdata(data) {
+      this.searchData = data
+    },
     searchs(search){
+      console.log('Home.vue search')
+      console.log(search)
+      this.seeMoreKeyword = search.keyword
+      if (search.cateno === undefined) {
+        search['cateno'] = 0,
+        search['saddr6'] = null,
+        search['num'] = 1
+      }
+      this.seeMoreReset = ! this.seeMoreReset
       axios.post(`${HTTP.BASE_URL}/service/search`,search, HTTP.JSON_HEADER)
       .then(res =>{
       console.log(res)
+      if (res.data.length === 6) {
+        this.seeMoreFlag = true
+      }
       this.services=res.data
       this.services.forEach(service => {
               service.imgurl = `${HTTP.BASE_URL}/${service.imgurl}`
             })
        this.search_on=true
        this.text = search.keyword+" 검색결과"
+       this.state = 'search'
 })
       .catch(err => {
         console.log(err)
+      })
+    },
+    addService(results) {
+      results.forEach(result => {
+        result.imgurl = `${HTTP.BASE_URL}/${result.imgurl}`
+        this.services.push(result)
       })
     }
   },
@@ -66,7 +104,7 @@ export default {
     }
   },
   created(){
-        axios.get(`${HTTP.BASE_URL}/service/main`)
+        axios.get(`${HTTP.BASE_URL}/service/main/1`)
         .then(res => {
             console.log(res)
             this.services = res.data
