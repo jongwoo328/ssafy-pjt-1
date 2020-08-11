@@ -410,7 +410,7 @@ export default {
   margin-top: 30px;
 }
 #signup .duplicateMsg {
-  color: greenyellow;
+  color: forestgreen;
 }
 
 #signup .duplicate {
@@ -440,7 +440,7 @@ export default {
 }
 
 #signup .success {
-  color: greenyellow;
+  color: forestgreen;
 }
 
 #signup .passwordConfirm {

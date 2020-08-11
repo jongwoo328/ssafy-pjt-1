@@ -361,7 +361,7 @@ export default {
 #UserInfo .UserInfo-text {
   display: block;
   font-size: 2rem;
-  font-weight: bolder;
+  /* font-weight: bold; */
   margin: 20px 0;
   
 }
@@ -390,7 +390,7 @@ border-style: none none solid none;
 
 #UserInfo .unchangeableInfo {
   border-style: none;
-  font-weight: bold;
+  /* font-weight: bold; */
   background-color: #bcbdbc;
 } 
 
@@ -399,7 +399,7 @@ border-style: none none solid none;
   margin: 0;
   padding: 8px 0 0 0;
   /* text-align: right; */
-  font-weight: bolder
+  /* font-weight: bolder */
 }
 
 #UserInfo .new-password {
