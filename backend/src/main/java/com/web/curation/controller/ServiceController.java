@@ -141,8 +141,8 @@ public class ServiceController {
 
 	
 	@ApiOperation(value = "서비스 초기화면에 6개 띄운다", response = List.class)
-	@GetMapping("/main")
-	public Object mainService() {
+	@GetMapping("/main/{num}")
+	public Object mainService(@PathVariable int num) {
 		List<ConnectorService> servList = svc.selectServiceByDongcode(0, null, null);
 		List<ConnectorService> resultList = new ArrayList<ConnectorService>();
 		
@@ -178,11 +178,13 @@ public class ServiceController {
 			
 			int c = 0;
 			for(ConnectorService s : servList) {
-				s.setPayCount(pay.payCount(s.getServno()));
-				resultList.add(s);
+				if(c >= (num-1)*6 && c < num * 6) {
+					s.setPayCount(pay.payCount(s.getServno()));
+					resultList.add(s);					
+				}
 				c++;
 				
-				if(c == 6) {
+				if(c == num * 6) {
 					break;
 				}
 			}
@@ -197,6 +199,8 @@ public class ServiceController {
 	public Object selectServiceByDongcode(@RequestBody Search s) {
 		String dongcode = s.getSaddr5();
 		String keyword = s.getKeyword();
+		int num = s.getNum();
+		List<ConnectorService> resultList = new ArrayList<ConnectorService>();
 		if(keyword.equals("")) {
 			keyword = null;
 		}
@@ -220,30 +224,41 @@ public class ServiceController {
 		}
 		if(servList != null) {
 			List<Review> revList = rev.totalReview();
+			
+			int c = 0;
+			
 			for(ConnectorService serv : servList) {
-				serv.setImgurl("img/service/" + serv.getImgurl());
-				int count = 0;
-				double sum = 0.0;
-				int sno = serv.getServno();
-				for(Review r : revList) {
-					if(r.getServno() == serv.getServno()) {
-						sum += r.getPoint();
-						count++;
+				if(c >= (num-1)*6 && c < num * 6) {
+					serv.setImgurl("img/service/" + serv.getImgurl());
+					int count = 0;
+					double sum = 0.0;
+					int sno = serv.getServno();
+					for(Review r : revList) {
+						if(r.getServno() == serv.getServno()) {
+							sum += r.getPoint();
+							count++;
+						}
 					}
+					if(count == 0) {
+						serv.setAvgpoint(0.0);
+					} else {
+						
+						serv.setAvgpoint(Math.round((sum/count) * 10) / 10.0);
+					}
+					serv.setPayCount(pay.payCount(serv.getServno()));
+					resultList.add(serv);
 				}
-				if(count == 0) {
-					serv.setAvgpoint(0.0);
-				} else {
-
-					serv.setAvgpoint(Math.round((sum/count) * 10) / 10.0);
+				c++;
+				
+				if(c == num * 6) {
+					
 				}
-				serv.setPayCount(pay.payCount(serv.getServno()));
 			}
 
 
 
 			
-			return new ResponseEntity<List<ConnectorService>>(servList, HttpStatus.OK);
+			return new ResponseEntity<List<ConnectorService>>(resultList, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 		}
