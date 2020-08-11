@@ -57,7 +57,6 @@ public class QnaController {
 	@GetMapping("{userno}")
 	public ResponseEntity<List<Qna>> userQna(@PathVariable int userno) throws Exception {
 		
-		System.out.println(userno + " 가 정보 요청" );
 		return new ResponseEntity<List<Qna>>(service.selectQnaByUserno(userno), HttpStatus.OK);
 	}
 	
@@ -75,8 +74,6 @@ public class QnaController {
 	@PostMapping
 	public ResponseEntity<String> writeQna(@RequestBody Qna qna){
 		logger.debug("writeQna - 호출");
-		System.out.println("qna 작성");
-		System.out.println(qna);
 		User u = user.getUserByUserno(qna.getUserno());
 		qna.setQwriter(u.getName());
 		
@@ -93,8 +90,6 @@ public class QnaController {
 	public ResponseEntity<String> updateQna(@RequestBody Qna qna){
 		logger.debug("updateQna 호출");
 		logger.debug("" + qna);
-		System.out.println("qna 수정");
-		System.out.println(qna);
 		if(service.updateQna(qna)) {
 			return new ResponseEntity<String> (SUCCESS, HttpStatus.OK);
 		}
@@ -104,8 +99,6 @@ public class QnaController {
 	@ApiOperation(value = "글번호에 해당하는 게시글의 정보를 수정한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PutMapping("answer/{qnano}")
 	public ResponseEntity<String> resistAnswerQna(@RequestBody Qna qna){
-		System.out.println("qna 답변 등록");
-		System.out.println(qna);
 
 		if(service.resistAnswerQna(qna)) {
 			return new ResponseEntity<String> (SUCCESS, HttpStatus.OK);
@@ -116,8 +109,6 @@ public class QnaController {
 	@ApiOperation(value = "글번호에 해당하는 게시글의 정보를 수정한다. 그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PutMapping("answer/update/{qnano}")
 	public ResponseEntity<String> updateAnswerQna(@RequestBody Qna qna){
-		System.out.println("qna 답변 수정");
-		System.out.println(qna);
 
 		if(service.updateAnswerQna(qna)) {
 			return new ResponseEntity<String> (SUCCESS, HttpStatus.OK);
@@ -130,7 +121,6 @@ public class QnaController {
 	@DeleteMapping("/{qnano}")
 	public ResponseEntity<String> deleteQna(@PathVariable int qnano) {
 		logger.debug("deleteQna - 호출");
-		System.out.println("삭제");
 		if (service.deleteQna(qnano)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}

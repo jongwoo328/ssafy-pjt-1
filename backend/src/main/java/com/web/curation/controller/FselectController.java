@@ -34,14 +34,12 @@ public class FselectController {
 	@ApiOperation(value = "모든 시/도 정보 전달", response = List.class)
 	@GetMapping
 	public ResponseEntity<List<SidoCode>> sidoInfo() throws Exception {
-		System.out.println("시도 코드 정보 전달");
 		return new ResponseEntity<List<SidoCode>>(service.selectSido(), HttpStatus.OK);
 	}
 	
 	@ApiOperation(value = "카테고리 정보 전달", response = List.class)
 	@GetMapping("/cate")
 	public ResponseEntity<List<Category>> cateInfo() throws Exception {
-		System.out.println("카테고리 정보 전달");
 		return new ResponseEntity<List<Category>>(service.selectCategory(), HttpStatus.OK);
 	}
 	
@@ -51,8 +49,6 @@ public class FselectController {
 	@ApiOperation(value = "해당 시/도의 구/군 정보 전달", response = List.class)
 	@GetMapping("{sido}")
 	public ResponseEntity<List<SidoCode>> gugunInfo(@PathVariable String sido) throws Exception {
-		System.out.println("구군 코드 정보 전달");
-		System.out.println(sido);
 		return new ResponseEntity<List<SidoCode>>(service.selectGugun(sido), HttpStatus.OK);
 	}
 	

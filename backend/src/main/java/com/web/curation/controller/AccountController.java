@@ -63,7 +63,6 @@ public class AccountController {
     ResponseEntity response1 = null;
     User userinfo = userService.login(user);
     String jws = jwtutil.createToken(user);
-    System.out.println(jwtutil.getKey());
     if (userinfo != null) {
     	userinfo.setMsgcount(msg.msgCount(userinfo.getUserno()));
     	
@@ -92,7 +91,6 @@ public class AccountController {
     @ApiOperation(value = "모든 유저 name 정보 반환", response = List.class)
     @GetMapping("/account/total/{word}")
     public ResponseEntity<List<String>> totalUser(@PathVariable String word){
-    	System.out.println("이름 요청보냄");
     	return new ResponseEntity<List<String>>(userService.totalUserName(word), HttpStatus.OK);
     }
     
@@ -102,9 +100,7 @@ public class AccountController {
     @ApiOperation(value = "가입하기")
     @Transactional
     public ResponseEntity<BasicResponse> signup(@RequestBody User user) {
-    	System.out.println(user);
     	String email = user.getEmail();
-    	System.out.println(email);
     	User newUser = userService.getUserByEmail(email);
     	BasicResponse result = new BasicResponse();
     	if (newUser != null) {
@@ -137,50 +133,32 @@ public class AccountController {
     public ResponseEntity<BasicResponse> pwfind(@RequestBody User user) {
     	
     	String email = user.getEmail();
-    	System.out.println(email);
     	User newUser = userService.getUserByEmail(email);
-    	System.out.println(newUser);
     	BasicResponse result = new BasicResponse();
     	if (newUser == null) {
     		result.status = false;
     		result.data = "email";
     		return new ResponseEntity<BasicResponse>(result, HttpStatus.OK);
     	}
-//    	String tel = user.getTel();
-//    	newUser = userService.getUserByTel(tel);
-//    	System.out.println(newUser);
-//    	if (newUser == null) {
-//    		result.status = false;
-//    		result.data = "tel";
-//    		return new ResponseEntity<BasicResponse>(result, HttpStatus.OK);
-//    	}
     	
     	char[] charSet = new char[] {'Z','K','W', '0', 'E', 'J', '1','N', 'A', '2','P',  'B', '3', 'S','C', '4'
     			, 'D','M','Q', '5','L', 'F', '6','G','V',  '7','H','O', '8','I','T', '9',     
     			   'R',   'U',  'X', 'Y'  }; 
     	int idx = 0;
     	StringBuffer sb = new StringBuffer();
-    	System.out.println("charSet.length :::: "+charSet.length);
     	for (int i = 0; i < 8; i++) { 
     		idx = (int) (charSet.length * Math.random());
-    		System.out.println("idx :::: "+idx); 
     		sb.append(charSet[idx]);
     	}
     	
 
     	
     	user.setPw(sb.toString());
-    	System.out.println(user);
     	if (userService.samplePw(user)) {
     		result.status = true;
     		result.data = sb.toString();
     		return new ResponseEntity<BasicResponse>(result, HttpStatus.OK); 
     	}
-//    	if(newUser) {
-//    		result.status = true;
-//    		result.data = "success";
-//    		return new ResponseEntity<BasicResponse>(result, HttpStatus.OK);    		
-//    	}
     	result.status = false;
 		result.data = "fail";
     	return new ResponseEntity<BasicResponse>(result, HttpStatus.NOT_FOUND);  
@@ -189,9 +167,7 @@ public class AccountController {
     @PostMapping("/account/signup/checkemail")
     @ApiOperation(value = "이메일 중복체크")
     public ResponseEntity<String> checkEmail(@RequestBody String email) {
-    	System.out.println(email);
     	User user = userService.getUserByEmail(email);
-    	System.out.println(user);
     	if (user != null) {
     		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
     	}
@@ -201,9 +177,7 @@ public class AccountController {
     @PostMapping("/account/signup/checkname")
     @ApiOperation(value = "이름 중복체크")
     public ResponseEntity<String> checkName(@RequestBody String username) {
-    	System.out.println(username);
     	User user = userService.getUserByName(username);
-    	System.out.println(user);
     	if (user != null) {
     		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
     	}
@@ -213,8 +187,6 @@ public class AccountController {
     @ApiOperation(value = "회원정보 리턴")
     public ResponseEntity<String> UserInfo(@RequestBody String email) {
     	User user = userService.getUserByEmail(email);
-    	System.out.println(jwtutil.getUserno());
-    	System.out.println(user);
     	if (user != null) {
     		return new ResponseEntity<String>(FAIL, HttpStatus.BAD_REQUEST);
     	}
@@ -224,67 +196,11 @@ public class AccountController {
     @ApiOperation(value = "회원정보 리턴")
     public ResponseEntity<String> UserInfoModify(@RequestBody User user) {
     	int cnt = userService.update(user);
-    	System.out.println(user);
     	if (cnt != 1) {
     		return new ResponseEntity<String>(FAIL, HttpStatus.BAD_REQUEST);
     	}
     	return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
     }
     
-//    @PostMapping("/account/login")
-//    @ApiOperation(value = "로그인")
-//    public Object login(@RequestParam(required = true) final String email,
-//            @RequestParam(required = true) final String password) {
-//
-//    	System.out.println(email);
-//    	System.out.println(password);
-//        Optional<User> userOpt = userDao.findUserByEmailAndPassword(email, password);
-//
-//        ResponseEntity response = null;
-//
-//        if (userOpt.isPresent()) {
-//            final BasicResponse result = new BasicResponse();
-//            result.status = true;
-//            result.data = "success";
-//            response = new ResponseEntity<>(result, HttpStatus.OK);
-//        } else {
-//            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-//        }
-//        return response;
-//    }
-//
-//    @PostMapping("/account/signup")
-//    @ApiOperation(value = "가입하기")
-//    @Transactional
-//    public Object signup(@Valid @RequestBody SignupRequest request) {
-//    	
-//    	String email = request.getEmail();
-//    	System.out.println(email);
-//    	User user = userDao.getUserByEmail(email);
-//    	final BasicResponse result = new BasicResponse();
-//    	if (user != null) {
-//    		result.status = false;
-//    		result.data = "email";
-//    		return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-//    	}
-//    	String uid = request.getNickname();
-//    	user = userDao.getUserByUid(uid);
-//    	if (user != null) {
-//    		result.status = false;
-//    		result.data = "nickname";
-//    		return new ResponseEntity<>(result, HttpStatus.BAD_REQUEST);
-//    	}
-//    	
-//    	String password = request.getPassword();
-//    	System.out.println(uid);
-//    	System.out.println(password);
-//    	user = new User(uid, password, email);
-//    	System.out.println(user);
-//    	userDao.save(user);
-//        result.status = true;
-//        result.data = "success";
-//
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-//    }
 
 }
