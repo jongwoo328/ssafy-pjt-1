@@ -11,7 +11,6 @@ public class ErrorController {
 	
 	@GetMapping("/error")
 	public String qna() {
-		System.out.println("404error");
 		return "error.html";
 	}
 }

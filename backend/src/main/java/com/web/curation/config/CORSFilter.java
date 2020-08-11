@@ -21,7 +21,6 @@ public class CORSFilter extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		// TODO Auto-generated method stub
-		System.out.println("filter===================================");
 		response.setHeader("Access-Control-Allow-Origin", "http://192.168.100.86:8090");
 			        response.setHeader("Access-Control-Allow-Methods", "POST, PUT, GET, OPTIONS, DELETE");
 			        response.setHeader("Access-Control-Max-Age", "6000");

@@ -148,9 +148,6 @@ public class ProfileController {
 		profile.setUserno(Integer.parseInt(request.getParameter("userno")));
 		
 		if(imgFiles != null) {
-			System.out.println(mrequest.getFileNames());
-			System.out.println(imgFiles.getOriginalFilename());
-			System.out.println(request.getParameter("Comment"));
 			String originalFileName = imgFiles.getOriginalFilename();
 			String cur_time = new String("");
 			cur_time += System.currentTimeMillis();
@@ -219,7 +216,6 @@ public class ProfileController {
 		
 		
 		if(service.updateProfile(profile)) {
-			System.out.println("프로필 업데이트 성공");
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		
@@ -230,7 +226,6 @@ public class ProfileController {
 	@ApiOperation(value = "userno에 해당하는 프로필 정보를 삭제한다.")
 	@DeleteMapping
 	public ResponseEntity<String> deleteProfile(@RequestBody Profile profile){
-		System.out.println("삭제");
 		
 		
 		if(profile.getImgurl().equals("null.png")) {

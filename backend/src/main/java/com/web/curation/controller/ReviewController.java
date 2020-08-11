@@ -75,12 +75,9 @@ public class ReviewController {
 	@ApiOperation(value = "리뷰를 작성한다.", response = String.class)
 	@PostMapping
 	public ResponseEntity<String> writeReview(@RequestBody Review review) {
-		System.out.println(review);
 		if (revService.writeReview(review)) {
-			System.out.println("작성 성공");
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
-		System.out.println("실패");
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 	
