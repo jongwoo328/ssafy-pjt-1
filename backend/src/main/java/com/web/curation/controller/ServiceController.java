@@ -200,6 +200,8 @@ public class ServiceController {
 		String dongcode = s.getSaddr5();
 		String keyword = s.getKeyword();
 		int num = s.getNum();
+		
+		
 		List<ConnectorService> resultList = new ArrayList<ConnectorService>();
 		if(keyword.equals("")) {
 			keyword = null;
