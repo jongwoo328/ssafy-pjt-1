@@ -27,7 +27,4 @@ public class WebMvcConfig implements WebMvcConfigurer {
 				.addPathPatterns("/account/userinfo");
 	}
 
-//    {
-//    	System.out.println("fffffffffffffffff");
-//    }
 }
