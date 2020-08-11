@@ -4,6 +4,14 @@ public class Search {
 	private int cateno;
 	private String keyword;
 	private String saddr5;
+	private int num;
+	
+	public int getNum() {
+		return num;
+	}
+	public void setNum(int num) {
+		this.num = num;
+	}
 	public int getCateno() {
 		return cateno;
 	}
@@ -24,8 +32,11 @@ public class Search {
 	}
 	@Override
 	public String toString() {
-		return "Search [cateno=" + cateno + ", keyword=" + keyword + ", saddr5=" + saddr5 + "]";
+		return "Search [cateno=" + cateno + ", keyword=" + keyword + ", saddr5=" + saddr5 + ", num=" + num + "]";
 	}
+	
+	
+	
 	
 	
 	
