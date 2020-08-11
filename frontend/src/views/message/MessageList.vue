@@ -1,18 +1,29 @@
 <template>
-  <div id="msgList">
+  <div id="msgList" class="container">
     <div class="router">
         <a class="link" :class="{'active': urltype}" href="/message/rec">받은 쪽지함</a>
         <a class="link" :class="{'active': !urltype}" href="/message/send">보낸 쪽지함</a>
     </div>
-    <div class="button">
+    <div class="buttons">
+        <input type="checkbox" v-model="checked" @click="selectAll">
+        <!-- <Button button-text="전체 선택" @click.native="selectAll" /> -->
         <Button button-text="쪽지 보내기" @click.native="changeModal" />
-        <Button button-text="전체 선택" @click.native="selectAll" />
     </div>
+    <br>
     <div class="message-list">
-        <MessageListItem v-for="message in messagedata" :key="message.msgno" :message="message" />
+        <MessageListItem v-for="message in messagedata" :key="message.msgno" :message="message" :checked="checked" />
     </div>
     <messageModal v-if="messagemodal" @close="changeModal"/>
-    <Button @click.native="deleteMsg" button-text="삭제" />
+    <div class="delete font-kor">
+        <div v-if="deleteCheck" class="delete-check">
+            <p>정말 삭제하시겠습니까?</p>
+            <div class="buttons">
+                <Button buttonText="아니오" buttonColor="#343a40" @click.native="deleteNo"/>
+                <Button buttonText="예" buttonColor="#e03131" @click.native="deleteYes"/>
+            </div>
+        </div>
+    </div>
+    <Button @click.native="deleteCheck = !deleteCheck" button-text="삭제" />
   </div>
 </template>
 
@@ -20,17 +31,19 @@
 import messageModal from '@/components/modal/MessageModal.vue'
 import axios from 'axios'
 import URL from '@/util/http-common.js'
-import MessageListItem from '@/views/message/MessageListItem.vue'
+import MessageListItem from '@/components/common/MessageListItem.vue'
 import Button from '@/components/common/Button.vue'
 
 export default {
     name: 'MessageList',
     data() {
         return {
+            deleteCheck: false,
             messagemodal: false,
             messagedata: "",
             deleteno: [],
             type: "",
+            checked: false,
         }
     },
     props: {
@@ -72,12 +85,15 @@ export default {
         Button,
     },
     methods: {
+        deleteNo() {
+        this.deleteCheck = false
+        },
         changeModal() {
             this.messagemodal = !this.messagemodal
         },
         selectAll() {
+            this.checked = !this.checked
             var checkboxList = document.getElementsByClassName('check-box')
-            console.log(checkboxList)
             checkboxList.forEach(checkbox => {
                 if (checkbox.value=='true') {
                     if (!this.deleteno.includes(checkbox.dataset.msgno))
@@ -91,18 +107,29 @@ export default {
                 }
             })
 
-            if (this.deleteno.length == 0 || this.deleteno.length != this.messagedata.length) {
-                console.log(false)
-                console.log(this.deleteno.length)
-                console.log(this.messagedata.length)
+            if (!this.checked) {
+                checkboxList.forEach(checkbox => {
+                    if (this.deleteno.includes(checkbox.dataset.msgno)) {
+                        const idx = this.deleteno.indexOf(checkbox.dataset.msgno)
+                        this.deleteno.splice(idx,1)
+                    }
+                })
             }
-            else console.log(true)
-
+            else {
+                checkboxList.forEach(checkbox => {
+                    if (!this.deleteno.includes(checkbox.dataset.msgno)) {
+                        this.deleteno.push(checkbox.dataset.msgno)
+                    }
+                })
+            }
+            console.log(this.checked)
+            console.log(this.deleteno)
         },
-        deleteMsg() {
+        deleteYes() {
             var checkboxList = document.getElementsByClassName('check-box')
             console.log(checkboxList)
             checkboxList.forEach(checkbox => {
+                console.log(checkbox.value)
                 if (checkbox.value=='true') {
                     if (!this.deleteno.includes(checkbox.dataset.msgno))
                         this.deleteno.push(checkbox.dataset.msgno)
@@ -149,6 +176,7 @@ export default {
             .catch(err => {
                 console.log(err)
             })
+            this.deleteCheck = false
             }
         }
     },
@@ -159,26 +187,65 @@ export default {
     i {
         margin: 0 10px;
     }
+    #msgList .delete {
+        width: 100%;
+        position: relative;
+    }
     #msgList {
-        margin: 50px 50px;
+        margin-top: 50px;
     }
-    #msgList .button {
-        font-size: 36px;
-        margin: 20px 20px 0 0;
+    #msgList .buttons {
+        margin: 20px 0 0 0;
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
     }
+    #msgList .buttons input {
+        margin-top: auto;
+    }
+    #msgList Button {
+    font-size: 1rem;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
     #msgList .router .link{
         font-size: 20px;
         margin: 0 15px;
     }
     #msgList .router .link:hover{
         color: rgb(236,128,116);
+        cursor: pointer;
         text-decoration: none;
     }
-    .active {
+    #msgList .active {
         /* text-decoration: underline;
         color: rgb(236,128,116); */
         border-bottom: 3px solid rgb(236,128,116);
     }
+    #msgList .delete-check {
+    width: 200px;
+    height: 100px;
+    position: absolute;
+    /* border: 1px solid black; */
+    box-shadow: 0 1px 5px gray;
+    border-radius: 7px;
+    left: 20px;
+    top: 50px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    }
+    #msgList .delete-check p {
+        margin: 0;
+    }
+    @media (min-width: 768px) {
+    #msgList .delete-check {
+      width: 300px;
+    }
+    #msgList .buttons Button{
+        font-size: 1.25rem;
+    }
+  }
 </style>
