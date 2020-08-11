@@ -129,6 +129,14 @@ export default {
     }
   },
      created() {
+         if (!this.$store.getters.isLoggedIn) {
+            this.$router.push({
+                name: 'Error',
+                query: {
+                    status: 401
+                }
+            })
+        }
          this.$emit('sidebar')
          axios.get(`${HTTP.BASE_URL}/fselect/cate`,HTTP.JSON_HEADER) 
           .then(res => {
@@ -161,6 +169,14 @@ export default {
        axios.get(`${HTTP.BASE_URL}/service/detail/servno=${this.$route.params.service_id}&userno=${this.$store.getters.getUserData.userno}`)
         .then(res =>{
             console.log(res)
+            if (this.$store.getters.getUserData.userno !== res.data.userno) {
+                this.$router.push({
+                    name: 'Error',
+                    query: {
+                        status: 403
+                    }
+                })
+            }
             this.serviceData ={
                 imgUrl:`${HTTP.BASE_URL}/` + res.data.imgurl,
                 servname : res.data.servname,

@@ -57,6 +57,14 @@ export default {
     },
     created() {
       this.$emit('sidebar')
+      if (!this.$store.getters.isLoggedIn) {
+            this.$router.push({
+                name: 'Error',
+                query: {
+                    status: 401
+                }
+            })
+        }
         if (this.$route.params.type === "update") this.urltype = true
         else this.urltype = false
 

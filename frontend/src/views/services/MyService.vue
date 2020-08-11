@@ -33,6 +33,14 @@ export default {
     },
     created() {
         this.$emit('sidebar')
+        if (!this.$store.getters.isLoggedIn) {
+            this.$router.push({
+                name: 'Error',
+                query: {
+                    status: 401
+                }
+            })
+        }
         axios.get(`${HTTP.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
         .then(res => {
             console.log(res)

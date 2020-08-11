@@ -2,11 +2,11 @@
   <div class="review-list-item">
       <div class="header">
           <div class="review-info">
-            <div class="profile-image">
+            <div class="profile-image" @click="toProfile">
                 <img :src="imgurl" alt="">
             </div>
             <div class="name-rating">
-                <p class="review-name" v-text="review.writer"></p>
+                <p class="review-name"><span v-text="review.writer" @click="toProfile"></span></p>
                 <p class="rating" v-text="star"></p>
             </div>
           </div>
@@ -114,6 +114,9 @@ export default {
                     alert('전송에 실패했습니다.')
                 }
             })
+        },
+        toProfile() {
+            this.$router.push(`/accounts/${this.review.writer}`)
         }
     },
     computed:{
@@ -172,7 +175,6 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
-        border-radius: 50px;
         margin-right: 10px;
     }
     .review-list-item .header .buttons {
@@ -253,6 +255,13 @@ export default {
         display: flex;
         flex-direction: row;
         justify-content: flex-end;
+    }
+    .review-list-item .profile-image:hover {
+        cursor: pointer;
+    }
+    .review-list-item .review-name span:hover {
+        cursor: pointer;
+        font-size: 1.1rem;
     }
     @media (min-width: 768px) {
         .review-list-item .delete-check {
