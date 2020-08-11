@@ -2,15 +2,15 @@
   <div id="home container">
     <div class="wrap container">
       <SearchbarWeb @child="searchs"/>
-      <div v-if="!$store.getters.isLoggedIn" class="container home-inner">
-        <Content/>
-        <Join/>
+      <div  class="container home-inner">
+        <Content v-if="!flagcomputed"/>
+        <Join @child="searchs"/>
       </div>
       <div id="search-result-wrap row">
         <div class="mobile">
           <hr>
         </div>
-      <h2>인기있는 서비스들</h2>
+      <h2 v-text="text"></h2>
         <SearchResultCard :services="services"/>
       </div>
     </div>
@@ -34,7 +34,10 @@ export default {
   },data() {
     return {
        services: [],
-       searchInfo:[]
+       searchInfo:[],
+       search_on:false,
+       text:"인기있는 서비스들",
+       flag:false
     }
   },
    methods:{
@@ -46,10 +49,20 @@ export default {
       this.services.forEach(service => {
               service.imgurl = `${HTTP.BASE_URL}/${service.imgurl}`
             })
-      })
+       this.search_on=true
+       this.text = search.keyword+" 검색결과"
+})
       .catch(err => {
         console.log(err)
       })
+    }
+  },
+  computed:{
+    isLoggedIn() {
+            return this.$store.getters.isLoggedIn
+        },
+    flagcomputed(){
+       return this.isLoggedIn || this.search_on
     }
   },
   created(){
