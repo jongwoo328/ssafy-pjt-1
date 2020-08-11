@@ -92,6 +92,7 @@ export default {
           axios.get(`${HTTP.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
         .then(res => {
             console.log(res)
+
             this.services = res.data
             this.isProfile=true
         })
@@ -105,7 +106,15 @@ export default {
             console.log('test')
             axios.get(`${HTTP.BASE_URL}/profile/${this.$route.params.username}`)
             .then(res => {
-                console.log(res)
+                console.log(res.data)
+                if (res.data==='fail') {
+                    this.$router.push({
+                        name: 'Error',
+                        query: {
+                            status: 404
+                        }
+                    })
+                }
                 this.profileData = {
                     imgUrl: `${HTTP.BASE_URL}/` + res.data.imgurl,
                     comment: res.data.comment

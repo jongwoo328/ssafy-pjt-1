@@ -36,6 +36,14 @@ export default {
         message: Array,
     },
     created() {
+        if (!this.$store.getters.isLoggedIn) {
+            this.$router.push({
+                name: 'Error',
+                query: {
+                    status: 401
+                }
+            })
+        }
         if (this.$route.params.msgtype === "rec") this.urltype = true
         else this.urltype = false
 

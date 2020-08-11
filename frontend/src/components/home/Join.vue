@@ -1,14 +1,13 @@
 <template>
   <div id="join">
-      <form action="">
-          <input type="text" class="font-kor" :placeholder="placeHolder"><Button buttonText="검색" />
-      </form>
+          <input type="text" class="font-kor" v-model="keyword" :placeholder="placeHolder"><Button buttonText="검색" @click.native="searchInfoemit"/>
       <router-link v-if="!isLoggedIn" class="font-kor" to='/accounts/signup' id="button-join">지금 가입하기</router-link>
   </div>
 </template>
 
 <script>
 import Button from '@/components/common/Button.vue'
+
 export default {
     name: 'Join',
     components: {
@@ -16,13 +15,22 @@ export default {
     },
     data() {
         return {
-            placeHolder: '하고싶은 것을 검색하세요'
+            keyword: null,
+            placeHolder: '하고싶은 것을 검색하세요',
+            search:{}
         }
     },
     computed: {
         isLoggedIn() {
             return this.$store.getters.isLoggedIn
         }
+    },
+    methods:{
+        searchInfoemit(){
+            this.search.keyword=this.keyword
+            console.log(this.search)
+            this.$emit("child",this.search)
+         }
     }
 }
 </script>

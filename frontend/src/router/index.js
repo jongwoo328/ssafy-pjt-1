@@ -105,7 +105,7 @@ Vue.use(VueRouter)
 
   {
     path: '*',
-    name: '404',
+    name: 'Error',
     component: Error
   }
 ]
