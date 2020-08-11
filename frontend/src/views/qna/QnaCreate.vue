@@ -30,6 +30,14 @@ export default {
         }
     },
     created() {
+        if (!this.$store.getters.isLoggedIn) {
+            this.$router.push({
+                name: 'Error',
+                query: {
+                    status: 401
+                }
+            })
+        }
         this.$emit('sidebar')
     },
     methods: {

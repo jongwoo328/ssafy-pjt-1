@@ -1,10 +1,10 @@
 <template>
   <div class="user-list-item font-kor" :data-userno="user.userno" :data-follower="user.follower">
-    <div class="image">
+    <div class="image toProfile" @click="toProfile">
         <img :src="getImgUrl" alt="">
     </div>
     <div class="uinfo">
-        <h4 class="name" v-text="user.name"></h4>
+        <div class="name"><span class="toProfile" v-text="user.name" @click="toProfile"></span></div>
         <div class="icons">
             <div class="follow-icon">
                 <i v-if="isFollwing" class="fas fa-heart" @click="deleteFollow"></i>
@@ -96,6 +96,9 @@ export default {
                 this.user.folcount = res.data
             })
             .catch(err => console.log(err))
+        },
+        toProfile() {
+            this.$router.push(`/accounts/${this.user.name}`)
         }
     }
 }
@@ -156,6 +159,14 @@ export default {
     }
     .user-list-item .fa-envelope:hover {
         cursor: pointer;
+    }
+    .user-list-item div.toProfile:hover {
+        cursor: pointer;
+        border: 1px solid rgb(236, 128, 116);
+    }
+    .user-list-item span.toProfile:hover {
+        cursor: pointer;
+        border-bottom: 2px solid rgb(236,128,116);
     }
     @media (min-width: 768px) {
         .user-list-item {

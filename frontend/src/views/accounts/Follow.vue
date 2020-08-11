@@ -62,6 +62,14 @@ export default {
     },
     created() {
         this.$emit('sidebar')
+        if (!this.$store.getters.isLoggedIn) {
+            this.$router.push({
+                name: 'Error',
+                query: {
+                    status: 401
+                }
+            })
+        }
         axios.get(`${URL.BASE_URL}/follow/following/${this.$store.getters.getUserData.userno}`)
         .then(res => {
             console.log(res)
@@ -163,9 +171,14 @@ export default {
     }
     #follow .follow-info {
         /* border: 1px solid black; */
-        min-height: 300px;
+        min-height: 350px;
         border-left: 1px solid black;
         border-right: 1px solid black;
         border-bottom: 1px solid black;
+    }
+    @media (min-width: 768px) {
+        #follow .follow-info {
+            min-height: 500px;
+        }
     }
 </style>

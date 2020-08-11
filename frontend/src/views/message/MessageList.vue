@@ -56,6 +56,16 @@ export default {
         else {
             this.urltype = false
         } 
+        if (!this.$store.getters.isLoggedIn) {
+            this.$router.push({
+                name: 'Error',
+                query: {
+                    status: 401
+                }
+            })
+        }
+        if (this.$route.params.msgtype === "rec") this.urltype = true
+        else this.urltype = false
 
         if (this.urltype) {
             axios.get(`${URL.BASE_URL}/msg/rec/${this.$store.getters.getUserData.userno}`)

@@ -47,6 +47,9 @@ export default {
   body {
     margin: 0;
   }
+  #view {
+    margin-top: 50px;
+  }
   @media (min-width: 768px) {
     #view {
       min-height: 100vh;

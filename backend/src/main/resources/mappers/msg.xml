@@ -15,12 +15,14 @@
 		select *
 		from msg
 		where writerno = #{userno} and sendcheck = false
+		order by senddate desc
 	</select>
 	
 	<select id="selectRecMsg" resultType="Msg">
 		select *
 		from msg
 		where reciverno= #{userno} and recivcheck = false
+		order by senddate desc
 	</select>
 	
 	<select id="selectMsgByMsgno" resultType="Msg">
@@ -50,7 +52,8 @@
     
     <update id="deleteRecMsg" parameterType="map">
     	update msg
-    	set recivcheck = true
+    	set recivcheck = true,
+    		readcheck = true
     	<foreach collection="list" item="msgno" index="index" separator=" or " open ="where ">
 		 msgno = #{msgno}
 		 </foreach>
