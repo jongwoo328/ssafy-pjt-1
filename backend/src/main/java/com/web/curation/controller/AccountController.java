@@ -55,8 +55,6 @@ public class AccountController {
     @ApiOperation(value = "로그인")
     public Object login(@RequestBody User test, HttpServletResponse response) {
 
-    System.out.println(test.getEmail());
-    System.out.println(test.getPw());
     User user = new User();
     user.setEmail(test.getEmail());
     user.setPw(test.getPw());
