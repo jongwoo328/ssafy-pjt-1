@@ -99,7 +99,6 @@ public class FollowController {
 	@ApiOperation(value= "팔로우 하기", response = String.class)
 	@PostMapping
 	public Object following (@RequestBody Follow follow){
-		System.out.println(follow);
 		
 		if(folService.selectFollow(follow) != null) {
 			return new ResponseEntity<String>(FAIL, HttpStatus.OK);
@@ -115,7 +114,6 @@ public class FollowController {
 	@ApiOperation(value = "언팔 하기", response = String.class)
 	@DeleteMapping
 	public Object unfollow(@RequestBody Follow follow){
-		System.out.println(follow);
 		if(folService.deleteFollow(follow)) {
 			return new ResponseEntity<Integer>(folService.followCount(follow.getProno()), HttpStatus.OK);
 		} 

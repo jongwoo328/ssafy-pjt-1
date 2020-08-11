@@ -38,8 +38,6 @@ public class MsgController {
 	@GetMapping("/rec/{userno}")
 	public ResponseEntity<List<Msg>> recMsgList(@PathVariable int userno) throws Exception {
 		
-		System.out.println("받은쪽지 받아라");
-		System.out.println(userno);
 		List<Msg> list = msg.selectRecMsg(userno);
 		User reciver = user.getUserByUserno(userno);
 		
@@ -47,7 +45,6 @@ public class MsgController {
 			User sender = user.getUserByUserno(m.getWriterno());
 			m.setWritername(sender.getName());
 			m.setRecivername(reciver.getName());
-			System.out.println(m);
 		}
 		
 		
@@ -62,7 +59,6 @@ public class MsgController {
 		
 		for(Msg m : list) {
 			
-			System.out.println(m);
 			User reciver = user.getUserByUserno(m.getReciverno());
 			m.setWritername(sender.getName());
 			m.setRecivername(reciver.getName());
@@ -75,7 +71,6 @@ public class MsgController {
 	@ApiOperation(value = "읽지 않은 쪽지 개수 반환", response = Integer.class)
 	@GetMapping("/count/{userno}")
 	public ResponseEntity<Integer> msgCount(@PathVariable int userno) throws Exception {
-		System.out.println("메시지 카운트 요청");
 		return new ResponseEntity<Integer>(msg.msgCount(userno), HttpStatus.OK); 
 	}
 	
@@ -83,7 +78,6 @@ public class MsgController {
 	@ApiOperation(value = "받은 쪽지 세부 정보 전달", response = Msg.class)
 	@GetMapping("/detail/msgNo={msgno}&msgtype={msgtype}")
 	public ResponseEntity<Msg> detailRecMsg(@PathVariable int msgno, @PathVariable String msgtype) throws Exception {
-		System.out.println(msgno + " msgno 세부정보 전달");
 		Msg detailMsg = msg.detailMsg(msgno);
 		if(msgtype.equals("rec")) {
 			if(!detailMsg.isReadcheck()) {
@@ -97,26 +91,12 @@ public class MsgController {
 		return new ResponseEntity<Msg>(detailMsg,HttpStatus.OK);
 	}
 	
-//	@ApiOperation(value = "보낸 쪽지 세부 정보 전달", response = Msg.class)
-//	@GetMapping("/detail/send/{msgno}")
-//	public ResponseEntity<Msg> detailSendMsg(@PathVariable int msgno) throws Exception {
-//		System.out.println(msgno + " msgno 세부정보 전달");
-//		Msg detailMsg = msg.detailMsg(msgno);
-//		
-//		detailMsg.setWritername(user.getUserByUserno(detailMsg.getWriterno()).getName());
-//		
-//		return new ResponseEntity<Msg>(detailMsg,HttpStatus.OK);
-//	}
 	
 	@ApiOperation(value = "쪽지 전달", response = String.class)
 	@PostMapping
 	public ResponseEntity<String> sendMsg(@RequestBody Msg message){
-		System.out.println("메시지 전달");
-		System.out.println(message);
 		User sender = user.getUserByName(message.getWritername());
 		User reciver = user.getUserByName(message.getRecivername());
-		System.out.println(sender.getUserno());
-		System.out.println(reciver.getUserno());
 		message.setReciverno(reciver.getUserno());
 		message.setWriterno(sender.getUserno());
 		if(msg.senedMsg(message)) {
@@ -131,7 +111,6 @@ public class MsgController {
 	@DeleteMapping("/rec")
 	public ResponseEntity<String> deleteRecMsg(@RequestBody List<Integer> msgnoList){
 		
-		System.out.println(msgnoList);
 		
 		if(msg.deleteRecMsg(msgnoList)) {
 			return new ResponseEntity<String> (SUCCESS, HttpStatus.OK);
@@ -144,7 +123,6 @@ public class MsgController {
 	@ApiOperation(value = "보낸 쪽지 삭제", response = String.class)
 	@DeleteMapping("/send")
 	public ResponseEntity<String> deleteSendMsg(@RequestBody List<Integer> msgnoList){
-		System.out.println(msgnoList);
 		if(msg.deleteSendMsg(msgnoList)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
