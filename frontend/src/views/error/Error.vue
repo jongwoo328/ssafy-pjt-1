@@ -21,6 +21,7 @@ export default {
     },
     created() {
         this.$emit('sidebar')
+        this.status = this.$route.query.status
     },
     data() {
         return {
@@ -54,7 +55,7 @@ export default {
     },
     methods: {
         goBack() {
-            this.$router.go(-1)
+            this.$router.go(-2)
         }
     }
 }

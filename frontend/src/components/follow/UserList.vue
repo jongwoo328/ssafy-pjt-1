@@ -30,6 +30,7 @@ export default {
         .user-list {
             flex-direction: row;
             flex-wrap: wrap;
+            max-height: 500px;
         }
     }
 </style>

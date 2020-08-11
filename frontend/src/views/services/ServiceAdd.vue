@@ -129,6 +129,14 @@ export default {
     },
   },
      created() {
+         if (!this.$store.getters.isPro) {
+            this.$router.push({
+                name: 'Error',
+                query: {
+                    status: 403
+                }
+            })
+        }
          this.$emit('sidebar')
          axios.get(`${HTTP.BASE_URL}/fselect/cate`,HTTP.JSON_HEADER) 
           .then(res => {
