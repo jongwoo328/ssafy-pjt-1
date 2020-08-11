@@ -129,6 +129,7 @@ export default {
     }
   },
      created() {
+         this.$emit('sidebar')
          axios.get(`${HTTP.BASE_URL}/fselect/cate`,HTTP.JSON_HEADER) 
           .then(res => {
             for(let category in res.data){
@@ -227,8 +228,11 @@ export default {
             }
             axios.put(`${HTTP.BASE_URL}/service`,formData) 
                 .then(res => {
-                 console.log(res);
-                 this.$router.push(`/services/${this.$route.params.service_id}`)
+                 setTimeout(() => {
+                    console.log(res);
+                    alert('수정되었습니다.')
+                    this.$router.push(`/services/${this.$route.params.service_id}`)
+                 },1000)
       })
       .catch(err => {
         console.log(err)

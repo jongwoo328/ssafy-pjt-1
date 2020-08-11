@@ -171,6 +171,7 @@ export default {
       TermModal
     },
     created() {
+      this.$emit('sidebar')
       axios.get(`${URL.BASE_URL}/fselect`, URL.JSON_HEADER)
       .then(res => {
         for (let si_data in res.data) {

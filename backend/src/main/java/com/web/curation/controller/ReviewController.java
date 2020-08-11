@@ -75,12 +75,9 @@ public class ReviewController {
 	@ApiOperation(value = "리뷰를 작성한다.", response = String.class)
 	@PostMapping
 	public ResponseEntity<String> writeReview(@RequestBody Review review) {
-		System.out.println(review);
 		if (revService.writeReview(review)) {
-			System.out.println("작성 성공");
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
-		System.out.println("실패");
 		return new ResponseEntity<String>(FAIL, HttpStatus.NO_CONTENT);
 	}
 	
@@ -96,8 +93,8 @@ public class ReviewController {
 	
 	@ApiOperation(value = "글번호에 해당하는 리뷰를 삭제한다.", response = String.class)
 	@DeleteMapping("{revno}")
-	public ResponseEntity<String> deleteReview(@PathVariable int qnano) {
-		if (revService.deleteReview(qnano)) {
+	public ResponseEntity<String> deleteReview(@PathVariable int revno) {
+		if (revService.deleteReview(revno)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.OK);

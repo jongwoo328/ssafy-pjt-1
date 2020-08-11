@@ -1,10 +1,14 @@
 <template>
   <div id="msgList">
+    <div class="router">
+        <a class="link" :class="{'active': urltype}" href="/message/rec">받은 쪽지함</a>
+        <a class="link" :class="{'active': !urltype}" href="/message/send">보낸 쪽지함</a>
+    </div>
     <div class="button">
-        <button @click="changeModal">쪽지 보내기</button>
+        <Button button-text="쪽지 보내기" @click.native="changeModal" />
     </div>
     <div class="message-list">
-        <MessageListItem v-for="message in messagedata" :key="message.msgno" :message="message" />
+        <MessageListItem v-for="message in messagedata.reverse()" :key="message.msgno" :message="message" />
     </div>
     <messageModal v-if="messagemodal" @close="changeModal"/>
     <Button @click.native="deleteMsg" button-text="삭제" />
@@ -96,9 +100,29 @@ export default {
 </script>
 
 <style>
+    i {
+        margin: 0 10px;
+    }
+    #msgList {
+        margin: 50px 50px;
+    }
     #msgList .button {
+        font-size: 36px;
         margin: 20px 20px 0 0;
         display: flex;
         justify-content: flex-end;
+    }
+    #msgList .router .link{
+        font-size: 20px;
+        margin: 0 15px;
+    }
+    #msgList .router .link:hover{
+        color: rgb(236,128,116);
+        text-decoration: none;
+    }
+    .active {
+        /* text-decoration: underline;
+        color: rgb(236,128,116); */
+        border-bottom: 3px solid rgb(236,128,116);
     }
 </style>

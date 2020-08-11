@@ -11,6 +11,11 @@ public class Review {
 	private String cdate;
 	private String imgurl;
 	
+	public Review(int userno, int servno) {
+		this.servno =servno;
+		this.userno = userno;
+	}
+	
 	public String getImgurl() {
 		return imgurl;
 	}

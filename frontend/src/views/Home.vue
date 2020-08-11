@@ -8,9 +8,9 @@
       </div>
       <div id="search-result-wrap row">
         <div class="mobile">
-          <h2>인기있는 서비스들</h2>
           <hr>
         </div>
+      <h2>인기있는 서비스들</h2>
         <SearchResultCard :services="services"/>
       </div>
     </div>
@@ -53,7 +53,6 @@ export default {
     }
   },
   created(){
-      
         axios.get(`${HTTP.BASE_URL}/service/main`)
         .then(res => {
             console.log(res)
@@ -66,6 +65,9 @@ export default {
             console.log(err)
         })
   },
+  mounted() {
+    this.$emit('sidebar')
+  }
 }
 </script>
 

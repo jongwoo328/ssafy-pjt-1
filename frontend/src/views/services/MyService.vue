@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div id="myservice" class="container">
         <h3>내 서비스</h3>
         <hr>
         <div class="button-box">
@@ -32,6 +32,7 @@ export default {
 
     },
     created() {
+        this.$emit('sidebar')
         axios.get(`${HTTP.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
         .then(res => {
             console.log(res)
@@ -42,24 +43,6 @@ export default {
             console.log(err)
         })
     },
-    // created() {
-    // //     axios.get(`${URL.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
-    // //     .then(res => {
-    // //         console.log(res)
-    // //         this.serviceData = {
-    // //             imgUrl: 'http://172.30.1.13:8090/' + res.data.imgurl,
-    // //             comment: res.data.comment
-    // //         }
-    // //         console.log(this.serviceData.imgUrl)
-    // //         console.log(this.serviceData.title)
-    // //         if (res.data === 'fail') {
-    // //             this.isService = false
-    // //         }
-    // //     })
-    // //     .catch(err => {
-    // //         console.log(err)
-    // //     })
-    // },
     data(){
        return {
             profileFrame: false,
@@ -78,12 +61,18 @@ export default {
     },
 }
 </script>
-<style scoped>
-    .button-box {
+<style>
+    #myservice {
+        margin-top: 50px;
+    }
+    #myservice .button-box {
         display: flex;
         justify-content: flex-end;
     }
-    .service-box {
+    #myservice .service-box {
         margin-top: 30px
+    }
+    #myservice h3 {
+        font-size: 2rem;
     }
 </style>

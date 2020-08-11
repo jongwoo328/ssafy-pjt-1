@@ -16,7 +16,7 @@
 import Table from '@/components/qna/Table.vue'
 import axios from 'axios'
 import URL from '@/util/http-common.js'
-import Time from '@/util/time-common.js'
+import Time from '@/util/common.js'
 
 export default {
     name:'Qna',
@@ -29,6 +29,7 @@ export default {
       }
     },
     created() {
+      this.$emit('sidebar')
       axios.get(`${URL.BASE_URL}/qna/${this.userNumber}`)
       .then(res => {
 

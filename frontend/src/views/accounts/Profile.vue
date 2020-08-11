@@ -14,7 +14,7 @@
         </div>
         <div v-else class="container profile">
             <div class="web-button">
-                <router-link v-if="isMyProfile" :to="toProfileModify" ><Button id="modifyButton" button-text="수정" /> </router-link>
+                <router-link v-if="isMyProfile" :to="toProfileModify" ><Button id="modifyButton" buttonText="수정" buttonColor="white" textColor="rgb(236,128,116)"/> </router-link>
             </div>
             <div class="userInfo">
                 <h3 v-text="getUrlUsername + '\'s Profile'"></h3>
@@ -27,7 +27,7 @@
             <div class="mobile-box">
                 <div class="description-box">
                     <h3>소개</h3>
-                    <router-link v-if="isMyProfile" :to="toProfileModify" ><Button id="modifyButton" button-text="수정" /> </router-link>
+                    <router-link v-if="isMyProfile" :to="toProfileModify" ><Button id="modifyButton" buttonText="수정" buttonColor="white" textColor="rgb(236,128,116)"/> </router-link>
                 </div>
                 <hr>
                 <div class="profile-box">
@@ -35,14 +35,15 @@
                 </div>
             </div>
 
-            <div class="web-box">
-                <div class="index">
-                    <h3>소개</h3>
-                </div>
-                <span class="comment" v-html="profileData.comment"></span>
+            <div class="web-box container">
+                <h3>소개</h3>
+                <hr>
+                <div class="comment" v-html="profileData.comment"></div>
             </div>
 
             <div class="service-box">
+                <h3>제공하는 서비스</h3>
+                <hr>
                 <ServiceList :services="services" />   
             </div>
         </div>
@@ -100,14 +101,25 @@ export default {
     },
     mounted() {
         setTimeout(() => {
+            this.$emit('sidebar')
             console.log('test')
-            axios.get(`${HTTP.BASE_URL}/profile/${this.$store.getters.getUserData.userno}`)
+            axios.get(`${HTTP.BASE_URL}/profile/${this.$route.params.username}`)
             .then(res => {
                 console.log(res)
                 this.profileData = {
                     imgUrl: `${HTTP.BASE_URL}/` + res.data.imgurl,
                     comment: res.data.comment
                 }
+                this.services = res.data.servList
+                console.log(this.services.imgurl)
+                if (res.data.pno == 0) {
+                    this.isProfile=false
+                }
+                else {
+                    this.isProfile=true
+                }
+                console.log(1)
+                console.log(this.services[0].payCount)
                 console.log(this.profileData.imgUrl)
                 console.log(this.profileData.comment)
                 if (res.data === 'fail') {
@@ -163,6 +175,7 @@ export default {
         padding: 0 30px;
     }
     #profile hr {
+        
         margin: 20px 0;
     }
     #profile .profile {
@@ -213,20 +226,11 @@ export default {
 
     @media (min-width: 768px) {
         .web-box {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 30px;
+            display: block;
+            max-width: 700px;
         }
-        .web-box .index {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-width: 150px;
-            width: 30%;
-            border-right: 4px solid black;
-        }
-        .web-box span {
-            width: 60%;
+        .web-box div.comment {
+            min-height: 200px;
         }
         .mobile-box {
             display: none;

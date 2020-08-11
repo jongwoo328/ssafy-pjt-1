@@ -2,6 +2,7 @@ package com.web.curation.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -95,8 +96,6 @@ public class ServiceController {
 	@ApiOperation(value = "각 서비스 정보 반환", response = ConnectorService.class)
 	@GetMapping("/detail/servno={servno}&userno={userno}")
 	public Object detailService(@PathVariable int servno, @PathVariable int userno) {
-		System.out.println(servno);
-		System.out.println(userno); 
 		
 		ConnectorService serv = svc.detailService(servno);
 		
@@ -123,13 +122,17 @@ public class ServiceController {
 			serv.setImgurl("img/service/"+serv.getImgurl());
 			if(p != null) {
 				serv.setRevcheck(true);
-				System.out.println("리뷰 작성 가능");
 			} else {
 				serv.setRevcheck(false);
-				System.out.println("결제 내역 없음");
 			}
 			serv.setPayCount(pay.payCount(serv.getServno()));
 			serv.setProname(userService.getUserByUserno(serv.getUserno()).getName());
+			if(rev.checkReview(new Review(userno ,serv.getServno())) != null) {
+				serv.setRevwrite(true);
+			} else {
+				serv.setRevwrite(false);
+			}
+			
 			return new ResponseEntity<ConnectorService>(serv, HttpStatus.OK);
 		} else {
 			return new ResponseEntity<String>(FAIL, HttpStatus.OK);
@@ -147,7 +150,6 @@ public class ServiceController {
 			List<Review> revList = rev.totalReview();
 			for(ConnectorService serv : servList) {
 				serv.setImgurl("img/service/" + serv.getImgurl());
-				System.out.println(serv.getServname());
 				int count = 0;
 				double sum = 0.0;
 				int sno = serv.getServno();
@@ -163,7 +165,6 @@ public class ServiceController {
 					
 					serv.setAvgpoint(Math.round((sum/count) * 10) / 10.0);
 				}
-				System.out.println(serv.getAvgpoint());
 			}
 			
 			Collections.sort(servList, new Comparator<ConnectorService>() {
@@ -199,8 +200,6 @@ public class ServiceController {
 		if(keyword.equals("")) {
 			keyword = null;
 		}
-		System.out.println(keyword);
-		System.out.println(dongcode);
 		List<String> word = new ArrayList<String>();
 		
 		if(keyword != null) {
@@ -213,7 +212,6 @@ public class ServiceController {
 		
 		
 		int cateno = s.getCateno();
-		System.out.println(cateno);
 		List<ConnectorService> servList; 
 		if(keyword != null) {
 			servList = svc.selectServiceByDongcode(cateno, dongcode, word);
@@ -224,7 +222,6 @@ public class ServiceController {
 			List<Review> revList = rev.totalReview();
 			for(ConnectorService serv : servList) {
 				serv.setImgurl("img/service/" + serv.getImgurl());
-				System.out.println(serv.getServname());
 				int count = 0;
 				double sum = 0.0;
 				int sno = serv.getServno();
@@ -237,15 +234,14 @@ public class ServiceController {
 				if(count == 0) {
 					serv.setAvgpoint(0.0);
 				} else {
-					
+
 					serv.setAvgpoint(Math.round((sum/count) * 10) / 10.0);
 				}
-				System.out.println(serv.getAvgpoint());
 				serv.setPayCount(pay.payCount(serv.getServno()));
 			}
-			
-			
-			
+
+
+
 			
 			return new ResponseEntity<List<ConnectorService>>(servList, HttpStatus.OK);
 		} else {
@@ -262,7 +258,9 @@ public class ServiceController {
 		serv.setUserno(Integer.parseInt(request.getParameter("userno")));
 		serv.setCateno(Integer.parseInt(request.getParameter("cateno")));
 		serv.setServname(request.getParameter("servname"));
-		serv.setPrice(Integer.parseInt(request.getParameter("price")));
+		
+		serv.setPrice(request.getParameter("price"));
+		
 		serv.setDescription(request.getParameter("description"));
 		serv.setSaddr1(request.getParameter("saddr1"));
 		serv.setSaddr2(request.getParameter("saddr2"));
@@ -270,12 +268,9 @@ public class ServiceController {
 		serv.setSaddr4(request.getParameter("saddr4"));
 		serv.setSaddr5(request.getParameter("saddr5"));
 		serv.setSaddr6(request.getParameter("saddr6"));
-		System.out.println(serv);
 		MultipartHttpServletRequest mrequest = (MultipartHttpServletRequest)request;
 		MultipartFile imgFiles = mrequest.getFile("serviceImage");
 		if(imgFiles != null) {
-			System.out.println(mrequest.getFileNames());
-			System.out.println(imgFiles.getOriginalFilename());			
 			String originalFileName = imgFiles.getOriginalFilename();
 			String time = new String();
 			time += System.currentTimeMillis();
@@ -314,7 +309,11 @@ public class ServiceController {
 		service.setCateno(Integer.parseInt(request.getParameter("cateno")));
 		service.setServname(request.getParameter("servname"));
 		service.setServno(Integer.parseInt(request.getParameter("servno")));
-		service.setPrice(Integer.parseInt(request.getParameter("price")));
+		
+		
+		service.setPrice(request.getParameter("price"));
+		
+		
 		service.setDescription(request.getParameter("description"));
 		service.setSaddr1(request.getParameter("saddr1"));
 		service.setSaddr2(request.getParameter("saddr2"));
@@ -349,7 +348,6 @@ public class ServiceController {
 		}
 		
 		
-		System.out.println(service);
 		
 		if(svc.updateService(service)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
@@ -362,7 +360,6 @@ public class ServiceController {
 	@ApiOperation(value = "서비스 정보 삭제", response = String.class)
 	@DeleteMapping("/{servno}")
 	public ResponseEntity<String> deleteService(@PathVariable int servno){
-		System.out.println("서비스 삭제");
 		
 		ConnectorService service = svc.detailService(servno);
 		if(service.getImgurl().equals("null.png")) {

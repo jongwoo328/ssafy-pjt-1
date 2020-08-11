@@ -6,11 +6,38 @@ public class Pay {
 	private int userno;
 	private String pdate;
 	private String servname;
-	private int price;
+	private String price;
 	private boolean cancelcheck;
+	private String imgurl;
+	private double avgpoint;
+	private int payCount;
 	
+	public int getPayCount() {
+		return payCount;
+	}
+
+	public void setPayCount(int payCount) {
+		this.payCount = payCount;
+	}
+
+	public String getImgurl() {
+		return imgurl;
+	}
+
+	public void setImgurl(String imgurl) {
+		this.imgurl = imgurl;
+	}
+
 	
-	
+
+	public double getAvgpoint() {
+		return avgpoint;
+	}
+
+	public void setAvgpoint(double avgpoint) {
+		this.avgpoint = avgpoint;
+	}
+
 	public boolean isCancelcheck() {
 		return cancelcheck;
 	}
@@ -27,11 +54,11 @@ public class Pay {
 		this.servname = servname;
 	}
 
-	public int getPrice() {
+	public String getPrice() {
 		return price;
 	}
 
-	public void setPrice(int price) {
+	public void setPrice(String price) {
 		this.price = price;
 	}
 

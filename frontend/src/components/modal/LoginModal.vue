@@ -84,10 +84,10 @@ export default {
       .then(res => {
         console.log(res)
         if (res.data.status === true) {
-          console.log(res.headers)
+          console.log(res.data.object)
           this.$session.set('jwstoken', res.headers.jwstoken)
           this.$store.commit('login', res.data.object)
-          this.$router.push('/')
+          // this.$router.push('/')
           this.modalclose()
         }
         else {

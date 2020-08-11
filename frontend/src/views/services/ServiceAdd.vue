@@ -2,14 +2,12 @@
     <div id="servicecreate" class="container">
         <h3>서비스 등록</h3>
         <hr>
-            <div class=" form-group d-flex justify-content-around">
-                <label class="font-kor" >분류</label>
-
-                    <select  class="form-control col-6" name ="category"  v-model="categoryInfo">
-                        <option value="" disabled selected>분류</option>
-                        <option v-for="category in categoryList" :key="category.cateno" :value="category_obj" v-text="category.cname" ></option>
-                    </select>
-                
+            <div class="form-block">
+                <label class="font-kor" for="category">분류</label>
+                <select  class="form-control " id="category" name ="category"  v-model="categoryInfo">
+                    <option value="" disabled selected>분류</option>
+                    <option v-for="category in categoryList" :key="category.cateno" :value="category" v-text="category.cname" ></option>
+                </select>    
             </div>
             <div class="form-block">
                 <label class="font-kor"  for="servicename"> 
@@ -22,44 +20,41 @@
                 가격 
                 </label>
                 <input class="input-text" type="number" v-model="price" id="serviceprice"/>
+                <p v-text="korNumFormat"></p>
             </div>
-            <div  class="form-block d-flex justify-content-around">
-                <label class="font-kor" >
-                주소
-                </label>
-                <select class="form-control" id="exampleFormControlSelect1" v-model="siInfo" >
-                    <option v-if="siInfo" :value="siInfo" v-text="siInfo.siName"></option>
-                    <option v-else value="" disabled selected>시/도</option>
-                    <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName"></option>
-                </select>
-                <div class="d-flex sub-address">
-                <select class="form-control col-6" id="exampleFormControlSelect2" v-model="guInfo">
-                    <option v-if="guInfo" :value="guInfo" v-text="guInfo.guName"></option>
-                    <option v-else value="" disabled selected>구/군</option>
-                    <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
-                </select>
-                <select class="form-control col-6" id="exampleFormControlSelect3" v-model="dongInfo">
-                    <option v-if="dongInfo" :value="dongInfo" v-text="dongInfo.dongName"></option>
-                    <option v-else value="" disabled selected>동/읍/면</option>
-                    <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
-                </select>
+            <div class="form-address">
+                <label class="font-kor label-address" >주소</label>
+                <div class="form-block container-fluid row">        
+                    <select class="form-control col-12 col-md-4" id="exampleFormControlSelect1" v-model="siInfo" >
+                        <option v-if="siInfo" :value="siInfo" v-text="siInfo.siName"></option>
+                        <option v-else value="" disabled selected>시/도</option>
+                        <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName"></option>
+                    </select>
+                    <div class="form-block sub-address col-12 col-md-8 row">
+                        <select class="form-control col-6 col-md-4" id="exampleFormControlSelect2" v-model="guInfo">
+                            <option v-if="guInfo" :value="guInfo" v-text="guInfo.guName"></option>
+                            <option v-else value="" disabled selected>구/군</option>
+                            <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
+                        </select>
+                        <select class="form-control col-6 col-md-4" id="exampleFormControlSelect3" v-model="dongInfo">
+                            <option v-if="dongInfo" :value="dongInfo" v-text="dongInfo.dongName"></option>
+                            <option v-else value="" disabled selected>동/읍/면</option>
+                            <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            </div>
-            <div class="form-block">
-                <img v-if="serviceImageUrl" :src="serviceImageUrl">
-                <br>
+            <div class="form-block form-img">
                 <label class="font-kor" >
                     이미지
                 </label>
-                <br>
+                <img v-if="serviceImageUrl" :src="serviceImageUrl">
                 <input ref="serviceImage" type="file" id="file" accept="image/*" @change="fileSelect">
-                <br>
             </div>
-            <div class="form-block">
+            <div class="form-block form-content">
                 <label class="font-kor" for="servicedescription"> 
                 내용 
                 </label>
-                <br>
                 <Editor/>
             </div>
             <div>
@@ -73,12 +68,18 @@ import HTTP from "@/util/http-common.js"
 import axios from 'axios'
 import Button from '@/components/common/Button.vue'
 import Editor from '@/components/common/Editor.vue'
+import Common from '@/util/common.js'
 
 export default {
     name : 'ServiceAdd',
     components : {
         Button,
         Editor
+    },
+    computed: {
+        korNumFormat() {
+            return Common.toKorNumberFormat(this.price)
+        }
     },
     data(){
         return {
@@ -106,7 +107,7 @@ export default {
             },
             serviceImage:"",
             serviceImageUrl: "",
-            cateno: "1",
+            cateno: "",
             servname:"",
             price:"",
             description:"",
@@ -125,12 +126,16 @@ export default {
       },
          guInfo: function() {
          this.getDongInfo()
-    }
+    },
   },
      created() {
+         this.$emit('sidebar')
          axios.get(`${HTTP.BASE_URL}/fselect/cate`,HTTP.JSON_HEADER) 
           .then(res => {
             for(let category in res.data){
+                if(category==0){
+                    continue;
+                }
                 this.categoryList.push({
                     "cname" : res.data[category]["cname"],
                     "cateno" : res.data[category]["cateno"]
@@ -167,7 +172,7 @@ export default {
              const temp = document.getElementsByClassName('ql-editor')[0]
              this.description = temp.innerHTML
             formData.append('serviceImage', this.serviceImage)
-            formData.append('cateno', this.cateno)
+            formData.append('cateno', this.categoryInfo.cateno)
             formData.append('userno', this.$store.getters.getUserData.userno)
             formData.append('servname', this.servname)
             formData.append('price', this.price)
@@ -183,14 +188,18 @@ export default {
             console.log(`${key}`)
             }
             axios.post(`${HTTP.BASE_URL}/service`,formData) 
-                .then(res => {
-                 console.log(res);
-                 this.$router.push("/myservice")
+            .then(res => {
+              setTimeout(() => {
+              console.log(res)
+              alert('등록되었습니다.')
+              this.$router.push("/myservice")
+            },1000)
       })
       .catch(err => {
         console.log(err)
       })
-         },
+
+    },
          getGuInfo() {
                 let si_params = this.siInfo
                 this.guList = []
@@ -234,39 +243,77 @@ export default {
      }
 }
 </script>
-<style scoped>
-    .input-text {
-        width: 90%;
-        height: 40px;
-        border: 0.8px;
-        padding-left: 10px;
+<style>
+    #servicecreate label {
+        font-size: 1.25rem;
+    }
+    #servicecreate {
+        margin-top: 50px;
+        padding-bottom: 100px;
+    }
+    #servicecreate h3 {
+        font-size: 2rem;
+    }
+    #servicecreate .form-block,
+    #servicecreate .form-group {
+        display: block;
+        margin: 20px 0;
+    }
+    #servicecreate .form-block {
+        display: flex;
+        flex-direction: row;
+    }
+    #servicecreate .form-block label {
+        min-width: 50px;
+    }
+    #servicecreate #category {
+        min-width: 100px;
+        width: 300px;
+    }
+    #servicecreate input,
+    #servicecreate select {
+        border-radius: 0;
+        width: 100%;
+        border: 1px solid black;
         border-style: none none solid none;
     }
-    .form-block {
-        display: flex;
-        margin-bottom: 25px;
-        justify-content: space-around;
+    #servicecreate .form-address .form-block {
+        margin: 0;
     }
-    Button {
-        margin-left : 30px;
-        margin-top : 30px;
-
-    }
-    #servicecreate label,textarea{
+    #servicecreate .form-address .label-address{
+        padding: 0;
         display: block;
     }
-    #servicecreate{
-        margin-top: 40px;
+    #servicecreate .sub-address {
+        padding: 0;
     }
-    img {
-        object-fit: cover;
-        margin-top: 20px;
-        width: 150px;
-        height: 150px;
-        border-radius: 7px;
+    #servicecreate .form-img,
+    #servicecreate .form-img label,
+    #servicecreate .form-content{
+        display: block;
     }
-    .ql-container {
-        margin-top:30px;
-        height: 300px;
+    #servicecreate .form-img input {
+        margin-top: 5px;
+        border: none;
+    }
+    #servicecreate .form-img img {
+        max-width: 100px;
+        max-height: 100px;
+    }
+    #servicecreate .ql-editor {
+        min-height: 200px;
+    }
+    #servicecreate Button {
+        float: right;
+    }
+    @media (min-width: 768px) {
+        #servicecreate .form-address {
+            display: flex;
+            flex-direction: row;
+        }
+        #servicecreate .form-address label {
+            min-width: 50px;
+            display: inline-block;
+        }
     }
 </style>

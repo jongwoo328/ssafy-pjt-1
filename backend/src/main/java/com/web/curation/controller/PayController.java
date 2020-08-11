@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.web.curation.model.ConnectorService;
 import com.web.curation.model.Pay;
+import com.web.curation.model.Review;
 import com.web.curation.service.PayService;
+import com.web.curation.service.ReviewService;
 import com.web.curation.service.ServiceService;
 
 import io.swagger.annotations.ApiOperation;
@@ -40,12 +42,18 @@ public class PayController {
 	@Autowired
 	private ServiceService serv;
 	
+	@Autowired
+	private ReviewService rev;
+	
 	@ApiOperation(value = "새로운 결제 정보를 입력한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PostMapping
 	public ResponseEntity<String> insert(@RequestBody Pay pay){
 		logger.debug("insert - 호출");
-		System.out.println("결제 정보 저장");
-		System.out.println(pay);
+		
+		if(service.searchPayed(pay) != null) {
+			return new ResponseEntity<String> ("payed", HttpStatus.OK);
+		}
+		
 		if(service.insert(pay)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
@@ -64,7 +72,9 @@ public class PayController {
 		String time1 = format1.format(date);
 		if(payList != null) {
 			for(Pay p : payList) {
-//				System.out.println(time1);
+			
+				p.setImgurl("img/service/" + serv.detailService(p.getServno()).getImgurl());
+				p.setPayCount(service.payCount(p.getServno()));
 				ConnectorService c = serv.detailService(p.getServno());
 				p.setPrice(c.getPrice());
 				p.setServname(c.getServname());
@@ -73,6 +83,25 @@ public class PayController {
 				} else {
 					p.setCancelcheck(false);
 				}
+				
+				p.setPdate(p.getPdate().substring(2,10));
+				
+				List<Review> revList = rev.totalReview();
+				int count = 0;
+				double sum = 0.0;
+				for(Review r : revList) {
+					if(r.getServno() == p.getServno()) {
+						sum += r.getPoint();
+						count++;
+					}
+				}
+				if(count == 0) {
+					p.setAvgpoint(0.0);
+				} else {
+
+					p.setAvgpoint(Math.round((sum/count) * 10) / 10.0);
+				}
+				
 			}
 			
 			return new ResponseEntity<List<Pay>>(payList, HttpStatus.OK);
@@ -83,10 +112,10 @@ public class PayController {
 	}
 	
 	@ApiOperation(value = "결제를 취소한다." , response = String.class)
-	@DeleteMapping
-	public ResponseEntity<String> delete(@RequestBody Pay pay){
-		System.out.println("결제 취소");
-		System.out.println(pay);
+	@DeleteMapping("/{payno}")
+	public ResponseEntity<String> delete(@PathVariable int payno){
+		Pay pay = new Pay();
+		pay.setPayno(payno);
 		if(service.cancelPay(pay)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}

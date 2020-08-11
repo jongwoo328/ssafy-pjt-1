@@ -1,5 +1,5 @@
 <template>
-  <div class="search-result-card col-6 col-xl-4 font-kor">
+  <div class="search-result-card col-12 col-md-6 col-xl-4 font-kor">
       <div class="card-wrap">
         <div @click="changeDetail" class="card-img">
             <img :src="service.imgurl" alt="service_image">
@@ -17,7 +17,7 @@
                  <Badge 
                 badgeColor="blueviolet"
                 badgeText="USER"
-                :badgeCount="0" />
+                :badgeCount="service.payCount" />
             </div>
         </div>
       </div>

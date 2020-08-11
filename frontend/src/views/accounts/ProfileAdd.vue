@@ -1,5 +1,4 @@
 <template>
-  <div>
     <div v-if="!urltype" class="profile container" id="profileAdd">
       <h3>Profile</h3>
       <hr>
@@ -31,8 +30,7 @@
         <!-- <textarea name ="description" id="description" v-model="comment"></textarea> -->
       </div>
       <Button class="ml-auto" type="submit" button-text="수정" @click.native="submit" />
-   </div>
-  </div>  
+   </div> 
 </template>
 
 <script>
@@ -58,12 +56,13 @@ export default {
       ProfileFrame
     },
     created() {
+      this.$emit('sidebar')
         if (this.$route.params.type === "update") this.urltype = true
         else this.urltype = false
 
         if (this.urltype) {
           console.log('test')
-          axios.get(`${HTTP.BASE_URL}/profile/${this.$store.getters.getUserData.userno}`)
+          axios.get(`${HTTP.BASE_URL}/profile/${this.$store.getters.getUserData.name}`)
           .then(res => {
               this.profileframe = false
               console.log(res)  
@@ -142,7 +141,7 @@ export default {
 
 <style>
     #profileAdd {
-        margin: 30px 20px 30px 20px;
+        margin-top: 50px;
     }
     #profileAdd h3 {
       font-size: 2rem;
