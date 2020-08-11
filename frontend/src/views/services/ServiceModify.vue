@@ -1,16 +1,14 @@
 <template>
-    <div id="servicecreate" class="container">
+    <div id="servicemodify" class="container">
         <h3>서비스 수정</h3>
         <hr>
-            <div class=" form-group d-flex justify-content-around">
+            <div class=" form-block">
                 <label class="font-kor" >분류</label>
-
-                    <select  class="form-control col-6" name ="category"  v-model="categoryInfo">
-                        <option v-if="categoryInfo" :value="categoryInfo" v-text="categoryInfo.cname"></option>
-                        <option v-else value="" disabled >분류</option>
-                        <option v-for="category in categoryList" :key="category.cateno" :value="category" v-text="category.cname" ></option>
-                    </select>
-                
+                <select  class="form-control" id="category" name ="category"  v-model="categoryInfo">
+                    <option v-if="categoryInfo" :value="categoryInfo" v-text="categoryInfo.cname"></option>
+                    <option v-else value="" disabled >분류</option>
+                    <option v-for="category in categoryList" :key="category.cateno" :value="category" v-text="category.cname" ></option>
+                </select>
             </div>
             <div class="form-block">
                 <label class="font-kor"  for="servicename"> 
@@ -24,48 +22,46 @@
                 </label>
                 <input class="input-text" type="number" v-model="serviceData.price" id="serviceprice"/>
             </div>
-            <div  class="form-block d-flex justify-content-around">
-                <label class="font-kor" >
+            <div class="form-address">
+                <label class="font-kor label-address" >
                 주소
                 </label>
-                <select class="form-control" id="exampleFormControlSelect1" v-model="siInfo" >
-                    <option v-if="siInfo" :value="siInfo" v-text="siInfo.siName"></option>
-                    <option v-else value="" disabled selected>시/도</option>
-                    <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName"></option>
-                </select>
-                <div class="d-flex sub-address">
-                <select class="form-control col-6" id="exampleFormControlSelect2" v-model="guInfo">
-                    <option v-if="guInfo" :value="guInfo" v-text="guInfo.guName"></option>
-                    <option v-else value="" disabled selected>구/군</option>
-                    <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
-                </select>
-                <select class="form-control col-6" id="exampleFormControlSelect3" v-model="dongInfo">
-                    <option v-if="dongInfo" :value="dongInfo" v-text="dongInfo.dongName"></option>
-                    <option v-else value="" disabled selected>동/읍/면</option>
-                    <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
-                </select>
+                <div class="form-block container-fluid row">
+                    <select class="form-control col-12 col-md-4" id="exampleFormControlSelect1" v-model="siInfo" >
+                        <option v-if="siInfo" :value="siInfo" v-text="siInfo.siName"></option>
+                        <option v-else value="" disabled selected>시/도</option>
+                        <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName"></option>
+                    </select>
+                    <div class="form-block sub-address col-12 col-md-8 row">
+                        <select class="form-control col-6 col-md-4" id="exampleFormControlSelect2" v-model="guInfo">
+                            <option v-if="guInfo" :value="guInfo" v-text="guInfo.guName"></option>
+                            <option v-else value="" disabled selected>구/군</option>
+                            <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
+                        </select>
+                        <select class="form-control col-6 col-md-4" id="exampleFormControlSelect3" v-model="dongInfo">
+                            <option v-if="dongInfo" :value="dongInfo" v-text="dongInfo.dongName"></option>
+                            <option v-else value="" disabled selected>동/읍/면</option>
+                            <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
+                        </select>
+                    </div>
+                </div>
             </div>
-            </div>
-            <div class="form-block">
-                <img v-if="serviceImageUrl" :src="serviceImageUrl">
-                <br>
-                <label class="font-kor" >
-                    이미지
-                </label>
-                <br>
-                <input ref="serviceImage" type="file" id="file" accept="image/*" @change="fileSelect">
-                <br>
-            </div>
-            <div class="form-block">
-                <label class="font-kor" for="servicedescription"> 
-                내용 
-                </label>
-                <br>
-                <Editor/>
-            </div>
+                <div class="form-block form-img">
+                    <label class="font-kor" >
+                        이미지
+                    </label>
+                    <img v-if="serviceImageUrl" :src="serviceImageUrl">
+                    <input ref="serviceImage" type="file" id="file" accept="image/*" @change="fileSelect">
+                </div>
+                <div class="form-block form-content">
+                    <label class="font-kor" for="servicedescription"> 
+                    내용 
+                    </label>
+                    <Editor/>
+                </div>
             <div>
 
-            </div>
+        </div>
         <Button class="btn_1" type="submit" button-text="등록" @click.native="submit()"/>
     </div>
 </template>
@@ -76,13 +72,14 @@ import Button from '@/components/common/Button.vue'
 import Editor from '@/components/common/Editor.vue'
 
 export default {
-    name : 'ServiceAdd',
+    name : 'ServiceModify',
     components : {
         Button,
         Editor
     },
     data(){
         return {
+            serviceData: null,
             categoryList: [],
             siList: [
 
@@ -164,9 +161,7 @@ export default {
       .catch(err => {
         console.log(err)
       })
-     },
-     mounted() {
-       axios.get(`${HTTP.BASE_URL}/service/detail/servno=${this.$route.params.service_id}&userno=${this.$store.getters.getUserData.userno}`)
+        axios.get(`${HTTP.BASE_URL}/service/detail/servno=${this.$route.params.service_id}&userno=${this.$store.getters.getUserData.userno}`)
         .then(res =>{
             console.log(res)
             if (this.$store.getters.getUserData.userno !== res.data.userno) {
@@ -180,7 +175,7 @@ export default {
             this.serviceData ={
                 imgUrl:`${HTTP.BASE_URL}/` + res.data.imgurl,
                 servname : res.data.servname,
-                price : res.data.price,
+                price : res.data.price.replace(/,/g, ''),
                 saddr1 : res.data.saddr1,
                 saddr2 : res.data.saddr2,
                 saddr3 : res.data.saddr3,
@@ -213,7 +208,8 @@ export default {
         .catch(err => {
                 console.log(err)
         })
-     },methods:{
+     },
+    methods:{
          fileSelect() {
             console.log(this.$refs)
             this.serviceImage = this.$refs.serviceImage.files[0]
@@ -297,39 +293,77 @@ export default {
      }
 }
 </script>
-<style scoped>
-    .input-text {
-        width: 90%;
-        height: 40px;
-        border: 0.8px;
-        padding-left: 10px;
+<style>
+#servicemodify label {
+        font-size: 1.25rem;
+    }
+    #servicemodify {
+        margin-top: 50px;
+        padding-bottom: 100px;
+    }
+    #servicemodify h3 {
+        font-size: 2rem;
+    }
+    #servicemodify .form-block,
+    #servicemodify .form-group {
+        display: block;
+        margin: 20px 0;
+    }
+    #servicemodify .form-block {
+        display: flex;
+        flex-direction: row;
+    }
+    #servicemodify .form-block label {
+        min-width: 50px;
+    }
+    #servicemodify #category {
+        min-width: 100px;
+        width: 300px;
+    }
+    #servicemodify input,
+    #servicemodify select {
+        border-radius: 0;
+        width: 100%;
+        border: 1px solid black;
         border-style: none none solid none;
     }
-    .form-block {
-        display: flex;
-        margin-bottom: 25px;
-        justify-content: space-around;
+    #servicemodify .form-address .form-block {
+        margin: 0;
     }
-    Button {
-        margin-left : 30px;
-        margin-top : 30px;
-
-    }
-    #servicecreate label,textarea{
+    #servicemodify .form-address .label-address{
+        padding: 0;
         display: block;
     }
-    #servicecreate{
-        margin-top: 40px;
+    #servicemodify .sub-address {
+        padding: 0;
     }
-    img {
-        object-fit: cover;
-        margin-top: 20px;
-        width: 150px;
-        height: 150px;
-        border-radius: 7px;
+    #servicemodify .form-img,
+    #servicemodify .form-img label,
+    #servicemodify .form-content{
+        display: block;
     }
-    .ql-container {
-        margin-top:30px;
-        height: 300px;
+    #servicemodify .form-img input {
+        margin-top: 5px;
+        border: none;
+    }
+    #servicemodify .form-img img {
+        max-width: 100px;
+        max-height: 100px;
+    }
+    #servicemodify .ql-editor {
+        min-height: 200px;
+    }
+    #servicemodify Button {
+        float: right;
+    }
+    @media (min-width: 768px) {
+        #servicemodify .form-address {
+            display: flex;
+            flex-direction: row;
+        }
+        #servicemodify .form-address label {
+            min-width: 50px;
+            display: inline-block;
+        }
     }
 </style>
