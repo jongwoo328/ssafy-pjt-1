@@ -1,14 +1,14 @@
 <template>
     <div class="containe">
-        <div id="msg-box" :data-msgNum="message.msgno">
+        <div class="msg-box" :data-msgnum="message.msgno">
             <MsgModal v-if="msgModal" :msgno="message.msgno" @close="msg" />
             <input type="checkbox" class="check-box" v-model="value" :value="value" :data-msgno="message.msgno" @click="toggle">
-            <span @click="msg" :class="{'read': message.readcheck}">{{ message.title }}</span>
+            <span @click="msg" class="message-title" :class="{'read': message.readcheck}">{{ message.title }}</span>
             <br>
             <p v-if="this.$route.params.msgtype=='send'">{{ message.recivername }}</p>
             <p v-else>{{ message.writername }}</p>
-            <p v-if="message.readcheck" class="msg-date"><i class="far fa-envelope-open"></i>{{ message.senddate }}</p>
-            <p v-if="!message.readcheck" class="msg-date"><i class="far fa-envelope"></i>{{ message.senddate }}</p>
+            <p v-if="message.readcheck" class="messsage-date"><i class="far fa-envelope-open"></i>{{ message.senddate }}</p>
+            <p v-if="!message.readcheck" class="message-date"><i class="far fa-envelope"></i>{{ message.senddate }}</p>
             <hr>
         </div>
     </div>
@@ -39,6 +39,7 @@ export default {
     methods: {
         msg() {
             this.msgModal = !this.msgModal
+            this.message.readcheck = true
         },
         toggle() {
             this.value = !this.value
@@ -53,22 +54,22 @@ export default {
 </script>
 
 <style>
-    #msg-box {
+    .msg-box {
         margin: 0;
     }
-    #msg-box p {
+    .msg-box p {
         margin-bottom: 0;
         text-align: end;
     }
-    #msg-box span {
+    .msg-box .message-title {
         margin-left: 10px;
         font-size: 1.25rem;
     }
-    #msg-box span:hover {
+    .msg-box .message-title:hover {
         color: rgb(236,128,116);
         cursor: pointer;
     }
-    #msg-box .read {
+    .msg-box .read {
         color: darkgray;
     }
 </style>
