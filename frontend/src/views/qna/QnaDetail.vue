@@ -4,7 +4,7 @@
       <h3 class="mb-0" v-text="qnaData.qtitle"></h3>
     </div>
     <div class="info font-kor">
-      <p class="font-kor name" v-text="qnaData.qwriter"></p>
+      <p class="font-kor name"><span class="qwriter" v-text="qnaData.qwriter" @click="toWriterProfile"></span></p>
       <div class="info-inside">
         <p class="d-inline-block" v-text="qnaData.qdate"></p>
         <div class="qna-ud">
@@ -84,8 +84,18 @@ export default {
         updateCheck: false,
       }
     },
-    created() {
+    mounted() {
       this.$emit('sidebar')
+    },
+    created() {
+      if (!this.$store.getters.isLoggedIn) {
+            this.$router.push({
+                name: 'Error',
+                query: {
+                    status: 401
+                }
+            })
+        }
       axios.get(`${URL.BASE_URL}/qna/detail/${this.qnaNumber}`)
       .then(res => {
         console.log(res)
@@ -191,7 +201,10 @@ export default {
         .catch(err => {
           console.log(err)
         })
-      }
+      },
+      toWriterProfile() {
+        this.$router.push(`/accounts/${this.qnaData.qwriter}`)
+      },
     },
 
 }
@@ -289,6 +302,10 @@ export default {
     display: block;
     width: 100%;
     margin-bottom: 15px;
+  }
+  #qna-detail .qwriter:hover {
+    cursor: pointer;
+    font-size: 1.3rem;
   }
   @media (min-width: 768px) {
     #qna-detail .delete-check {

@@ -10,21 +10,22 @@
                 </div>
                 <div class="modal-body">
                     <MessageModal v-if="messageModal" :recivername="writer" :Title="title" :Content="content" :Sendtype="sendno" @close="reply" />
-                    <slot name="body">
-                      <p v-if="this.$route.params.msgtype=='rec'">{{ writer }}</p>
-                      <p v-else>{{ reciver }}</p>
-                      <p>{{ title }}</p>
-                      <p>{{ content }}</p>
-                      <p>{{ date }}</p>
-                      <p>{{ senddate }}</p>
+                    <slot class="msgDetail" name="body">
+                      <span class="msg-date">{{ date }}</span>
+                      <h4 class="msg-title">{{ title }}</h4>
+                      <p class="msg-content">{{ content }}</p>
                     </slot>
+                      <p class="msg-user" v-if="this.$route.params.msgtype=='rec'">From. {{ writer }}</p>
+                      <p class="msg-user" v-else>To. {{ reciver }}</p>
+                </div>
+
+                <div class="modal-footer">
                     <Button v-if="this.$route.params.msgtype=='rec'" @click.native="reply" button-text="답장" />
                     <div class="Button-box">
                       <Button v-if="this.$route.params.msgtype=='send'" @click.native="relay" button-text="전달" />
                       <Button v-if="this.$route.params.msgtype=='send'" @click.native="resend" button-text="다시보내기" />
                     </div>                
                 </div>
-                <hr>
               </div>
           </div>
         </div>
@@ -63,6 +64,7 @@ export default {
         messageModal: false,
         sendno: "",
         msgcount: "",
+        date1:""
     }
   },
   created() {
@@ -73,7 +75,7 @@ export default {
           this.writer = res.data.writername
           this.title = res.data.title
           this.content = res.data.content
-          this.date = res.data.senddate
+          this.date = res.data.senddate.substring(2,16);
       })
       .catch(err => {
           console.log(err)
@@ -101,9 +103,20 @@ export default {
 
 <style>
     /* model */
-  #msgModal hr {
+  #msgModal .close {
+    margin: 0;
+  }
+  #msgModal .modal-body {
+    padding-bottom: 5px;
+  }
+  #msgModal hr{
     margin-top: 0;
   }
+  #msgModal h4{
+    margin-top: 0;
+    font-style: oblique;
+  }
+
   #msgModal .form button {
     width: 100%;
   }
@@ -129,7 +142,10 @@ export default {
     text-align: right;
     font-weight: bolder
   }
-
+  #msgModal .msgDetail p {
+    text-align: left;
+  }
+  
   #msgModal .login-type {
     display: flex;
     justify-content: space-around;
@@ -146,12 +162,21 @@ export default {
     display: table;
     transition: opacity .3s ease;
   }
-
+  #msgModal .msg-date {
+    font-size: 1rem;
+    float: right;
+  }
   #msgModal .modal-wrapper {
     display: table-cell;
     vertical-align: middle;
   }
-
+  #msgModal .msg-title {
+    text-align: left;
+  }
+  #msgModal .msg-content {
+    margin: 20px 0;
+    text-align: left;
+  }
   #msgModal .modal-container {
     width: 300px;
     margin: 0px auto;
@@ -169,10 +194,6 @@ export default {
   #msgModal .modal-header h3 {
     margin-top: 0;
     color: rgb(236,128,116);
-  }
-
-  #msgModal .modal-body {
-    margin: 0 0;
   }
   #msgModal .modal-body button {
     margin: 10px 0 10px 0;

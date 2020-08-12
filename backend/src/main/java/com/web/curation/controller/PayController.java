@@ -49,9 +49,6 @@ public class PayController {
 	@PostMapping
 	public ResponseEntity<String> insert(@RequestBody Pay pay){
 		logger.debug("insert - 호출");
-		System.out.println("결제 정보 저장");
-		System.out.println(pay.getServno());
-		System.out.println(pay.getUserno());
 		
 		if(service.searchPayed(pay) != null) {
 			return new ResponseEntity<String> ("payed", HttpStatus.OK);
@@ -75,17 +72,19 @@ public class PayController {
 		String time1 = format1.format(date);
 		if(payList != null) {
 			for(Pay p : payList) {
-//				System.out.println(time1);
+			
 				p.setImgurl("img/service/" + serv.detailService(p.getServno()).getImgurl());
 				p.setPayCount(service.payCount(p.getServno()));
 				ConnectorService c = serv.detailService(p.getServno());
 				p.setPrice(c.getPrice());
 				p.setServname(c.getServname());
 				if(p.getPdate().compareTo(time1) > 0) {
-					p.setCancelcheck(false);
-				} else {
 					p.setCancelcheck(true);
+				} else {
+					p.setCancelcheck(false);
 				}
+				
+				p.setPdate(p.getPdate().substring(2,10));
 				
 				List<Review> revList = rev.totalReview();
 				int count = 0;
@@ -113,10 +112,10 @@ public class PayController {
 	}
 	
 	@ApiOperation(value = "결제를 취소한다." , response = String.class)
-	@DeleteMapping
-	public ResponseEntity<String> delete(@RequestBody Pay pay){
-		System.out.println("결제 취소");
-		System.out.println(pay);
+	@DeleteMapping("/{payno}")
+	public ResponseEntity<String> delete(@PathVariable int payno){
+		Pay pay = new Pay();
+		pay.setPayno(payno);
 		if(service.cancelPay(pay)) {
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}

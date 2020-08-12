@@ -1,5 +1,5 @@
 <template>
-  <div class="search-result-card col-6 col-xl-4 font-kor">
+  <div class="search-result-card col-12 col-md-6 col-xl-4 font-kor">
       <div class="card-wrap">
         <div class="card-img">
             <img :src="getImgUrl" alt="service_image">
@@ -22,15 +22,17 @@
             </div>
         </div>
         <div class="card-desc pay-card" v-else>
+            <div class="span-class">
             <span v-text="service.servname" ></span>
-            <span v-text="service.pdate"></span>
-            <!-- <button id="returnpay" @click="pay">환불</button> -->
-            <Button buttonText="결제취소" v-if="service.cancelcheck" @click.native="pay"></Button>
-            <Button buttonText="취소불가" v-else disabled :buttonColor="color"></Button>
-            <div>
-                <span v-text="service.price+'원'"></span>
+            <span id="pdate" v-text="service.pdate"></span>
             </div>
-        </div>
+            <span v-text="service.price+'원'"></span>
+            <!-- <button id="returnpay" @click="pay">환불</button> -->
+            <div class="button-class">
+            <Button buttonText="결제취소" v-if="service.cancelcheck" @click.native="pay"></Button>
+            <Button buttonText="취소불가" :buttonColor="color" v-else disabled id="btn_1"></Button>
+            </div>
+            </div>
       </div>
   </div>
 </template>
@@ -45,7 +47,7 @@ export default {
     data(){
         return{
             isPay :false,
-            color : "blue"
+            color : "#A6A6A6"
         }
     },
     props: {
@@ -94,9 +96,19 @@ export default {
 </script>
 
 <style>
+
+    #pdate{
+        float:right;
+    }
     .search-result-card {
         display: inline-block;
         padding: 5px 10px 5px 10px;
+    }
+    .button-class Button{
+        float:right;
+    }
+    #btn_1{
+        opacity: 0.6;
     }
     /* .card-inner:hover {
         background-color: whitesmoke;

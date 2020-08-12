@@ -101,6 +101,9 @@ export default {
             servno: "",
             serviceId: 0,
             serviceData: {
+                username:"",
+                userno:"",
+                servno:"",
                 servname :"",
                 price : "",
                 saddr1 : "",
@@ -168,8 +171,10 @@ export default {
             }
         }
     },
-    created() {
+    mounted() {
         this.$emit('sidebar')
+    },
+    created() {
         if(this.$store.getters.getUserData === null){
             this.userno = 0;    
         } else{
@@ -181,6 +186,9 @@ export default {
             this.revwrite = res.data.revwrite
             this.proname = res.data.proname,
             this.serviceData ={
+                username : res.data.proname,
+                userno : res.data.userno,
+                servno : res.data.servno,
                 imgUrl:`${HTTP.BASE_URL}/` + res.data.imgurl,
                 servname : res.data.servname,
                 price : res.data.price,
@@ -253,6 +261,7 @@ export default {
         text-align: center;
         border: 1px solid gray;
         max-height: 200px;
+        min-height: 200px;
     }
     /* #service-detail .price {
         text-align: center;
@@ -264,6 +273,7 @@ export default {
     }
     #service-detail .web {
         display: none;
+        margin-top: 30px;
     }
     #service-detail .info h1 {
         text-align: center;
@@ -272,7 +282,7 @@ export default {
         margin-bottom: 50px;
     }
     #service-detail .mobile {
-        margin: 10px 0 10px 0;
+        margin: 30px 0 10px 0;
         padding: 0 50px 0 50px;
         display: flex;
         flex-direction: row;
@@ -319,8 +329,8 @@ export default {
         #service-detail .info .buttons {
             padding: 10px;
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            flex-direction: row;
+            justify-content: space-between;
             align-items: center;
         }
         #service-detail .info button { 
@@ -338,7 +348,7 @@ export default {
     }
     @media (min-width: 992px) {
         #service-detail .info button {
-            width: 50%;
+            width: 45%;
         }
         #service-detail h1, #service-detail h2 {
             font-size: 2rem;

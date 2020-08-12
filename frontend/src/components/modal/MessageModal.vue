@@ -137,7 +137,7 @@ export default {
       .then(res => {
         if (res.data === 'success') {
           alert('전송되었습니다.')
-          this.$router.push('/')
+          // this.$router.push('/')
           this.modalclose()
         }
         else {

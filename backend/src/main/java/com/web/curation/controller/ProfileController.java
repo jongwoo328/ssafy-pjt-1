@@ -29,6 +29,7 @@ import com.web.curation.config.JwtUtil;
 import com.web.curation.model.ConnectorService;
 import com.web.curation.model.Profile;
 import com.web.curation.model.Review;
+import com.web.curation.model.User;
 import com.web.curation.service.PayService;
 import com.web.curation.service.ProfileService;
 import com.web.curation.service.ReviewService;
@@ -69,70 +70,52 @@ public class ProfileController {
 	public Object detailProfile(@PathVariable String username) {
 		
 		
-		Profile profile = service.detailProfile(user.getUserByName(username).getUserno());
+		User u = user.getUserByName(username);
 		
 		
-		
-		if(profile != null) {
-			profile.setImgurl("img/profile/" + profile.getImgurl() );
-			profile.setServList(connectorServ.selectServiceByUserno(user.getUserByName(username).getUserno()));
-			if(profile.getServList() != null) {
-				List<Review> revList = rev.totalReview();
-				for(ConnectorService s : profile.getServList()) {
-					s.setImgurl("img/service/" + s.getImgurl());
-					double sum = 0.0;
-					int sno = s.getServno();
-					int count = 0;
-					for(Review r : revList) {
-						if(sno == r.getServno()) {
-							sum += r.getPoint();
-							count ++;
+		if(u != null) {
+			Profile profile = service.detailProfile(user.getUserByName(username).getUserno());
+			
+			if(profile != null) {
+				profile.setImgurl("img/profile/" + profile.getImgurl() );
+				profile.setServList(connectorServ.selectServiceByUserno(user.getUserByName(username).getUserno()));
+				if(profile.getServList() != null) {
+					List<Review> revList = rev.totalReview();
+					for(ConnectorService s : profile.getServList()) {
+						s.setImgurl("img/service/" + s.getImgurl());
+						double sum = 0.0;
+						int sno = s.getServno();
+						int count = 0;
+						for(Review r : revList) {
+							if(sno == r.getServno()) {
+								sum += r.getPoint();
+								count ++;
+							}
 						}
+						if(count == 0) {
+							sum = 0.0;
+						} else {
+							sum = sum / count;
+						}
+						s.setAvgpoint(Math.round((sum) * 10)/ 10.0);
+						s.setPayCount(pay.payCount(s.getServno()));
 					}
-					if(count == 0) {
-						sum = 0.0;
-					} else {
-						sum = sum / count;
-					}
-					s.setAvgpoint(Math.round((sum) * 10)/ 10.0);
-					s.setPayCount(pay.payCount(s.getServno()));
+					
 				}
 				
+				return new ResponseEntity<Profile>(profile, HttpStatus.OK);
+			} else {
+				return new ResponseEntity<String>(FAIL , HttpStatus.OK);
 			}
-			
-			return new ResponseEntity<Profile>(profile, HttpStatus.OK);
 		} else {
-			profile = new Profile();
+			return new ResponseEntity<String>(FAIL , HttpStatus.OK);
 			
-			profile.setPno(0);
-			
-			if(profile.getServList() != null) {
-				List<Review> revList = rev.totalReview();
-				for(ConnectorService s : profile.getServList()) {
-					s.setImgurl("img/service/" + s.getImgurl());
-					double sum = 0.0;
-					int sno = s.getServno();
-					int count = 0;
-					for(Review r : revList) {
-						if(sno == r.getServno()) {
-							sum += r.getPoint();
-							count ++;
-						}
-					}
-					if(count == 0) {
-						sum = 0.0;
-					} else {
-						sum = sum / count;
-					}
-					s.setAvgpoint(Math.round((sum) * 10)/ 10.0);
-					s.setPayCount(pay.payCount(s.getServno()));
-				}
-				profile.setServList(connectorServ.selectServiceByUserno(user.getUserByName(username).getUserno()));				
-				
-			}
-			
-			return new ResponseEntity<Profile>(profile, HttpStatus.OK);
 		}
+		
+		
+		
+			
+		
 	}
 	
 	
@@ -148,9 +131,6 @@ public class ProfileController {
 		profile.setUserno(Integer.parseInt(request.getParameter("userno")));
 		
 		if(imgFiles != null) {
-			System.out.println(mrequest.getFileNames());
-			System.out.println(imgFiles.getOriginalFilename());
-			System.out.println(request.getParameter("Comment"));
 			String originalFileName = imgFiles.getOriginalFilename();
 			String cur_time = new String("");
 			cur_time += System.currentTimeMillis();
@@ -219,7 +199,6 @@ public class ProfileController {
 		
 		
 		if(service.updateProfile(profile)) {
-			System.out.println("프로필 업데이트 성공");
 			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
 		}
 		
@@ -230,7 +209,6 @@ public class ProfileController {
 	@ApiOperation(value = "userno에 해당하는 프로필 정보를 삭제한다.")
 	@DeleteMapping
 	public ResponseEntity<String> deleteProfile(@RequestBody Profile profile){
-		System.out.println("삭제");
 		
 		
 		if(profile.getImgurl().equals("null.png")) {

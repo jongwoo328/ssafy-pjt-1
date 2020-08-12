@@ -20,9 +20,7 @@
 
           <div class="modal-footer">
             <slot name="footer">
-              <button id="modalExit" class="modal-default-button" @click="$emit('close')">
-                확인
-              </button>
+              <Button id="modalExit" buttonText="확인" @click.native="$emit('close')" />
             </slot>
           </div>
         </div>
@@ -32,8 +30,12 @@
 </template>
 
 <script>
-export default {
+import Button from '@/components/common/Button.vue'
 
+export default {
+  components: {
+    Button
+  }
 }
 </script>
 
@@ -74,10 +76,10 @@ export default {
 .modal-body {
   margin: 20px 0;
 }
-
+/* 
 .modal-default-button {
   float: right;
-}
+} */
 
 /*
  * The following styles are auto-applied to elements with
