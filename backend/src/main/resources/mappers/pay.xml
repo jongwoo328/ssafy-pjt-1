@@ -39,6 +39,13 @@
 		where servno = #{servno}
 	</select>
 	
+	<!-- 서비스 결제 한 사람  userno 조회-->
+	<select id="servPay" resultType="Integer">
+		select userno
+		from pay
+		where servno = #{servno}
+	</select>
+	
 	<!-- 결제 취소 -->
 	<delete id="cancelPay" parameterType="Pay">
 		delete from pay
