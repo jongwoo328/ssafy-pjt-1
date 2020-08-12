@@ -21,9 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web.curation.config.JwtUtil;
 import com.web.curation.model.Admin;
 import com.web.curation.model.BasicResponse;
+import com.web.curation.model.ConnectorService;
+import com.web.curation.model.Follow;
+import com.web.curation.model.Profile;
 import com.web.curation.model.User;
+import com.web.curation.service.FollowService;
 import com.web.curation.service.MsgService;
 import com.web.curation.service.PayService;
+import com.web.curation.service.ProfileService;
+import com.web.curation.service.ServiceService;
 import com.web.curation.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -55,6 +61,15 @@ public class AccountController {
     
     @Autowired
     PayService pay;
+    
+    @Autowired
+	ProfileService profile;
+    
+    @Autowired
+	FollowService folService;
+    
+    @Autowired
+    ServiceService serv;
     
     @PostMapping("/account/login")
     @ApiOperation(value = "로그인")
@@ -209,11 +224,29 @@ public class AccountController {
     @ApiOperation(value = "결제한 회원 정보 리턴")
     public ResponseEntity<List<User>> PayUserInfo(@PathVariable int servno){
     	List<Integer> usernoList = pay.servPay(servno);
-    	List<User> userList = new ArrayList<User>();
+    	ConnectorService conServ = serv.detailService(servno);
     	
+    	
+    	List<User> userList = new ArrayList<User>();
     	for(int userno : usernoList) {
     		User u = userService.getUserByUserno(userno);
+    		Profile p = profile.detailProfile(userno);
+    		if(p != null) {
+    			u.setAddr1("img/proflie/" + p.getImgurl());
+    		} else {
+    			u.setAddr1("img/profile/null.png");
+    		}
     		u.setPw("XXXX");
+    		u.setFolcount(folService.followCount(userno));
+    		Follow f = new Follow();
+    		f.setUserno(userno);
+    		f.setProno(conServ.getUserno());
+    		if(folService.selectFollow(f) != null) {
+    			u.setCheckfollow(true);
+    		} else {
+    			u.setCheckfollow(false);
+    		}
+    		
     		userList.add(u);
     	}
     	
