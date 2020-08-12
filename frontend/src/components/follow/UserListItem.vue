@@ -113,6 +113,9 @@ export default {
         flex-direction: row;
 
     }
+    .user-list-item:hover {
+        box-shadow: 0 1px 5px gray;
+    }
     .user-list-item .fa-heart {
         color: crimson;
     }

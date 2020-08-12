@@ -56,9 +56,8 @@ export default {
       this.serviceAddModal = !this.serviceAddModal;
     },
     logout() {
-      this.$store.commit('logout')
       this.$session.remove('jwstoken')
-      this.$router.push('/')
+      this.$store.commit('logout')
     }
   },
   computed: {

@@ -10,7 +10,7 @@ export default new Vuex.Store({
     storage: window.sessionStorage,
   })],
   state: {
-    isLoggedIn: false,
+    // isLoggedIn: false,
     userData: null,
     sidebar: false,
   },
@@ -20,8 +20,10 @@ export default new Vuex.Store({
       state.userData = userData
     },
     logout(state) {
+      console.log('test')
       state.isLoggedIn = false
       state.userData = null
+      // this.$router.go('/')
     },
     switchSidebar(state) {
       state.sidebar = !state.sidebar
@@ -46,7 +48,12 @@ export default new Vuex.Store({
   },
   getters: {
     isLoggedIn(state) {
-      return state.isLoggedIn
+      if (state.userData === null) {
+        return false
+      }
+      else {
+        return true
+      }
     },
     getUserData(state) {
       return state.userData
