@@ -1,5 +1,6 @@
 package com.web.curation.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +23,7 @@ import com.web.curation.model.Admin;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.User;
 import com.web.curation.service.MsgService;
+import com.web.curation.service.PayService;
 import com.web.curation.service.UserService;
 
 import io.swagger.annotations.ApiOperation;
@@ -50,6 +52,9 @@ public class AccountController {
     
     @Autowired
     MsgService msg;
+    
+    @Autowired
+    PayService pay;
     
     @PostMapping("/account/login")
     @ApiOperation(value = "로그인")
@@ -200,5 +205,19 @@ public class AccountController {
     	return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
     }
     
+    @GetMapping("/account/payinfo")
+    @ApiOperation(value = "결제한 회원 정보 리턴")
+    public ResponseEntity<List<User>> PayUserInfo(@PathVariable int servno){
+    	List<Integer> usernoList = pay.servPay(servno);
+    	List<User> userList = new ArrayList<User>();
+    	
+    	for(int userno : usernoList) {
+    		User u = userService.getUserByUserno(userno);
+    		u.setPw("XXXX");
+    		userList.add(u);
+    	}
+    	
+    	return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
+    }
 
 }
