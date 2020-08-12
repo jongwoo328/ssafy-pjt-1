@@ -39,7 +39,6 @@ public class User {
 	private boolean checkfollow;
 	
 	
-	
 	public boolean isCheckfollow() {
 		return checkfollow;
 	}

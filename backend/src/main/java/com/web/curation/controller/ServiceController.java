@@ -43,7 +43,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/service")
 public class ServiceController {
-	private static final String  SAVE_PATH = "C:\\Users\\multicampus\\Desktop\\git\\s03p13d106\\backend\\src\\main\\resources\\static\\img\\service/";
+	private static String  SAVE_PATH = "";
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
 	
@@ -270,6 +270,15 @@ public class ServiceController {
 	@ApiOperation(value = "새로운 서비스를 등록한다.", response = String.class)
 	@PostMapping
 	public ResponseEntity<String> writeProfile(HttpServletRequest request) {
+		SAVE_PATH = request.getServletContext().getRealPath("");
+		SAVE_PATH = SAVE_PATH.substring(0, SAVE_PATH.length()-1);
+		String[] arr = SAVE_PATH.split("\\\\");
+		SAVE_PATH = "";
+		for(int i = 0; i < arr.length-1; i++) {
+			SAVE_PATH += arr[i] +"/";
+		}
+		SAVE_PATH +="resources/static/img/service/";
+		
 		
 		ConnectorService serv = new ConnectorService();
 		serv.setUserno(Integer.parseInt(request.getParameter("userno")));
@@ -315,6 +324,15 @@ public class ServiceController {
 	@ApiOperation(value = "servno에 해당하는 서비스 정보를 수정한다.", response = String.class)
 	@PutMapping
 	public ResponseEntity<String> updateProfile(HttpServletRequest request) throws JsonMappingException, JsonProcessingException{
+		SAVE_PATH = request.getServletContext().getRealPath("");
+		SAVE_PATH = SAVE_PATH.substring(0, SAVE_PATH.length()-1);
+		String[] arr = SAVE_PATH.split("\\\\");
+		SAVE_PATH = "";
+		for(int i = 0; i < arr.length-1; i++) {
+			SAVE_PATH += arr[i] +"/";
+		}
+		SAVE_PATH +="resources/static/img/service/";
+		
 		MultipartHttpServletRequest mrequest = (MultipartHttpServletRequest)request;
 		MultipartFile imgFiles = mrequest.getFile("serviceImage");
 		ConnectorService pre =
@@ -376,7 +394,16 @@ public class ServiceController {
 	
 	@ApiOperation(value = "서비스 정보 삭제", response = String.class)
 	@DeleteMapping("/{servno}")
-	public ResponseEntity<String> deleteService(@PathVariable int servno){
+	public ResponseEntity<String> deleteService(@PathVariable int servno, HttpServletRequest request){
+		SAVE_PATH = request.getServletContext().getRealPath("");
+		SAVE_PATH = SAVE_PATH.substring(0, SAVE_PATH.length()-1);
+		String[] arr = SAVE_PATH.split("\\\\");
+		SAVE_PATH = "";
+		for(int i = 0; i < arr.length-1; i++) {
+			SAVE_PATH += arr[i] +"/";
+		}
+		SAVE_PATH +="resources/static/img/service/";
+		
 		
 		ConnectorService service = svc.detailService(servno);
 		if(service.getImgurl().equals("null.png")) {
