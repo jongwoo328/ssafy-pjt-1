@@ -80,7 +80,4 @@ export default {
     flex-direction: row;
     margin-right: 10px;
   }
-  .notice:hover{
-    border-bottom: 3px solid rgb(236,128,116);
-  }
 </style>
