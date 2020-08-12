@@ -67,8 +67,18 @@
             <h2>리뷰</h2>
             <a v-if="serviceData.payed" @click="createReview">리뷰 작성</a>
           </div>
+          <div class="review-button">
+              <div class="review cursor-pointer" @click="showReview" style="border-bottom: none;">
+                <h3>리뷰</h3>
+            </div>
+            <div class="user cursor-pointer" @click="showUser" style="border-left: none;">
+                <h3>참여자목록</h3>
+            </div>
+          </div>
           <hr>
-          <ReviewList :reviews="review"/>
+          
+          <ReviewList :reviews="review" v-if="displayreview"/>
+          <UserList :userList="userData" v-if="displayuser"/>
       </div>
   </div>
 </template>
@@ -81,6 +91,7 @@ import axios from 'axios'
 import MessageModal from '@/components/modal/MessageModal.vue'
 import PayModal from '@/components/modal/PayModal.vue'
 import Common from '@/util/common.js'
+import UserList from '@/components/follow/UserList.vue'
 
 export default {
     name: 'ServiceDetail',
@@ -91,6 +102,8 @@ export default {
     },
     data() {
         return {
+            displayreview:true,
+            displayuser:false,
             messageModal: false,
             payModal:false,
             isOwner:false,
@@ -121,6 +134,7 @@ export default {
             review: [],
             point : "",
             revwrite: null,
+            userData:{}
         }
     },
     computed: {
@@ -129,12 +143,56 @@ export default {
         }
     },
     components: {
+        UserList,
         Button,
         ReviewList,
         MessageModal,
         PayModal,
+    },watch:{
+         displayFollowing() {
+            const reviewElement = document.querySelector('.review')
+            const userElement = document.querySelector('.user')
+            if (this.displayreview === true) {
+                reviewElement.style.borderBottom = "none"
+                reviewElement.style.backgroundColor = "white"
+                reviewElement.style.borderRight = "1px solid black"
+                userElement.style.borderBottom = "1px solid black"
+                userElement.style.borderLeft = "none"
+            } else {
+                reviewElement.style.borderBottom = "1px solid black"
+                reviewElement.style.borderRight = "none"
+                userElement.style.borderBottom = "none"
+                userElement.style.borderLeft = "1px solid black"
+                userElement.style.backgroundColor = "white"
+            }
+        }
     },
     methods:{
+         showReview() {
+            this.displayreview = true
+            this.displayuser = false
+            axios.get(`${HTTP.BASE_URL}/review/${this.$route.params.service_id}`,HTTP.JSON_HEADER)
+            .then(res => {
+            console.log(res);
+            this.review = res.data 
+            })
+        .catch(err => {
+                console.log(err)
+        })
+        },
+        showUser() {
+            this.displayreview = false
+            this.displayuser = true
+            axios.get(`${HTTP.BASE_URL}/account/payinfo/${this.$route.params.service_id}`)
+            .then(res =>{
+                console.log(res)
+                this.userData=res.data
+                console.log(this.userData);
+            })
+            .catch(err =>{
+                console.log(err)
+            })
+        },
         onImgLoad(){
             this.isLoaded = true
         },

@@ -107,6 +107,30 @@ export default {
     this.dongInfo.dongCode =  this.$store.getters.getUserData.addr5
     
     }
+     axios.get(`${HTTP.BASE_URL}/fselect/${this.siInfo.siCode}`, HTTP.JSON_HEADER)
+        .then(res => {
+          for (let gu_data in res.data) {
+            this.guList.push({
+              "guCode": res.data[gu_data]["gugun_code"],
+              "guName": res.data[gu_data]["gugun_name"]
+              })
+          }
+
+        }).catch(err => {
+          console.log(err)
+        })
+       axios.get(`${HTTP.BASE_URL}/fselect/sido/${this.guInfo.guCode}`, HTTP.JSON_HEADER)
+        .then(res => {
+          for (let dong_data in res.data) {
+            this.dongList.push({
+              "dongCode": res.data[dong_data]["code"],
+              "dongName": res.data[dong_data]["dong"]
+              })
+          }
+          console.log(this.dongList)
+        }).catch(err => {
+          console.log(err)
+        })
  },
  computed: {
     userData() {
@@ -132,7 +156,8 @@ export default {
             this.guInfo.guCode=null
             this.dongInfo.dongName="동"
             this.dongInfo.dongCode=null
-        
+            this.gulist=null
+            this.dongList=null
         }else{
             this.siInfo.siName =  this.$store.getters.getUserData.addr2,
             this.siInfo.siCode =  this.$store.getters.getUserData.addr1,
@@ -147,6 +172,7 @@ export default {
         this.$router.go()
     },
     siInfo: function() {
+        this.isAll=false;
         this.getGuInfo()
     },
     guInfo: function() {
