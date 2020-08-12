@@ -45,7 +45,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/profile")
 public class ProfileController {
-	private static String  SAVE_PATH = "";
+	private static String  SAVE_PATH = "/home/ubuntu/git/s03p13d106/backend/src/main/resources/static/img/profile/";
 	private static final Logger logger = LoggerFactory.getLogger(QnaController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
@@ -125,14 +125,7 @@ public class ProfileController {
 	@ApiOperation(value = "새로운 프로필을 등록한다. 그리고 DB입력 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다", response = String.class)
 	@PostMapping
 	public ResponseEntity<String> writeProfile(HttpServletRequest request) throws JsonMappingException, JsonProcessingException{
-		SAVE_PATH = request.getServletContext().getRealPath("");
-		SAVE_PATH = SAVE_PATH.substring(0, SAVE_PATH.length()-1);
-		String[] arr = SAVE_PATH.split("\\\\");
-		SAVE_PATH = "";
-		for(int i = 0; i < arr.length-1; i++) {
-			SAVE_PATH += arr[i] +"/";
-		}
-		SAVE_PATH +="resources/static/img/profile/";
+		
 		MultipartHttpServletRequest mrequest = (MultipartHttpServletRequest)request;
 		MultipartFile imgFiles = mrequest.getFile("profileImage");
 		Profile profile = new Profile();
@@ -171,14 +164,7 @@ public class ProfileController {
 	@ApiOperation(value = "userno에 해당하는 프로필 정보를 수정한다.그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PutMapping
 	public ResponseEntity<String> updateProfile(HttpServletRequest request) throws JsonMappingException, JsonProcessingException{
-		SAVE_PATH = request.getServletContext().getRealPath("");
-		SAVE_PATH = SAVE_PATH.substring(0, SAVE_PATH.length()-1);
-		String[] arr = SAVE_PATH.split("\\\\");
-		SAVE_PATH = "";
-		for(int i = 0; i < arr.length-1; i++) {
-			SAVE_PATH += arr[i] +"/";
-		}
-		SAVE_PATH +="resources/static/img/profile/";
+		System.out.println(SAVE_PATH);
 		MultipartHttpServletRequest mrequest = (MultipartHttpServletRequest)request;
 		
 		Profile pre = service.detailProfile(Integer.parseInt(request.getParameter("userno")));
@@ -226,14 +212,7 @@ public class ProfileController {
 	@ApiOperation(value = "userno에 해당하는 프로필 정보를 삭제한다.")
 	@DeleteMapping
 	public ResponseEntity<String> deleteProfile(@RequestBody Profile profile, HttpServletRequest request) throws URISyntaxException{
-		SAVE_PATH = request.getServletContext().getRealPath("");
-		SAVE_PATH = SAVE_PATH.substring(0, SAVE_PATH.length()-1);
-		String[] arr = SAVE_PATH.split("\\\\");
-		SAVE_PATH = "";
-		for(int i = 0; i < arr.length-1; i++) {
-			SAVE_PATH += arr[i] +"/";
-		}
-		SAVE_PATH +="resources/static/img/profile/";
+		
 		System.out.println(SAVE_PATH + profile.getImgurl());
 		
 		if(profile.getImgurl().equals("null.png")) {
