@@ -1,7 +1,8 @@
 <template>
     <div id="profile" class="container">
+        <MessageModal v-if="messageModal" :recivername="getUrlUsername" :Sendtype="sendno" @close="message" />
         <div v-if="isProfileNull" class="container profile">
-            <span class="main-text">Profile</span>
+            <span class="main-text">프로필</span>
             <router-link v-if="isMyProfile" :to="toProfileAdd"><Button type="submit" buttonText="등록"/></router-link>
             <hr>
             <ProfileFrame v-if="profileFrame" />
@@ -17,11 +18,23 @@
                 <router-link v-if="isMyProfile" :to="toProfileModify" ><Button id="modifyButton" buttonText="수정" buttonColor="white" textColor="rgb(236,128,116)"/> </router-link>
             </div>
             <div class="userInfo">
-                <h3 v-text="getUrlUsername + '\'s Profile'"></h3>
+                <h3 v-text="getUrlUsername + '의 프로필'"></h3>
                 <transition>
                     <img v-show="isLoaded" class="userImg" :src="profileData.imgUrl" alt="profile" @load="onImgLoad">            
                 </transition>
                 <img v-show="!isLoaded" class="userImg" src="@/assets/loading2.gif" alt="loading...">
+                <div class="profile-follow">
+                    <div class="following">
+                        <p>팔로잉</p>
+                        <span>{{followingCount}}</span>
+                        <Button v-if="!isMyProfile" button-text="팔로우" />
+                    </div>
+                    <div class="follower">
+                        <p>팔로워</p>
+                        <span>{{followerCount}}</span>
+                        <Button v-if="!isMyProfile" button-text="메세지" @click.native="message" />
+                    </div>
+                </div>   
             </div>
             
             <div class="mobile-box">
@@ -56,6 +69,7 @@ import Button from '@/components/common/Button.vue'
 import axios from 'axios'
 import ServiceList from '@/components/service/ServiceList.vue'
 import HTTP from "@/util/http-common.js"
+import MessageModal from '@/components/modal/MessageModal.vue'
 
 
 export default {
@@ -64,6 +78,7 @@ export default {
         ProfileFrame,
         Button,
         ServiceList,
+        MessageModal,
     },
     computed: {
         toProfileAdd(){
@@ -86,10 +101,35 @@ export default {
         onImgLoad () {
             console.log('load')
             this.isLoaded = true
+        },
+        message () {
+            this.messageModal = !this.messageModal
+            this.sendno = 1
+        },
+    },
+    watch: {
+        userno : function() {
+            axios.get(`${HTTP.BASE_URL}/follow/following/${this.userno}`)
+            .then(res => {
+                console.log(res)
+                this.followUserList = res.data
+                this.followingCount = res.data.length
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            axios.get(`${HTTP.BASE_URL}/follow/follower/${this.userno}`)
+            .then(res => {
+                console.log(res)
+                this.followerCount = res.data.length
+            })
+            .catch(err => {
+                console.log(err)
+            })
         }
     },
     created(){
-          axios.get(`${HTTP.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
+        axios.get(`${HTTP.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
         .then(res => {
             console.log(res)
 
@@ -107,6 +147,7 @@ export default {
             axios.get(`${HTTP.BASE_URL}/profile/${this.$route.params.username}`)
             .then(res => {
                 console.log(res.data)
+                this.userno = res.data.userno
                 if (res.data==='fail') {
                     this.$router.push({
                         name: 'Error',
@@ -142,6 +183,13 @@ export default {
     },
     data() {
         return {
+            writer: "",
+            sendno: "",
+            messageModal: false,
+            userno: "",
+            followUserList: "",
+            followingCount: "",
+            followerCount: "",
             profileFrame: true,
             isProfile: true,
             profileData: "testHaveData",
@@ -178,7 +226,7 @@ export default {
         width: 150px;
         object-fit: cover;
         margin-top: 20px;
-        border-radius: 7px;
+        border-radius: 50%;
     }
     #profile {
         padding: 0 30px;
@@ -199,7 +247,29 @@ export default {
     #profile .description {
         display: flex;
         justify-content: space-between;
-    }   
+    }
+    #profile .profile-follow {
+        margin: 15px 0;
+        display: flex;
+        
+        justify-content: center;
+        font-size: 1.25rem;
+    }
+    #profile .profile-follow p {
+        margin-bottom: 0;
+    }
+    #profile .profile-follow span {
+        display: block;
+        margin-bottom: 10px;
+    }
+    #profile .following {
+        margin-right: 15px;
+        text-align: center;
+    }
+    #profile .follower {
+        margin-left: 15px;
+        text-align: center;
+    }
     #modifyButton {
         color: rgb(236,128,116);
         background-color: white;
@@ -251,7 +321,7 @@ export default {
         margin-top: 20px;
         width: 300px;
         height: 300px;
-        border-radius: 7px;
+        border-radius: 50%;
         }
         .web-button #modifyButton {
         display: flex;

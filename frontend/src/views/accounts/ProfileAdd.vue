@@ -159,7 +159,7 @@ export default {
         margin-top: 20px;
         width: 150px;
         height: 150px;
-        border-radius: 7px;
+        border-radius: 50%;
     }
     #profileAdd textarea{
         width: 100%;

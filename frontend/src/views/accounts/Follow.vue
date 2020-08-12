@@ -1,6 +1,6 @@
 <template>
   <div id="follow" class="container font-kor">
-    <h2 class="title">Follows</h2>
+    <h2 class="title">팔로우</h2>
     <hr>
     <div class="myinfo">
         <div class="image">
@@ -9,10 +9,10 @@
         <p class="name" v-text="$store.getters.getUserData.name"></p>
         <div class="info">
             <div class="follows cursor-pointer" @click="showFollowing" style="border-bottom: none;">
-                <h3>Followings <span id="following-count" v-text="followingCount"></span></h3>
+                <h3>팔로잉 <span id="following-count" v-text="followingCount"></span></h3>
             </div>
             <div class="followers cursor-pointer" @click="showFollower" style="border-left: none;">
-                <h3>Followers <span id="follower-count" v-text="followerCount"></span></h3>
+                <h3>팔로워 <span id="follower-count" v-text="followerCount"></span></h3>
             </div>
         </div>
     </div>
@@ -148,6 +148,7 @@ export default {
     #follow .myinfo img {
         width: 100%;
         height: 100%;
+        border-radius: 50%;
     }
     #follow .info {
         display: flex;
