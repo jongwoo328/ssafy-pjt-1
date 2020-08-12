@@ -198,6 +198,7 @@ export default {
         object-fit: scale-down;
         max-width: 100%;
         max-height: 100%;
+        border-radius: 50%;
     }
     .review-list-item .review-title {
         font-size: 1.2rem;

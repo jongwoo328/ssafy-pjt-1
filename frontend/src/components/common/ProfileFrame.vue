@@ -11,6 +11,7 @@ export default {
 <style>
     .imgframe {
       border-style: solid;
+      border-radius: 50%;
       height: 150px;
       width: 150px;
       border-radius: 7px;
