@@ -19,7 +19,8 @@
     :seeMoreKeyword="seeMoreKeyword" 
     :seeMoreFlag="seeMoreFlag" 
     :state="state" @seemore="addService" 
-    :searchData="searchData"/>
+    :searchData="searchData"
+    @sidebar="this.$emit('sidebar')"/>
   </div>
 </template>
 
@@ -64,26 +65,29 @@ export default {
       console.log('Home.vue search')
       console.log(search)
       this.seeMoreKeyword = search.keyword
+      search['num'] = 1
       if (search.cateno === undefined) {
         search['cateno'] = 0,
-        search['saddr6'] = null,
-        search['num'] = 1
+        search['saddr6'] = null
       }
+      console.log('search request body')
+      console.log(search)
       this.seeMoreReset = ! this.seeMoreReset
       axios.post(`${HTTP.BASE_URL}/service/search`,search, HTTP.JSON_HEADER)
       .then(res =>{
-      console.log(res)
-      if (res.data.length === 6) {
-        this.seeMoreFlag = true
-      }
-      this.services=res.data
-      this.services.forEach(service => {
-              service.imgurl = `${HTTP.BASE_URL}/${service.imgurl}`
-            })
-       this.search_on=true
-       this.text = search.keyword+" 검색결과"
-       this.state = 'search'
-})
+        console.log('search result')
+        console.log(res)
+        if (res.data.length === 6) {
+          this.seeMoreFlag = true
+        }
+        this.services=res.data
+        this.services.forEach(service => {
+                service.imgurl = `${HTTP.BASE_URL}/${service.imgurl}`
+              })
+        this.search_on=true
+        this.text = search.keyword+" 검색결과"
+        this.state = 'search'
+  })
       .catch(err => {
         console.log(err)
       })
@@ -104,20 +108,23 @@ export default {
     }
   },
   created(){
-        axios.get(`${HTTP.BASE_URL}/service/main/1`)
+    this.$store.dispatch('setMsgCount')
+    axios.get(`${HTTP.BASE_URL}/service/main/1`)
         .then(res => {
-            console.log(res)
+          console.log(res)
             this.services = res.data
             this.services.forEach(service => {
               service.imgurl = `${HTTP.BASE_URL}/${service.imgurl}`
+          
             })
         })
         .catch(err => {
-            console.log(err)
+          console.log(err)
         })
   },
   mounted() {
     this.$emit('sidebar')
+    
   }
 }
 </script>
