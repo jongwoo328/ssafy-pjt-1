@@ -143,6 +143,7 @@ export default {
     .user-list-item .image img {
         width: 100%;
         height: 100%;
+        border-radius: 50%;
     }
     .user-list-item .icons {
         width: 50% ;
