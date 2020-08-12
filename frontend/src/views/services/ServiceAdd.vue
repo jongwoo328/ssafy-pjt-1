@@ -5,7 +5,7 @@
             <div class="form-block">
                 <label class="font-kor" for="category">분류</label>
                 <select  class="form-control " id="category" name ="category"  v-model="categoryInfo">
-                    <option value="" disabled selected>분류</option>
+                    <option v-if="categoryInfo" :value="categoryInfo" v-text="categoryInfo.cname"></option>
                     <option v-for="category in categoryList" :key="category.cateno" :value="category" v-text="category.cname" ></option>
                 </select>    
             </div>
@@ -91,18 +91,18 @@ export default {
             dongList: [],
             categoryInfo:{
                 cateno : "",
-                canem : null
+                cname : "분류"
             },
             siInfo: {
-                siName: null,
+                siName: "시/도",
                 siCode: ""
             },
             guInfo: {
-                guName: null,
+                guName: "구/군",
                  guCode: "",
             },
             dongInfo: {
-                dongName: null,
+                dongName: "동",
                 dongCode: "",
             },
             serviceImage:"",

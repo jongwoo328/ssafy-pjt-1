@@ -47,33 +47,31 @@ export default {
         servicedataModal: Object
     },
     created(){
-      axios.get(``)
        this.service = this.servicedataModal
        console.log(this.service) 
     },
     methods:{
       messagesend(){
         let messageData={
-              recivername: this.service.username,
               writername: this.$store.getters.getUserData.name,
-              title: this.service.servname+"강의에 신청이 왔습니다.",
-              comment: this.$store.getters.getUserData.name+"님이 "+ this.service.servname+"을 신청했습니다.",
+              recivername: this.service.username,
+              title: "서비스 알림",
+              content: this.$store.getters.getUserData.name+"님이 "+ '"'+this.service.servname+'"'+"을 신청했습니다.",
         }
         console.log(messageData)
         axios.post(`${HTTP.BASE_URL}/msg`, messageData)
       .then(res => {
-        if (res.data === 'success') {
-          alert('전송되었습니다.')
-        }
-        else {
-          alert('일치하는 회원정보가 없습니다.')
-        }
-        
+        console.log(res)
+        alert('결제에 성공했습니다.')  
+          setTimeout(()=>{
+          this.modalclose()
+          
+        },1)
+
       })
       .catch(err => {
         alert(err)
       })
-      this.modalclose()
     },
 
       payed(){
@@ -81,10 +79,8 @@ export default {
           userno : `${this.$store.getters.getUserData.userno}`,
           servno : `${this.$route.params.service_id}`
         }
-        console.log(this.payData)
         axios.post(`${HTTP.BASE_URL}/pay`,this.payData)
         .then(res=>{
-          console.log(res.data)
           if(res.data=="payed"){
             alert('이미 결제 되었습니다.')
           }
@@ -94,7 +90,7 @@ export default {
         .catch(err=>{
           console.log(err)
         })
-      },
+      },  
       modalclose () {
         this.$emit('close')
       }
