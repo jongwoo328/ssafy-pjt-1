@@ -12,7 +12,12 @@ export default {
     // 안읽은 개수 만큼 unread에 저장
     data() {
         return {
-            unreadCount: this.$store.getters.getUserData.msgcount
+            // unreadCount: this.$store.getters.getUserData.msgcount
+        }
+    },
+    computed: {
+        unreadCount() {
+            return this.$store.getters.getUserData.msgcount
         }
     }
 }

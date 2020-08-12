@@ -51,6 +51,7 @@ export default {
                     if (res.data.length !== 6) {
                         this.displayFlag = false
                     }
+                    
                 })
                 .catch(err => {
                     console.log(err)
@@ -78,11 +79,13 @@ export default {
                         this.displayFlag = false
                         this.page = 2
                     }
+                    
                 })
                 .catch(err => {
                     console.log(err)
                 })
             }
+            this.$store.dispatch('setSidebar')
         }
     }
 }

@@ -31,6 +31,16 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    setSidebar() {
+      setTimeout(() => {
+        const sidebar = document.querySelector('div#sidebar')
+        if (sidebar) {
+          const h = document.querySelector('div#app').scrollHeight + 200
+          console.log(h)
+          sidebar.setAttribute('style', `height: ${h}px`)
+        }
+      }, 60);
+    }
   },
   modules: {
   },

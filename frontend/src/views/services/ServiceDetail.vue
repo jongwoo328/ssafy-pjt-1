@@ -172,7 +172,7 @@ export default {
         }
     },
     mounted() {
-        this.$emit('sidebar')
+        
     },
     created() {
         if(this.$store.getters.getUserData === null){
@@ -207,6 +207,7 @@ export default {
             if(this.userno==res.data.userno){
                 this.isOwner=true;
             }
+            this.$emit('sidebar')
         })
         .catch(err => {
                 console.log(err)
