@@ -205,7 +205,7 @@ public class AccountController {
     	return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
     }
     
-    @GetMapping("/account/payinfo")
+    @GetMapping("/account/payinfo/{servno}")
     @ApiOperation(value = "결제한 회원 정보 리턴")
     public ResponseEntity<List<User>> PayUserInfo(@PathVariable int servno){
     	List<Integer> usernoList = pay.servPay(servno);
