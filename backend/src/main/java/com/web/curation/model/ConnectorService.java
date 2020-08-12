@@ -23,6 +23,10 @@ public class ConnectorService {
 	private String proname;
 	private boolean revwrite;
 	
+	
+
+
+
 	public boolean isRevwrite() {
 		return revwrite;
 	}
