@@ -14,9 +14,11 @@
                       <span class="msg-date">{{ date }}</span>
                       <h4 class="msg-title">{{ title }}</h4>
                       <p class="msg-content">{{ content }}</p>
+                    <div class="msg-user">
+                      <span v-if="this.$route.params.msgtype=='rec'">From. {{ writer }}</span>
+                      <span v-else>To. {{ reciver }}</span>
+                    </div>
                     </slot>
-                      <p class="msg-user" v-if="this.$route.params.msgtype=='rec'">From. {{ writer }}</p>
-                      <p class="msg-user" v-else>To. {{ reciver }}</p>
                 </div>
 
                 <div class="modal-footer">
@@ -166,6 +168,10 @@ export default {
     font-size: 1rem;
     float: right;
   }
+  #msgModal .msg-user {
+    font-size: 1rem;
+    text-align: right;
+  }
   #msgModal .modal-wrapper {
     display: table-cell;
     vertical-align: middle;
@@ -176,6 +182,7 @@ export default {
   #msgModal .msg-content {
     margin: 20px 0;
     text-align: left;
+    font-size: 1.25rem;
   }
   #msgModal .modal-container {
     width: 300px;

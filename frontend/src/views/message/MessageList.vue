@@ -158,9 +158,8 @@ export default {
                 .then(res => {
                     console.log(res)
                     var deleteMsg = document.getElementsByClassName('msg-box')
-                    console.log(deleteMsg)
+                    // console.log(deleteMsg)
                     deleteMsg.forEach(msg => {
-                        console.log(msg.dataset.msgnum)
                         if (this.deleteno.includes(msg.dataset.msgnum)) {
                             msg.style.display = "none"
                         }
@@ -173,21 +172,21 @@ export default {
             else {
                 axios.delete(`${URL.BASE_URL}/msg/send`, {data: this.deleteno})
                .then(res => {
-                console.log(res)
-                var deleteMsg = document.getElementsByClassName('msg-box')
-                console.log(deleteMsg)
-                deleteMsg.forEach(msg => {
-                    console.log(msg.dataset.msgnum)
-                    if (this.deleteno.includes(msg.dataset.msgnum)) {
-                        msg.style.display = "none"
-                    }
+                    console.log(res)
+                    var deleteMsg = document.getElementsByClassName('msg-box')
+                    console.log(deleteMsg)
+                    deleteMsg.forEach(msg => {
+                        console.log(msg.dataset.msgnum)
+                        if (this.deleteno.includes(msg.dataset.msgnum)) {
+                            msg.style.display = "none"
+                        }
+                    })
                 })
-            })
-            .catch(err => {
-                console.log(err)
-            })
-            this.deleteCheck = false
+                .catch(err => {
+                    console.log(err)
+                })
             }
+            this.deleteCheck = false
         }
     },
 }

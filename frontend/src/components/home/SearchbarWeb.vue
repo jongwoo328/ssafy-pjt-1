@@ -11,16 +11,16 @@
           </div>
           <div class="searchaddr mt-3">
             <div class="checkAll" v-if="isLogin">
-                <label>전체</label>
+                <label class="mr-1">전체</label>
                 <input  type="checkbox" v-model="isAll" /> 
             </div>
             <div class="addr-input row mt-2">
-                <select name="si" id="si" class="col-4 search-info" v-model="siInfo">
+                <select name="si" id="si" class="col-4 search-info si" v-model="siInfo">
                     <option v-if="siInfo" :value="siInfo" v-text="siInfo.siName"></option>
                     <option v-else value="" disabled selected>시/도</option>
                     <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName"></option>
                 </select>
-                <select name="gu" id="gu" class="col-3 search-info" v-model="guInfo">
+                <select name="gu" id="gu" class="col-3 search-info gu" v-model="guInfo">
                     <option v-if="guInfo" :value="guInfo" v-text="guInfo.guName"></option>
                         <option v-else value="" disabled selected>구/군</option>
                     <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
@@ -107,6 +107,30 @@ export default {
     this.dongInfo.dongCode =  this.$store.getters.getUserData.addr5
     
     }
+     axios.get(`${HTTP.BASE_URL}/fselect/${this.siInfo.siCode}`, HTTP.JSON_HEADER)
+        .then(res => {
+          for (let gu_data in res.data) {
+            this.guList.push({
+              "guCode": res.data[gu_data]["gugun_code"],
+              "guName": res.data[gu_data]["gugun_name"]
+              })
+          }
+
+        }).catch(err => {
+          console.log(err)
+        })
+       axios.get(`${HTTP.BASE_URL}/fselect/sido/${this.guInfo.guCode}`, HTTP.JSON_HEADER)
+        .then(res => {
+          for (let dong_data in res.data) {
+            this.dongList.push({
+              "dongCode": res.data[dong_data]["code"],
+              "dongName": res.data[dong_data]["dong"]
+              })
+          }
+          console.log(this.dongList)
+        }).catch(err => {
+          console.log(err)
+        })
  },
  computed: {
     userData() {
@@ -132,7 +156,8 @@ export default {
             this.guInfo.guCode=null
             this.dongInfo.dongName="동"
             this.dongInfo.dongCode=null
-        
+            this.gulist=null
+            this.dongList=null
         }else{
             this.siInfo.siName =  this.$store.getters.getUserData.addr2,
             this.siInfo.siCode =  this.$store.getters.getUserData.addr1,
@@ -147,6 +172,7 @@ export default {
         this.$router.go()
     },
     siInfo: function() {
+        this.isAll=false;
         this.getGuInfo()
     },
     guInfo: function() {
@@ -198,6 +224,7 @@ export default {
         this.search.cateno = this.categoryInfo.cateno,
         this.search.saddr5 = this.dongInfo.dongCode,
         this.search.keyword = this.keyword
+        console.log('search on web')
         console.log(this.search)
         this.$emit("child",this.search)
     }
@@ -210,6 +237,9 @@ export default {
         display: flex;
         flex-direction: column-reverse;
         align-items: flex-end;
+    }
+    .si, .gu {
+        min-width: 145px;
     }
     .search-category {
         width: 100%;
@@ -257,10 +287,10 @@ export default {
             display: flex;
             flex-direction: row-reverse;
             align-items: center;
-            margin-right: 20%;
         }
         .addr-input {
             display: inline-block;
+            margin-right: 5%;
         }
     }
 </style>

@@ -21,14 +21,7 @@ export default {
   },
   methods: {
     sidebar() {
-      setTimeout(() => {
-        const sidebar = document.querySelector('div#sidebar')
-        if (sidebar) {
-          const h = document.querySelector('div#view').scrollHeight + 200
-          console.log(h)
-          sidebar.setAttribute('style', `height: ${h}px`)
-        }
-      }, 60);
+      this.$store.dispatch('setSidebar')
 
       axios.get(`${URL.BASE_URL}/msg/count/${this.$store.getters.getUserData.userno}`)
       .then(res => {

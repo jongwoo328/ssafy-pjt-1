@@ -27,7 +27,7 @@
                           <br>
                           <textarea id="inputcomment" placeholder="보낼 메세지를 입력하세요." v-model="comment" />
                         </div>
-                        <Button class="font-notojp" buttonText="send" type="submit" @click.native="send" />
+                        <Button class="font-notojp" buttonText="보내기" type="submit" @click.native="send" />
                       </div>
                     </slot>
                 </div>
