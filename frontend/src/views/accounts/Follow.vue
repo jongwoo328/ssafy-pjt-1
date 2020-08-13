@@ -72,7 +72,6 @@ export default {
         }
         axios.get(`${URL.BASE_URL}/follow/following/${this.$store.getters.getUserData.userno}`)
         .then(res => {
-            console.log(res)
             this.followUserList = res.data
             this.followingCount = res.data.length
         })
@@ -81,7 +80,6 @@ export default {
         })
         axios.get(`${URL.BASE_URL}/follow/follower/${this.$store.getters.getUserData.userno}`)
         .then(res => {
-            console.log(res)
             this.followerCount = res.data.length
         })
         .catch(err => {
@@ -94,7 +92,6 @@ export default {
             this.displayFollowing = false
             axios.get(`${URL.BASE_URL}/follow/follower/${this.$store.getters.getUserData.userno}`)
             .then(res => {
-                console.log(res)
                 const data = []
                 res.data.forEach(d => {
                     d['follower'] = true
@@ -102,7 +99,6 @@ export default {
                 })
                 this.followerCount = res.data.length
                 this.followUserList = data
-                console.log(data)
             })
             .catch(err => {
                 console.log(err)
@@ -113,7 +109,6 @@ export default {
             this.displayFollowing = true
             axios.get(`${URL.BASE_URL}/follow/following/${this.$store.getters.getUserData.userno}`)
             .then(res => {
-                console.log(res)
                 this.followingCount = res.data.length
                 this.followUserList = res.data
             })

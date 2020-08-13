@@ -72,16 +72,12 @@ export default {
       }
       axios.post(`${URL.BASE_URL}/account/pwfind`, forgotData)
       .then(res => {
-        console.log(res)
         if (res.status === 200) {
-          console.log(res)
           if (res.data.status === true) {
             this.isfind = true
             document.getElementById('password').value = res.data.data
             document.getElementById('username').value = 'test'
 
-            console.log(process.env.VUE_APP_USER_ID)
-            console.log(process.env.VUE_APP_TEMPLATE_KEY)
             emailjs.sendForm('gmail', process.env.VUE_APP_TEMPLATE_KEY, e.target, process.env.VUE_APP_USER_ID)
             .then((result) => {
                 console.log('SUCCESS!', result.status, result.text);

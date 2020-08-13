@@ -74,9 +74,8 @@ methods: {
           ReviewTitle: this.title,
           ReviewContent: this.content
         })
-        .then(res => {
+        .then(() => {
           alert("등록 성공");
-          console.log(res);
           this.onChangePage();
         });
     },

@@ -26,17 +26,7 @@ export default {
         quillEditor
     },
     methods: {
-        onEditorBlur() {
-        // console.log('editor blur!', quill)
-        },
-        onEditorFocus() {
-        // console.log('editor focus!', quill)
-        },
-        onEditorReady() {
-        // console.log('editor ready!', quill)
-        },
         onEditorChange({ html }) {
-        // console.log('editor change!', quill, html, text)
         this.content = html
         }
     },
@@ -45,8 +35,5 @@ export default {
         return this.$refs.myQuillEditor.quill
         }
     },
-    mounted() {
-        console.log('this is current quill instance object', this.editor)
-    }
 }
 </script>

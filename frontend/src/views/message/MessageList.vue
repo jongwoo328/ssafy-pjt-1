@@ -70,8 +70,6 @@ export default {
         if (this.urltype) {
             axios.get(`${URL.BASE_URL}/msg/rec/${this.$store.getters.getUserData.userno}`)
             .then(res => {
-                console.log(2)
-                console.log(res.data)
                 this.messagedata = res.data
             })
             .catch(err =>{
@@ -81,7 +79,6 @@ export default {
         else {
             axios.get(`${URL.BASE_URL}/msg/send/${this.$store.getters.getUserData.userno}`)
             .then(res => {
-                console.log(res.data)
                 this.messagedata = res.data
             })
             .catch(err =>{
@@ -132,14 +129,10 @@ export default {
                     }
                 })
             }
-            console.log(this.checked)
-            console.log(this.deleteno)
         },
         deleteYes() {
             var checkboxList = document.getElementsByClassName('check-box')
-            console.log(checkboxList)
             checkboxList.forEach(checkbox => {
-                console.log(checkbox.value)
                 if (checkbox.value=='true') {
                     if (!this.deleteno.includes(checkbox.dataset.msgno))
                         this.deleteno.push(checkbox.dataset.msgno)
@@ -151,14 +144,11 @@ export default {
                     }
                 }
             })
-            // console.log(this.deleteno)
 
             if (this.urltype) {
                 axios.delete(`${URL.BASE_URL}/msg/rec`, {data: this.deleteno})
-                .then(res => {
-                    console.log(res)
+                .then(() => {
                     var deleteMsg = document.getElementsByClassName('msg-box')
-                    // console.log(deleteMsg)
                     deleteMsg.forEach(msg => {
                         if (this.deleteno.includes(msg.dataset.msgnum)) {
                             msg.style.display = "none"
@@ -171,12 +161,9 @@ export default {
             }
             else {
                 axios.delete(`${URL.BASE_URL}/msg/send`, {data: this.deleteno})
-               .then(res => {
-                    console.log(res)
+               .then(() => {
                     var deleteMsg = document.getElementsByClassName('msg-box')
-                    console.log(deleteMsg)
                     deleteMsg.forEach(msg => {
-                        console.log(msg.dataset.msgnum)
                         if (this.deleteno.includes(msg.dataset.msgnum)) {
                             msg.style.display = "none"
                         }

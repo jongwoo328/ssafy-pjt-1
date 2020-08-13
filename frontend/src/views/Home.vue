@@ -62,8 +62,6 @@ export default {
       this.searchData = data
     },
     searchs(search){
-      console.log('Home.vue search')
-      console.log(search)
       this.seeMoreKeyword = search.keyword
       search['num'] = 1
       if (search.cateno === undefined) {
@@ -73,8 +71,6 @@ export default {
       this.seeMoreReset = ! this.seeMoreReset
       axios.post(`${HTTP.BASE_URL}/service/search`,search, HTTP.JSON_HEADER)
       .then(res =>{
-        console.log('search result')
-        console.log(res)
         if (res.data.length === 6) {
           this.seeMoreFlag = true
         }
@@ -109,7 +105,6 @@ export default {
     this.$store.dispatch('setMsgCount')
     axios.get(`${HTTP.BASE_URL}/service/main/1`)
         .then(res => {
-          console.log(res)
             this.services = res.data
             this.services.forEach(service => {
               service.imgurl = `${HTTP.IMG_URL}/${service.imgurl}`

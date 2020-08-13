@@ -48,7 +48,6 @@ export default {
     },
     created(){
        this.service = this.servicedataModal
-       console.log(this.service) 
     },
     methods:{
       messagesend(){
@@ -58,10 +57,9 @@ export default {
               title: "서비스 알림",
               content: this.$store.getters.getUserData.name+"님이 "+ '"'+this.service.servname+'"'+"을 신청했습니다.",
         }
-        console.log(messageData)
         axios.post(`${HTTP.BASE_URL}/msg`, messageData)
-      .then(res => {
-        console.log(res)
+      .then(() => {
+
         alert('결제에 성공했습니다.')  
           setTimeout(()=>{
           this.modalclose()

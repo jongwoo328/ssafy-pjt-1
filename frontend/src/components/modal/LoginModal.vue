@@ -72,22 +72,17 @@ export default {
       else this.errorData.email = false
     },
     login () {
-      // console.log(URL.URL)
       this.formCheck()
       let loginData = {
         email: this.email,
         pw: this.password
       }
 
-      console.log(`${URL.BASE_URL}/account/login`)
       axios.post(`${URL.BASE_URL}/account/login`, loginData)
       .then(res => {
-        console.log(res)
         if (res.data.status === true) {
-          console.log(res.data.object)
           this.$session.set('jwstoken', res.headers.jwstoken)
           this.$store.commit('login', res.data.object)
-          // this.$router.push('/')
           this.modalclose()
         }
         else {
@@ -95,7 +90,6 @@ export default {
         }
       })
       .catch(err => {
-        console.log(err)
         alert(err)
       })
     },

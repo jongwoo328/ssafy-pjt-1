@@ -71,20 +71,6 @@
         </div>
       </div>
 
-      <!-- <div class="form-block">
-          <label class="form-block-head col-3" for="Address">
-            Address
-          </label>
-            <input 
-            class="input-text col-8"
-            v-model="User.address" 
-            id="Address" 
-            type="text"
-            placeholder="Address"
-            />
-      </div> -->
-
-
       <div class="form-group d-flex justify-content-around">
           <label class="form-block-head col-3 col-md-2">
             Address
@@ -172,7 +158,7 @@ export default {
                 }
             })
         }
-    // console.log(this.User)
+
     axios.get(`${URL.BASE_URL}/fselect`, URL.JSON_HEADER)
     .then(res => {
       for (let si_data in res.data) {
@@ -264,7 +250,6 @@ export default {
       this.dongInfo = ""
       axios.get(`${URL.BASE_URL}/fselect/sido/${gu_params.guCode}`, URL.JSON_HEADER)
       .then(res => {
-        // console.log(res)
 
         for (let dong_data in res.data) {
           this.dongList.push({
@@ -336,14 +321,13 @@ export default {
       }
 
       if (!this.isChangedPW) changeUser.pw = this.curPassword
-      console.log(changeUser)
+
       axios.post(`${URL.BASE_URL}/account/userinfo/modify`, changeUser, {
             headers: {
               'Authorization': this.$session.get('jwstoken'),
             }
           })
-      .then(res => {
-        console.log(res)
+      .then(() => {
         alert("회원정보가 수정되었습니다.")
         this.$router.push({ name: "Home" })
       })
