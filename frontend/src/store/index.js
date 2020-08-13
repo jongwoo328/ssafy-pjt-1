@@ -41,7 +41,7 @@ export default new Vuex.Store({
           console.log(h)
           sidebar.setAttribute('style', `height: ${h}px`)
         }
-      }, 60);
+      }, 200);
     }
   },
   modules: {
