@@ -157,7 +157,7 @@ export default {
                     })
                 }
                 this.profileData = {
-                    imgUrl: `${HTTP.BASE_URL}/` + res.data.imgurl,
+                    imgUrl: `${HTTP.IMG_URL}/` + res.data.imgurl,
                     comment: res.data.comment
                 }
                 this.services = res.data.servList

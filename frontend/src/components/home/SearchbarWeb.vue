@@ -4,31 +4,25 @@
       <!-- <form class="row search-form"> -->
           <div class="col-12 search-category">
             <select v-model="categoryInfo" name="category" id="category" class="col-1 search-info">
-                <option v-for="category in categoryList" :key="category.cname" :value="category" v-text="category.cname" ></option>
+                <option v-for="category in categoryList" :key="category.id" :value="category" v-text="category.cname" ></option>
             </select>
             <input type="text" class="col-5 col-md-7 search-info" v-model="keyword">
             <Button buttonText="검색" @click.native="SearchInfoemit" />
           </div>
           <div class="searchaddr mt-3">
-            <div class="checkAll" v-if="isLogin">
+            <div class="checkAll" v-if="$store.getters.isLoggedIn">
                 <label class="mr-1">전체</label>
                 <input  type="checkbox" v-model="isAll" /> 
             </div>
             <div class="addr-input row mt-2">
-                <select name="si" id="si" class="col-4 search-info si" v-model="siInfo">
-                    <option v-if="siInfo" :value="siInfo" v-text="siInfo.siName"></option>
-                    <option v-else value="" disabled selected>시/도</option>
-                    <option v-for="si_obj in siList" :key="si_obj.siName" :value="si_obj" v-text="si_obj.siName"></option>
+                <select @change="getGuInfo" name="si" id="si" class="col-4 search-info si">
+                    <option v-for="si_data in siList" :key="si_data" :value="si_data.split(' ')[0]" v-text="si_data.split(' ')[1]"></option>
                 </select>
-                <select name="gu" id="gu" class="col-3 search-info gu" v-model="guInfo">
-                    <option v-if="guInfo" :value="guInfo" v-text="guInfo.guName"></option>
-                        <option v-else value="" disabled selected>구/군</option>
-                    <option v-for="gu_obj in guList" :key="gu_obj.guName" :value="gu_obj" v-text="gu_obj.guName"></option>
+                <select @change="getDongInfo" name="gu" id="gu" class="col-3 search-info gu">
+                    <option v-for="gu_data in guList" :key="gu_data" :value="gu_data.split(' ')[0]" v-text="gu_data.split(' ')[1]"></option>
                 </select>
-                <select name="dong" id="dong" class="col-2 search-info" v-model="dongInfo">
-                    <option v-if="dongInfo" :value="dongInfo" v-text="dongInfo.dongName"></option>
-                        <option v-else value="" disabled selected>동/읍/면</option>
-                    <option v-for="dong_obj in dongList" :key="dong_obj.dongName" :value="dong_obj" v-text="dong_obj.dongName"></option>
+                <select name="dong" id="dong" class="col-2 search-info">
+                    <option v-for="dong_data in dongList" :key="dong_data" :value="dong_data.split(' ')[0]" v-text="dong_data.split(' ')[1]"></option>
                 </select>
             </div>
           </div>
@@ -52,181 +46,189 @@ export default {
             siList: [],
             guList: [],
             dongList: [],
-            categoryInfo:[ 
-                
-            ],
-            siInfo: [],
-            guInfo: [],
-            dongInfo: [],
-            search:{},
+            categoryInfo:[],
             keyword:"",
-            isLogin:false,
-            isAll:false
+            isAll:false,
+            createFlag: true
          }
     },
  created() {
-         axios.get(`${HTTP.BASE_URL}/fselect/cate`,HTTP.JSON_HEADER) 
-          .then(res => {
-            for(let category in res.data){
-                this.categoryList.push({
-                    "cname" : res.data[category]["cname"],
-                    "cateno" : res.data[category]["cateno"]
+    // 카테고리 정보 불러오기
+    this.createFlag = true
+    axios.get(`${HTTP.BASE_URL}/fselect/cate`,HTTP.JSON_HEADER) 
+        .then(res => {
+        for(let category in res.data){
+            this.categoryList.push({
+                cname : res.data[category]["cname"],
+                cateno : res.data[category]["cateno"],
+                id: Math.random()
+            })
+        }
+        this.categoryInfo = this.categoryList[0]
+    })
+    .catch(err => {
+        console.log(err)
+    })
+    
+    this.setAddrDefault()
+    this.createFlag = false
+ },
+ watch: {
+    searchData() {
+        this.$emit('searchdata')
+    },
+    isAll(){
+        const addrInputs = document.querySelectorAll('.addr-input select')
+        if(this.isAll){
+            addrInputs.forEach(input => {
+                input.disabled = true
+            })
+        }else{
+            this.setAddrDefault()
+            addrInputs.forEach(input => {
+                input.disabled = false
+            })
+        }
+    },
+  },
+  methods:{
+    setAddrDefault() {
+        this.siList = []
+        this.guList = []
+        this.dongList = []
+        // 시/도 정보 불러오기
+        axios.get(`${HTTP.BASE_URL}/fselect`, HTTP.JSON_HEADER)
+        .then(res => {
+        console.log(res);
+        for (let si_data in res.data) {
+            this.siList.push(
+                `${res.data[si_data]["sido_code"]} ${res.data[si_data]["sido_name"]}`
+            )
+        }
+        console.log(this.siList)
+
+            if (this.$store.getters.isLoggedIn) {
+            // 구/군 정보 불러오기
+            axios.get(`${HTTP.BASE_URL}/fselect/${this.$store.getters.getUserData.addr1}`, HTTP.JSON_HEADER)
+            .then(res => {
+                for (let gu_data in res.data) {
+                this.guList.push(
+                    `${res.data[gu_data]["gugun_code"]} ${res.data[gu_data]["gugun_name"]}`
+                )
+                }
+                // 동 정보 불러오기
+                axios.get(`${HTTP.BASE_URL}/fselect/sido/${this.$store.getters.getUserData.addr3}`, HTTP.JSON_HEADER)
+                .then(res => {
+                    console.log('dong')
+                    // console.log
+                    for (let dong_data in res.data) {
+                    this.dongList.push(
+                        `${res.data[dong_data]["code"]} ${res.data[dong_data]["dong"]}`
+                        )
+                    }
+                    console.log('dongList:', this.dongList)
+
+                    console.log('user')
+                    console.log(this.$store.getters.getUserData)
+                    console.log('isLoggedIn:', this.$store.getters.isLoggedIn)
+
+                    // 로그인 됐을경우 자동으로 설정되게
+                    
+                        const siOptions = document.querySelectorAll('#si option')
+                        console.log(siOptions)
+                        for (const i in siOptions) {
+                            console.log(i, siOptions[i].innerText)
+                            if (siOptions[i].innerText === this.$store.getters.getUserData.addr2) {
+                                console.log(document.querySelector(`#si option:nth-child(${parseInt(i)+1})`).innerText)
+                                document.querySelector(`#si option:nth-child(${parseInt(i)+1})`).selected = true
+                                break
+                            }
+                        }
+                        const guOptions = document.querySelectorAll('#gu option')
+                        console.log('gu')
+                        console.log(guOptions)
+                        for (const i in guOptions) {
+                            if (guOptions[i].innerText === this.$store.getters.getUserData.addr4) {
+                                console.log(i)
+                                document.querySelector(`#gu option:nth-child(${parseInt(i)+1})`).selected = true
+                                break
+                            }
+                        }
+                        setTimeout(() => {
+                            const dongOptions = document.querySelectorAll('#dong option')
+                            console.log('dong:', dongOptions)
+                            for (const i in dongOptions) {
+                                console.log(dongOptions[i].innerText, i)
+                                if (dongOptions[i].innerText === this.$store.getters.getUserData.addr6) {
+                                    console.log('index:', i)
+                                    document.querySelector(`#dong option:nth-child(${parseInt(i)+1})`).selected = true
+                                    break
+                                }
+                            }
+                        }, 10);
+                    
                 })
+                .catch(err => {
+                    console.log(err)
+                })
+            })
+            .catch(err => {
+                console.log(err)
+            })
             }
-            this.categoryInfo = this.categoryList[0]
         })
         .catch(err => {
             console.log(err)
-        }),
-        axios.get(`${HTTP.BASE_URL}/fselect`, HTTP.JSON_HEADER)
-             .then(res => {
-                 console.log(res);
-             for (let si_data in res.data) {
-                 this.siList.push({
-            "siCode": res.data[si_data]["sido_code"],
-            "siName": res.data[si_data]["sido_name"]
+        })
+    },
+    getGuInfo() {
+        if(!this.createFlag){
+            const sicode = document.querySelector('#si').value
+            this.guList = []
+            this.dongList = []
+
+            console.log(sicode)
+            axios.get(`${HTTP.BASE_URL}/fselect/${sicode}`, HTTP.JSON_HEADER)
+            .then(res => {
+                for (let gu_data in res.data) {
+                this.guList.push(
+                    `${res.data[gu_data]["gugun_code"]} ${res.data[gu_data]["gugun_name"]}`
+                    )
+                }
+
+            }).catch(err => {
+                console.log(err)
             })
         }
-            console.log(this.siList)
-      })
-      .catch(err => {
-        console.log(err)
-      })
-    if(!this.$store.getters.isLoggedIn){
-        this.siInfo.siName ="시/도",
-        this.guInfo.guName = "구/군",
-        this.dongInfo.dongName="동"
-        this.isLogin=false
-    }else{
-    this.isLogin =true
-    this.siInfo.siName =  this.$store.getters.getUserData.addr2,
-    this.siInfo.siCode =  this.$store.getters.getUserData.addr1,
-    this.guInfo.guName =  this.$store.getters.getUserData.addr4,
-    this.guInfo.guCode =  this.$store.getters.getUserData.addr3,
-    this.dongInfo.dongName =  this.$store.getters.getUserData.addr6,
-    this.dongInfo.dongCode =  this.$store.getters.getUserData.addr5
-    
-    }
-     axios.get(`${HTTP.BASE_URL}/fselect/${this.siInfo.siCode}`, HTTP.JSON_HEADER)
-        .then(res => {
-          for (let gu_data in res.data) {
-            this.guList.push({
-              "guCode": res.data[gu_data]["gugun_code"],
-              "guName": res.data[gu_data]["gugun_name"]
-              })
-          }
-
-        }).catch(err => {
-          console.log(err)
-        })
-       axios.get(`${HTTP.BASE_URL}/fselect/sido/${this.guInfo.guCode}`, HTTP.JSON_HEADER)
-        .then(res => {
-          for (let dong_data in res.data) {
-            this.dongList.push({
-              "dongCode": res.data[dong_data]["code"],
-              "dongName": res.data[dong_data]["dong"]
-              })
-          }
-          console.log(this.dongList)
-        }).catch(err => {
-          console.log(err)
-        })
- },
- computed: {
-    userData() {
-        return this.$store.getters.getUserData
     },
-    searchData() {
-        return {
+    getDongInfo() {
+        if(!this.createFlag) {
+            const dongcode = document.querySelector('#gu').value
+            this.dongList = []
+            axios.get(`${HTTP.BASE_URL}/fselect/sido/${dongcode}`, HTTP.JSON_HEADER)
+            .then(res => {
+                for (let dong_data in res.data) {
+                this.dongList.push(
+                    `${res.data[dong_data]["code"]} ${res.data[dong_data]["dong"]}`
+                    )
+                }
+                console.log(this.dongList)
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+    },
+    SearchInfoemit(){
+        const searchData = {
             cateno: this.categoryInfo.cateno,
-            saddr5: this.dongInfo.dongCode,
+            saddr5: document.querySelector('#dong').value,
             keyword: this.keyword
         }
-    }
- },
- watch: {
-     searchData() {
-         this.$emit('searchdata')
-     },
-    isAll : function(){
-        if(this.isAll){
-            this.siInfo.siName ="시/도",
-            this.siInfo.siCode=null
-            this.guInfo.guName = "구/군",
-            this.guInfo.guCode=null
-            this.dongInfo.dongName="동"
-            this.dongInfo.dongCode=null
-            this.gulist=null
-            this.dongList=null
-        }else{
-            this.siInfo.siName =  this.$store.getters.getUserData.addr2,
-            this.siInfo.siCode =  this.$store.getters.getUserData.addr1,
-            this.guInfo.guName =  this.$store.getters.getUserData.addr4,
-            this.guInfo.guCode =  this.$store.getters.getUserData.addr3,
-            this.dongInfo.dongName =  this.$store.getters.getUserData.addr6,
-            this.dongInfo.dongCode =  this.$store.getters.getUserData.addr5
-        
+        if (this.isAll) {
+            searchData.saddr5 = null
         }
-    },
-    userData : function(){
-        this.$router.go()
-    },
-    siInfo: function() {
-        this.isAll=false;
-        this.getGuInfo()
-    },
-    guInfo: function() {
-        this.getDongInfo()
-    }
-  },
-  methods:{
-      getGuInfo() {
-                let si_params = this.siInfo
-                this.guList = []
-                this.dongList = []
-                this.guInfo = ""
-                this.dongInfo = ""
-
-        axios.get(`${HTTP.BASE_URL}/fselect/${si_params.siCode}`, HTTP.JSON_HEADER)
-        .then(res => {
-          for (let gu_data in res.data) {
-            this.guList.push({
-              "guCode": res.data[gu_data]["gugun_code"],
-              "guName": res.data[gu_data]["gugun_name"]
-              })
-          }
-
-        }).catch(err => {
-          console.log(err)
-        })
-      },
-      getDongInfo() {
-        let gu_params = this.guInfo
-        this.dongList = []
-        this.dongInfo = ""
-
-        axios.get(`${HTTP.BASE_URL}/fselect/sido/${gu_params.guCode}`, HTTP.JSON_HEADER)
-        .then(res => {
-      
-
-          for (let dong_data in res.data) {
-            this.dongList.push({
-              "dongCode": res.data[dong_data]["code"],
-              "dongName": res.data[dong_data]["dong"]
-              })
-          }
-          console.log(this.dongList)
-        }).catch(err => {
-          console.log(err)
-        })
-      },
-    SearchInfoemit(){
-        this.search.cateno = this.categoryInfo.cateno,
-        this.search.saddr5 = this.dongInfo.dongCode,
-        this.search.keyword = this.keyword
-        console.log('search on web')
-        console.log(this.search)
-        this.$emit("child",this.search)
+        console.log(searchData)
+        this.$emit("child",searchData)
     }
   },
 }
