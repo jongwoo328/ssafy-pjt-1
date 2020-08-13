@@ -64,16 +64,17 @@
       </div>
       <div class="review section">
           <div class="review-section">
-            <h2>리뷰</h2>
+            <div class="switch">
+                <div class="review cursor-pointer" @click="showReview" style="">
+                    <h2>리뷰</h2>
+                    <div class="line" style="background-color: rgb(236,128,116); width = 100%"></div>
+                </div>
+                <div v-if="isOwner" class="user cursor-pointer" @click="showUser" style="border-left: none;">
+                    <h2>참여자목록</h2>
+                    <div class="line" style="width: 0px"></div>
+                </div>
+            </div>
             <a v-if="serviceData.payed" @click="createReview">리뷰 작성</a>
-          </div>
-          <div class="review-button">
-              <div class="review cursor-pointer" @click="showReview" style="border-bottom: none;">
-                <h3>리뷰</h3>
-            </div>
-            <div class="user cursor-pointer" @click="showUser" style="border-left: none;">
-                <h3>참여자목록</h3>
-            </div>
           </div>
           <hr>
           
@@ -148,22 +149,33 @@ export default {
         ReviewList,
         MessageModal,
         PayModal,
-    },watch:{
-         displayFollowing() {
-            const reviewElement = document.querySelector('.review')
-            const userElement = document.querySelector('.user')
+    },
+    watch:{
+         displayreview() {
+            const reviewElement = document.querySelector('.switch .review .line')
+            const userElement = document.querySelector('.switch .user .line')
             if (this.displayreview === true) {
-                reviewElement.style.borderBottom = "none"
-                reviewElement.style.backgroundColor = "white"
-                reviewElement.style.borderRight = "1px solid black"
-                userElement.style.borderBottom = "1px solid black"
-                userElement.style.borderLeft = "none"
+                // reviewElement.style.display = "block"
+                reviewElement.style.width = "100%"
+                reviewElement.style.backgroundColor = "rgb(236,128,116)"
+                // userElement.style.display = "none"
+                userElement.style.width = "0px"
+                // reviewElement.style.backgroundColor = "white"
+                // reviewElement.style.borderRight = "1px solid black"
+                // userElement.style.borderLeft = "none"
+                // reviewElement.style.borderBottom = "2px solid rgb(236,128,116)"
+                // userElement.style.borderBottom = "none"
             } else {
-                reviewElement.style.borderBottom = "1px solid black"
-                reviewElement.style.borderRight = "none"
-                userElement.style.borderBottom = "none"
-                userElement.style.borderLeft = "1px solid black"
-                userElement.style.backgroundColor = "white"
+                // userElement.style.display = "block"
+                userElement.style.width = "100%"
+                userElement.style.backgroundColor = "rgb(236,128,116)"
+                // reviewElement.style.display = "none"
+                reviewElement.style.width = "0px"
+                // reviewElement.style.borderBottom = "none"
+                // userElement.style.borderBottom = "2px solid rgb(236,128,116)"
+                // reviewElement.style.borderRight = "none"
+                // userElement.style.borderLeft = "1px solid black"
+                // userElement.style.backgroundColor = "white"
             }
         }
     },
@@ -197,14 +209,23 @@ export default {
             this.isLoaded = true
         },
         payShow(){
-            this.payModal = !this.payModal
-            if(!this.payModal){
-                this.$router.go()
+            if (this.$store.getters.isLoggedIn) {
+
+                this.payModal = !this.payModal
+                if(!this.payModal){
+                    this.$router.go()
+                }
+            } else {
+                alert('로그인이 필요합니다')
             }
        },
         msgShow(){
-            this.messageModal = !this.messageModal
-            this.sendtype = 1   
+            if (this.$store.getters.isLoggedIn) {
+                this.messageModal = !this.messageModal
+                this.sendtype = 1   
+            } else {
+                alert('로그인이 필요합니다')
+            }
         },
         onchangePage(){
             this.$router.push(`/services/${this.$route.params.service_id}/modify`)
@@ -283,6 +304,9 @@ export default {
 </script>
 
 <style>
+#service-detail .line {
+    height: 2px;
+}
     #service-detail {
         display: block;
         margin-top: 50px;
@@ -311,6 +335,16 @@ export default {
     #service-detail .review-section a:hover {
         color: rgb(236,128,116);
         cursor: pointer;
+    }
+    #service-detail .switch {
+        display: flex;
+        flex-direction: row;
+    }
+    #service-detail .switch > div{
+        margin-right: 20px;
+    }
+    #service-detail .switch .line {
+        transition: width 0.5s;
     }
     #service-detail h1, #service-detail h2 {
         font-size: 1.5rem;

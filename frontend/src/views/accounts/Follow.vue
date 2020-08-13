@@ -179,7 +179,7 @@ export default {
     }
     @media (min-width: 768px) {
         #follow .follow-info {
-            min-height: 500px;
+            min-height: 350px;
         }
     }
 </style>

@@ -24,7 +24,7 @@ export default {
         display: flex;
         flex-direction: column;
         max-height: 400px;
-        overflow:scroll;
+        overflow-y:scroll;
     }
     @media (min-width: 768px) {
         .user-list {
