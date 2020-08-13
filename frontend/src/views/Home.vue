@@ -70,8 +70,6 @@ export default {
         search['cateno'] = 0,
         search['saddr6'] = null
       }
-      console.log('search request body')
-      console.log(search)
       this.seeMoreReset = ! this.seeMoreReset
       axios.post(`${HTTP.BASE_URL}/service/search`,search, HTTP.JSON_HEADER)
       .then(res =>{
