@@ -82,7 +82,7 @@ export default {
         }
         this.services=res.data
         this.services.forEach(service => {
-                service.imgurl = `${HTTP.BASE_URL}/${service.imgurl}`
+                service.imgurl = `${HTTP.IMG_URL}/${service.imgurl}`
               })
         this.search_on=true
         this.text = search.keyword+" 검색결과"
@@ -94,7 +94,7 @@ export default {
     },
     addService(results) {
       results.forEach(result => {
-        result.imgurl = `${HTTP.BASE_URL}/${result.imgurl}`
+        result.imgurl = `${HTTP.IMG_URL}/${result.imgurl}`
         this.services.push(result)
       })
     }
@@ -114,7 +114,7 @@ export default {
           console.log(res)
             this.services = res.data
             this.services.forEach(service => {
-              service.imgurl = `${HTTP.BASE_URL}/${service.imgurl}`
+              service.imgurl = `${HTTP.IMG_URL}/${service.imgurl}`
           
             })
         })

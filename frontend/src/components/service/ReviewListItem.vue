@@ -131,7 +131,7 @@ export default {
                 return result
         },
         imgurl() {
-            return `${URL.BASE_URL}/${this.review.imgurl}`
+            return `${URL.IMG_URL}/${this.review.imgurl}`
         }
 
     },

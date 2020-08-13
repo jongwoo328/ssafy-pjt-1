@@ -173,7 +173,7 @@ export default {
                 })
             }
             this.serviceData ={
-                imgUrl:`${HTTP.BASE_URL}/` + res.data.imgurl,
+                imgUrl:`${HTTP.IMG_URL}/` + res.data.imgurl,
                 servname : res.data.servname,
                 price : res.data.price.replace(/,/g, ''),
                 saddr1 : res.data.saddr1,

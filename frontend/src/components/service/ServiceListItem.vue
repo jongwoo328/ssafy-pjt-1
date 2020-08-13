@@ -60,7 +60,7 @@ export default {
     computed: {
         getImgUrl() {
             console.log(this.service)
-            return `${HTTP.BASE_URL}/${this.service.imgurl}`
+            return `${HTTP.IMG_URL}/${this.service.imgurl}`
         },
    
     },methods:{

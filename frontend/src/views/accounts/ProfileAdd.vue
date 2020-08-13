@@ -74,7 +74,7 @@ export default {
           .then(res => {
               this.profileframe = false
               console.log(res)  
-              this.profileImageUrl = `${HTTP.BASE_URL}/` + res.data.imgurl
+              this.profileImageUrl = `${HTTP.IMG_URL}/` + res.data.imgurl
               const fsda = document.querySelector('.ql-editor')
               fsda.innerHTML = res.data.comment
               this.comment = res.data.comment.innerHTML

@@ -47,7 +47,7 @@ export default {
     },
     computed: {
         getImgUrl() {
-            return URL.BASE_URL + '/' + this.user.addr1
+            return URL.IMG_URL + '/' + this.user.addr1
         },
         isFollwing() {
             return this.user.checkfollow
