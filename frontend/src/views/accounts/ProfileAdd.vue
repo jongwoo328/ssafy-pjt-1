@@ -70,7 +70,7 @@ export default {
 
         if (this.urltype) {
           console.log('test')
-          axios.get(`${HTTP.BASE_URL}/profile/${this.$store.getters.getUserData.name}`)
+          axios.get(`${HTTP.BASE_URL}/profile/username=${this.$store.getters.getUserData.name}&userno=${this.$store.getters.getUserData.userno}`)
           .then(res => {
               this.profileframe = false
               console.log(res)  
@@ -161,11 +161,8 @@ export default {
         height: 150px;
         border-radius: 50%;
     }
-    #profileAdd textarea{
-        width: 100%;
-        height: 270px;
-        box-shadow: 0 0 5px gray;
-        border-radius: 7px;
+    #profileAdd .ql-container {
+      height: 300px;
     }
     #profileAdd input {
         margin-bottom: 20px;
