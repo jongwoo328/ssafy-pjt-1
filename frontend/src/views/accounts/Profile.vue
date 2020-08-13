@@ -27,7 +27,8 @@
                     <div class="following">
                         <p>팔로잉</p>
                         <span>{{followingCount}}</span>
-                        <Button v-if="!isMyProfile" button-text="팔로우" />
+                        <Button @click.native="follow" v-if="!isMyProfile && !checkfollow" button-text="팔로우" />
+                        <Button @click.native="unfollow" v-if="!isMyProfile && checkfollow" button-text="팔로우 취소" button-color="gray"/>
                     </div>
                     <div class="follower">
                         <p>팔로워</p>
@@ -106,6 +107,32 @@ export default {
             this.messageModal = !this.messageModal
             this.sendno = 1
         },
+        follow() {
+            const data = {
+                userno: this.$store.getters.getUserData.userno,
+                prono: this.profile.userno
+            }
+            axios.post(`${HTTP.BASE_URL}/follow`, data, URL.JSON_HEADER)
+            .then(res => {
+                console.log(res)
+                this.checkfollow = true
+                this.followerCount = res.data
+            })
+            .catch(err => console.log(err))
+        },
+        unfollow() {
+            const data = {
+                userno: this.$store.getters.getUserData.userno,
+                prono: this.profile.userno
+            }
+            axios.delete(`${HTTP.BASE_URL}/follow`, {data: data}, URL.JSON_HEADER)
+            .then(res => {
+                console.log(res)
+                this.checkfollow = false
+                this.followerCount = res.data
+            })
+            .catch(err => console.log(err))
+        }
     },
     watch: {
         userno : function() {
@@ -131,8 +158,8 @@ export default {
     created(){
         axios.get(`${HTTP.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
         .then(res => {
-            console.log(res)
-
+            console.log('response')
+            console.log(res.data)
             this.services = res.data
             this.isProfile=true
         })
@@ -144,9 +171,12 @@ export default {
         setTimeout(() => {
             this.$emit('sidebar')
             console.log('test')
-            axios.get(`${HTTP.BASE_URL}/profile/${this.$route.params.username}`)
+            axios.get(`${HTTP.BASE_URL}/profile/username=${this.$route.params.username}&userno=${this.$store.getters.getUserData.userno}`)
             .then(res => {
+                console.log('profile')
                 console.log(res.data)
+                this.profile = res.data
+                this.checkfollow = res.data.checkfollow
                 this.userno = res.data.userno
                 if (res.data==='fail') {
                     this.$router.push({
@@ -183,6 +213,7 @@ export default {
     },
     data() {
         return {
+            checkfollow: false,
             writer: "",
             sendno: "",
             messageModal: false,
