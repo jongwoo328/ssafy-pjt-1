@@ -35,11 +35,9 @@ export default {
             })
         }
         this.$emit('sidebar')
-        console.log(this)
-        console.log(1)
+
         axios.get(`${HTTP.BASE_URL}/pay/${this.$store.getters.getUserData.userno}`)
         .then(res => {
-            console.log(res)
             this.services = res.data
          
         })

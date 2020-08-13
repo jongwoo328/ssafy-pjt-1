@@ -33,7 +33,6 @@ export default {
             }
         },
         seeMoreReset() {
-            console.log('reset')
             this.page = 2
             this.displayFlag = true
         }
@@ -42,11 +41,8 @@ export default {
         seeMore() {
             this.displayFlag = true
             if (this.state === 'main') {
-                console.log('main')
                 axios.get(`${URL.BASE_URL}/service/main/${this.page++}`)
                 .then(res => {
-                    console.log(res)
-                    console.log(res.data.length)
                     this.$emit('seemore', res.data)
                     if (res.data.length !== 6) {
                         this.displayFlag = false
@@ -57,23 +53,15 @@ export default {
                     console.log(err)
                 })
             } else if (this.state === 'search') {
-                console.log('search')
                 let requestData
-                // if( this.searchData === null) {
                     requestData = {
                         cateno: 0,
                         keyword: this.seeMoreKeyword,
                         saddr6: null
                     }
-                // } else {
-                //     requestData = this.searchData
-                // }
                 requestData['num'] = this.page++
-                console.log(requestData)
                 axios.post(`${URL.BASE_URL}/service/search`, requestData)
                 .then(res => {
-                    console.log(res)
-                    console.log(res.data.length)
                     this.$emit('seemore', res.data)
                     if (res.data.length !== 6) {
                         this.displayFlag = false

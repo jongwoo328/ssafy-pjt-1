@@ -25,7 +25,6 @@ export default {
 
       axios.get(`${URL.BASE_URL}/msg/count/${this.$store.getters.getUserData.userno}`)
       .then(res => {
-        console.log(res)
         this.$store.commit("setMsgCount", res.data)
       })
       .catch(err => {

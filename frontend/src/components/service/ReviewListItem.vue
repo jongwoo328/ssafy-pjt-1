@@ -91,7 +91,6 @@ export default {
         deleteYes() {
             axios.delete(`${URL.BASE_URL}/review/${this.review.revno}`)
             .then(res => {
-                console.log(res)
                 if (res.data == 'success') {
                     alert('삭제되었습니다.')
                     this.$router.go()
@@ -106,7 +105,6 @@ export default {
         putReview() {
             axios.put(`${URL.BASE_URL}/review/${this.review.revno}`, this.updateForm)
             .then(res => {
-                console.log(res)
                 if (res.data == 'success') {
                     alert('수정되었습니다.')
                     this.$router.go()

@@ -163,7 +163,6 @@ export default {
       })
         axios.get(`${HTTP.BASE_URL}/service/detail/servno=${this.$route.params.service_id}&userno=${this.$store.getters.getUserData.userno}`)
         .then(res =>{
-            console.log(res)
             if (this.$store.getters.getUserData.userno !== res.data.userno) {
                 this.$router.push({
                     name: 'Error',
@@ -185,7 +184,7 @@ export default {
                 description : res.data.description,
                 cateno : res.data.cateno
             }
-            console.log(this.serviceData)
+
             this.serviceImageUrl = this.serviceData.imgUrl,
             this.siInfo.siCode=this.serviceData.saddr1,
             this.siInfo.siName=this.serviceData.saddr2,
@@ -201,7 +200,6 @@ export default {
             }
             setTimeout(() => {
                 const edit1 = document.querySelector('.ql-editor')
-                console.log(edit1)
                 edit1.innerHTML = this.serviceData.description
             }, 0);
         })
@@ -211,10 +209,8 @@ export default {
      },
     methods:{
          fileSelect() {
-            console.log(this.$refs)
             this.serviceImage = this.$refs.serviceImage.files[0]
             this.serviceImageUrl = URL.createObjectURL(this.serviceImage)
-            console.log(this.serviceImageUrl)
         },
          submit(){
              
@@ -234,17 +230,13 @@ export default {
             formData.append('saddr4', this.guInfo.guName)
             formData.append('saddr5', this.dongInfo.dongCode)
             formData.append('saddr6', this.dongInfo.dongName)
-             for (let key of formData.entries())
-            {
-            console.log(`${key}`)
-            }
+
             axios.put(`${HTTP.BASE_URL}/service`,formData) 
-                .then(res => {
+                .then(() => {
                  setTimeout(() => {
-                    console.log(res);
                     alert('수정되었습니다.')
                     this.$router.push(`/services/${this.$route.params.service_id}`)
-                 },1000)
+                 },100)
       })
       .catch(err => {
         console.log(err)
@@ -285,7 +277,6 @@ export default {
               "dongName": res.data[dong_data]["dong"]
               })
           }
-          console.log(this.dongList)
         }).catch(err => {
           console.log(err)
         })

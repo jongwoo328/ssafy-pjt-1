@@ -100,7 +100,6 @@ export default {
     },
     methods: {
         onImgLoad () {
-            console.log('load')
             this.isLoaded = true
         },
         message () {
@@ -114,7 +113,6 @@ export default {
             }
             axios.post(`${HTTP.BASE_URL}/follow`, data, URL.JSON_HEADER)
             .then(res => {
-                console.log(res)
                 this.checkfollow = true
                 this.followerCount = res.data
             })
@@ -127,7 +125,6 @@ export default {
             }
             axios.delete(`${HTTP.BASE_URL}/follow`, {data: data}, URL.JSON_HEADER)
             .then(res => {
-                console.log(res)
                 this.checkfollow = false
                 this.followerCount = res.data
             })
@@ -138,7 +135,6 @@ export default {
         userno : function() {
             axios.get(`${HTTP.BASE_URL}/follow/following/${this.userno}`)
             .then(res => {
-                console.log(res)
                 this.followUserList = res.data
                 this.followingCount = res.data.length
             })
@@ -147,7 +143,6 @@ export default {
             })
             axios.get(`${HTTP.BASE_URL}/follow/follower/${this.userno}`)
             .then(res => {
-                console.log(res)
                 this.followerCount = res.data.length
             })
             .catch(err => {
@@ -158,8 +153,6 @@ export default {
     created(){
         axios.get(`${HTTP.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
         .then(res => {
-            console.log('response')
-            console.log(res.data)
             this.services = res.data
             this.isProfile=true
         })
@@ -170,11 +163,8 @@ export default {
     mounted() {
         setTimeout(() => {
             this.$emit('sidebar')
-            console.log('test')
             axios.get(`${HTTP.BASE_URL}/profile/username=${this.$route.params.username}&userno=${this.$store.getters.getUserData.userno}`)
             .then(res => {
-                console.log('profile')
-                console.log(res.data)
                 this.profile = res.data
                 this.checkfollow = res.data.checkfollow
                 this.userno = res.data.userno
@@ -191,17 +181,12 @@ export default {
                     comment: res.data.comment
                 }
                 this.services = res.data.servList
-                console.log(this.services.imgurl)
                 if (res.data.pno == 0) {
                     this.isProfile=false
                 }
                 else {
                     this.isProfile=true
                 }
-                console.log(1)
-                console.log(this.services[0].payCount)
-                console.log(this.profileData.imgUrl)
-                console.log(this.profileData.comment)
                 if (res.data === 'fail') {
                     this.isProfile = false
                 }

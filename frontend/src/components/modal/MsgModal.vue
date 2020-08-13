@@ -72,7 +72,6 @@ export default {
   created() {
       axios.get(`${URL.BASE_URL}/msg/detail/msgNo=${this.msgNo}&msgtype=${this.$route.params.msgtype}`)
       .then(res => {
-          console.log(res)
           this.reciver = res.data.recivername
           this.writer = res.data.writername
           this.title = res.data.title

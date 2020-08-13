@@ -262,9 +262,8 @@ export default {
       }
     },
     methods: {
-      open(e) {
-        // e.target.setAttribute('size', 5)
-        console.log(e)
+      open() {
+        console.log()
       },
       close(e) {
         e.target.setAttribute('size', 0)
@@ -320,7 +319,6 @@ export default {
 
         axios.get(`${URL.BASE_URL}/fselect/sido/${gu_params.guCode}`, URL.JSON_HEADER)
         .then(res => {
-          console.log(res.data)
 
           for (let dong_data in res.data) {
             this.dongList.push({
@@ -328,7 +326,6 @@ export default {
               "dongName": res.data[dong_data]["dong"]
               })
           }
-          console.log(this.dongList)
         }).catch(err => {
           console.log(err)
         })
@@ -384,13 +381,10 @@ export default {
           'ispro': this.isPro
         }
 
-    
-        console.log(signUpData)
         axios.post(`${URL.BASE_URL}/account/signup`, signUpData)
-        .then(res => {
+        .then(() => {
           this.isSubmit = true
           this.$router.push({name: "Home"})
-          console.log(res)
         })
         .catch(err => {
           this.isSubmit = true

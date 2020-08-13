@@ -98,7 +98,6 @@ export default {
         }
       axios.get(`${URL.BASE_URL}/qna/detail/${this.qnaNumber}`)
       .then(res => {
-        console.log(res)
         this.qnaData = res.data
       })
       .catch(err => console.log(err))
@@ -130,7 +129,6 @@ export default {
         if (command === 'create'){
           axios.put(CREATE_URL, data, URL.JSON_HEADER)
           .then(res => {
-            console.log(res)
             if (res.data === 'success') {
               this.$router.go()
             } else if (res.data === 'fail') {
@@ -172,7 +170,7 @@ export default {
         setTimeout(() => {
           const updateEditor = document.querySelector('.update-form .ql-editor')
           const qtitle = document.querySelector('#qtitle')
-          console.log(qtitle)
+
           updateEditor.innerHTML = this.qnaData.qcontent
           qtitle.value = this.qnaData.qtitle
         }, 10);

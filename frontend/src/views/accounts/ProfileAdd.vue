@@ -69,17 +69,13 @@ export default {
         else this.urltype = false
 
         if (this.urltype) {
-          console.log('test')
           axios.get(`${HTTP.BASE_URL}/profile/username=${this.$store.getters.getUserData.name}&userno=${this.$store.getters.getUserData.userno}`)
           .then(res => {
               this.profileframe = false
-              console.log(res)  
               this.profileImageUrl = `${HTTP.IMG_URL}/` + res.data.imgurl
               const fsda = document.querySelector('.ql-editor')
               fsda.innerHTML = res.data.comment
               this.comment = res.data.comment.innerHTML
-              console.log(this.profileData.imgUrl)
-              console.log(this.profileData.comment)
           })
           .catch(err => {
               console.log(err)
@@ -88,7 +84,6 @@ export default {
       },
     methods: {
         fileSelect() {
-            console.log(this.$refs)
             this.profileImage = this.$refs.profileImage.files[0]
             this.profileImageUrl = URL.createObjectURL(this.profileImage)
             this.profileframe = false
@@ -96,17 +91,10 @@ export default {
         submit() {
           const temp = document.getElementsByClassName('ql-editor')[0]
           this.comment = temp.innerHTML
-          console.log(temp.innerHTML)
-          console.log(this.comment)
           const formData = new FormData()
           formData.append('profileImage', this.profileImage)
           formData.append('Comment', this.comment)
           formData.append('userno', this.$store.getters.getUserData.userno)
-
-          for (let key of formData.entries())
-          {
-            console.log(`${key}`)
-          }
 
           if (this.urltype) {
             axios.put(`${HTTP.BASE_URL}/profile`, formData, {
@@ -114,13 +102,12 @@ export default {
               'Authorization': this.$session.get('jwstoken'),
               'Content-Type' : 'multipart/form-data'
             }
-          }).then(res => {
-            console.log(res)
+          }).then(() => {
             
             setTimeout(() => {
               alert('수정되었습니다.')
               this.$router.push({ name : 'Profile' })
-            },1000)
+            },100)
           }).catch(err => {
             console.log(err)
           })
@@ -132,8 +119,7 @@ export default {
               'Authorization': this.$session.get('jwstoken'),
               'Content-Type' : 'multipart/form-data'
               }
-            }).then(res => {
-              console.log(res)
+            }).then(() => {
             setTimeout(() => {
               alert('등록되었습니다.')
               this.$router.push({ name : 'Profile' })

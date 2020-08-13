@@ -155,24 +155,20 @@ export default {
         }),
         axios.get(`${HTTP.BASE_URL}/fselect`, HTTP.JSON_HEADER)
              .then(res => {
-                 console.log(res);
              for (let si_data in res.data) {
                  this.siList.push({
             "siCode": res.data[si_data]["sido_code"],
             "siName": res.data[si_data]["sido_name"]
             })
         }
-            console.log(this.siList)
       })
       .catch(err => {
         console.log(err)
       })
      },methods:{
          fileSelect() {
-            console.log(this.$refs)
             this.serviceImage = this.$refs.serviceImage.files[0]
             this.serviceImageUrl = URL.createObjectURL(this.serviceImage)
-            console.log(this.serviceImageUrl)
         },
          submit(){
              
@@ -191,17 +187,13 @@ export default {
             formData.append('saddr4', this.guInfo.guName)
             formData.append('saddr5', this.dongInfo.dongCode)
             formData.append('saddr6', this.dongInfo.dongName)
-             for (let key of formData.entries())
-            {
-            console.log(`${key}`)
-            }
+
             axios.post(`${HTTP.BASE_URL}/service`,formData) 
-            .then(res => {
+            .then(() => {
               setTimeout(() => {
-              console.log(res)
               alert('등록되었습니다.')
               this.$router.push("/myservice")
-            },1000)
+            },100)
       })
       .catch(err => {
         console.log(err)
@@ -243,7 +235,6 @@ export default {
               "dongName": res.data[dong_data]["dong"]
               })
           }
-          console.log(this.dongList)
         }).catch(err => {
           console.log(err)
         })
