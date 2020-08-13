@@ -164,7 +164,6 @@ public class ProfileController {
 	@ApiOperation(value = "userno에 해당하는 프로필 정보를 수정한다.그리고 DB수정 성공여부에 따라 'success' 또는 'fail' 문자열을 반환한다.", response = String.class)
 	@PutMapping
 	public ResponseEntity<String> updateProfile(HttpServletRequest request) throws JsonMappingException, JsonProcessingException{
-		System.out.println(SAVE_PATH);
 		MultipartHttpServletRequest mrequest = (MultipartHttpServletRequest)request;
 		
 		Profile pre = service.detailProfile(Integer.parseInt(request.getParameter("userno")));
@@ -213,14 +212,12 @@ public class ProfileController {
 	@DeleteMapping
 	public ResponseEntity<String> deleteProfile(@RequestBody Profile profile, HttpServletRequest request) throws URISyntaxException{
 		
-		System.out.println(SAVE_PATH + profile.getImgurl());
 		
 		if(profile.getImgurl().equals("null.png")) {
 			
 		} else {
 			File file = new File(SAVE_PATH + profile.getImgurl());
 			if(file.exists() == true) {
-				System.out.println("삭제완료");
 				file.delete();
 			}			
 		}
