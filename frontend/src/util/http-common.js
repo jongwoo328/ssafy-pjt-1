@@ -1,5 +1,7 @@
+const IP = "http://54.180.131.199"
 export default {
-  BASE_URL: "http://54.180.131.199:8090",
+  BASE_URL: `${IP}:8090`,
+  IMG_URL: `${IP}:80`,
   JSON_HEADER: {
     headers: {
         'Content-Type': 'application/json',
