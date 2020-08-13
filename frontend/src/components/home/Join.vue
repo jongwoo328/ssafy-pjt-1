@@ -28,8 +28,6 @@ export default {
     methods:{
         searchInfoemit(){
             this.search.keyword=this.keyword
-            console.log('Join.vue')
-            console.log(this.search)
             this.$emit("child",this.search)
          }
     }

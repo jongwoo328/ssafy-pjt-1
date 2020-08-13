@@ -10,19 +10,19 @@
             <Button buttonText="검색" @click.native="SearchInfoemit" />
           </div>
           <div class="searchaddr mt-3">
-            <div class="checkAll" v-if="$store.getters.isLoggedIn">
+            <div class="checkAll">
                 <label class="mr-1">전체</label>
                 <input  type="checkbox" v-model="isAll" /> 
             </div>
             <div class="addr-input row mt-2">
                 <select @change="getGuInfo" name="si" id="si" class="col-4 search-info si">
-                    <option v-for="si_data in siList" :key="si_data" :value="si_data.split(' ')[0]" v-text="si_data.split(' ')[1]"></option>
+                    <option v-for="si_data in siList" :key="si_data" :value="getCode(si_data)" v-text="getName(si_data)"></option>
                 </select>
                 <select @change="getDongInfo" name="gu" id="gu" class="col-3 search-info gu">
-                    <option v-for="gu_data in guList" :key="gu_data" :value="gu_data.split(' ')[0]" v-text="gu_data.split(' ')[1]"></option>
+                    <option v-for="gu_data in guList" :key="gu_data" :value="getCode(gu_data)" v-text="getName(gu_data)"></option>
                 </select>
                 <select name="dong" id="dong" class="col-2 search-info">
-                    <option v-for="dong_data in dongList" :key="dong_data" :value="dong_data.split(' ')[0]" v-text="dong_data.split(' ')[1]"></option>
+                    <option v-for="dong_data in dongList" :key="dong_data" :value="getCode(dong_data)" v-text="getName(dong_data)"></option>
                 </select>
             </div>
           </div>
@@ -71,6 +71,9 @@ export default {
     })
     
     this.setAddrDefault()
+    if (!this.$store.getters.isLoggedIn) {
+        this.isAll = true
+    }
     this.createFlag = false
  },
  watch: {
@@ -92,6 +95,14 @@ export default {
     },
   },
   methods:{
+    getCode(inputString) {
+        const i = inputString.indexOf(' ')
+        return inputString.slice(0, i)
+    },
+    getName(inputString) {
+        const i = inputString.indexOf(' ')
+        return inputString.slice(i+1)
+    },
     setAddrDefault() {
         this.siList = []
         this.guList = []
@@ -99,17 +110,20 @@ export default {
         // 시/도 정보 불러오기
         axios.get(`${HTTP.BASE_URL}/fselect`, HTTP.JSON_HEADER)
         .then(res => {
-        console.log(res);
         for (let si_data in res.data) {
             this.siList.push(
                 `${res.data[si_data]["sido_code"]} ${res.data[si_data]["sido_name"]}`
             )
         }
-        console.log(this.siList)
 
-            if (this.$store.getters.isLoggedIn) {
             // 구/군 정보 불러오기
-            axios.get(`${HTTP.BASE_URL}/fselect/${this.$store.getters.getUserData.addr1}`, HTTP.JSON_HEADER)
+            let sicode
+            if (!this.$store.getters.isLoggedIn) {
+                sicode = 11
+            } else {
+                sicode = this.$store.getters.getUserData.addr1
+            }
+            axios.get(`${HTTP.BASE_URL}/fselect/${sicode}`, HTTP.JSON_HEADER)
             .then(res => {
                 for (let gu_data in res.data) {
                 this.guList.push(
@@ -117,50 +131,40 @@ export default {
                 )
                 }
                 // 동 정보 불러오기
-                axios.get(`${HTTP.BASE_URL}/fselect/sido/${this.$store.getters.getUserData.addr3}`, HTTP.JSON_HEADER)
+                let gucode
+                if (!this.$store.getters.isLoggedIn) {
+                    gucode = 11110
+                } else {
+                    gucode = this.$store.getters.getUserData.addr3
+                }
+                axios.get(`${HTTP.BASE_URL}/fselect/sido/${gucode}`, HTTP.JSON_HEADER)
                 .then(res => {
-                    console.log('dong')
-                    // console.log
                     for (let dong_data in res.data) {
                     this.dongList.push(
                         `${res.data[dong_data]["code"]} ${res.data[dong_data]["dong"]}`
                         )
                     }
-                    console.log('dongList:', this.dongList)
-
-                    console.log('user')
-                    console.log(this.$store.getters.getUserData)
-                    console.log('isLoggedIn:', this.$store.getters.isLoggedIn)
 
                     // 로그인 됐을경우 자동으로 설정되게
                     
                         const siOptions = document.querySelectorAll('#si option')
-                        console.log(siOptions)
                         for (const i in siOptions) {
-                            console.log(i, siOptions[i].innerText)
                             if (siOptions[i].innerText === this.$store.getters.getUserData.addr2) {
-                                console.log(document.querySelector(`#si option:nth-child(${parseInt(i)+1})`).innerText)
                                 document.querySelector(`#si option:nth-child(${parseInt(i)+1})`).selected = true
                                 break
                             }
                         }
                         const guOptions = document.querySelectorAll('#gu option')
-                        console.log('gu')
-                        console.log(guOptions)
                         for (const i in guOptions) {
                             if (guOptions[i].innerText === this.$store.getters.getUserData.addr4) {
-                                console.log(i)
                                 document.querySelector(`#gu option:nth-child(${parseInt(i)+1})`).selected = true
                                 break
                             }
                         }
                         setTimeout(() => {
                             const dongOptions = document.querySelectorAll('#dong option')
-                            console.log('dong:', dongOptions)
                             for (const i in dongOptions) {
-                                console.log(dongOptions[i].innerText, i)
                                 if (dongOptions[i].innerText === this.$store.getters.getUserData.addr6) {
-                                    console.log('index:', i)
                                     document.querySelector(`#dong option:nth-child(${parseInt(i)+1})`).selected = true
                                     break
                                 }
@@ -175,7 +179,7 @@ export default {
             .catch(err => {
                 console.log(err)
             })
-            }
+            
         })
         .catch(err => {
             console.log(err)
@@ -187,7 +191,6 @@ export default {
             this.guList = []
             this.dongList = []
 
-            console.log(sicode)
             axios.get(`${HTTP.BASE_URL}/fselect/${sicode}`, HTTP.JSON_HEADER)
             .then(res => {
                 for (let gu_data in res.data) {
@@ -212,7 +215,6 @@ export default {
                     `${res.data[dong_data]["code"]} ${res.data[dong_data]["dong"]}`
                     )
                 }
-                console.log(this.dongList)
             }).catch(err => {
                 console.log(err)
             })
@@ -227,7 +229,6 @@ export default {
         if (this.isAll) {
             searchData.saddr5 = null
         }
-        console.log(searchData)
         this.$emit("child",searchData)
     }
   },

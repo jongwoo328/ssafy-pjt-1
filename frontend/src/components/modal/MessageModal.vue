@@ -67,10 +67,8 @@ export default {
     }
   },
   created() {
-    console.log(this.Sendtype)
     if (this.Sendtype==1) {
       this.toUsername = this.recivername
-      console.log(11)
     } else if (this.Sendtype==2) {
       this.title = this.Title
       this.comment = this.Content
@@ -83,11 +81,9 @@ export default {
   },
   methods: {
     changeValue(str) {
-      console.log(`change value: ${str}`);
       document.querySelector('.s').value = str;
       this.toUsername = str
       this.isActive = false;
-      console.log(this.toUsername)
     },
     selectValue(keycode, str) {
         if (this.isActive) {
@@ -153,12 +149,10 @@ export default {
       this.$emit('close')
     },
     nameCheck(event) {
-      console.log(event.target.value)
       axios.get(`${URL.BASE_URL}/account/total/${event.target.value}`)
       .then(res => {
         this.filters = res.data
-        this.isActive = true
-        // console.log(this.filters)   
+        this.isActive = true   
       })
       .catch(err => {
         console.log(err)

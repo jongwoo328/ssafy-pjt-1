@@ -27,7 +27,8 @@
                     <div class="following">
                         <p>팔로잉</p>
                         <span>{{followingCount}}</span>
-                        <Button v-if="!isMyProfile" button-text="팔로우" />
+                        <Button @click.native="follow" v-if="!isMyProfile && !checkfollow" button-text="팔로우" />
+                        <Button @click.native="unfollow" v-if="!isMyProfile && checkfollow" button-text="팔로우 취소" button-color="gray"/>
                     </div>
                     <div class="follower">
                         <p>팔로워</p>
@@ -99,19 +100,41 @@ export default {
     },
     methods: {
         onImgLoad () {
-            console.log('load')
             this.isLoaded = true
         },
         message () {
             this.messageModal = !this.messageModal
             this.sendno = 1
         },
+        follow() {
+            const data = {
+                userno: this.$store.getters.getUserData.userno,
+                prono: this.profile.userno
+            }
+            axios.post(`${HTTP.BASE_URL}/follow`, data, URL.JSON_HEADER)
+            .then(res => {
+                this.checkfollow = true
+                this.followerCount = res.data
+            })
+            .catch(err => console.log(err))
+        },
+        unfollow() {
+            const data = {
+                userno: this.$store.getters.getUserData.userno,
+                prono: this.profile.userno
+            }
+            axios.delete(`${HTTP.BASE_URL}/follow`, {data: data}, URL.JSON_HEADER)
+            .then(res => {
+                this.checkfollow = false
+                this.followerCount = res.data
+            })
+            .catch(err => console.log(err))
+        }
     },
     watch: {
         userno : function() {
             axios.get(`${HTTP.BASE_URL}/follow/following/${this.userno}`)
             .then(res => {
-                console.log(res)
                 this.followUserList = res.data
                 this.followingCount = res.data.length
             })
@@ -120,7 +143,6 @@ export default {
             })
             axios.get(`${HTTP.BASE_URL}/follow/follower/${this.userno}`)
             .then(res => {
-                console.log(res)
                 this.followerCount = res.data.length
             })
             .catch(err => {
@@ -131,8 +153,6 @@ export default {
     created(){
         axios.get(`${HTTP.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
         .then(res => {
-            console.log(res)
-
             this.services = res.data
             this.isProfile=true
         })
@@ -143,10 +163,10 @@ export default {
     mounted() {
         setTimeout(() => {
             this.$emit('sidebar')
-            console.log('test')
-            axios.get(`${HTTP.BASE_URL}/profile/${this.$route.params.username}`)
+            axios.get(`${HTTP.BASE_URL}/profile/username=${this.$route.params.username}&userno=${this.$store.getters.getUserData.userno}`)
             .then(res => {
-                console.log(res.data)
+                this.profile = res.data
+                this.checkfollow = res.data.checkfollow
                 this.userno = res.data.userno
                 if (res.data==='fail') {
                     this.$router.push({
@@ -161,17 +181,12 @@ export default {
                     comment: res.data.comment
                 }
                 this.services = res.data.servList
-                console.log(this.services.imgurl)
                 if (res.data.pno == 0) {
                     this.isProfile=false
                 }
                 else {
                     this.isProfile=true
                 }
-                console.log(1)
-                console.log(this.services[0].payCount)
-                console.log(this.profileData.imgUrl)
-                console.log(this.profileData.comment)
                 if (res.data === 'fail') {
                     this.isProfile = false
                 }
@@ -183,6 +198,7 @@ export default {
     },
     data() {
         return {
+            checkfollow: false,
             writer: "",
             sendno: "",
             messageModal: false,

@@ -155,27 +155,13 @@ export default {
             const reviewElement = document.querySelector('.switch .review .line')
             const userElement = document.querySelector('.switch .user .line')
             if (this.displayreview === true) {
-                // reviewElement.style.display = "block"
                 reviewElement.style.width = "100%"
                 reviewElement.style.backgroundColor = "rgb(236,128,116)"
-                // userElement.style.display = "none"
                 userElement.style.width = "0px"
-                // reviewElement.style.backgroundColor = "white"
-                // reviewElement.style.borderRight = "1px solid black"
-                // userElement.style.borderLeft = "none"
-                // reviewElement.style.borderBottom = "2px solid rgb(236,128,116)"
-                // userElement.style.borderBottom = "none"
             } else {
-                // userElement.style.display = "block"
                 userElement.style.width = "100%"
                 userElement.style.backgroundColor = "rgb(236,128,116)"
-                // reviewElement.style.display = "none"
                 reviewElement.style.width = "0px"
-                // reviewElement.style.borderBottom = "none"
-                // userElement.style.borderBottom = "2px solid rgb(236,128,116)"
-                // reviewElement.style.borderRight = "none"
-                // userElement.style.borderLeft = "1px solid black"
-                // userElement.style.backgroundColor = "white"
             }
         }
     },
@@ -185,7 +171,6 @@ export default {
             this.displayuser = false
             axios.get(`${HTTP.BASE_URL}/review/${this.$route.params.service_id}`,HTTP.JSON_HEADER)
             .then(res => {
-            console.log(res);
             this.review = res.data 
             })
         .catch(err => {
@@ -197,9 +182,7 @@ export default {
             this.displayuser = true
             axios.get(`${HTTP.BASE_URL}/account/payinfo/${this.$route.params.service_id}`)
             .then(res =>{
-                console.log(res)
                 this.userData=res.data
-                console.log(this.userData);
             })
             .catch(err =>{
                 console.log(err)
@@ -232,9 +215,7 @@ export default {
         },
         removeService(){
             axios.delete(`${HTTP.BASE_URL}/service/${this.$route.params.service_id}`)
-            .then(res =>{
-                console.log(res)
-                console.log("삭제성공")
+            .then(() =>{
                 this.$router.push(`/myservice`)
             })
             .catch(err => {
@@ -242,7 +223,6 @@ export default {
             })
         },
         createReview() {
-            console.log(typeof this.review.revwrite)
             if (this.revwrite) {
                 alert('이미 작성하신 리뷰가 있습니다.')
             } else {
@@ -261,7 +241,6 @@ export default {
         }       
         axios.get(`${HTTP.BASE_URL}/service/detail/servno=${this.$route.params.service_id}&userno=${this.userno}`)
         .then(res =>{
-            console.log(res)
             this.revwrite = res.data.revwrite
             this.proname = res.data.proname,
             this.serviceData ={
@@ -293,7 +272,6 @@ export default {
         })
         axios.get(`${HTTP.BASE_URL}/review/${this.$route.params.service_id}`,HTTP.JSON_HEADER)
         .then(res => {
-            console.log(res);
             this.review = res.data 
         })
         .catch(err => {

@@ -32,6 +32,7 @@ export default {
             pageNow: 1,
             range: 5,
             beforeIndex: 1,
+            dummy: null
         }
     },
     props: {
@@ -84,7 +85,7 @@ export default {
 
             const pageStart = Math.floor(this.pageNow / this.range) + 1
             if (pageStart + this.range - 1 > this.pageNumber) {
-                console.log(0)
+                this.dummy = pageStart
             } else {
                 this.pageRange
             }

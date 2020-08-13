@@ -59,17 +59,14 @@ export default {
     },
     computed: {
         getImgUrl() {
-            console.log(this.service)
             return `${HTTP.IMG_URL}/${this.service.imgurl}`
         },
    
     },methods:{
         pay(){
-            console.log(this.service.cancelcheck)
             if(this.service.cancelcheck==true){
                  axios.delete(`${HTTP.BASE_URL}/pay/${this.service.payno}`)
-                 .then(res=>{
-                     console.log(res)
+                 .then(()=>{
                      alert('환불성공')
                      this.$router.go()
                  }) 
@@ -81,15 +78,12 @@ export default {
             }
         },
         changeDetail(){
-            console.log(1)
             this.$router.push(`/services/${this.service.servno}`)
         }
     },
     created(){
-            console.log(3)
-            console.log(this.$route.path)
-            if(this.$route.path=='/paylist')
-            this.isPay=!this.isPay
+        if(this.$route.path=='/paylist')
+        this.isPay=!this.isPay
     },
     
 }

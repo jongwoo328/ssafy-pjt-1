@@ -53,11 +53,10 @@ methods: {
         'content' : this.content,
         'point' : this.rating
       }
-      console.log(reviewData)
+
       axios.post(`${HTTP.BASE_URL}/review`,reviewData)
-        .then(res => {
+        .then(() => {
           alert("등록 성공");
-          console.log(res);
           this.onChangePage();
         })
         .catch(err =>{

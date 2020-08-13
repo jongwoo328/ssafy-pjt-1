@@ -34,9 +34,6 @@ export default {
             sendno: "",
         }
     },
-    created() {
-        console.log(this.user)
-    },
     components: {
         MessageModal,
     },
@@ -66,17 +63,13 @@ export default {
                 userno: this.$store.getters.getUserData.userno,
                 prono: this.user.userno
             }
-            console.log(data)
             axios.delete(`${URL.BASE_URL}/follow`, {data: data}, URL.JSON_HEADER)
             .then(res => {
-                console.log(res)
                 this.user.checkfollow = false
                 this.user.folcount = res.data
                 const userList = document.querySelectorAll('.user-list-item')
                 userList.forEach(user => {
-                    console.log(user.dataset)
                     if (user.dataset.userno == this.user.userno && user.dataset.follower === undefined) {
-                        console.log(user)
                         user.style.display = "none"
                     }
                 })
@@ -88,10 +81,8 @@ export default {
                 userno: this.$store.getters.getUserData.userno,
                 prono: this.user.userno
             }
-            console.log(data)
             axios.post(`${URL.BASE_URL}/follow`, data, URL.JSON_HEADER)
             .then(res => {
-                console.log(res)
                 this.user.checkfollow = true
                 this.user.folcount = res.data
             })

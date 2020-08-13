@@ -42,7 +42,6 @@ export default {
       .then(res => {
 
         let qnaData = res.data
-        // console.log(qnaData)
 
         for (let i in qnaData){
           const now = new Date(Date.now())

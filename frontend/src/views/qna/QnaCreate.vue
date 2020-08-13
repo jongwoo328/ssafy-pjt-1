@@ -48,8 +48,7 @@ export default {
                 userno: this.$store.getters.getUserData.userno
             }
             axios.post(`${URL.BASE_URL}/qna`, qnaData, URL.JSON_HEADER)
-            .then(res => {
-                console.log(res)
+            .then(() => {
                 this.$router.push({ name:'Qna' })
             })
             .catch(err => console.log(err))
