@@ -72,7 +72,7 @@ public class ProfileController {
 	FollowService fol;
 	
 	@ApiOperation(value = "프로필 정보 반환", response = Profile.class)
-	@GetMapping("/{username}")
+	@GetMapping("/username={username}&userno={userno}")
 	public Object detailProfile(@PathVariable String username, @PathVariable int userno) {
 		
 		
