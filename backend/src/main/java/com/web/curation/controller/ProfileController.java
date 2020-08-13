@@ -45,7 +45,7 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping("/profile")
 public class ProfileController {
-	private static String  SAVE_PATH = "/home/ubuntu/git/s03p13d106/backend/src/main/resources/static/img/profile/";
+	private static String  SAVE_PATH = "/var/www/html/img/profile/";
 	private static final Logger logger = LoggerFactory.getLogger(QnaController.class);
 	private static final String SUCCESS = "success";
 	private static final String FAIL = "fail";
