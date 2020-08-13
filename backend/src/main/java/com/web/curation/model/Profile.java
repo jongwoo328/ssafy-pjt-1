@@ -7,6 +7,7 @@ public class Profile {
 	private int userno;
 	private String comment;
 	private String imgurl;
+	private boolean checkfollow;
 	private List<ConnectorService> servList;
 	
 	public Profile() {
@@ -15,6 +16,18 @@ public class Profile {
 	
 	
 	
+	public boolean isCheckfollow() {
+		return checkfollow;
+	}
+
+
+
+	public void setCheckfollow(boolean checkfollow) {
+		this.checkfollow = checkfollow;
+	}
+
+
+
 	public Profile(int pno, int userno, String comment ,String imgurl) {
 		this.pno = pno;
 		this.userno = userno;

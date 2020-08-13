@@ -3,8 +3,6 @@ package com.web.curation.controller;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,9 +28,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.web.curation.config.JwtUtil;
 import com.web.curation.model.ConnectorService;
+import com.web.curation.model.Follow;
 import com.web.curation.model.Profile;
 import com.web.curation.model.Review;
 import com.web.curation.model.User;
+import com.web.curation.service.FollowService;
 import com.web.curation.service.PayService;
 import com.web.curation.service.ProfileService;
 import com.web.curation.service.ReviewService;
@@ -68,9 +68,12 @@ public class ProfileController {
 	@Autowired
 	ReviewService rev;
 	
+	@Autowired
+	FollowService fol;
+	
 	@ApiOperation(value = "프로필 정보 반환", response = Profile.class)
 	@GetMapping("/{username}")
-	public Object detailProfile(@PathVariable String username) {
+	public Object detailProfile(@PathVariable String username, @PathVariable int userno) {
 		
 		
 		User u = user.getUserByName(username);
@@ -105,7 +108,14 @@ public class ProfileController {
 					}
 					
 				}
-				
+				Follow follow = new Follow();
+				follow.setUserno(userno);
+				follow.setProno(u.getUserno());
+				if(fol.selectFollow(follow) != null) {
+					profile.setCheckfollow(true);
+				} else {
+					profile.setCheckfollow(false);					
+				}
 				return new ResponseEntity<Profile>(profile, HttpStatus.OK);
 			} else {
 				return new ResponseEntity<String>(FAIL , HttpStatus.OK);
