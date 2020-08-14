@@ -1,5 +1,6 @@
 <template>
   <div id="msgList" class="container">
+    <GoBack/>
     <div class="router">
         <a class="link" :class="{'active': urltype}" href="/message/rec">받은 쪽지함</a>
         <a class="link" :class="{'active': !urltype}" href="/message/send">보낸 쪽지함</a>
@@ -33,6 +34,7 @@ import axios from 'axios'
 import URL from '@/util/http-common.js'
 import MessageListItem from '@/components/common/MessageListItem.vue'
 import Button from '@/components/common/Button.vue'
+import GoBack from '@/components/common/GoBack.vue'
 
 export default {
     name: 'MessageList',
@@ -90,6 +92,7 @@ export default {
         messageModal,
         MessageListItem,
         Button,
+        GoBack
     },
     methods: {
         deleteNo() {

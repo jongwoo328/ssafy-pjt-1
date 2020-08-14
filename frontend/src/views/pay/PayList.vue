@@ -1,5 +1,6 @@
 <template>
     <div id="payList" class="container font-kor">
+        <GoBack/>
         <div>
             <h3>결제 내역</h3>
             <hr>
@@ -18,11 +19,13 @@
 import ServiceList from '@/components/service/ServiceList.vue'
 import axios from 'axios'
 import HTTP from '@/util/http-common.js'
+import GoBack from '@/components/common/GoBack.vue'
 
 export default {
     name:'PayList',
     components:{
-        ServiceList
+        ServiceList,
+        GoBack
     },
     data(){
         return {

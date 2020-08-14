@@ -1,5 +1,6 @@
 <template>
   <div id="qna-detail" class="container">
+    <GoBack/>
     <div class="title font-kor">
       <h3 class="mb-0" v-text="qnaData.qtitle"></h3>
     </div>
@@ -70,12 +71,14 @@ import axios from 'axios'
 import URL from '@/util/http-common.js'
 import Editor from '@/components/common/Editor.vue'
 import Button from '@/components/common/Button.vue'
+import GoBack from '@/components/common/GoBack.vue'
 
 export default {
     name: 'QnaDetail',
     components: {
       Editor,
-      Button
+      Button,
+      GoBack
     },
     data() {
       return {

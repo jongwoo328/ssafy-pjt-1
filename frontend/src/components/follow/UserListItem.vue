@@ -56,6 +56,9 @@ export default {
         },
         mailTo() {
             return `mailto:${this.user.email}`
+        },
+        calledInServiceView() {
+            return String(this.$route.path).includes('/services')
         }
     },
     methods: {
@@ -98,12 +101,15 @@ export default {
             .then(res => {
                 this.user.checkfollow = false
                 this.user.folcount = res.data
-                const userList = document.querySelectorAll('.user-list-item')
-                userList.forEach(user => {
-                    if (user.dataset.userno == this.user.userno && user.dataset.follower === undefined) {
-                        user.style.display = "none"
+                if (!this.calledInServiceView) {
+                    const userList = document.querySelectorAll('.user-list-item')
+                    for(let user of userList){
+                        if (user.dataset.userno == this.user.userno && user.dataset.follower === undefined) {
+                            user.style.display = "none"
+                            break
+                        }
                     }
-                })
+                }
             })
             .catch(err => console.log(err))
         },

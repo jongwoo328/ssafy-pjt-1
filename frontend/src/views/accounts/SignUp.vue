@@ -1,5 +1,6 @@
 <template>
   <div class="signup container" id="signup">
+    <GoBack/>
     <span class="signup-text">Sign Up</span>
     <hr class="mb-4 ">
     <div class="signup-head">
@@ -161,14 +162,15 @@ import * as EmailValidator from "email-validator";
 import axios from "axios"
 import Button from "@/components/common/Button.vue"
 import TermModal from "@/components/modal/TermModal.vue"
-
+import GoBack from '@/components/common/GoBack.vue'
 
 
 export default {
     name: 'SignUp',
     components: {
       Button,
-      TermModal
+      TermModal,
+      GoBack
     },
     created() {
       this.$emit('sidebar')

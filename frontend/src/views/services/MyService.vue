@@ -1,5 +1,6 @@
 <template>
     <div id="myservice" class="container">
+        <GoBack/>
         <h3>내 서비스</h3>
         <hr>
         <div class="button-box">
@@ -18,11 +19,12 @@ import Button from '@/components/common/Button.vue'
 import ServiceList from '@/components/service/ServiceList.vue'
 import axios from 'axios'
 import HTTP from '@/util/http-common.js'
+import GoBack from '@/components/common/GoBack.vue'
 
 export default {
     name: 'MyService',
     components:{
-        
+        GoBack,
         Button,
         ServiceList
     },methods:{

@@ -1,5 +1,6 @@
 <template>
   <div class="ReiewCreate container">
+    <GoBack/>
     <form id ="review">
         <div class="form-group">
             <label for="title">제목</label>
@@ -31,11 +32,13 @@
 import axios from "axios";
 import Button from "@/components/common/Button.vue"
 import URL from "@/util/http-common.js"
-// @ is an alias to /src
+import GoBack from '@/components/common/GoBack.vue'
+
 export default {
   name: 'Review',
   components: {
-    Button
+    Button,
+    GoBack
   },
   data: function() {
     return {

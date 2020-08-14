@@ -1,5 +1,6 @@
 <template>
   <div class="container" id="qna">
+    <GoBack/>
     <h2 class="font-notojp">Q&A</h2>
     <hr>
     <div class="qna-title">
@@ -17,11 +18,13 @@ import Table from '@/components/qna/Table.vue'
 import axios from 'axios'
 import URL from '@/util/http-common.js'
 import Time from '@/util/common.js'
+import GoBack from '@/components/common/GoBack.vue'
 
 export default {
     name:'Qna',
     components: {
-      Table
+      Table,
+      GoBack
     },
     data() {
       return {
@@ -89,9 +92,6 @@ export default {
 </script>
 
 <style>
-  #qna {
-    padding-top: 50px;
-  }
   #qna h2 {
     font-size: 2rem;
   }
