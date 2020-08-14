@@ -1,5 +1,6 @@
 <template>
-  <div class="ReiewCreate container font-kor">      
+  <div class="ReiewCreate container font-kor">
+    <GoBack/>
         <div class="form-group">
             <label for="title">제목</label>
             <input type="text" class="form-control" id="title" v-model="title">
@@ -24,13 +25,14 @@ import axios from "axios"
 import Button from '@/components/common/Button.vue'
 import StarRating from 'vue-star-rating'
 import HTTP from "@/util/http-common.js"
+import GoBack from '@/components/common/GoBack.vue'
 
 export default {
   name: 'Review',
   components: {
     Button,
-    StarRating
-    
+    StarRating,
+    GoBack
   },
   data: function() {
     return {

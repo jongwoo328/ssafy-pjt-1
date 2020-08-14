@@ -1,5 +1,6 @@
 <template>
   <div class="container" id="qna">
+    <GoBack/>
     <h2 class="font-notojp">Q&A</h2>
     <hr>
     <div class="qna-title">
@@ -17,11 +18,13 @@ import Table from '@/components/qna/Table.vue'
 import axios from 'axios'
 import URL from '@/util/http-common.js'
 import Time from '@/util/common.js'
+import GoBack from '@/components/common/GoBack.vue'
 
 export default {
     name:'Qna',
     components: {
-      Table
+      Table,
+      GoBack
     },
     data() {
       return {
@@ -38,25 +41,47 @@ export default {
             })
         }
       this.$emit('sidebar')
-      axios.get(`${URL.BASE_URL}/qna/${this.userNumber}`)
-      .then(res => {
+      if (this.$store.getters.isAdmin){
+        axios.get(`${URL.BASE_URL}/qna`)
+        .then(res => {
+          let qnaData = res.data
 
-        let qnaData = res.data
-
-        for (let i in qnaData){
-          const now = new Date(Date.now())
-          const date = new Date(qnaData[i].qdate)
-
-          if (Time.isSameDay(now, date)) {
-            qnaData[i].qdate = qnaData[i].qdate.split(' ')[1]
-            
-          } else {
-            qnaData[i].qdate = qnaData[i].qdate.split(' ')[0].slice(2)
+          for (let i in qnaData){
+            const now = new Date(Date.now())
+            const date = new Date(qnaData[i].qdate)
+  
+            if (Time.isSameDay(now, date)) {
+              qnaData[i].qdate = qnaData[i].qdate.split(' ')[1]
+              
+            } else {
+              qnaData[i].qdate = qnaData[i].qdate.split(' ')[0].slice(2)
+            }
           }
-        }
-        this.qnaList = qnaData
-      })
-      .catch(err => console.log(err))
+          this.qnaList = qnaData
+        })
+        .catch(err => console.log(err))
+
+      } else {
+        axios.get(`${URL.BASE_URL}/qna/${this.userNumber}`)
+        .then(res => {
+  
+          let qnaData = res.data
+  
+          for (let i in qnaData){
+            const now = new Date(Date.now())
+            const date = new Date(qnaData[i].qdate)
+  
+            if (Time.isSameDay(now, date)) {
+              qnaData[i].qdate = qnaData[i].qdate.split(' ')[1]
+              
+            } else {
+              qnaData[i].qdate = qnaData[i].qdate.split(' ')[0].slice(2)
+            }
+          }
+          this.qnaList = qnaData
+        })
+        .catch(err => console.log(err))
+      }
     },
     computed: {
       userNumber() {
@@ -67,9 +92,6 @@ export default {
 </script>
 
 <style>
-  #qna {
-    padding-top: 50px;
-  }
   #qna h2 {
     font-size: 2rem;
   }

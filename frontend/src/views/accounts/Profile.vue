@@ -1,5 +1,6 @@
 <template>
     <div id="profile" class="container">
+        <GoBack/>
         <MessageModal v-if="messageModal" :recivername="getUrlUsername" :Sendtype="sendno" @close="message" />
         <div v-if="isProfileNull" class="container profile">
             <span class="main-text">프로필</span>
@@ -55,7 +56,7 @@
                 <div class="comment" v-html="profileData.comment"></div>
             </div>
 
-            <div class="service-box">
+            <div v-if="profile.ispro" class="service-box">
                 <h3>제공하는 서비스</h3>
                 <hr>
                 <ServiceList :services="services" />   
@@ -71,6 +72,7 @@ import axios from 'axios'
 import ServiceList from '@/components/service/ServiceList.vue'
 import HTTP from "@/util/http-common.js"
 import MessageModal from '@/components/modal/MessageModal.vue'
+import GoBack from '@/components/common/GoBack.vue'
 
 
 export default {
@@ -80,6 +82,7 @@ export default {
         Button,
         ServiceList,
         MessageModal,
+        GoBack
     },
     computed: {
         toProfileAdd(){
@@ -151,6 +154,14 @@ export default {
         }
     },
     created(){
+        if (!this.$store.getters.isLoggedIn) {
+            this.$router.push({
+                name: 'Error',
+                query: {
+                    status: 401
+                }
+            })
+        }
         axios.get(`${HTTP.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
         .then(res => {
             this.services = res.data
@@ -198,6 +209,7 @@ export default {
     },
     data() {
         return {
+            profile: null,
             checkfollow: false,
             writer: "",
             sendno: "",
