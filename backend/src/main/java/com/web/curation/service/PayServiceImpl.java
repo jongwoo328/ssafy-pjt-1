@@ -43,5 +43,10 @@ public class PayServiceImpl implements PayService{
 	public List<Integer> servPay(int servno) {
 		return dao.servPay(servno);
 	}
+
+	@Override
+	public boolean procancelPay(Pay pay) {
+		return dao.procancelPay(pay) == 1;
+	}
 	
 }

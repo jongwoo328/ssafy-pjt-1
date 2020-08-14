@@ -121,4 +121,18 @@ public class PayController {
 		}
 		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
 	}
+	
+	@ApiOperation(value = "프로가 서비스 결제를 취소한다.", response = String.class)
+	@DeleteMapping("/pro/servno={servno}&userno={userno}")
+	public ResponseEntity<String> deletePay(@PathVariable int servno, @PathVariable int userno){
+		Pay pay = new Pay();
+		pay.setServno(servno);
+		pay.setUserno(userno);
+		
+		if(service.procancelPay(pay)) {
+			return new ResponseEntity<String>(SUCCESS, HttpStatus.OK);
+			
+		}
+		return new ResponseEntity<String>(FAIL, HttpStatus.OK);
+	}
 }

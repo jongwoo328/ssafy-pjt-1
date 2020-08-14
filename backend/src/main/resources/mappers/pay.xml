@@ -46,6 +46,12 @@
 		where servno = #{servno}
 	</select>
 	
+	<!-- 프로가 서비스 결제를 취소 -->
+	<delete id="procancelPay" parameterType="Pay">
+		delete from pay
+		where servno = #{servno} and userno = #{userno}
+	</delete>
+	
 	<!-- 결제 취소 -->
 	<delete id="cancelPay" parameterType="Pay">
 		delete from pay
