@@ -117,7 +117,7 @@ public class AccountController {
     @PostMapping("/account/signup")
     @ApiOperation(value = "가입하기")
     @Transactional
-    public ResponseEntity<BasicResponse> signup(@RequestBody User user) {
+    public Object signup(@RequestBody User user) {
     	String email = user.getEmail();
     	User newUser = userService.getUserByEmail(email);
     	BasicResponse result = new BasicResponse();
@@ -138,7 +138,9 @@ public class AccountController {
     	if(userService.insert(user)) {
     		result.status = true;
     		result.data = "success";
-    		return new ResponseEntity<BasicResponse>(result, HttpStatus.OK);    		
+    		User u = userService.getUserByEmail(email);
+    		u.setPw("XX");
+    		return new ResponseEntity<User>(u, HttpStatus.OK);    		
     	}
     	result.status = false;
 		result.data = "fail";
