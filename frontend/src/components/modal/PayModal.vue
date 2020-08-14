@@ -11,19 +11,21 @@
             </div>
             <div class="modal-body">
                 <slot name="body">
-                <p><span>서비스명 : </span><span>{{service.servname}}</span></p>
-                <p><span>결제금액 : </span><span>{{service.price}}</span></p>
+                <div>
+                  <p><span>서비스명 : </span><span>{{service.servname}}</span></p>
+                  <p><span>결제금액 : </span><span>{{service.price}}</span></p>
+                </div>
                 
                 </slot>
-            </div>
-            <div class="modal-footer">
-                <slot name="footer">
-                  <div>
+                  <div class="text-right">
                     <input v-model="isTerm" type="checkbox" />
                     <span>약관을 동의합니다.</span>
                     <RefundModal v-if="refundmodal" @close="refundpopup" />
-                    <p><span class="showpopup" @click="refundpopup">취소 및 환불 규정 보기</span></p>
+                    <p class="mb-0"><span class="showpopup" @click="refundpopup">취소 및 환불 규정 보기</span></p>
                   </div>
+            </div>
+            <div class="modal-footer">
+                <slot name="footer">
                   <Button class="btn_1" type="submit" data-dismiss="modal" button-text="취소" buttonColor="transparent" @click.native="modalclose"/>
                   <Button class="btn_1" type="submit" button-text="결제" @click.native="payed"/>
                 </slot>
@@ -173,8 +175,11 @@ export default {
   }
 
   .modal-body {
-    margin: 20px 0;
     color: white;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
   .modal-footer {
     display: flex;
