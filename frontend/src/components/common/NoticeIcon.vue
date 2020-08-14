@@ -35,6 +35,8 @@ export default {
         margin-left: 10px;
         /* margin-right: 15px; */
         font-size: 1.1rem;
+        color: black;
+        transition: color 0.5s ease;
     }
     .notice-icon:hover {
         cursor: pointer;

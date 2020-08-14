@@ -1,12 +1,21 @@
 <template>
   <div id="sidebar">
       <div class="sidebar-link-list">
-        <router-link v-if="isLoggedIn" to='/accounts/userinfo' class="sidebar-link font-kor"><p>내 정보</p></router-link>
+        <SidebarItem v-if="isLoggedIn" to='/accounts/userinfo' i="myinf" value="내 정보" />
+        <SidebarItem v-if="$store.getters.isPro" to='/myservice' i="mysvc" value="내 서비스" />
+        <div @mouseover="inline" @mouseout="outline" class="sidebar-link font-kor" id="myprf">
+            <a v-if="isLoggedIn" :href="toMyProfile"><p>내 프로필</p></a>
+            <div class="line" style="width:0px;"></div>
+        </div>
+        <SidebarItem v-if="isLoggedIn" to='/paylist' i="pays" value="결제내역" />
+        <SidebarItem v-if="isLoggedIn" :to="toMyFollow" i="followlist" value="팔로우" />
+        <SidebarItem v-if="isLoggedIn" to='/qna' i="qnalist" value="Q&A" />
+        <!-- <router-link v-if="isLoggedIn" to='/accounts/userinfo' class="sidebar-link font-kor"><p>내 정보</p></router-link>
         <router-link v-if="$store.getters.isPro" to='/myservice' class="sidebar-link font-kor"><p>내 서비스</p></router-link>
         <a v-if="isLoggedIn" class="sidebar-link font-kor" :href="toMyProfile"><p>내 프로필</p></a>
         <router-link v-if="isLoggedIn" to='/paylist' class="sidebar-link font-kor"><p>결제내역</p></router-link>
         <router-link v-if="isLoggedIn" :to="toMyFollow" class="sidebar-link font-kor"><p>팔로우</p></router-link>
-        <router-link v-if="isLoggedIn" to='/qna' class="sidebar-link font-kor"><p>Q&A</p></router-link>
+        <router-link v-if="isLoggedIn" to='/qna' class="sidebar-link font-kor"><p>Q&A</p></router-link> -->
         <div v-if="!isLoggedIn" class="sidebar-anonymous font-kor">
             <SidebarCardList :eventList="eventList" />    
         </div>
@@ -16,6 +25,7 @@
 
 <script>
 import SidebarCardList from './SidebarCardList.vue'
+import SidebarItem from './SidebarItem.vue'
 
 export default {
     name: 'Sidebar',
@@ -29,6 +39,7 @@ export default {
     },
     data() {
         return {
+            selector: '#myprf .line',
             eventList: [
                 {
                     eventno: 1,
@@ -58,7 +69,18 @@ export default {
         },
     },
     components: {
-        SidebarCardList
+        SidebarCardList,
+        SidebarItem
+    },
+    methods: {
+        inline() {
+            const line = document.querySelector(this.selector)
+            line.style.width = "100%"
+        },
+        outline() {
+            const line = document.querySelector(this.selector)
+            line.style.width = "0px"
+        }
     }
 
 }
@@ -67,6 +89,10 @@ export default {
 <style>
     #sidebar, .sidebar-link-list {
         display: none;
+    }
+    #myprf {
+        display: inline-block;
+    width: fit-content;
     }
     @media (min-width: 768px) {
         #sidebar {
@@ -85,23 +111,7 @@ export default {
             flex-direction: column;
             margin: 50px 10px 0 10px;
         }
-        #sidebar .sidebar-link {
-            display: inline-block;
-            margin-left: 50px;
-            margin-bottom: 20px;
-            font-size: 1.5rem;
-            color: black;
-        }
-        #sidebar .sidebar-link:hover {
-            text-decoration: none;
-            color: black;
-        }
-        #sidebar .sidebar-link p:hover {
-            display: inline-block;
-            color: rgb(236,128,116);
-            border-bottom: 2px solid rgb(236,128,116);
-        }
-
+        
     }
 
 </style>

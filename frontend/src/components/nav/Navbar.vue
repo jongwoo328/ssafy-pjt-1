@@ -17,7 +17,7 @@
         <a v-if="isLoggedIn" @click="routerLink" :data-to="toMyFollow" class="w3-bar-item sidebar-link font-kor">팔로우</a>
         <a v-if="isLoggedIn" @click="routerLink" data-to='/qna' class="w3-bar-item sidebar-link font-kor">Q&A</a>
     </div>
-    <router-link to="/" class="navbar-brand"><img src="../../assets/logo_mini.png" alt="logo"></router-link>
+    <a href="/" class="navbar-brand"><img src="../../assets/logo_mini.png" alt="logo"></a>
     <NavbarLinkList/>
   </nav>
 </template>
