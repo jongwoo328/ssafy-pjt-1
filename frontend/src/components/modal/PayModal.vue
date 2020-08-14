@@ -17,6 +17,7 @@
             </div>
             <div class="modal-footer">
                 <slot name="footer">
+                  <Button class="btn_1" type="submit" data-dismiss="modal" button-text="취소" buttonColor="transparent" @click.native="modalclose"/>
                   <Button class="btn_1" type="submit" button-text="결제" @click.native="payed"/>
                 </slot>
             </div>
@@ -96,6 +97,17 @@ export default {
 }
 </script>
 <style scoped>
+  #PayModal .modal-header h3,
+  .modal-header button{
+    color: white;
+  }
+  .modal-footer {
+    position: absolute;
+    width: 100%;
+    height: 40px;
+    padding: 0;
+    bottom: 0;
+  }
   #PayModal hr {
     margin-top: 0;
   }
@@ -123,11 +135,13 @@ export default {
   }
 
   .modal-container {
-    width: 300px;
+    width: 350px;
+    height: 300px;
     margin: 0px auto;
-    padding: 20px 30px;
-    background-color: #fff;
-    border-radius: 2px;
+    padding: 0;
+    position: relative;
+    /* border-radius: 2px; */
+    background-color: #343a40;
     box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
     transition: all .3s ease;
     font-family: Helvetica, Arial, sans-serif;
@@ -135,13 +149,23 @@ export default {
 
   .modal-header h3 {
     margin-top: 0;
-    color: #42b983;
   }
 
   .modal-body {
     margin: 20px 0;
+    color: white;
   }
-
+  .modal-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between !important;
+    align-items: center;
+  }
+  .modal-footer button {
+    border-radius: 0;
+    margin: 0;
+    width: 50%;
+  }
   .modal-default-button {
     float: right;
   }

@@ -101,4 +101,10 @@ export default {
 #modalExit {
     margin-bottom: 10px;
 }
+@media (min-width: 768px) {
+  .modal-container {
+    width: 25%;
+    height: 70%;
+  }
+}
 </style>
