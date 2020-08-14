@@ -39,7 +39,9 @@ export default {
     methods: {
         msg() {
             this.msgModal = !this.msgModal
-            this.message.readcheck = true
+            if (this.$route.params.msgtype == 'rec') {
+                this.message.readcheck = true
+            }
         },
         toggle() {
             this.value = !this.value
