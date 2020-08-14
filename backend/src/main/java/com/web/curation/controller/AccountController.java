@@ -139,8 +139,11 @@ public class AccountController {
     		result.status = true;
     		result.data = "success";
     		User u = userService.getUserByEmail(email);
-    		u.setPw("XX");
-    		return new ResponseEntity<User>(u, HttpStatus.OK);    		
+    		Profile p = new Profile();
+    		p.setUserno(u.getUserno());
+    		p.setImgurl("null.png");
+    		profile.writeProfile(p);
+    		return new ResponseEntity<BasicResponse>(result, HttpStatus.OK);  	
     	}
     	result.status = false;
 		result.data = "fail";
