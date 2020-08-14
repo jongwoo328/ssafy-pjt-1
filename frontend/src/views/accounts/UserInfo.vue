@@ -1,5 +1,6 @@
 <template>
   <div id="UserInfo" class="UserInfo container">
+    <GoBack/> 
     <span class="UserInfo-text">내 정보</span>
     <hr class="mb-4">
     <div class="form-box">
@@ -115,7 +116,6 @@
       <span class="col-3 col-md-2" >
       </span>
       <div class="col-8 pr-0">
-        <!-- <span v-if="!curPassword" class="error-msg">현재 비밀번호를 입력하여야 정보수정이 가능합니다.</span> -->
         <Button
             @click.native="changeUserInfo"
             buttonText="회원정보수정"
@@ -133,12 +133,14 @@
 import URL from "@/util/http-common.js"
 import axios from "axios"
 import Button from "@/components/common/Button.vue"
-import PV from "password-validator";
+import PV from "password-validator"
+import GoBack from '@/components/common/GoBack.vue'
 
 export default {
   name: 'UserInfo',
   components: {
-    Button
+    Button,
+    GoBack
   },
   watch: {
     siInfo: function() {

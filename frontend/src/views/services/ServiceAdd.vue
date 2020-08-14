@@ -1,5 +1,6 @@
 <template>
     <div id="servicecreate" class="container">
+        <GoBack/>
         <h3>서비스 등록</h3>
         <hr>
             <div class="form-block">
@@ -69,12 +70,14 @@ import axios from 'axios'
 import Button from '@/components/common/Button.vue'
 import Editor from '@/components/common/Editor.vue'
 import Common from '@/util/common.js'
+import GoBack from '@/components/common/GoBack.vue'
 
 export default {
     name : 'ServiceAdd',
     components : {
         Button,
-        Editor
+        Editor,
+        GoBack
     },
     computed: {
         korNumFormat() {

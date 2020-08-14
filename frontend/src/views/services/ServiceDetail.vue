@@ -1,5 +1,6 @@
 <template>
   <div id="service-detail" class="container font-kor">
+      <GoBack/>
       <MessageModal v-if="messageModal" :recivername="proname" :Sendtype="sendtype" @close ="msgShow" />
       <PayModal v-if="payModal" :servicedataModal="serviceData" @close="payShow"/>
       <div class="service-info section">
@@ -103,6 +104,7 @@ import MessageModal from '@/components/modal/MessageModal.vue'
 import PayModal from '@/components/modal/PayModal.vue'
 import Common from '@/util/common.js'
 import UserList from '@/components/follow/UserList.vue'
+import GoBack from '@/components/common/GoBack.vue'
 
 export default {
     name: 'ServiceDetail',
@@ -159,6 +161,7 @@ export default {
         ReviewList,
         MessageModal,
         PayModal,
+        GoBack
     },
     watch:{
          displayreview() {
@@ -190,14 +193,6 @@ export default {
         showUser() {
             this.displayreview = false
             this.displayuser = true
-            axios.get(`${HTTP.BASE_URL}/account/payinfo/${this.$route.params.service_id}`)
-            .then(res =>{
-                this.userData=res.data
-                console.log(this.userData)
-            })
-            .catch(err =>{
-                console.log(err)
-            })
         },
         onImgLoad(){
             this.isLoaded = true
@@ -291,6 +286,13 @@ export default {
         .catch(err => {
                 console.log(err)
         })
+        axios.get(`${HTTP.BASE_URL}/account/payinfo/${this.$route.params.service_id}`)
+        .then(res =>{
+            this.userData=res.data
+        })
+        .catch(err =>{
+            console.log(err)
+        })
     }
 }
 </script>
@@ -298,6 +300,9 @@ export default {
 <style>
 #service-detail .line {
     height: 2px;
+}
+#service-detail .back {
+    margin-bottom: 20px;
 }
 #service-detail .mobile-pro span:hover {
     cursor: pointer;

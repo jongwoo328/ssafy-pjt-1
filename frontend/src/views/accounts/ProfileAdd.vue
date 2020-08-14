@@ -1,5 +1,6 @@
 <template>
     <div v-if="!urltype" class="profile container" id="profileAdd">
+      <GoBack/>
       <h3>Profile</h3>
       <hr>
       <div>
@@ -39,6 +40,8 @@ import Button from '@/components/common/Button.vue'
 import ProfileFrame from '@/components/common/ProfileFrame.vue'
 import HTTP from "@/util/http-common.js"
 import Editor from '@/components/common/Editor.vue'
+import GoBack from '@/components/common/GoBack.vue'
+
 export default {
     name: 'ProfileAdd',
     data() {
@@ -53,7 +56,8 @@ export default {
     components: {
       Editor,
       Button,
-      ProfileFrame
+      ProfileFrame,
+      GoBack
     },
     created() {
       this.$emit('sidebar')

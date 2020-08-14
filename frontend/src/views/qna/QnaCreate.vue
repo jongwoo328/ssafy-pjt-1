@@ -1,8 +1,6 @@
 <template>
   <div id="qna-create" class="container">
-    <div class="back" @click="goBack">
-        <i class="fas fa-arrow-left"></i>
-    </div>
+    <GoBack/>
     <h2>Q&A 작성</h2>
     <label for="qtitle" class="font-kor">제목</label>
     <input v-model="qtitle" type="text" name="qtitle" id="qtitle" class="font-kor">
@@ -17,12 +15,14 @@ import Editor from '@/components/common/Editor.vue'
 import Button from '@/components/common/Button.vue'
 import axios from 'axios'
 import URL from '@/util/http-common.js'
+import GoBack from '@/components/common/GoBack.vue'
 
 export default {
     name: 'QnaCreate',
     components: {
         Editor,
         Button,
+        GoBack
     },
     data() {
         return {
@@ -53,9 +53,7 @@ export default {
             })
             .catch(err => console.log(err))
         },
-        goBack() {
-            this.$router.go(-1)
-        }
+        
     }
 }
 </script>
@@ -73,12 +71,5 @@ export default {
     #qna-create .ql-container {
         height: 300px;
     }
-    #qna-create .back {
-        font-size: 2rem;
-        display: inline-block;
-    }
-    #qna-create .back:hover {
-        cursor: pointer;
-        color: rgb(236,128,116);
-    }
+
 </style>

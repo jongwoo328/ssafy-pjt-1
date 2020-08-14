@@ -1,5 +1,6 @@
 <template>
     <div id="profile" class="container">
+        <GoBack/>
         <MessageModal v-if="messageModal" :recivername="getUrlUsername" :Sendtype="sendno" @close="message" />
         <div v-if="isProfileNull" class="container profile">
             <span class="main-text">프로필</span>
@@ -71,6 +72,7 @@ import axios from 'axios'
 import ServiceList from '@/components/service/ServiceList.vue'
 import HTTP from "@/util/http-common.js"
 import MessageModal from '@/components/modal/MessageModal.vue'
+import GoBack from '@/components/common/GoBack.vue'
 
 
 export default {
@@ -80,6 +82,7 @@ export default {
         Button,
         ServiceList,
         MessageModal,
+        GoBack
     },
     computed: {
         toProfileAdd(){

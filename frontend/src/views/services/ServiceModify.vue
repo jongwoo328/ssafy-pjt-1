@@ -1,5 +1,6 @@
 <template>
     <div id="servicemodify" class="container">
+        <GoBack/>
         <h3>서비스 수정</h3>
         <hr>
             <div class=" form-block">
@@ -70,12 +71,14 @@ import HTTP from "@/util/http-common.js"
 import axios from 'axios'
 import Button from '@/components/common/Button.vue'
 import Editor from '@/components/common/Editor.vue'
+import GoBack from '@/components/common/GoBack.vue'
 
 export default {
     name : 'ServiceModify',
     components : {
         Button,
-        Editor
+        Editor,
+        GoBack
     },
     data(){
         return {

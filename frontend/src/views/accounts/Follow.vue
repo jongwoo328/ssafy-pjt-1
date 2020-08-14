@@ -1,5 +1,6 @@
 <template>
   <div id="follow" class="container font-kor">
+    <GoBack/>
     <h2 class="title">팔로우</h2>
     <hr>
     <div class="myinfo">
@@ -26,11 +27,13 @@
 import axios from 'axios'
 import URL from '@/util/http-common.js'
 import UserList from '@/components/follow/UserList.vue'
+import GoBack from '@/components/common/GoBack.vue'
 
 export default {
     name: 'Follow',
     components: {
         UserList,
+        GoBack
     },
     data() {
         return {
