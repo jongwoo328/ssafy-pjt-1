@@ -3,8 +3,12 @@
         <div>
             <h3>결제 내역</h3>
             <hr>
-            <div>
+
+            <div v-if="isEmpty">
             <ServiceList :services="services"/>
+            </div>
+            <div v-else>
+                <span class="main-text">결제한 서비스가 없습니다.</span>
             </div>
         </div>
     </div>
@@ -22,6 +26,7 @@ export default {
     },
     data(){
         return {
+            isEmpty:true,
             services:[]
         }
     },
@@ -38,8 +43,12 @@ export default {
 
         axios.get(`${HTTP.BASE_URL}/pay/${this.$store.getters.getUserData.userno}`)
         .then(res => {
+            
             this.services = res.data
-         
+            console.log(this.services.length)
+            if(this.services.length===0){
+                this.isEmpty=false
+            }
         })
         .catch(err => {
             console.log(err)
@@ -48,6 +57,9 @@ export default {
 }
 </script>
 <style>
+    .main-text {
+      font-size: 1rem;
+    }
     #payList {
         margin-top: 50px;
     }
