@@ -16,7 +16,7 @@
             <a :href="mailTo">
                 <i class="fas fa-at"></i>
             </a>
-            <Button class="refund-button" button-text="환불" @click.native="refund" />
+            <Button v-if="serveno" class="refund-button" button-text="환불" @click.native="refund" />
         </div>
     </div>
   </div>
