@@ -42,6 +42,8 @@ export default {
 
 <style scoped>
 .modal-mask {
+  color: black;
+  text-align: left;
   position: fixed;
   z-index: 9998;
   top: 0;
