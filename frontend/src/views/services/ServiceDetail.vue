@@ -29,11 +29,17 @@
                         <span v-text="addr"></span>
                     </div>
                 </div>
+                <div class="mobile mobile-pro">
+                    <i class="fas fa-user-circle"></i>
+                    <div class="container-fluid">
+                        <span @click="toProProfile" v-text="serviceData.username"></span>
+                    </div>
+                </div>
                 <h1 class="title">{{serviceData.servname}}</h1>
                 <hr>
                 <div class="web price">
                     <span class="label"><i class="fas fa-won-sign"></i> 가격</span>
-                    <p><span>{{serviceData.price}}</span>원</p>
+                    <p><span>{{formattedPrice}}</span>원</p>
                 </div>
                 <div class="web rating">
                     <span class="label"><i class="far fa-smile"></i> 평점</span>
@@ -42,6 +48,10 @@
                 <div class="web addr">
                     <span class="label"><i class="fas fa-map-marker-alt"></i> 위치</span>
                     <p>{{addr}}</p>
+                </div>
+                <div class="web web-pro">
+                    <span class="label"><i class="fas fa-user-circle"></i> 프로</span>
+                    <p @click="toProProfile">{{serviceData.username}}</p>
                 </div>
               </div>
             <div v-if="!isOwner">
@@ -229,6 +239,9 @@ export default {
             } else {
                 this.$router.push(`/services/${this.$route.params.service_id}/review/create`)
             }
+        },
+        toProProfile() {
+            this.$router.push(`/accounts/${this.serviceData.username}`)
         }
     },
     mounted() {
@@ -285,6 +298,16 @@ export default {
 <style>
 #service-detail .line {
     height: 2px;
+}
+#service-detail .mobile-pro span:hover {
+    cursor: pointer;
+}
+#service-detail .web-pro p {
+    transition: font-size 0.2s ease;
+}
+#service-detail .web-pro p:hover {
+    cursor: pointer;
+    font-size: 1.1rem
 }
     #service-detail {
         display: block;
@@ -355,7 +378,7 @@ export default {
     }
     #service-detail .mobile {
         margin: 30px 0 10px 0;
-        padding: 0 50px 0 50px;
+        padding: 0 30px 0 30px;
         display: flex;
         flex-direction: row;
         align-items: center;

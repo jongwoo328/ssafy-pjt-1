@@ -384,6 +384,7 @@ export default {
         axios.post(`${URL.BASE_URL}/account/signup`, signUpData)
         .then(() => {
           this.isSubmit = true
+          alert('회원가입이 완료되었습니다.')
           this.$router.push({name: "Home"})
         })
         .catch(err => {

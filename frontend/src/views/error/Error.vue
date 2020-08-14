@@ -73,6 +73,9 @@ export default {
         font-size: 10rem;
         margin-bottom: 50px;
     }
+    #error-view h2 {
+        font-size: 1.5rem;
+    }
     #error-view i.fa-arrow-circle-left {
         margin-top: 30px;
         font-size: 5rem;
@@ -89,5 +92,10 @@ export default {
     #error-view .back:hover {
         cursor: pointer;
         color: rgb(236,128,116);
+    }
+    @media (min-width: 768px) {
+        #error-view h2 {
+            font-size: 2rem;
+        }
     }
 </style>

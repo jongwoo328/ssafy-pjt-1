@@ -55,7 +55,7 @@
                 <div class="comment" v-html="profileData.comment"></div>
             </div>
 
-            <div class="service-box">
+            <div v-if="profile.ispro" class="service-box">
                 <h3>제공하는 서비스</h3>
                 <hr>
                 <ServiceList :services="services" />   
@@ -151,6 +151,14 @@ export default {
         }
     },
     created(){
+        if (!this.$store.getters.isLoggedIn) {
+            this.$router.push({
+                name: 'Error',
+                query: {
+                    status: 401
+                }
+            })
+        }
         axios.get(`${HTTP.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
         .then(res => {
             this.services = res.data
@@ -198,6 +206,7 @@ export default {
     },
     data() {
         return {
+            profile: null,
             checkfollow: false,
             writer: "",
             sendno: "",

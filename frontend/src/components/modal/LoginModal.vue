@@ -155,12 +155,12 @@ export default {
   }
 
   #loginModal .modal-container {
-    width: 300px;
+    width: 350px;
     margin: 0px auto;
     padding: 20px 10px;
     background-color: #fff;
     border-radius: 6px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+    box-shadow: 0 2px 8px rgba(155, 121, 121, 0.33);
     transition: all .3s ease;
     font-family: Helvetica, Arial, sans-serif;
   }
