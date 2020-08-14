@@ -58,6 +58,7 @@ export default {
     logout() {
       this.$session.remove('jwstoken')
       this.$store.commit('logout')
+      this.$router.go()
     }
   },
   computed: {

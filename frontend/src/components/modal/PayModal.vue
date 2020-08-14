@@ -13,10 +13,17 @@
                 <slot name="body">
                 <p><span>서비스명 : </span><span>{{service.servname}}</span></p>
                 <p><span>결제금액 : </span><span>{{service.price}}</span></p>
+                
                 </slot>
             </div>
             <div class="modal-footer">
                 <slot name="footer">
+                  <div>
+                    <input v-model="isTerm" type="checkbox" />
+                    <span>약관을 동의합니다.</span>
+                    <RefundModal v-if="refundmodal" @close="refundpopup" />
+                    <p><span class="showpopup" @click="refundpopup">취소 및 환불 규정 보기</span></p>
+                  </div>
                   <Button class="btn_1" type="submit" data-dismiss="modal" button-text="취소" buttonColor="transparent" @click.native="modalclose"/>
                   <Button class="btn_1" type="submit" button-text="결제" @click.native="payed"/>
                 </slot>
@@ -32,16 +39,19 @@
 import Button from '@/components/common/Button.vue'
 import HTTP from "@/util/http-common.js"
 import axios from 'axios'
+import RefundModal from '@/components/modal/RefundModal'
 
 export default {
     components:{
-        Button
+        Button,
+        RefundModal,
     },
     data(){
         return {
             service:[],
             payData:[],
-            
+            refundmodal: false,
+            isTerm: false,
         }
     },
     props:{
@@ -51,6 +61,9 @@ export default {
        this.service = this.servicedataModal
     },
     methods:{
+      refundpopup() {
+        this.refundmodal = !this.refundmodal
+      },
       messagesend(){
         let messageData={
               writername: this.$store.getters.getUserData.name,
@@ -74,21 +87,26 @@ export default {
     },
 
       payed(){
-        this.payData={
-          userno : `${this.$store.getters.getUserData.userno}`,
-          servno : `${this.$route.params.service_id}`
+        if (!this.isTerm) {
+          alert('약관에 동의하여야 합니다.')
         }
-        axios.post(`${HTTP.BASE_URL}/pay`,this.payData)
-        .then(res=>{
-          if(res.data=="payed"){
-            alert('이미 결제 되었습니다.')
+        else {          
+          this.payData={
+            userno : `${this.$store.getters.getUserData.userno}`,
+            servno : `${this.$route.params.service_id}`
           }
-          this.messagesend()
-          
-        })
-        .catch(err=>{
-          console.log(err)
-        })
+          axios.post(`${HTTP.BASE_URL}/pay`,this.payData)
+          .then(res=>{
+            if(res.data=="payed"){
+              alert('이미 결제 되었습니다.')
+            }
+            this.messagesend()
+            
+          })
+          .catch(err=>{
+            console.log(err)
+          })
+        }
       },  
       modalclose () {
         this.$emit('close')
@@ -128,7 +146,10 @@ export default {
     display: table;
     transition: opacity .3s ease;
   }
-
+  .showpopup:hover {
+    color: red;
+    cursor: pointer;
+  }
   .modal-wrapper {
     display: table-cell;
     vertical-align: middle;
