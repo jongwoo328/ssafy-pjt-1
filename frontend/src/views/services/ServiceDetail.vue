@@ -79,7 +79,7 @@
           <hr>
           
           <ReviewList :reviews="review" v-if="displayreview"/>
-          <UserList :userList="userData" v-if="displayuser"/>
+          <UserList :userList="userData" :servename="serviceData.servname" :serveno="serviceData.servno" v-if="displayuser"/>
       </div>
   </div>
 </template>
@@ -99,7 +99,7 @@ export default {
     props: {
         recivername: String,
         Sendtype: Number,
-        servicedataModal: Object
+        servicedataModal: Object,
     },
     data() {
         return {
@@ -183,6 +183,7 @@ export default {
             axios.get(`${HTTP.BASE_URL}/account/payinfo/${this.$route.params.service_id}`)
             .then(res =>{
                 this.userData=res.data
+                console.log(this.userData)
             })
             .catch(err =>{
                 console.log(err)
