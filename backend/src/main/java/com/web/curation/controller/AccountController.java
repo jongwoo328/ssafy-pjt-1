@@ -244,8 +244,8 @@ public class AccountController {
     		u.setPw("XXXX");
     		u.setFolcount(folService.followCount(userno));
     		Follow f = new Follow();
-    		f.setUserno(userno);
-    		f.setProno(conServ.getUserno());
+    		f.setUserno(conServ.getUserno());
+    		f.setProno(userno);
     		if(folService.selectFollow(f) != null) {
     			u.setCheckfollow(true);
     		} else {
