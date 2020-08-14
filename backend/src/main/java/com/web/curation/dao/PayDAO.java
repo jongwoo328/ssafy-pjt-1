@@ -14,4 +14,5 @@ public interface PayDAO {
 	public List<Pay> userPay(int userno);
 	public List<Integer> servPay(int servno);
 	public int cancelPay(Pay pay);
+	public int procancelPay(Pay pay);
 }

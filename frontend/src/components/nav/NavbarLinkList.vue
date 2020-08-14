@@ -1,9 +1,9 @@
 <template>
   <div class="navbar-nav"> 
       <NoticeIcon class="notice" v-if="isLoggedIn" @click.native="toMsg" /> 
-      <NavbarLinkListItem v-if="!isLoggedIn" value="SignUp" class="signup" @click.native="toSignUp" />
-      <NavbarLinkListItem v-if="!isLoggedIn" value="Login" @click.native="changeLogin"/>
-      <NavbarLinkListItem v-if="isLoggedIn" value="Logout" @click.native="logout"/>
+      <NavbarLinkListItem v-if="!isLoggedIn" value="SignUp" id="SignUp" class="signup" @click.native="toSignUp" />
+      <NavbarLinkListItem v-if="!isLoggedIn" value="Login" id="Login" @click.native="changeLogin"/>
+      <NavbarLinkListItem v-if="isLoggedIn" value="Logout" id="Logout" @click.native="logout"/>
       <LoginModal v-if="loginModal" @close="changeLogin" @change="changeModal">
       </LoginModal>
       <ForgotPasswordModal v-if="forgotPasswordModal" @close="changeForgot" @change="changeModal">
