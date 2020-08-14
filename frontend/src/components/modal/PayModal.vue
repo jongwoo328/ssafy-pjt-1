@@ -11,12 +11,22 @@
             </div>
             <div class="modal-body">
                 <slot name="body">
-                <p><span>서비스명 : </span><span>{{service.servname}}</span></p>
-                <p><span>결제금액 : </span><span>{{service.price}}</span></p>
+                <div>
+                  <p><span>서비스명 : </span><span>{{service.servname}}</span></p>
+                  <p><span>결제금액 : </span><span>{{service.price}}</span></p>
+                </div>
+                
                 </slot>
+                  <div class="text-right">
+                    <input v-model="isTerm" type="checkbox" />
+                    <span>약관을 동의합니다.</span>
+                    <RefundModal v-if="refundmodal" @close="refundpopup" />
+                    <p class="mb-0"><span class="showpopup" @click="refundpopup">취소 및 환불 규정 보기</span></p>
+                  </div>
             </div>
             <div class="modal-footer">
                 <slot name="footer">
+                  <Button class="btn_1" type="submit" data-dismiss="modal" button-text="취소" buttonColor="transparent" @click.native="modalclose"/>
                   <Button class="btn_1" type="submit" button-text="결제" @click.native="payed"/>
                 </slot>
             </div>
@@ -31,16 +41,19 @@
 import Button from '@/components/common/Button.vue'
 import HTTP from "@/util/http-common.js"
 import axios from 'axios'
+import RefundModal from '@/components/modal/RefundModal'
 
 export default {
     components:{
-        Button
+        Button,
+        RefundModal,
     },
     data(){
         return {
             service:[],
             payData:[],
-            
+            refundmodal: false,
+            isTerm: false,
         }
     },
     props:{
@@ -50,6 +63,9 @@ export default {
        this.service = this.servicedataModal
     },
     methods:{
+      refundpopup() {
+        this.refundmodal = !this.refundmodal
+      },
       messagesend(){
         let messageData={
               writername: this.$store.getters.getUserData.name,
@@ -73,21 +89,26 @@ export default {
     },
 
       payed(){
-        this.payData={
-          userno : `${this.$store.getters.getUserData.userno}`,
-          servno : `${this.$route.params.service_id}`
+        if (!this.isTerm) {
+          alert('약관에 동의하여야 합니다.')
         }
-        axios.post(`${HTTP.BASE_URL}/pay`,this.payData)
-        .then(res=>{
-          if(res.data=="payed"){
-            alert('이미 결제 되었습니다.')
+        else {          
+          this.payData={
+            userno : `${this.$store.getters.getUserData.userno}`,
+            servno : `${this.$route.params.service_id}`
           }
-          this.messagesend()
-          
-        })
-        .catch(err=>{
-          console.log(err)
-        })
+          axios.post(`${HTTP.BASE_URL}/pay`,this.payData)
+          .then(res=>{
+            if(res.data=="payed"){
+              alert('이미 결제 되었습니다.')
+            }
+            this.messagesend()
+            
+          })
+          .catch(err=>{
+            console.log(err)
+          })
+        }
       },  
       modalclose () {
         this.$emit('close')
@@ -96,6 +117,17 @@ export default {
 }
 </script>
 <style scoped>
+  #PayModal .modal-header h3,
+  .modal-header button{
+    color: white;
+  }
+  .modal-footer {
+    position: absolute;
+    width: 100%;
+    height: 40px;
+    padding: 0;
+    bottom: 0;
+  }
   #PayModal hr {
     margin-top: 0;
   }
@@ -116,18 +148,23 @@ export default {
     display: table;
     transition: opacity .3s ease;
   }
-
+  .showpopup:hover {
+    color: red;
+    cursor: pointer;
+  }
   .modal-wrapper {
     display: table-cell;
     vertical-align: middle;
   }
 
   .modal-container {
-    width: 300px;
+    width: 350px;
+    height: 300px;
     margin: 0px auto;
-    padding: 20px 30px;
-    background-color: #fff;
-    border-radius: 2px;
+    padding: 0;
+    position: relative;
+    /* border-radius: 2px; */
+    background-color: #343a40;
     box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
     transition: all .3s ease;
     font-family: Helvetica, Arial, sans-serif;
@@ -135,13 +172,26 @@ export default {
 
   .modal-header h3 {
     margin-top: 0;
-    color: #42b983;
   }
 
   .modal-body {
-    margin: 20px 0;
+    color: white;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
-
+  .modal-footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between !important;
+    align-items: center;
+  }
+  .modal-footer button {
+    border-radius: 0;
+    margin: 0;
+    width: 50%;
+  }
   .modal-default-button {
     float: right;
   }

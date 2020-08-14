@@ -102,7 +102,7 @@ export default {
     }
   },
   created(){
-    this.$store.dispatch('setMsgCount')
+    
     axios.get(`${HTTP.BASE_URL}/service/main/1`)
         .then(res => {
             this.services = res.data
@@ -114,6 +114,7 @@ export default {
         .catch(err => {
           console.log(err)
         })
+    this.$store.dispatch('setMsgCount')
   },
   mounted() {
     this.$emit('sidebar')

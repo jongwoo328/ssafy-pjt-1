@@ -1,6 +1,6 @@
 <template>
   <div class="user-list">
-      <UserListItem v-for="user in userList" :key="user.userno" :user="user"/>
+      <UserListItem v-for="user in userList" :servename="servename" :serveno="serveno" :key="user.userno" :user="user"/>
   </div>
 </template>
 
@@ -14,6 +14,8 @@ export default {
     },
     props: {
         userList: Array,
+        servename: String,
+        serveno: Number,
     }
 
 }

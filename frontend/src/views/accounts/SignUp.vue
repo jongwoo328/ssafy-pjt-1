@@ -61,7 +61,7 @@
     </div>
 
 
-    <div class="form-block">
+    <div class="form-block password-form">
       <label class="form-block-head" for="password">
           <em class="asterisk-red">*</em>
           Password:
@@ -399,6 +399,9 @@ export default {
 /* #signup select {
   max-height: 300px;
 } */
+#signup .password-form input{
+  margin-top: 15px;
+}
 #signup .signup {
   padding: 0 30px;
   margin-top: 30px;

@@ -6,15 +6,16 @@
 
           <div class="modal-header">
             <slot name="header">
-              전체 약관
+                ['Connector' 취소 및 환불 규정]
             </slot>
           </div>
 
           <div class="modal-body w-100">
             <slot name="body">
-                제1조 (목적)
-                <br>
-                이 약관은 커넥터(이하 당사)가 제공하는 수업 연결 서비스를 이용함에 있어 당사와 이용자의 권리, 의무 및 책임사항을 규정합니다. 이를 통하여 당사와 이용자는 알아야 할 사항을 숙지, 상호 신뢰의 증진을 목적으로 합니다.
+                <p>결제일 기준으로 'Connector'의 특약이 적용됩니다.</p>
+                <hr>
+                <p>1) 결제일로부터 7일 전 취소시 : 총 결재금액 100% 환불</p> 
+                <p>2) 결제일로부터 7일 후 취소시 : 결제 취소 및 환불 불가</p> 
             </slot>
           </div>
 
@@ -41,6 +42,8 @@ export default {
 
 <style scoped>
 .modal-mask {
+  color: black;
+  text-align: left;
   position: fixed;
   z-index: 9998;
   top: 0;
@@ -100,11 +103,5 @@ export default {
 
 #modalExit {
     margin-bottom: 10px;
-}
-@media (min-width: 768px) {
-  .modal-container {
-    width: 25%;
-    height: 70%;
-  }
 }
 </style>

@@ -27,11 +27,12 @@
                           <br>
                           <textarea id="inputcomment" placeholder="보낼 메세지를 입력하세요." v-model="comment" />
                         </div>
-                        <Button class="font-notojp" buttonText="보내기" type="submit" @click.native="send" />
                       </div>
                     </slot>
                 </div>
-                <hr>
+                <div class="modal-footer">
+                        <Button class="font-notojp" buttonText="보내기" type="submit" @click.native="send" />
+                </div>
               </div>
           </div>
         </div>

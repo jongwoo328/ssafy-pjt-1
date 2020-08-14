@@ -16,6 +16,7 @@
             <a :href="mailTo">
                 <i class="fas fa-at"></i>
             </a>
+            <Button class="refund-button" button-text="환불" @click.native="refund" />
         </div>
     </div>
   </div>
@@ -25,6 +26,7 @@
 import URL from '@/util/http-common.js'
 import axios from 'axios'
 import MessageModal from '@/components/modal/MessageModal.vue'
+import Button from '@/components/common/Button.vue'
 
 export default {
     name: 'UserListItem',
@@ -36,11 +38,14 @@ export default {
     },
     components: {
         MessageModal,
+        Button,
     },
     props: {
         user: Object,
         Sendtype: Number,
         recivername: String,
+        servename: String,
+        serveno: Number,
     },
     computed: {
         getImgUrl() {
@@ -54,6 +59,32 @@ export default {
         }
     },
     methods: {
+        messagesend() {
+            console.log(this.servename)
+            let messageData={
+                writername: this.$store.getters.getUserData.name,
+                recivername: this.user.name,
+                title: "환불 알림",
+                content: '"'+this.servename+'"'+"이 환불처리되었습니다.",
+            }
+            axios.post(`${URL.BASE_URL}/msg`, messageData)
+            .then(() => {
+                alert('환불 처리 되었습니다.')  
+            })
+            .catch(err => {
+                alert(err)
+            })
+        },
+        refund() {
+            axios.delete(`${URL.BASE_URL}/pay/pro/servno=${this.serveno}&userno=${this.user.userno}`)
+            .then((res)=>{
+                console.log(res)
+                this.messagesend()
+            }) 
+            .catch(err => {
+             console.log(err)
+            })
+        },
         showMsg() {
             this.messageModal = !this.messageModal
             this.sendno = 1
@@ -96,6 +127,10 @@ export default {
 </script>
 
 <style>
+    .refund-button {
+        color: rgb(236,128,116) !important;
+        background-color: white !important;
+    }
     .user-list-item {
         /* border: 1px solid black; */
         height: 60px;

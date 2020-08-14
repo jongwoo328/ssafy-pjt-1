@@ -216,7 +216,7 @@ export default {
   @media (min-width: 768px) {
     
     #loginModal .modal-container {
-      width: 30%;
+      width: 20%;
     }
   }
 </style>
