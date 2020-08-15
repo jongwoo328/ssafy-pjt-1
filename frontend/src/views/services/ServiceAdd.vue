@@ -21,8 +21,8 @@
                 가격 
                 </label>
                 <input class="input-text" type="number" v-model="price" id="serviceprice"/>
-                <p v-text="korNumFormat"></p>
             </div>
+                <p><span v-text="korNumFormat"></span>원</p>
             <div class="form-address">
                 <label class="font-kor label-address" >주소</label>
                 <div class="form-block container-fluid row">        

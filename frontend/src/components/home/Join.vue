@@ -1,6 +1,6 @@
 <template>
   <div id="join">
-          <input type="text" class="font-kor" v-model="keyword" :placeholder="placeHolder"><Button buttonText="검색" @click.native="searchInfoemit"/>
+          <input type="text" class="font-kor" @keyup.enter="searchInfoemit" v-model="keyword" :placeholder="placeHolder"><Button buttonText="검색" @click.native="searchInfoemit"/>
       <router-link v-if="!isLoggedIn" class="font-kor" to='/accounts/signup' id="button-join">지금 가입하기</router-link>
   </div>
 </template>

@@ -1,13 +1,18 @@
 <template>
   <nav class="navbar">
+    <div v-if="modal" class="back" @click="close">
+    </div>
+    <LoginModal v-if="loginModal" @close="changeLogin" @change="changeModal"/>
+    <ForgotPasswordModal v-if="forgotPasswordModal" @close="changeForgot" @change="changeModal" />
     <button class="w3-button w3-xlarge side-open" @click="open">☰</button>
     <div class="side-list w3-sidebar w3-bar-block w3-border-right font-kor" id="mobile-sidebar">
+      <div>
         <button @click="close" class="w3-bar-item w3-large side-close"><span>&times;</span></button>
         <div v-if="!isLoggedIn">
           <h3 class="text-center login-notice">로그인 필요</h3>
           <div class="buttons">
-            <Button buttonText="로그인" />
-            <Button buttonText="회원가입" />
+            <Button buttonText="로그인" @click.native="changeLogin"/>
+            <Button buttonText="회원가입" @click.native="signup" />
           </div>
         </div>
         <a v-if="isLoggedIn" @click="routerLink" data-to='/accounts/userinfo' class="w3-bar-item sidebar-link font-kor">내 정보</a>
@@ -16,6 +21,7 @@
         <a v-if="isLoggedIn" @click="routerLink" data-to='/paylist' class="w3-bar-item sidebar-link font-kor">결제내역</a>
         <a v-if="isLoggedIn" @click="routerLink" :data-to="toMyFollow" class="w3-bar-item sidebar-link font-kor">팔로우</a>
         <a v-if="isLoggedIn" @click="routerLink" data-to='/qna' class="w3-bar-item sidebar-link font-kor">Q&A</a>
+      </div>
     </div>
     <a href="/" class="navbar-brand"><img src="../../assets/logo_mini.png" alt="logo"></a>
     <NavbarLinkList/>
@@ -25,16 +31,22 @@
 <script>
 import NavbarLinkList from '@/components/nav/NavbarLinkList.vue'
 import Button from '@/components/common/Button.vue'
+import LoginModal from '@/components/modal/LoginModal.vue'
+import ForgotPasswordModal from '@/components/modal/ForgotPasswordModal.vue'
 
 export default {
     name: 'Navbar',
     components: {
       NavbarLinkList,
-      Button
+      Button,
+      LoginModal,
+      ForgotPasswordModal
     },
     data() {
       return {
-        modal: false
+        modal: false,
+        loginModal: false,
+        forgotPasswordModal: false,
       }
     },
     computed: {
@@ -69,12 +81,36 @@ export default {
       routerLink(e) {
         this.modal = false
         this.$router.push(e.target.dataset.to)
-      }
+      },
+      signup() {
+        this.$router.push({name: 'SignUp'})
+        this.close()
+      },
+      changeLogin () {
+      this.loginModal = !this.loginModal
+      },
+      changeForgot () {
+        this.forgotPasswordModal = !this.forgotPasswordModal
+      },
+      changeModal () {
+        this.loginModal = !this.loginModal
+        this.forgotPasswordModal = !this.loginModal
+      },
     },
 }
 </script>
 
 <style>
+  nav.navbar .back {
+    z-index: 9;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.5);
+    height: 100%;
+  }
   nav.navbar {
     z-index: 3;
     box-shadow: 0 1px 5px gray;

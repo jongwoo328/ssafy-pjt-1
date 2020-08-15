@@ -6,7 +6,7 @@
             <select v-model="categoryInfo" name="category" id="category" class="col-1 search-info">
                 <option v-for="category in categoryList" :key="category.id" :value="category" v-text="category.cname" ></option>
             </select>
-            <input type="text" class="col-5 col-md-7 search-info" v-model="keyword">
+            <input type="text" class="col-5 col-md-7 search-info" @keyup.enter="SearchInfoemit" v-model="keyword">
             <Button buttonText="검색" @click.native="SearchInfoemit" />
           </div>
           <div class="searchaddr mt-3">

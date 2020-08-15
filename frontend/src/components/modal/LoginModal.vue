@@ -156,6 +156,7 @@ export default {
 
   #loginModal .modal-container {
     width: 350px;
+    min-width: 300px;
     margin: 0px auto;
     padding: 20px 10px;
     background-color: #fff;
