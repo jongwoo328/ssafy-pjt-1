@@ -69,6 +69,14 @@ export default {
                 }
             })
         }
+      else if (this.$route.params.username !== this.$store.getters.getUserData.name) {
+        this.$router.push({
+          name: 'Error',
+          query: {
+            status: 403
+          }
+        })
+      }
         if (this.$route.params.type === "update") this.urltype = true
         else this.urltype = false
 
