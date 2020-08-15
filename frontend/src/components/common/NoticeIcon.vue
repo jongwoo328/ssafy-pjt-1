@@ -1,6 +1,6 @@
 <template>
   <div class="notice-icon" @mouseover="mouseover" @mouseout="mouseout">
-      <div class="notice-count"><p v-text="unreadCount" ></p></div>
+      <div v-if="hasMsg" class="notice-count"><p v-text="unreadCount" ></p></div>
       <i class="far fa-bell"></i>
   </div>
 </template>
@@ -16,6 +16,9 @@ export default {
         },
         bell() {
             return document.querySelector('div.notice-icon > i')
+        },
+        hasMsg() {
+            return this.$store.getters.getUserData.msgcount > 0
         }
     },
     methods: {
