@@ -49,6 +49,8 @@ export default {
     } */
     .nav-item button {
         border: 0;
+        padding: 0;
+        font-size: 0.8rem;
         background-color: transparent;
     }
     @media (min-width: 768px) {
@@ -58,6 +60,7 @@ export default {
         }
         .nav-item button {
             font-size: 1.5rem;
+            padding: 1px 6px;
         }
     }
 </style>

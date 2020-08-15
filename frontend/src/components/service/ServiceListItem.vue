@@ -5,7 +5,7 @@
             <img :src="getImgUrl" alt="service_image">
             <div class="card-cover" @click="changeDetail">
                 <h3 v-text="service.servname"></h3>
-                <h3 v-text="service.price+'원'"></h3>
+                <h3 v-text="formattedPrice+'원'"></h3>
             </div>
         </div>
         <div class="card-desc" v-if="!isPay">
@@ -23,10 +23,10 @@
         </div>
         <div class="card-desc pay-card" v-else>
             <div class="span-class">
-            <span v-text="service.servname" ></span>
+            <span class="service-title" v-text="service.servname" ></span>
             <span id="pdate" v-text="service.pdate"></span>
             </div>
-            <span v-text="service.price+'원'"></span>
+            <span v-text="formattedPrice+'원'"></span>
             <!-- <button id="returnpay" @click="pay">환불</button> -->
             <div class="button-class">
             <Button buttonText="결제취소" v-if="service.cancelcheck" @click.native="pay"></Button>
@@ -42,6 +42,8 @@ import Badge from '@/components/common/Badge.vue'
 import HTTP from '@/util/http-common.js'
 import axios from 'axios'
 import Button from '@/components/common/Button.vue'
+import Common from '@/util/common.js'
+
 export default {
     name: 'ServiceListItem',
     data(){
@@ -61,7 +63,9 @@ export default {
         getImgUrl() {
             return `${HTTP.IMG_URL}/${this.service.imgurl}`
         },
-   
+        formattedPrice() {
+            return Common.toNumberFormat(this.service.price)
+        }
     },methods:{
         pay(){
             if(this.service.cancelcheck==true){
@@ -90,7 +94,6 @@ export default {
 </script>
 
 <style>
-
     #pdate{
         float:right;
     }
