@@ -276,6 +276,7 @@ export default {
         }       
         axios.get(`${HTTP.BASE_URL}/service/detail/servno=${this.$route.params.service_id}&userno=${this.userno}`)
         .then(res =>{
+            console.log(res.data)
             if (res.data === 'fail') {
                 this.$router.push({
                 name: 'Error',
@@ -311,7 +312,13 @@ export default {
             this.$emit('sidebar')
         })
         .catch(err => {
-                console.log(err)
+            this.$router.push({
+                name: 'Error',
+                query: {
+                    status: 'unknown'
+                }
+            })
+            console.log(err)
         })
         axios.get(`${HTTP.BASE_URL}/review/${this.$route.params.service_id}`,HTTP.JSON_HEADER)
         .then(res => {

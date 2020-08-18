@@ -1,7 +1,7 @@
 <template>
   <div id="sidebar">
       <div class="sidebar-link-list">
-        <SidebarItem v-if="isLoggedIn" to='/accounts/userinfo' i="myinf" value="내 정보" />
+        <SidebarItem v-if="isLoggedIn" to='/myinfo' i="myinf" value="내 정보" />
         <SidebarItem v-if="$store.getters.isPro" to='/myservice' i="mysvc" value="내 서비스" />
         <div @mouseover="inline" @mouseout="outline" class="sidebar-link font-kor" id="myprf">
             <a v-if="isLoggedIn" :href="toMyProfile"><p>내 프로필</p></a>
