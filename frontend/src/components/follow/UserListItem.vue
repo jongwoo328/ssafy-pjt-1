@@ -143,7 +143,7 @@ export default {
         width: 100%;
         display: flex;
         flex-direction: row;
-
+        transition: font-size 0.2s ease;
     }
     .user-list-item:hover {
         box-shadow: 0 1px 5px gray;

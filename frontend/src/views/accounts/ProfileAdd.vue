@@ -4,7 +4,7 @@
       <h3>Profile</h3>
       <hr>
       <div>
-        <img v-if="profileImageUrl" :src="profileImageUrl">
+        <img class="profile-img" v-if="profileImageUrl" :src="profileImageUrl">
         <br>
         <label for="file"><ProfileFrame v-if="profileframe" /></label>
         <br>
@@ -152,7 +152,7 @@ export default {
     #profileAdd h3 {
       font-size: 2rem;
     }
-    #profileAdd img {
+    #profileAdd .profile-img {
         object-fit: cover;
         margin-top: 20px;
         width: 150px;
