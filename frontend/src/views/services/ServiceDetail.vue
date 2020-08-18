@@ -56,13 +56,13 @@
                 </div>
               </div>
             <div v-if="!isOwner">
-            <div class="buttons">
+            <div class="w-buttons">
               <Button @click.native="msgShow" buttonText="문의하기" />
               <Button v-if="!serviceData.payed" @click.native="payShow" buttonText="신청하기" />
               <Button v-else buttonText="리뷰작성" @click.native="createReview"/>
             </div>
             </div>
-            <div class="buttons" v-else>
+            <div class="w-buttons" v-else>
                 <Button buttonText="수정" @click.native="onchangePage" />
               <Button buttonText="삭제" @click.native="deleteCheck = !deleteCheck"/>
             </div>
@@ -402,6 +402,7 @@ export default {
     } */
     #service-detail .info button {
         width: 100%;
+        margin-top: 20px;
     }
     #service-detail .web {
         display: none;
@@ -424,7 +425,7 @@ export default {
     #service-detail .mobile > div {
         text-align: center;
     }
-    #service-detail .info > .buttons button {
+    #service-detail .info .w-buttons button {
         margin: 10px 0 10px 0;
     }
     #service-detail h1 {
@@ -490,14 +491,14 @@ export default {
             flex-direction: column;
             justify-content: space-between;
         }
-        #service-detail .info > .buttons {
+        #service-detail .info .w-buttons {
             padding: 10px;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
         }
-        #service-detail .info button { 
+        #service-detail .info .button { 
             display: block;                                                                                                                                                                                            
             width: 100%;
             margin: 20px auto 20px auto;
