@@ -3,8 +3,9 @@
     <Navbar/>
     <Sidebar/>
     <div id="view">
-      <router-view @sidebar="sidebar" />
+      <router-view @sidebar="sidebar"/>
     </div>
+    <ScrollUpButton/>
   </div>
 </template>
 
@@ -13,11 +14,13 @@ import Navbar from '@/components/nav/Navbar.vue'
 import Sidebar from '@/components/common/Sidebar.vue'
 import axios from 'axios'
 import URL from '@/util/http-common.js'
+import ScrollUpButton from '@/components/common/ScrollUpButton.vue'
 
 export default {
   components: {
     Navbar,
-    Sidebar
+    Sidebar,
+    ScrollUpButton
   },
   methods: {
     sidebar() {
@@ -30,7 +33,7 @@ export default {
       .catch(err => {
         console.log(err)
       })
-    }
+    },
   }
 }
 </script>
