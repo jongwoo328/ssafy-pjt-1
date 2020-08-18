@@ -15,7 +15,7 @@
             <Button buttonText="회원가입" @click.native="signup" />
           </div>
         </div>
-        <a v-if="isLoggedIn" @click="routerLink" data-to='/accounts/userinfo' class="w3-bar-item sidebar-link font-kor">내 정보</a>
+        <a v-if="isLoggedIn" @click="routerLink" data-to='/myinfo' class="w3-bar-item sidebar-link font-kor">내 정보</a>
         <a v-if="$store.getters.isPro" @click="routerLink" data-to='/myservice' class="w3-bar-item sidebar-link font-kor">내 서비스</a>
         <a v-if="isLoggedIn" @click="routerLink" :data-to="toMyProfile" class="w3-bar-item sidebar-link font-kor">내 프로필</a>
         <a v-if="isLoggedIn" @click="routerLink" data-to='/paylist' class="w3-bar-item sidebar-link font-kor">결제내역</a>
