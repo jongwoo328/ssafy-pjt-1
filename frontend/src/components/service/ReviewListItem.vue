@@ -193,9 +193,9 @@ export default {
         font-weight: bold;
     }
     .review-list-item .profile-image img {
-        object-fit: scale-down;
-        max-width: 100%;
-        max-height: 100%;
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
         border-radius: 50%;
     }
     .review-list-item .review-title {
