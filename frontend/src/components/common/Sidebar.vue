@@ -87,9 +87,9 @@ export default {
     }
     #myprf {
         display: inline-block;
-    width: fit-content;
+        width: fit-content;
     }
-    @media (min-width: 768px) {
+    @media (min-width: 992px) {
         #sidebar {
             z-index: 1;
             display: inline-block;

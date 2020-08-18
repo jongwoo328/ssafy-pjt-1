@@ -45,7 +45,7 @@ export default {
   #view {
     margin-top: 50px;
   }
-  @media (min-width: 768px) {
+  @media (min-width: 992px) {
     #view {
       min-height: 100vh;
       margin-left: 200px;

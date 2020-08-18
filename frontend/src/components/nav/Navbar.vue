@@ -187,15 +187,20 @@ export default {
     nav.navbar {
       height: 100px;
     }
-    nav.navbar .navbar-brand {
-      position: static;
-      transform: translateX(50%);
-    }
     nav.navbar img {
       max-height: 100px;
     }
     nav.navbar .side-open {
+      margin-left: 10px;
+    }
+  }
+  @media (min-width: 992px) {
+        nav.navbar .side-open {
       display: none;
+    }
+        nav.navbar .navbar-brand {
+      position: static;
+      transform: translateX(50%);
     }
   }
 </style>
