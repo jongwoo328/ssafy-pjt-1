@@ -85,6 +85,7 @@ public class ProfileController {
 			if(profile != null) {
 				profile.setImgurl("img/profile/" + profile.getImgurl() );
 				profile.setServList(connectorServ.selectServiceByUserno(user.getUserByName(username).getUserno()));
+				profile.setIspro(u.isIspro());
 				if(profile.getServList() != null) {
 					List<Review> revList = rev.totalReview();
 					for(ConnectorService s : profile.getServList()) {
