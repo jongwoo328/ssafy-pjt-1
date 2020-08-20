@@ -3,7 +3,7 @@
       <h1>검색하세요!</h1>
       <!-- <form class="row search-form"> -->
           <div class="col-12 search-category">
-            <select v-model="categoryInfo" name="category" id="category" class="col-1 search-info">
+            <select v-model="categoryInfo" name="category" id="category" class="col-2 search-info">
                 <option v-for="category in categoryList" :key="category.id" :value="category" v-text="category.cname" ></option>
             </select>
             <input type="text" class="col-5 col-md-7 search-info" @keyup.enter="SearchInfoemit" v-model="keyword">
@@ -274,7 +274,7 @@ export default {
         padding: 5px 10px;
     }
     #category {
-        min-width: 84px;
+        min-width: 145px;
     }
     #join-web .search-form {
         width: 100%;
