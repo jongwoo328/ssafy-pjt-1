@@ -5,7 +5,7 @@
     <hr>
     <div class="myinfo">
         <div class="image">
-            <img src="@/assets/logo_mini.png" alt="profile_image">
+            <img :src="profileData.imgUrl" alt="profile_image">
         </div>
         <p class="name" v-text="$store.getters.getUserData.name"></p>
         <div class="info">
@@ -37,6 +37,7 @@ export default {
     },
     data() {
         return {
+            profileData: "",
             followUserList: [],
             followingCount: 0,
             followerCount: 0,
@@ -88,6 +89,16 @@ export default {
         .catch(err => {
             console.log(err)
         })
+         axios.get(`${URL.BASE_URL}/profile/username=${this.$store.getters.getUserData.name}&userno=${this.$store.getters.getUserData.userno}`)
+            .then(res => {
+                console.log(res)
+                this.profileData = {
+                    imgUrl: `${URL.IMG_URL}/` + res.data.imgurl,
+                }
+            })
+            .catch(err => {
+                console.log(err)
+            })
     },
     methods: {
         showFollower() {

@@ -80,6 +80,7 @@ export default {
 
       axios.post(`${URL.BASE_URL}/account/login`, loginData)
       .then(res => {
+        console.log(res)
         if (res.data.status === true) {
           this.$session.set('jwstoken', res.headers.jwstoken)
           this.$store.commit('login', res.data.object)
