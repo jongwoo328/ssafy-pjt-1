@@ -54,7 +54,7 @@ export default {
        searchData: {},
        seeMoreFlag: true,
        seeMoreKeyword: '',
-       seeMoreReset: false
+       seeMoreReset: false,
     }
   },
   methods:{
@@ -99,7 +99,7 @@ export default {
         },
     flagcomputed(){
        return this.isLoggedIn || this.search_on
-    }
+    },
   },
   created(){
     

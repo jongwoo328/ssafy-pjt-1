@@ -25,6 +25,16 @@ export default {
         seeMoreKeyword: String,
         seeMoreReset: Boolean
     },
+    computed: {
+        cateno() {
+            const cate = document.querySelector('#category')
+            if (cate) {
+                return cate.selectedIndex
+            } else {
+                return 0
+            }
+        }
+    },
     watch: {
         seeMoreFlag() {
             if (this.seeMoreFlag) {
@@ -55,7 +65,7 @@ export default {
             } else if (this.state === 'search') {
                 let requestData
                     requestData = {
-                        cateno: 0,
+                        cateno: this.cateno,
                         keyword: this.seeMoreKeyword,
                         saddr6: null
                     }
