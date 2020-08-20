@@ -237,7 +237,7 @@ public class AccountController {
     		User u = userService.getUserByUserno(userno);
     		Profile p = profile.detailProfile(userno);
     		if(p != null) {
-    			u.setAddr1("img/proflie/" + p.getImgurl());
+    			u.setAddr1("img/profile/" + p.getImgurl());
     		} else {
     			u.setAddr1("img/profile/null.png");
     		}
