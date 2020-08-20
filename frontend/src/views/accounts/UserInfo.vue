@@ -330,6 +330,8 @@ export default {
             }
           })
       .then(() => {
+        console.log(this.User)
+        this.$store.commit('setUserInfo',changeUser)
         alert("회원정보가 수정되었습니다.")
         this.$router.push({ name: "Home" })
       })

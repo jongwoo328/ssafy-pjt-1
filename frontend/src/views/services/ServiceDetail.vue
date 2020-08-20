@@ -56,15 +56,24 @@
                 </div>
               </div>
             <div v-if="!isOwner">
-            <div class="buttons">
+            <div class="w-buttons">
               <Button @click.native="msgShow" buttonText="문의하기" />
               <Button v-if="!serviceData.payed" @click.native="payShow" buttonText="신청하기" />
               <Button v-else buttonText="리뷰작성" @click.native="createReview"/>
             </div>
             </div>
-            <div class="buttons" v-else>
+            <div class="w-buttons" v-else>
                 <Button buttonText="수정" @click.native="onchangePage" />
-              <Button buttonText="삭제" @click.native=" removeService "/>
+              <Button buttonText="삭제" @click.native="deleteCheck = !deleteCheck"/>
+            </div>
+            <div style="position: relative;">
+            <div v-if="deleteCheck" class="delete-check">
+                <p>정말 삭제하시겠습니까?</p>
+                <div class="buttons">
+                <Button buttonText="아니오" buttonColor="#343a40" @click.native="deleteNo"/>
+                <Button buttonText="예" buttonColor="#e03131" @click.native="deleteYes"/>
+                </div>
+            </div>
             </div>
           </div>
       </div>
@@ -115,6 +124,7 @@ export default {
     },
     data() {
         return {
+            deleteCheck: false,
             displayreview:true,
             displayuser:false,
             messageModal: false,
@@ -179,6 +189,22 @@ export default {
         }
     },
     methods:{
+        deleteNo() {
+        this.deleteCheck = false
+      },
+      deleteYes() {
+        this.removeService()
+        .then(res => {
+          if (res.data === 'success') {
+            this.$router.push({ name: 'MyServices' })
+          } else if (res.data === 'fail') {
+            alert('전송에 실패했습니다.')
+          } else {
+            alert('알수없는 오류')
+          }
+        })
+        .catch(err => console.log(err))
+      },
          showReview() {
             this.displayreview = true
             this.displayuser = false
@@ -250,6 +276,15 @@ export default {
         }       
         axios.get(`${HTTP.BASE_URL}/service/detail/servno=${this.$route.params.service_id}&userno=${this.userno}`)
         .then(res =>{
+            console.log(res.data)
+            if (res.data === 'fail') {
+                this.$router.push({
+                name: 'Error',
+                query: {
+                    status: 404
+                }
+            })
+            }
             this.revwrite = res.data.revwrite
             this.proname = res.data.proname,
             this.serviceData ={
@@ -277,7 +312,13 @@ export default {
             this.$emit('sidebar')
         })
         .catch(err => {
-                console.log(err)
+            this.$router.push({
+                name: 'Error',
+                query: {
+                    status: 'unknown'
+                }
+            })
+            console.log(err)
         })
         axios.get(`${HTTP.BASE_URL}/review/${this.$route.params.service_id}`,HTTP.JSON_HEADER)
         .then(res => {
@@ -327,11 +368,9 @@ export default {
     #service-detail .image-join img {
         object-fit: cover;
         max-width: 100%;
-        max-height: 200px;
+        max-height: 198px;
         display: block;
         margin: auto;
-        /* width: 350px;
-        height: 350px; */
     }
     #service-detail .review-section {
         display: flex;
@@ -370,6 +409,7 @@ export default {
     } */
     #service-detail .info button {
         width: 100%;
+        margin-top: 20px;
     }
     #service-detail .web {
         display: none;
@@ -392,7 +432,7 @@ export default {
     #service-detail .mobile > div {
         text-align: center;
     }
-    #service-detail .info .buttons button {
+    #service-detail .info .w-buttons button {
         margin: 10px 0 10px 0;
     }
     #service-detail h1 {
@@ -400,6 +440,38 @@ export default {
     }
     #service-detail .info i {
         width: 30px;
+    }
+    #service-detail .delete-check {
+            width: 300px;
+            height: 100px;
+            position: absolute;
+            /* border: 1px solid black; */
+            box-shadow: 0 1px 5px gray;
+            border-radius: 7px;
+            right: 0;
+            top: 0;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+        }
+    #service-detail .delete-check p {
+        margin: 0;
+    }
+    #service-detail .delete-check .buttons{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin-top: 5px;
+    }
+    #service-detail .delete-check .buttons Button {
+        margin-left: 5px;
+        margin-right: 5px;
+        width: 30%;
     }
     @media (min-width: 768px) {
         #service-detail .web {
@@ -426,14 +498,14 @@ export default {
             flex-direction: column;
             justify-content: space-between;
         }
-        #service-detail .info .buttons {
+        #service-detail .info .w-buttons {
             padding: 10px;
             display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
         }
-        #service-detail .info button { 
+        #service-detail .info .button { 
             display: block;                                                                                                                                                                                            
             width: 100%;
             margin: 20px auto 20px auto;
@@ -445,6 +517,17 @@ export default {
         #service-detail .web p {
             text-align: right;
         }
+        #service-detail .delete-check {
+            width: 300px;
+            margin: 0;
+        }
+        #service-detail .delete-check p {
+            margin-top: 5px;
+        }
+        #service-detail .delete-check .buttons {
+            margin: 0;
+            height: fit-content;
+        }
     }
     @media (min-width: 992px) {
         #service-detail .info button {
@@ -453,5 +536,6 @@ export default {
         #service-detail h1, #service-detail h2 {
             font-size: 2rem;
         }
+        
     }
 </style>

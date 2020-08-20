@@ -30,6 +30,16 @@ export default new Vuex.Store({
     },
     setMsgCount(state, msgcount) {
       state.userData.msgcount = msgcount
+    },
+    setUserInfo(state, userinfo) {
+      state.userData.tel = userinfo.tel
+      state.userData.addr1 = userinfo.addr1
+      state.userData.addr2 = userinfo.addr2
+      state.userData.addr3 = userinfo.addr3
+      state.userData.addr4 = userinfo.addr4
+      state.userData.addr5 = userinfo.addr5
+      state.userData.addr6 = userinfo.addr6
+      
     }
   },
   actions: {

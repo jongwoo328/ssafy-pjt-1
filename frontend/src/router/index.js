@@ -26,30 +26,19 @@ Vue.use(VueRouter)
     name: 'Home',
     component: Home
   },
+
+
   {
     path: '/myservice',
     name: 'Service',
     component : Service
   },
+
+  
   {
     path: '/services/:service_id/review/create',
     name: 'Review',
     component: Review
-  },
-  {
-    path: '/accounts/signup',
-    name: 'SignUp',
-    component: SignUp
-  },
-  {
-    path: '/paylist',
-    name: 'PayList',
-    component: PayList
-  },
-  {
-    path: '/accounts/userinfo',
-    name: 'UserInfo',
-    component: UserInfo
   },
   {
     path: '/services/:service_id/modify',
@@ -60,6 +49,17 @@ Vue.use(VueRouter)
     path: '/services/:service_id',
     name: 'ServiceDetail',
     component: ServiceDetail
+  },
+  {
+    path: '/service/create',
+    name: 'ServiceAdd',
+    component : ServiceAdd
+  },
+
+  {
+    path: '/accounts/signup',
+    name: 'SignUp',
+    component: SignUp
   },
   {
     path: '/accounts/:username/follow',
@@ -76,15 +76,22 @@ Vue.use(VueRouter)
     name: 'Profile',
     component: Profile
   },
+
+  {
+    path: '/paylist',
+    name: 'PayList',
+    component: PayList
+  },
+  {
+    path: '/myinfo',
+    name: 'UserInfo',
+    component: UserInfo
+  },
+
   {
     path: '/qna',
     name: 'Qna',
     component: Qna
-  },
-  {
-    path: '/service/create',
-    name: 'ServiceAdd',
-    component : ServiceAdd
   },
   {
     path: '/qna/create',
@@ -96,6 +103,8 @@ Vue.use(VueRouter)
     name: 'QnaDetail',
     component: QnaDetail
   },
+
+
   {
     path: '/message/:msgtype',
     name: 'MessageList',
@@ -113,7 +122,14 @@ Vue.use(VueRouter)
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+  scrollBehavior (to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: 0 }
+    }
+  }
 })
 
 export default router
