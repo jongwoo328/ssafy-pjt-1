@@ -276,7 +276,6 @@ export default {
         }       
         axios.get(`${HTTP.BASE_URL}/service/detail/servno=${this.$route.params.service_id}&userno=${this.userno}`)
         .then(res =>{
-            console.log(res.data)
             if (res.data === 'fail') {
                 this.$router.push({
                 name: 'Error',
