@@ -162,16 +162,6 @@ export default {
                 }
             })
         }
-        axios.get(`${HTTP.BASE_URL}/service/${this.$store.getters.getUserData.userno}`)
-        .then(res => {
-            this.services = res.data
-            this.isProfile=true
-        })
-        .catch(err => {
-            console.log(err)
-        })
-    },
-    mounted() {
         setTimeout(() => {
             this.$emit('sidebar')
             axios.get(`${HTTP.BASE_URL}/profile/username=${this.$route.params.username}&userno=${this.$store.getters.getUserData.userno}`)
