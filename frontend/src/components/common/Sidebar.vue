@@ -38,14 +38,9 @@ export default {
             eventList: [
                 {
                     eventno: 1,
-                    etitle: 'Spring 선착순 할인',
-                    econtent: '선착순 10명에게 30% 할인이 제공중입니다.'
+                    etitle: '유도는 한판 이벤트',
+                    econtent: '선착순 5명에게 선수용 도복을 드립니다.'
                 },
-                {
-                    eventno: 2,
-                    etitle: 'Vue.js 리뷰이벤트',
-                    econtent: '주재성의 Vue 강의를 들으신 분 중 우수리뷰어에게 쿠폰을 드립니다.'
-                }
             ]
         }
     },
