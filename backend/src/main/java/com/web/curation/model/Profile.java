@@ -9,13 +9,25 @@ public class Profile {
 	private String imgurl;
 	private boolean checkfollow;
 	private List<ConnectorService> servList;
-	
+	private boolean ispro;
 	public Profile() {
 		
 	}
 	
 	
 	
+	public boolean isIspro() {
+		return ispro;
+	}
+
+
+
+	public void setIspro(boolean ispro) {
+		this.ispro = ispro;
+	}
+
+
+
 	public boolean isCheckfollow() {
 		return checkfollow;
 	}
